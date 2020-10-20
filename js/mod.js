@@ -34,8 +34,11 @@ function getPointGen() {
 	if (!canGenPoints()) return new Decimal(0)
 
 	let gain = new Decimal(1)
-	if (player.p.upgrades.includes(12)) gain = gain.times(layers.p.upgrades[12].effect())
-	if (player.p.upgrades.includes(13)) gain = gain.times(layers.p.upgrades[13].effect())
+	if (player.p.upgrades.includes(12)) gain = gain.times(getPEff(12))
+	if (player.p.upgrades.includes(13)) gain = gain.times(getPEff(13))
+	if (player.e.upgrades.includes(11)) gain = gain.times(getEEff(11))
+	if (player.e.upgrades.includes(12)) gain = gain.times(2)
+	if (player.e.upgrades.includes(13)) gain = gain.times(3)
 	
 	return gain
 }

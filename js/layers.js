@@ -18,8 +18,16 @@ function getExpEffForP(id){
         if (id % 10 == 2 && id < 32 && hasUpgrade("p", 32)) eff += getPEff(32).toNumber()
         if (id % 10 == 3 && id < 33 && hasUpgrade("p", 33)) eff += getPEff(33).toNumber()
         if (id % 10 == 4 && id < 34 && hasUpgrade("p", 34)) eff += getPEff(34).toNumber()
+        if (id < 50 && hasUpgrade("e", 14)) eff += 1
+        if (id < 20 && id > 10 && hasUpgrade("e", 21)) eff += 1
+        if (id < 30 && id > 20 && hasUpgrade("e", 22)) eff += 1
+        if (id < 40 && id > 30 && hasUpgrade("e", 23)) eff += 1
 
         return eff - 1
+}
+
+function filter(list, keep){
+        return list.filter(x => keep.includes(x))
 }
 
 //theme: math education
@@ -44,6 +52,7 @@ addLayer("p", {
         resource: "prestige points", // Name of prestige currency
         baseResource: "points", // Name of resource prestige is based on
         baseAmount() {return player.points}, // Get the current amount of baseResource
+        canReset() {return player.points.gte(10)},
         type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
         exponent: 0.5, // Prestige currency exponent
         gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -235,26 +244,83 @@ addLayer("p", {
                 },
                 41: {
                         title: "Distributive",
-                        description: "Buff the above upgrade based on [next layer]",
+                        description: "Buff the 9th upgrade based on Elementary Students",
                         cost: new Decimal(25e5),
+                        effect(){
+                                return 1
+                        },
+                        effectDisplay() {
+                                return "Not yet"
+                        },
+                        unlocked(){
+                                return hasUpgrade("e", 12) && hasUpgrade("p", 34)
+                        },
                 },
                 42: {
                         title: "Group",
-                        description: "Buff the above upgrades based on [next layer]",
+                        description: "Buff the second column of upgrades based on Elementary Students",
                         cost: new Decimal(50e5),
+                        effect(){
+                                return 1
+                        },
+                        effectDisplay() {
+                                return "Not yet"
+                        },
+                        unlocked(){
+                                return hasUpgrade("e", 12) && hasUpgrade("p", 34)
+                        },
                 },
                 43: {
                         title: "Ring",
-                        description: "Buff the above upgrades based on [next layer]",
+                        description: "Buff the third column of upgrades based on Elementary Students",
                         cost: new Decimal(100e5),
+                        effect(){
+                                return 1
+                        },
+                        effectDisplay() {
+                                return "Not yet"
+                        },
+                        unlocked(){
+                                return hasUpgrade("e", 13) && hasUpgrade("p", 34)
+                        },
                 },
                 44: {
                         title: "Field",
-                        description: "Buff the above upgrades based on [next layer]",
+                        description: "Buff the fourth column of upgrades based on Elementary Students",
                         cost: new Decimal(200e5),
+                        effect(){
+                                return 1
+                        },
+                        effectDisplay() {
+                                return "Not yet"
+                        },
+                        unlocked(){
+                                return hasUpgrade("e", 13) && hasUpgrade("p", 34)
+                        },
                 },
         },
+        doReset(layer){
+                console.log(layer)
+                if (layers[layer].row <= 0) return
+                let keep = []
+                if (hasUpgrade("e", 21)) {
+                        keep.push(11, 12, 13, 14)
+                }
+                if (hasUpgrade("e", 22)) {
+                        keep.push(21, 22, 23, 24)
+                }
+                if (hasUpgrade("e", 23)) {
+                        keep.push(31, 32, 33, 34)
+                }
+                player.p.upgrades = filter(player.p.upgrades, keep)
+                player.p.points = new Decimal(0)
+        }
 })
+
+
+function getEEff(id){
+        return layers.e.upgrades[id].effect()
+}
 
 addLayer("e", {
         name: "Elementary School", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -265,14 +331,15 @@ addLayer("e", {
 			points: new Decimal(0),
         }},
         color: "#4BDC13",
-        requires: new Decimal(10), // Can be a function that takes requirement increases into account
+        requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
         resource: "Elementary Students", // Name of prestige currency
         baseResource: "points", // Name of resource prestige is based on
         baseAmount() {return player.points}, // Get the current amount of baseResource
         type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-        exponent: .3, // Prestige currency exponent
+        exponent: 1 / Math.log2(10),  
+        // Prestige currency exponent
         gainMult() { // Calculate the multiplier for main currency from bonuses
-                mult = new Decimal(1e-9).pow(.3)
+                mult = new Decimal(1)
                 return mult
         },
         branches: ["p"],
@@ -283,7 +350,78 @@ addLayer("e", {
         hotkeys: [
             {key: "e", description: "Press E for Elementary School Reset", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
-        layerShown(){return player.p.upgrades.length >= 12},
+        layerShown(){return player.p.upgrades.length >= 12 || player.e.points.gt(0) || player.e.upgrades.length > 0},
+        upgrades: {
+                rows: 4,
+                cols: 4,
+                11: {
+                        title: "Greater Than",
+                        description: "Boost point gain based on Elementary Students",
+                        cost: new Decimal(1),
+                        effect() {
+                                return player.e.points.times(5).plus(4).pow(.5)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                },
+                12: {
+                        title: "Greater Than Or Equal To",
+                        description: "Unlock two new Prestige Upgrades and double point gain",
+                        cost: new Decimal(1),
+                        unlocked() {
+                                return hasUpgrade("e", 11)
+                        },
+                },
+                13: {
+                        title: "Less Than",
+                        description: "Unlock two new Prestige Upgrades and triple point gain",
+                        cost: new Decimal(2),
+                        unlocked() {
+                                return hasUpgrade("e", 12)
+                        },
+                },
+                14: {
+                        title: "Less Than Or Equal To",
+                        description: "Add one to the exponent of the first sixteen Prestige Upgrades",
+                        cost: new Decimal(5),
+                        unlocked(){
+                                return hasUpgrade("e", 13)
+                        },
+                },
+                21: {
+                        title: "One, Two, Three...",
+                        description: "Keep the first four Prestige Upgrades and add one to their effect exponents",
+                        cost: new Decimal(13),
+                        unlocked(){
+                                return hasUpgrade("e", 14)
+                        }
+                },
+                22: {
+                        title: "Ninety nine, One Hundred!",
+                        description: "Keep the next four Prestige Upgrades and add one to their effect exponents",
+                        cost: new Decimal(34),
+                        unlocked(){
+                                return hasUpgrade("e", 21)
+                        }
+                },
+                23: {
+                        title: "Counting With Your Hands",
+                        description: "Keep the next four Prestige Upgrades and add one to their effect exponents",
+                        cost: new Decimal(89),
+                        unlocked(){
+                                return hasUpgrade("e", 22)
+                        }
+                },
+                24: {
+                        title: "Count With Your Brain",
+                        description: "Not yet",
+                        cost: new Decimal(233),
+                        unlocked(){
+                                return hasUpgrade("e", 23)
+                        }
+                }
+        },
 })
 
 
