@@ -1,7 +1,7 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
-	author: "nobody",
+	name: "The pg Tree",
+	id: "pg132",
+	author: "pg132",
 	pointsName: "points",
 	discordName: "",
 	discordLink: "",
@@ -26,15 +26,17 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	return true
+	return player.p.upgrades.includes(11)
 }
 
 // Calculate points/sec!
 function getPointGen() {
-	if(!canGenPoints())
-		return new Decimal(0)
+	if (!canGenPoints()) return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (player.p.upgrades.includes(12)) gain = gain.times(layers.p.upgrades[12].effect())
+	if (player.p.upgrades.includes(13)) gain = gain.times(layers.p.upgrades[13].effect())
+	
 	return gain
 }
 
