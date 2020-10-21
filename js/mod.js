@@ -39,6 +39,8 @@ function getPointGen() {
 	if (player.e.upgrades.includes(11)) gain = gain.times(getEEff(11))
 	if (player.e.upgrades.includes(12)) gain = gain.times(2)
 	if (player.e.upgrades.includes(13)) gain = gain.times(3)
+	if (player.e.upgrades.includes(23)) gain = gain.times(getEEff(23))
+	if (player.e.upgrades.includes(34)) gain = gain.times(getEEff(34))
 	
 	return gain
 }

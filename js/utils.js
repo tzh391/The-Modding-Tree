@@ -29,6 +29,8 @@ function sumValues(x) {
 function format(decimal, precision=2) {
 	decimal = new Decimal(decimal)
 	if (isNaN(decimal.sign)||isNaN(decimal.layer)||isNaN(decimal.mag)) {
+		console.log(decimal)
+		// Decimal(1) //to toss an error, removed when pushing to live
 		player.hasNaN = true;
 		return "NaN"
 	}
