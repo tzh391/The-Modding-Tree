@@ -25,6 +25,18 @@ function getExpEffForP(id){
         return eff - 1
 }
 
+
+function softcapP13(ret){
+        if (ret.gt(1e15)) ret = ret.times(1e5).pow(3/4)
+        if (player.m.upgrades.includes(11)){
+                if (ret.gt(Decimal.pow(2, 64))) {
+                        let log = ret.log(2)
+                        ret = Decimal.pow(log * 4, 8)
+                }
+        } else if (ret.gt(1e10)) ret = ret.log10().pow(10)
+        return ret
+}
+
 addLayer("p", {
         name: "prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
         symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
@@ -48,13 +60,18 @@ addLayer("p", {
         gainExp() { // Calculate the exponent on main currency from bonuses
             return new Decimal(1)
         },
+        update(diff){
+                if (hasUpgrade("e", 41) && tmp.p && tmp.p.resetGain) {
+                        player.p.points = player.p.points.plus(tmp.p.resetGain.times(diff))
+                }
+        },
         row: 0, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
             {key: "p", description: "Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return true},
         upgrades: {
-                rows: 4,
+                rows: 5,
                 cols: 4,
                 11: {
                         title: "Addition",
@@ -71,7 +88,9 @@ addLayer("p", {
                                 let higher = 5
                                 if (player.e.upgrades.includes(24)) higher += getEEff(24).toNumber()
                                 let exp = getEffectFromEndsProg(1, higher, eff)
-                                return player.points.plus(10).log10().pow(exp).plus(1).times(eff + 1)
+                                let ret = player.points.plus(10).log10().pow(exp).plus(1).times(eff + 1)
+                                if (ret.gt(1e10)) ret = ret.log10().pow(10)
+                                return ret
                         },
                         unlocked(){
                                 return hasUpgrade("p", 11)
@@ -86,8 +105,10 @@ addLayer("p", {
                                 let exp = getEffectFromEndsProg(1, 7, eff)
                                 let mult = Math.min(eff + 1, 20)
                                 let ret = player.points.plus(10).log10().plus(10).log10().pow(exp).plus(1).times(mult)
-                                if (ret.lte(200)) return ret
-                                if (hasUpgrade("e", 33)) ret = ret.div(200).pow(20).times(200)
+                                if (hasUpgrade("e", 33) && ret.gt(200)) ret = ret.div(200).pow(20).times(200)
+                                ret = ret.times(ret.pow(3/2).min(1e5))
+
+                                ret = softcapP13(ret)
                                 return ret
                         },
                         unlocked(){
@@ -104,7 +125,7 @@ addLayer("p", {
                                 return player.points.plus(10).log10().pow(exp).div(5).plus(1)
                         },
                         effectDisplay() {
-                                return "*" +format(getPEff(14)) + " to the exponent formula"
+                                return "*" +format(getPEff(14), 3) + " to the exponent formula"
                         },
                         unlocked(){
                                 return hasUpgrade("p", 13)
@@ -120,7 +141,7 @@ addLayer("p", {
                                 return player.points.plus(10).log10().plus(10).log10().pow(exp).div(3).plus(1)
                         },
                         effectDisplay() {
-                                return "*" +format(getPEff(21)) + " to the exponent formula"
+                                return "*" +format(getPEff(21), 3) + " to the exponent formula"
                         },
                         unlocked() {
                                 return hasUpgrade("p", 14)
@@ -136,7 +157,7 @@ addLayer("p", {
                                 return player.points.plus(2).slog(2).pow(exp).div(2).plus(1)
                         },
                         effectDisplay() {
-                                return "*" +format(getPEff(22)) + " to the exponent formula"
+                                return "*" +format(getPEff(22), 3) + " to the exponent formula"
                         },
                         unlocked(){
                                 return hasUpgrade("p", 21)
@@ -152,7 +173,7 @@ addLayer("p", {
                                 return player.points.plus(2).slog(2).pow(exp).div(3).plus(1)
                         },
                         effectDisplay() {
-                                return "*" +format(getPEff(23)) + " to the exponent formula"
+                                return "*" +format(getPEff(23), 3) + " to the exponent formula"
                         },
                         unlocked(){
                                 return hasUpgrade("p", 22)
@@ -168,7 +189,7 @@ addLayer("p", {
                                 return player.points.plus(2).slog(2).pow(exp).div(10).plus(1)
                         },
                         effectDisplay() {
-                                return "*" +format(getPEff(24)) + " to the exponent formula"
+                                return "*" +format(getPEff(24), 3) + " to the exponent formula"
                         },
                         unlocked(){
                                 return hasUpgrade("p", 23)
@@ -183,7 +204,7 @@ addLayer("p", {
                                 return player.p.points.plus(eff).times(eff + 1).plus(9).log10().pow(.3).minus(1).times(4)
                         },
                         effectDisplay() {
-                                return "+" +format(getPEff(31)) + " to the exponent formula"
+                                return "+" +format(getPEff(31), 3) + " to the exponent formula"
                         },
                         unlocked(){
                                 return hasUpgrade("p", 24)
@@ -198,7 +219,7 @@ addLayer("p", {
                                 return player.p.points.plus(eff).plus(10).log10().pow(.2)
                         },
                         effectDisplay() {
-                                return "+" +format(getPEff(32)) + " to the exponent formula"
+                                return "+" +format(getPEff(32), 3) + " to the exponent formula"
                         },
                         unlocked(){
                                 return hasUpgrade("p", 24)
@@ -213,7 +234,7 @@ addLayer("p", {
                                 return player.p.points.plus(10).log10().pow(.8).minus(1).plus(eff / 10)
                         },
                         effectDisplay() {
-                                return "+" +format(getPEff(33)) + " to the exponent formula"
+                                return "+" +format(getPEff(33), 3) + " to the exponent formula"
                         },
                         unlocked(){
                                 return hasUpgrade("p", 24)
@@ -228,7 +249,7 @@ addLayer("p", {
                                 return player.p.points.plus(10).times(eff).log10().pow(Math.min(eff, 8) / 10).minus(1)
                         },
                         effectDisplay() {
-                                return "+" +format(getPEff(34)) + " to the exponent formula"
+                                return "+" +format(getPEff(34), 3) + " to the exponent formula"
                         },
                         unlocked(){
                                 return hasUpgrade("p", 24)
@@ -302,22 +323,91 @@ addLayer("p", {
                                 return hasUpgrade("e", 13) && hasUpgrade("p", 34)
                         },
                 },
+                51: {
+                        title: "Module",
+                        description: "Multiply point gain based on the first column of upgrades",
+                        cost: new Decimal(3e18),
+                        effect(){
+                                let a = getPEff(21).plus(1)
+                                let b = getPEff(31).plus(1)
+                                let c = getPEff(41).plus(10).log10()
+                                let ret = a.times(b).times(c).pow(2)
+                                if (ret.gt(1e10)) ret = ret.log10().times(10)
+                                return ret
+                        },
+                        unlocked(){
+                                return hasUpgrade("e", 42) && hasUpgrade("p", 44)
+                        },
+                },
+                52: {
+                        title: "Algebra",
+                        description: "Multiply point gain based on the second column of upgrades",
+                        cost: new Decimal(1e21),
+                        effect(){
+                                let a = getPEff(22).plus(1)
+                                let b = getPEff(32).plus(1)
+                                let c = getPEff(42).plus(10).log10()
+                                let d = getPEff(12).log10().plus(9).log10().pow(5)
+                                let ret = a.times(b).times(c).times(d).pow(3)
+                                if (ret.gt(1e10)) ret = ret.log10().times(10)
+                                return ret
+                        },
+                        unlocked(){
+                                return hasUpgrade("e", 42) && hasUpgrade("p", 51)
+                        },
+                },
+                53: {
+                        title: "Vector Space",
+                        description: "Multiply point gain based on the third column of upgrades",
+                        cost: new Decimal(1e30),
+                        effect(){
+                                let a = getPEff(23).plus(1)
+                                let b = getPEff(33).plus(1)
+                                let c = getPEff(43).plus(1)
+                                let d = getPEff(13).log10()
+                                let ret = a.times(b).times(c).pow(2).times(d)
+                                if (ret.gt(1e10)) ret = ret.log10().times(10)
+                                return ret
+                        },
+                        unlocked(){
+                                return hasUpgrade("e", 42) && hasUpgrade("p", 52)
+                        },
+                },
+                54: {
+                        title: "Homomorphism",
+                        description: "Multiply point gain based on the fourth column of upgrades",
+                        cost: new Decimal(1e40),
+                        effect(){
+                                let a = getPEff(24).plus(1)
+                                let b = getPEff(34).plus(1)
+                                let c = getPEff(44).plus(1)
+                                let ret = a.times(b).times(c).pow(2)
+                                if (ret.gt(1e10)) ret = ret.log10().times(10)
+                                return ret
+                        },
+                        unlocked(){
+                                return hasUpgrade("e", 42) && hasUpgrade("p", 53)
+                        },
+                },
         },
         doReset(layer){
                 if (false) console.log(layer)
                 if (layers[layer].row <= 0) return
                 let keep = []
-                if (hasUpgrade("e", 21)) {
+                if (hasUpgrade("e", 21) || hasMilestone("m", 1)) {
                         keep.push(11, 12, 13, 14)
                 }
-                if (hasUpgrade("e", 22)) {
+                if (hasUpgrade("e", 22) || hasMilestone("m", 2)) {
                         keep.push(21, 22, 23, 24)
                 }
-                if (hasUpgrade("e", 31)) {
+                if (hasUpgrade("e", 31) || hasMilestone("m", 3)) {
                         keep.push(31, 32, 33, 34)
                 }
-                if (hasUpgrade("e", 32)) {
+                if (hasUpgrade("e", 32) || hasMilestone("m", 4)) {
                         keep.push(41, 42, 43, 44)
+                }
+                if (hasMilestone("m", 5)) {
+                        keep.push(51, 52, 53, 54)
                 }
                 player.p.upgrades = filter(player.p.upgrades, keep)
                 player.p.points = new Decimal(0)
