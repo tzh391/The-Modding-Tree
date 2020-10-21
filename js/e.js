@@ -20,6 +20,7 @@ addLayer("e", {
         // Prestige currency exponent
         gainMult() { // Calculate the multiplier for main currency from bonuses
                 gain = new Decimal(1)
+                if (hasUpgrade("e", 23)) gain = gain.times(player.points.plus(1e9).log10().pow(-4).times(5e5).plus(1))
                 if (player.e.upgrades.includes(34)) gain = gain.times(getEEff(34))
                 return gain
         },
@@ -28,8 +29,9 @@ addLayer("e", {
                 return new Decimal(1)
         },
         update(diff){
-                if (hasMilestone("m",4) && tmp.e && tmp.e.resetGain) {
-                        player.e.points = player.e.points.plus(tmp.e.resetGain.times(diff))
+                if (hasMilestone("m", 4) && tmp.e && tmp.e.resetGain) {
+                        let div = hasMilestone("m", 5) ? 1 : 100
+                        player.e.points = player.e.points.plus(tmp.e.resetGain.times(diff).div(div))
                 }
         },
         row: 1, // Row the layer is in on the tree (0 is the first row)
@@ -95,7 +97,7 @@ addLayer("e", {
                 },
                 23: {
                         title: "Counting With Your Hands",
-                        description: "Multiply point gain based on total time played",
+                        description: "Multiply point gain based on total time played and buff the Elementary Students formula",
                         cost: new Decimal(89),
                         effect(){
                                 let time = player.timePlayed
@@ -103,7 +105,7 @@ addLayer("e", {
                                 return Decimal.add(1000, time).log10().pow(eff * 2)
                         },
                         unlocked(){
-                                return hasUpgrade("e", 21)
+                                return hasUpgrade("e", 22)
                         },
                 },
                 24: {

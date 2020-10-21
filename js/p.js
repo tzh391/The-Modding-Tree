@@ -57,8 +57,15 @@ addLayer("p", {
                 mult = new Decimal(1)
                 return mult
         },
+        postExpMult(){
+                mult = new Decimal(1)
+                if (challengeCompletions("m", 21) > 0) mult = mult.times(getMChallRewardEff(21))
+                return mult
+        },
         gainExp() { // Calculate the exponent on main currency from bonuses
-            return new Decimal(1)
+                let x = new Decimal(1)
+                if (inChallenge("m", 21)) x = x.times(getMChallEff(21))
+                return x
         },
         update(diff){
                 if (hasUpgrade("e", 41) && tmp.p && tmp.p.resetGain) {
