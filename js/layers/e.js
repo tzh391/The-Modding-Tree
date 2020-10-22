@@ -14,14 +14,22 @@ addLayer("e", {
         requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
         resource: "Elementary Students", // Name of prestige currency
         baseResource: "points", // Name of resource prestige is based on
-        baseAmount() {return player.points}, // Get the current amount of baseResource
+        baseAmount() {
+                let gain = player.points
+                if (gain.lt(1e9)) return gain
+                
+                if (challengeCompletions("m", 22) > 0) gain = gain.times(player.p.points.max(1).pow(getMChallRewardEff(22)))
+
+                return gain
+        }, // Get the current amount of baseResource
         type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
         exponent: 1 / Math.log2(10),  
         // Prestige currency exponent
         gainMult() { // Calculate the multiplier for main currency from bonuses
                 gain = new Decimal(1)
-                if (hasUpgrade("e", 23)) gain = gain.times(player.points.plus(1e9).log10().pow(-4).times(5e5).plus(1))
+                if (hasUpgrade("e", 23)) gain = gain.times(2)
                 if (player.e.upgrades.includes(34)) gain = gain.times(getEEff(34))
+                
                 return gain
         },
         branches: ["p"],
@@ -197,7 +205,7 @@ addLayer("e", {
                 if (false) console.log(layer)
                 if (layers[layer].row <= 1) return
                 let keep = hasUpgrade("m", 13) ? player.m.upgrades : []
-                player.e.upgrades = filter(player.e.upgrades, keep)
+                if (!hasUpgrade("m", 31)) player.e.upgrades = filter(player.e.upgrades, keep)
                 player.e.points = new Decimal(0)
         }
 })

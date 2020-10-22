@@ -65,6 +65,7 @@ addLayer("p", {
         gainExp() { // Calculate the exponent on main currency from bonuses
                 let x = new Decimal(1)
                 if (inChallenge("m", 21)) x = x.times(getMChallEff(21))
+                if (inChallenge("m", 22)) x = x.times(getMChallEff(22))
                 return x
         },
         update(diff){

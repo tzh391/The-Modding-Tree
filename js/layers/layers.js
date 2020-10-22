@@ -25,7 +25,6 @@ function canGenPoints(){
 function getPointGen() {
 	if (!canGenPoints()) return new Decimal(0)
 
-
         //buffs
 	let gain = new Decimal(1)
 	if (player.p.upgrades.includes(12)) gain = gain.times(getPEff(12))
@@ -55,8 +54,15 @@ function getPointGen() {
                 //Decimal.div(30, challengeCompletions("m", 12) + 3)
                 if (gain.gt(10)) gain = gain.log10().pow(getMChallEff(12)).min(gain)
         }
+        if (inChallenge("m", 22)){
+                exp = exp.times(getMChallEff(22))
+        }
 	
-	return gain.pow(exp)
+	let ret = gain.pow(exp)
+        if (ret.gt(1e200)) ret = ret.sqrt().times(1e100)
+        if (ret.gt(1e300)) ret = ret.sqrt().times(1e150)
+        if (ret.gt("1e400")) ret = ret.sqrt().times(1e200)
+        return ret
 }
 
 function getMEff(id){
@@ -186,6 +192,30 @@ addLayer("m", {
                                 return hasUpgrade("m", 23)
                         },
                 },
+                31: {
+                        title: "Variables",
+                        description: "Keep all elementary school upgrades, and the Square Root challenge exponent is raised to the .8",
+                        cost: new Decimal(1e7), //change
+                        unlocked(){
+                                return hasUpgrade("m", 24) && challengeCompletions("m", 22) > 0
+                        },
+                },
+                32: {
+                        title: "Equations",
+                        description: "Raise Double Logairthm challenge exponent raised to the .5",
+                        cost: new Decimal(3e7), //change
+                        unlocked(){
+                                return hasUpgrade("m", 31)
+                        },
+                },
+                33: {
+                        title: "Solving Euqations",
+                        description: "Remove all Exponentiation softcaps (not yet)",
+                        cost: new Decimal(3e8), //change
+                        unlocked(){
+                                return hasUpgrade("m", 32)
+                        },
+                },
 
 	},
         milestones: {
@@ -236,9 +266,12 @@ addLayer("m", {
                         },
                         challengeEffect(){
                                 let exp = hasUpgrade("m", 23) ? .8 : 1
+                                exp *= hasUpgrade("m", 31) ? .8 : 1
                                 return Decimal.div(2, Decimal.add(4, challengeCompletions("m", 11))).pow(exp)
                         },
-                        rewardDescription: "Boost point gain based on completions",
+                        rewardDescription() {
+                                return "Boost point gain based on " + (hasUpgrade("m", 23) ? "this row " : "") + "completions"
+                        },
                         rewardEffect(){
                                 let c = challengeCompletions("m", 11)
                                 if (hasUpgrade("m", 24)) c += challengeCompletions("m", 12) 
@@ -310,7 +343,7 @@ addLayer("m", {
                                 return "^" + format(getMChallEff(21), 3) + " to prestige point gain"
                         },
                         challengeEffect(){
-                                return Decimal.div(2, Decimal.add(4, challengeCompletions("m", 21))).pow(1)
+                                return Decimal.div(2, Decimal.add(4, challengeCompletions("m", 21)))
                         },
                         rewardDescription: "Boost prestige point gain based on completions",
                         rewardEffect(){
@@ -335,22 +368,21 @@ addLayer("m", {
                 22: {
                         name: "Double Logarithm",
                         challengeDescription() {
-                                return "Point gain above 10 is log(gain)*10"
+                                return "Point and prestige point gain is ^" + format(getMChallEff(22), 3)
                         },
-                        rewardDescription: "Boost prestige point gain based on this row completions",
+                        challengeEffect(){
+                                let exp = 1
+                                exp *= hasUpgrade("m", 32) ? .5 : 1
+                                return Decimal.div(1, Decimal.add(2, challengeCompletions("m", 22))).pow(exp)
+                        },
+                        rewardDescription(){
+                                return "Prestige points ^" + format(getMChallRewardEff(22), 3) + "<br> boost the Elementary Student gain formula because you have " + format(challengeCompletions("m", 22), 0) + " completions"
+                        },
                         rewardEffect(){
-                                return 1
-                                let c = challengeCompletions("m", 12)
-                                let c2 = c + challengeCompletions("m", 11) / 3
-                                let base = Decimal.add(1, c ** 2 + c).min(7)
-                                let exp = c2 + c2*c2 * 3 + 1/3
-                                let ret = Decimal.pow(base, exp)
-                                if (ret.gt(1e50)) ret = ret.log10().times(2).pow(25)
+                                let c = challengeCompletions("m", 22)
+                                let ret = Math.sqrt(c) / 10 + c / 100 + Math.cbrt(c) / 6
+                                if (ret > .5) ret = Math.log10(ret * 20) / 2
                                 return ret
-                        },
-                        rewardDisplay(){
-                                let end = challengeCompletions("m", 22) == 1 ? "" : "s"
-                                return format(getMChallRewardEff(22)) + "x to prestige point gain <br> because you have " + format(challengeCompletions("m", 22), 0) + " completion" + end
                         },
                         goal() {
                                 /*
@@ -359,11 +391,11 @@ addLayer("m", {
                                 */
                                 let c = challengeCompletions("m", 22)
                                 //let exp = Math.pow(c + 1, 3) + Math.pow(c + 2, 2) + c + 4
-                                let exp = 1400 + c * 2
+                                let exp = 73 + c * (c-1) * (c-2)
                                 return Decimal.pow(10, exp)
                         },
                         unlocked(){
-                                return challengeCompletions("m", 21) > 0 && false //for now
+                                return challengeCompletions("m", 21) > 0 
                         },
                         completionLimit: 10,
                         currencyInternalName: "points",
