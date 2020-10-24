@@ -2,7 +2,7 @@ function getEEff(id){
         return layers.e.upgrades[id].effect()
 }
 
-addLayer("e", {
+function addEOld() {addLayer("e", {
         name: "Elementary School", // This is optional, only used in a few places, If absent it just uses the layer id.
         symbol: "E", // This appears on the layer's node. Default is the id with the first letter capitalized
         position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
@@ -208,4 +208,6 @@ addLayer("e", {
                 if (!hasUpgrade("m", 31)) player.e.upgrades = filter(player.e.upgrades, keep)
                 player.e.points = new Decimal(0)
         }
-})
+})}
+
+addEOld()
