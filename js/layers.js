@@ -305,9 +305,9 @@ var TAXONOMY_COSTS = {
         202: [new Decimal("1e92027"), new Decimal(1.5e10), new Decimal(1.1)],
         203: [new Decimal("1e42884"), new Decimal(1e193), new Decimal(1.2)],
         204: [new Decimal("1e92315"), new Decimal(1e20), new Decimal(1.3)],
-        205: [new Decimal("1e94318"), new Decimal("7e335"), new Decimal(1.4)],
+        205: [new Decimal("2e49604"), new Decimal(1e124), new Decimal(1.3)],
         206: [new Decimal("5e92513"), new Decimal(1e156), new Decimal(1.3)],
-        207: [new Decimal("3e98292"), new Decimal(1.2e11), new Decimal(1.2)],
+        207: [new Decimal("5e92513"), new Decimal(1e25), new Decimal(1.2)],
         208: [new Decimal("9e95766"), new Decimal(5e11), new Decimal(1.1)],
 
         303: [new Decimal("1.2e2027"), new Decimal(1.5e10), new Decimal(1.1)],
@@ -28816,6 +28816,10 @@ addLayer("or", {
                         },
                         base(){
                                 let add = tmp.nu.effectSecondary
+                                if (hasUpgrade("ch", 45)) {
+                                        let ret = player.ch.points.div(20).min(35)
+                                        return ret.plus(add).max(1)
+                                }
                                 if (hasUpgrade("ch", 22)) return player.ch.points.div(100).plus(25).plus(add)
                                 if (hasUpgrade("or", 333)) return new Decimal(player.or.upgrades.length / 4).plus(add)
                                 let ret = new Decimal(tmp.or.upgrades.kidneyUpgradesLength).plus(1).plus(add)
@@ -28843,6 +28847,7 @@ addLayer("or", {
                                 if (hasUpgrade("or", 144)) eformula = eformula.replace("1", ".03 * Organ upgrades")
                                 if (hasUpgrade("or", 333)) eformula = eformula.replace("Kidney upgrades + .03 * Organ upgrades", "Organ upgrades/4")
                                 if (hasUpgrade("ch", 22)) eformula = eformula.replace("Organ upgrades/4", "25 + Chromosomes/100")
+                                if (hasUpgrade("ch", 45)) eformula = eformula.replace("25 + Chromosomes/100", "min(35, Chromosomes/20)")
 
                                 let allEff = "<b><h2>Effect formula</h2>:<br>" + eformula + "</b><br>"
 
@@ -31452,6 +31457,11 @@ addLayer("an", {
                 }
                 ret = ret.plus(tmp.nu.effectSecondary)
 
+                if (player.an.achActive[33]) {
+                        let x = player.ch.points.sub(619).max(0).cbrt().times(tmp.an.clickables.rowThreeOff)
+                        ret = ret.plus(x.div(4))
+                }
+
                 return ret
         },
         getNextAt(){
@@ -31740,6 +31750,8 @@ addLayer("an", {
                         if (hasMilestone("an", 34) && !hasMilestone("an", 36)) {
                                                         ret = ret.times(10)
                         }
+                        if (hasUpgrade("ch", 45))       ret = ret.times(100)
+                        if (hasUpgrade("nu", 12))       ret = ret.times(100)
 
                         if (player.extremeMode)         ret = ret.pow(.75)
 
@@ -32979,13 +32991,13 @@ addLayer("an", {
                                 return "COM III (" + (player.an.achActive[33] ? "ON" : "OFF") + ")"
                         },
                         display(){
-                                if (player.an.achActive[33]) return "Per this row OFF (and unlocked) achievement idk yet"
+                                if (player.an.achActive[33]) return "Per this row OFF (and unlocked) achievement add cbrt(Chromosomes past 619)/4 to Animal gain exponent"
                                 return ""
                         },
                         tooltip(){
                                 let a = makeRed("Note: Toggling this zeroes Taxonomy amounts<br>")
                                 a += "When toggled ON"
-                                return a + " per this row OFF (and unlocked) achievement idk yet"
+                                return a + " per this row OFF (and unlocked) achievement add cbrt(Chromosomes past 619)/4 to Animal gain exponent"
                         },
                         unlocked(){
                                 return hasAchievement("an", 33)
@@ -33838,6 +33850,7 @@ addLayer("ch", {
                 if (hasUpgrade("ch", 25))       ret = new Decimal(9.8e9)
                 if (hasMilestone("ch", 21))     ret = new Decimal(9.6e9)
                 if (hasMilestone("an", 35))     ret = new Decimal(9.2e9)
+                if (hasUpgrade("nu", 12))       ret = new Decimal(9e9)
 
                 return ret
         },
@@ -33848,7 +33861,7 @@ addLayer("ch", {
                 if (hasMilestone("an", 26)) ret = new Decimal(1.33)
                 if (hasMilestone("ch", 10)) ret = new Decimal(1.32)
 
-                if (hasMilestone("ch", 19)) ret = ret.sub(player.nu.points.sub(7).max(0).min(100).div(1e4))
+                if (hasMilestone("ch", 19)) ret = ret.sub(player.nu.points.sub(hasMilestone("ch", 22) ? 0 : 7).max(0).min(100).div(1e4))
 
                 return ret
         },
@@ -33872,8 +33885,11 @@ addLayer("ch", {
                 if (pts.gte(95) && !hasMilestone("an", 32)) pts = pts.times(190).sub(9025).sqrt()
 
                 let ret = pts.div(100).plus(2)
-                if (hasMilestone("ch", 10)) ret = Decimal.pow(1.004, pts).times(2)
-                if (hasMilestone("an", 32)) ret = Decimal.pow(1.002, pts).times(hasMilestone("ch", 20) ? 2.605 : 2.66)
+                if (hasMilestone("ch", 10))     ret = Decimal.pow(1.004, pts).times(2)
+                if (hasMilestone("an", 32))     ret = Decimal.pow(1.002, pts).times(hasMilestone("ch", 20) ? 2.605 : 2.66)
+                if (hasUpgrade("nu", 12))       ret = Decimal.pow(1.0025, pts).times(1.85).max(10)
+
+                if (ret.gt(12))                 ret = ret.sub(2).log10().times(12)
 
                 return ret
         },
@@ -34155,6 +34171,18 @@ addLayer("ch", {
                         unlocked(){
                                 return player.ch.best.gte(514) || player.nu.best.gte(19)
                         }, // hasUpgrade("ch", 44)
+                },
+                45: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Chromosomes XX"
+                        },
+                        description(){
+                                return "I'm base is Chromosomes/20, gain 100x Genes, and double Nucleuse's secondary effect"
+                        },
+                        cost:() => new Decimal(619),
+                        unlocked(){
+                                return player.ch.best.gte(619) || player.nu.best.gte(25)
+                        }, // hasUpgrade("ch", 45)
                 },
         },
         milestones: {
@@ -34480,6 +34508,20 @@ addLayer("ch", {
                                 return "Reward: Chordata III amount<sup>Chromosomes<sup>4</sup></sup> multiplies Contaminant gain and Chromosomes cost base is 9.6e9."
                         },
                 }, // hasMilestone("ch", 21)
+                22: {
+                        requirementDescription(){
+                                return "631 Chromosomes"
+                        },
+                        done(){
+                                return player.ch.points.gte(631)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: PRI III's ON effect is always active and Chromosome Milestone 19 counts every Nucleuse."
+                        },
+                }, // hasMilestone("ch", 22)
         },
         tabFormat: {
                 "Upgrades": {
@@ -34513,6 +34555,7 @@ addLayer("ch", {
                                         if (player.ch.points.gte(95) && !hasMilestone("an", 32)) b += br + "Effect after 95 is softcapped, x ⭢ (190*x-9025)<sup>.5</sup>"
                                         if (hasMilestone("an", 32)) b = b.replace("1.004<sup>x</sup>*2", "1.002<sup>x</sup>*2.66")
                                         if (hasMilestone("ch", 20)) b = b.replace(".66", ".605")
+                                        if (hasUpgrade("nu", 12))  b = b.replace("1.002<sup>x</sup>*2.605", "1.0025<sup>x</sup>*1.85")
 
                                         return a + br2 + b
                                 }],
@@ -34601,13 +34644,13 @@ addLayer("nu", {
         effectSecondary(){
                 let ret = player.nu.points.div(10)
 
-                //if (ret.gt(.2)) ret = ret.div(2).plus(.1)
+                if (hasUpgrade("ch", 45)) ret = ret.times(2)
 
                 return ret
         },
         effectDescription(){
                 let start = " adding " + format(tmp.nu.effectPrimary) + " effective Chromosomes and Animals for their effects and " 
-                return start + format(tmp.nu.effectSecondary) + " to Organ and Animal gain exponents and I'm base."
+                return start + format(tmp.nu.effectSecondary, 3) + " to Organ and Animal gain exponents and I'm base."
         },
         update(diff){
                 let data = player.nu
@@ -34686,6 +34729,22 @@ addLayer("nu", {
                                 if (hasUpgrade("nu", 11)) return true
                                 return player.ch.best.gte(496)
                         }, // hasUpgrade("nu", 11)
+                },
+                12: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Nucleuses II"
+                        },
+                        description(){
+                                return "Chromosome effect is max(10, 1.85*1.0025<sup>x</sup>), gain 100x Genes, and Chromosome cost base is 9e9"
+                        },
+                        cost:() => new Decimal(26),
+                        onPurchase(){
+                                doReset("nu", true)
+                        },
+                        unlocked(){
+                                if (hasUpgrade("nu", 12)) return true
+                                return player.tokens.tokens2.total.gte(23170)
+                        }, // hasUpgrade("nu", 12)
                 },
         },
         milestones: {
@@ -43282,7 +43341,7 @@ addLayer("tokens", {
                 costFormula2(x){
                         let tertComps = player.cells.challenges[21]
                         let r3c = tmp.an.clickables.rowThreeOff
-                        let m1 = hasAchievement("an", 32) && player.an.achActive[32] && r3c >= 1
+                        let m1 = hasAchievement("an", 32) && (player.an.achActive[32] || hasMilestone("ch", 22)) && r3c >= 1
                         let m2 = m1 && r3c >= 2
                         let m3 = m1 && r3c >= 3
                         let m4 = m1 && r3c >= 4
@@ -43327,7 +43386,7 @@ addLayer("tokens", {
                 costFormulaText2(){
                         let tertComps = player.cells.challenges[21]
                         let r3c = tmp.an.clickables.rowThreeOff
-                        let m1 = hasAchievement("an", 32) && player.an.achActive[32] && r3c >= 1
+                        let m1 = hasAchievement("an", 32) && (player.an.achActive[32] || hasMilestone("ch", 22)) && r3c >= 1
                         let m2 = m1 && r3c >= 2
                         let m3 = m1 && r3c >= 3
                         let m4 = m1 && r3c >= 4
@@ -47041,6 +47100,7 @@ addLayer("tokens", {
                                                 }
                                                 if (hasUpgrade("ch", 23))       c += "Chromosomes VIII multiplies AX by 20" + br
                                                 if (hasUpgrade("ch", 32))       c += "Chromosomes XII multiplies AX by 20" + br
+                                                if (hasUpgrade("ch", 45))       c += "Chromosomes XX multiplies AX by 100" + br
                                                 if (hasUpgrade("an", 43))       c += "Animals XVIII divides AX by 1e42" + br
                                                 if (hasUpgrade("an", 51))       c += "Animals XXI multiplies AX by 2" + br
                                                 if (hasUpgrade("an", 53)) {
@@ -47071,6 +47131,7 @@ addLayer("tokens", {
                                                 if (hasAchievement("an", 31))   c += "Progression III multiplies AX by " + format(Decimal.pow(15, player.nu.milestones.length)) + br
                                                 if (hasMilestone("nu", 1))      c += "Nucleuse Milestone 1 multiplies AX by 2" + br
                                                 if (hasMilestone("nu", 2))      c += "Nucleuse Milestone 2 multiplies AX by " + format(player.nu.points.pow10()) + br
+                                                if (hasUpgrade("nu", 12))       c += "Nucleuses I multiplies AX by 100" + br
 
                                                 return (a + br + b + br2 + c).replaceAll("AX", makeRed("A"))
                                         }],
