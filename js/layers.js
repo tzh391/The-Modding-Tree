@@ -639,6 +639,7 @@ addLayer("b", {
 
                 if (hasUpgrade("a", 34))        ret = ret.plus(.5)
                 if (hasUpgrade("a", 35))        ret = ret.plus(.5 * player.b.upgrades.filter(x => x < 30 && x > 20).length)
+                                                ret = ret.plus(CURRENT_BUYABLE_EFFECTS["b23"])
 
                 return ret
         },
@@ -853,8 +854,8 @@ addLayer("b", {
                 22: getGeneralizedBuyableData("b", 22, function(){
                         return hasMilestone("b", 9) //|| player.c.unlocked
                         }),
-                /*23: getGeneralizedBuyableData("b", 23, function(){
-                        return hasUpgrade("a", 21) //|| player.c.unlocked
+                23: getGeneralizedBuyableData("b", 23, function(){
+                        return hasMilestone("b", 10) //|| player.c.unlocked
                         }),
                 /*31: getGeneralizedBuyableData("b", 31, function(){
                         return hasUpgrade("a", 22) //|| player.c.unlocked
@@ -993,6 +994,20 @@ addLayer("b", {
                                 return "Reward: B 13 gives free B 12 levels, remove B 12 base costs, and unlock a new Beaver buyable."
                         },
                 }, // hasMilestone("b", 9)
+                10: {
+                        requirementDescription(){
+                                return "25 B 22"
+                        },
+                        done(){
+                                return player.b.buyables[22].gte(25)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Unlock a new Beaver buyable and remove B 13's base cost."
+                        },
+                }, // hasMilestone("b", 10)
         },
         tabFormat: {
                 "Upgrades": {

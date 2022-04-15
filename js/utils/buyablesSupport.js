@@ -345,6 +345,7 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal(1e17)
                         let b1 = new Decimal(3)
                         let b2 = new Decimal(1.03)
+                        if (hasMilestone("b", 10)) b0 = decimalOne
                         return [b0, b1, b2]
                 },
         },
@@ -372,7 +373,21 @@ var MAIN_BUYABLE_DATA = {
                 bases(){
                         let b0 = new Decimal(1e113)
                         let b1 = new Decimal(50)
-                        let b2 = new Decimal(1.08) // fibonacci
+                        let b2 = new Decimal(1.08)
+                        return [b0, b1, b2]
+                },
+        },
+        b23: {
+                name: "B 23",
+                func: "lin",
+                effects: "Beaver gain exponent",
+                base: {
+                        initial: new Decimal(.2),
+                },
+                bases(){
+                        let b0 = new Decimal(1e200)
+                        let b1 = new Decimal(1e7)
+                        let b2 = new Decimal(1.13) // fibonacci
                         return [b0, b1, b2]
                 },
         },
