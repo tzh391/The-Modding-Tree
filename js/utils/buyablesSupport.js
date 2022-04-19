@@ -488,7 +488,7 @@ var BUYABLES_FUNCTION_NAMES = {
                 "func": BUYABLES_EFFECT_LINEAR_PLUS1,
                 "identity": decimalOne,
                 "string": "*x",
-                "eff": "+",
+                "eff": "*",
         },
         "lin_sqrt": {
                 "func": BUYABLES_EFFECT_LINEAR_SQRT,

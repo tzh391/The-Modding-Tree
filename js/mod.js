@@ -24,18 +24,22 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.b.points.gte("1e256")
+	return player.b.points.gte("1e629")
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<br><h2 style='color: #DDDD00'>Endgame:</h2><br>
-		Reaching the endgame screen (updated at least as of v0.016)<br><br>
+		Reaching the endgame screen (updated at least as of v0.017)<br><br>
 	<br><h2 style='color: #00CC00'>Notes</h2><br>
 		- Versions will be vA.B.C<br>
 		- A will be big releases.<br>
 		- B will be each content patch.<br>
 		- C will be small patches without content (bug/wording fixes).<br><br><br>
 
+	<br><h3 style='color: #CC0000'>v0.017</h3><br>
+		- Balanced until 1e629 Beavers.<br>
+		- Added two Alligator upgrades and a Beaver buyable.<br>
+		- Various bugfixes.<br>
 	<br><h3 style='color: #CC0000'>v0.016</h3><br>
 		- Balanced until 1e256 Beavers.<br>
 		- Added a Beaver milestone and buyable.<br>
