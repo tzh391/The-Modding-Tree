@@ -73,9 +73,9 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("b", 11)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
-                a32: {active:() => hasMilestone("b", 4)},
                 a21: {active:() => hasUpgrade("b", 21)},
                 a31: {active:() => hasMilestone("b", 6)},
+                a32: {active:() => hasMilestone("b", 4)},
         },
         a13: {
                 name: "A 13",
@@ -119,9 +119,9 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("a", 3)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                a21: {active:() => hasUpgrade("b", 21)},
                 a22: {active:() => hasUpgrade("b", 13)},
                 a32: {active:() => hasUpgrade("b", 15)},
-                a21: {active:() => hasUpgrade("b", 21)},
         },
         a21: {
                 name: "A 21",
@@ -331,8 +331,9 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("b", 9)) b0 = decimalOne
                         return [b0, b1, b2]
                 },
-                b21: {active:() => hasMilestone("b", 7)},
                 b13: {active:() => hasMilestone("b", 9)},
+                b21: {active:() => hasMilestone("b", 7)},
+                b22: {active:() => hasUpgrade("a", 42)},
         },
         b13: {
                 name: "B 13",
@@ -362,6 +363,7 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.05)
                         return [b0, b1, b2]
                 },
+                b23: {active:() => hasUpgrade("a", 43)},
         },
         b22: {
                 name: "B 22",
@@ -387,7 +389,30 @@ var MAIN_BUYABLE_DATA = {
                 bases(){
                         let b0 = new Decimal(1e200)
                         let b1 = new Decimal(1e7)
-                        let b2 = new Decimal(1.13) // fibonacci
+                        let b2 = new Decimal(1.13)
+                        return [b0, b1, b2]
+                },
+        },
+        b31: {
+                name: "B 31",
+                func: "exp",
+                effects: "Beavers and base Alligators",
+                base: {
+                        initial: new Decimal(5),
+                        1: {
+                                active(){
+                                        return hasUpgrade("a", 42)
+                                },
+                                type: "add",
+                                amount(){
+                                        return player.a.upgrades.filter(x => x > 40 && x < 50).length
+                                }
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal(1e256)
+                        let b1 = new Decimal(1e10)
+                        let b2 = new Decimal(1.21) // fibonacci
                         return [b0, b1, b2]
                 },
         },

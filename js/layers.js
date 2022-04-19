@@ -145,6 +145,7 @@ addLayer("a", {
                 let ret = decimalOne
 
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["a32"])
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["b31"])
 
                 return ret
         },
@@ -403,6 +404,30 @@ addLayer("a", {
                                 return hasUpgrade("b", 25) //|| player.c.unlocked
                         }, 
                 }, // hasUpgrade("a", 41)
+                42: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-lig-tor"
+                        },
+                        description(){
+                                return "Each this row upgrade adds 1 to B 31's base and B 22 gives free B 12 levels"
+                        },
+                        cost: new Decimal("1e270000"),
+                        unlocked(){
+                                return hasUpgrade("a", 41) //|| player.c.unlocked
+                        }, 
+                }, // hasUpgrade("a", 42)
+                43: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-lig-tor"
+                        },
+                        description(){
+                                return "B 23 gives free B 21 levels"
+                        },
+                        cost: new Decimal("1e305800"),
+                        unlocked(){
+                                return hasUpgrade("a", 42) //|| player.c.unlocked
+                        }, 
+                }, // hasUpgrade("a", 43)
         },
         buyables: {
                 rows: 3,
@@ -657,6 +682,7 @@ addLayer("b", {
                 if (hasUpgrade("a", 33))        ret = ret.times(Decimal.pow(player.a.upgrades.length/10, player.a.upgrades.length).max(1))
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["b11"])
                 if (hasMilestone("b", 8))       ret = ret.times(Decimal.pow(Math.max(6, player.b.milestones.length)/6, player.b.milestones.length))
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["b31"])
 
                 return ret
         },
@@ -857,8 +883,8 @@ addLayer("b", {
                 23: getGeneralizedBuyableData("b", 23, function(){
                         return hasMilestone("b", 10) //|| player.c.unlocked
                         }),
-                /*31: getGeneralizedBuyableData("b", 31, function(){
-                        return hasUpgrade("a", 22) //|| player.c.unlocked
+                31: getGeneralizedBuyableData("b", 31, function(){
+                        return player.b.buyables[23].gte(8) //|| player.c.unlocked
                         }),
                 /*32: getGeneralizedBuyableData("b", 32, function(){
                         return hasUpgrade("a", 23) //|| player.c.unlocked
