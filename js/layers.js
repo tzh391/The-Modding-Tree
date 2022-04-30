@@ -428,6 +428,18 @@ addLayer("a", {
                                 return hasUpgrade("a", 42) //|| player.c.unlocked
                         }, 
                 }, // hasUpgrade("a", 43)
+                44: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-lig-tor"
+                        },
+                        description(){
+                                return "B 31 gives free B 13 levels and multiplies A 11 base"
+                        },
+                        cost: new Decimal("1e548000"),
+                        unlocked(){
+                                return hasUpgrade("a", 43) //|| player.c.unlocked
+                        }, 
+                }, // hasUpgrade("a", 44)
         },
         buyables: {
                 rows: 3,

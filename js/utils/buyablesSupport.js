@@ -28,6 +28,15 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["b21"]
                                 },
                         },
+                        3: {
+                                active(){
+                                        return hasUpgrade("a", 44)
+                                },
+                                type: "mult",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["b31"]
+                                },
+                        }
                 },
                 bases(){
                         let b0 = new Decimal(30)
@@ -349,6 +358,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("b", 10)) b0 = decimalOne
                         return [b0, b1, b2]
                 },
+                b31: {active:() => hasUpgrade("a", 44)},
         },
         b21: {
                 name: "B 21",
