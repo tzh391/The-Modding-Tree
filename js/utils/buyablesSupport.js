@@ -119,6 +119,15 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["b21"]
                                 },
                         },
+                        4: {
+                                activation(){
+                                        return hasUpgrade("a", 45)
+                                },
+                                type: "mult",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["b31"]
+                                },
+                        }
                 },
                 bases(){
                         let b0 = new Decimal(300)
@@ -374,6 +383,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
                 b23: {active:() => hasUpgrade("a", 43)},
+                b31: {active:() => hasUpgrade("a", 45)},
         },
         b22: {
                 name: "B 22",
