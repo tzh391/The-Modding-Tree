@@ -435,7 +435,7 @@ addLayer("a", {
                         description(){
                                 return "B 31 gives free B 13 levels and multiplies A 11 base"
                         },
-                        cost: new Decimal("1e548000"),
+                        cost: new Decimal("1e543100"),
                         unlocked(){
                                 return hasUpgrade("a", 43) //|| player.c.unlocked
                         }, 
