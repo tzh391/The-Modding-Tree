@@ -910,8 +910,8 @@ addLayer("b", {
                 31: getGeneralizedBuyableData("b", 31, function(){
                         return player.b.buyables[23].gte(8) //|| player.c.unlocked
                         }),
-                /*32: getGeneralizedBuyableData("b", 32, function(){
-                        return hasUpgrade("a", 23) //|| player.c.unlocked
+                32: getGeneralizedBuyableData("b", 32, function(){
+                        return player.b.buyables[31].gte(58) //|| player.c.unlocked
                         }),
                 /*33: getGeneralizedBuyableData("b", 33, function(){
                         return hasUpgrade("a", 23) //|| player.c.unlocked
@@ -1058,6 +1058,34 @@ addLayer("b", {
                                 return "Reward: Unlock a new Beaver buyable and remove B 13's base cost."
                         },
                 }, // hasMilestone("b", 10)
+                11: {
+                        requirementDescription(){
+                                return "1e1112 Beavers"
+                        },
+                        done(){
+                                return player.b.points.gte("1e1112")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: A 32 qudratic cost base and B 11 linear cost bases are 1.3."
+                        },
+                }, // hasMilestone("b", 11)
+                12: {
+                        requirementDescription(){
+                                return "1e1168 Beavers"
+                        },
+                        done(){
+                                return player.b.points.gte("1e1168")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: B 32 gives free B 31 levels."
+                        },
+                }, // hasMilestone("b", 12)
         },
         tabFormat: {
                 "Upgrades": {

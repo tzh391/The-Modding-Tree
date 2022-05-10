@@ -30,6 +30,15 @@ var MAIN_BUYABLE_DATA = {
                         },
                         3: {
                                 active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["b32"]
+                                },
+                        },
+                        4: {
+                                active(){
                                         return hasUpgrade("a", 44)
                                 },
                                 type: "mult",
@@ -165,6 +174,15 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["b22"]
                                 },
                         },
+                        3: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["b32"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(5e16)
@@ -237,6 +255,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Alligator gain exponent",
                 base: {
                         initial: new Decimal(.1),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["b32"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e84)
@@ -279,6 +306,7 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.5)
                         if (hasUpgrade("a", 35)) b0 = decimalOne
                         if (hasMilestone("b", 6)) b1 = decimalOne
+                        if (hasMilestone("b", 11)) b2 = new Decimal(1.3)
                         return [b0, b1, b2]
                 },
                 b12: {active:() => hasUpgrade("a", 34)},
@@ -324,12 +352,22 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["b22"]
                                 },
                         },
+                        3: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["b32"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e8)
                         let b1 = new Decimal(1.5)
                         let b2 = new Decimal(1.01)
                         if (hasUpgrade("a", 41)) b0 = decimalOne
+                        if (hasMilestone("b", 11)) b1 = new Decimal(1.3)
                         return [b0, b1, b2]
                 },
                 b13: {active:() => hasUpgrade("b", 22)},
@@ -375,6 +413,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "A 1X bases",
                 base: {
                         initial: new Decimal(2),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["b32"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e50)
@@ -428,11 +475,35 @@ var MAIN_BUYABLE_DATA = {
                                         return player.a.upgrades.filter(x => x > 40 && x < 50).length
                                 }
                         },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["b32"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e256)
                         let b1 = new Decimal(1e10)
                         let b2 = new Decimal(1.21) // fibonacci
+                        return [b0, b1, b2]
+                },
+                b32: {active:() => hasMilestone("b", 12)},
+        },
+        b32: {
+                name: "B 32",
+                func: "lin",
+                effects: "Prior Y 1X bases",
+                base: {
+                        initial: new Decimal(.01),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1107")
+                        let b1 = new Decimal(1e23)
+                        let b2 = new Decimal(1.34) // fibonacci
                         return [b0, b1, b2]
                 },
         },
