@@ -39,6 +39,7 @@ let changelog = `<h1>Changelog:</h1><br>
 	<br><h3 style='color: #CC0000'>v0.020</h3><br>
 		- Balanced until 1e1971 Beavers.<br>
 		- Added a Beaver milestone and a Beaver buyable.<br>
+		- Added two rows of achievements.<br>
 	<br><h3 style='color: #CC0000'>v0.019</h3><br>
 		- Balanced until 1e1371 Beavers.<br>
 		- Added two Beaver milestones and a Beaver buyable.<br>

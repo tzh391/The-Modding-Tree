@@ -65,7 +65,7 @@ function getAchStuffFromNumber(n){
         let name = getNumberName(n)
         let id = getColRowCode(n)
         let done = function(){
-                return hasAchievement("ach", id) || PROGRESSION_MILESTONES[n]() 
+                return hasAchievement("ach", id) || PROGRESSION_MILESTONES[n]()
         }
         let isChall = false
         if (n > 301 && n < 309) isChall = true
@@ -74,65 +74,41 @@ function getAchStuffFromNumber(n){
         let tooltip = function(){
                 return startStr + PROGRESSION_MILESTONES_TEXT[n]
         }
+
+        // KEEP IN THIS FILE
+
+        let tens = id - id % 10
+        
+        let a = Math.sin(tens/34 + 0) 
+        let b = Math.sin(tens/34 + 2)
+        let c = Math.sin(tens/34 + 3)
+        a = convertToB16(Math.floor(a*128) + 128)
+        b = convertToB16(Math.floor(b*128) + 128)
+        c = convertToB16(Math.floor(c*128) + 128)
+
+        // END OF KEEP IN THIS FILE
+
         let style = function(){
-                let tens = id - id % 10
                 for (i = 1; i <= 7; i++){
                         if (!hasAchievement("ach", tens + i)) return {}
                 }
-                
-                let a = Math.sin(tens/35 + 0) 
-                let b = Math.sin(tens/35 + 1.5)
-                let c = Math.sin(tens/35 + 3)
-                a = convertToB16(Math.floor(a*128) + 128)
-                b = convertToB16(Math.floor(b*128) + 128)
-                c = convertToB16(Math.floor(c*128) + 128)
                 return {"background-color": "#" + String(a) + String(b) + String(c)}
         }
         let unlocked 
-        if (n <= 56) {
+        if (n <= 42) {
                 unlocked = function(){
                         if (player.ach.hiddenRows >= n/7) return false
                         return true
                 }
-        } else if (n <= 161) {
+        } else if (n <= 98) {
                 unlocked = function(){
                         if (player.ach.hiddenRows >= n/7) return false
-                        return player.tokens.unlocked
+                        return player.b.unlocked
                 }
-        } else if (n <= 189) {
+        } else if (n <= 7777) {
                 unlocked = function(){
                         if (player.ach.hiddenRows >= n/7) return false
-                        return player.p.unlocked
-                }
-        } else if (n <= 301) {
-                unlocked = function(){
-                        if (player.ach.hiddenRows >= n/7) return false
-                        return player.l.unlocked
-                }
-        } else if (n <= 385) {
-                unlocked = function(){
-                        if (player.ach.hiddenRows >= n/7) return false
-                        return player.d.unlocked
-                }
-        } else if (n <= 532) {
-                unlocked = function(){
-                        if (player.ach.hiddenRows >= n/7) return false
-                        return player.cells.unlocked
-                }
-        } else if (n <= 595) {
-                unlocked = function(){
-                        if (player.ach.hiddenRows >= n/7) return false
-                        return player.t.unlocked
-                }
-        } else if (n <= 742) {
-                unlocked = function(){
-                        if (player.ach.hiddenRows >= n/7) return false
-                        return player.or.unlocked
-                }
-        } else if (n <= 1111) {
-                unlocked = function(){
-                        if (player.ach.hiddenRows >= n/7) return false
-                        return player.an.unlocked
+                        return player.e.unlocked
                 }
         } else if (n <= Infinity) {
                 unlocked = function(){
@@ -156,7 +132,7 @@ function getFirstNAchData(n){
 function hasCompletedFirstNRows(n){
 	for (i = 1; i <= n; i++){
 		for (j = 1; j <= 7; j++){
-			x = 10 * i + j
+			let x = 10 * i + j
 			if (layers.ach.achievements[x] == undefined) return false
 			if (!hasAchievement("ach", x)) return false
 		}
@@ -207,6 +183,20 @@ PROGRESSION_MILESTONES = {
         40:  () => player.points.gte(Decimal.pow(2, 17).pow10()),
         41:  () => player.points.gte(Decimal.pow(2, 18).pow10()),
         42:  () => player.points.gte(Decimal.pow(2, 19).pow10()),
+        43:  () => player.points.gte(Decimal.pow10(1e6)),
+        44:  () => player.points.gte(Decimal.pow10(1e7)),
+        45:  () => player.points.gte(Decimal.pow10(1e8)),
+        46:  () => player.points.gte(Decimal.pow10(1e9)),
+        47:  () => player.points.gte(Decimal.pow10(1e10)),
+        48:  () => player.points.gte(Decimal.pow10(1e11)),
+        49:  () => player.points.gte(Decimal.pow10(1e12)),
+        50:  () => player.b.points.gte(Decimal.pow(4, 6).pow10()),
+        51:  () => player.b.points.gte(Decimal.pow(4, 7).pow10()),
+        52:  () => player.b.points.gte(Decimal.pow(4, 8).pow10()),
+        53:  () => player.b.points.gte(Decimal.pow(4, 9).pow10()),
+        54:  () => player.b.points.gte(Decimal.pow10(1e6)),
+        55:  () => player.b.points.gte(Decimal.pow10(1e7)),
+        56:  () => player.b.points.gte(Decimal.pow10(1e8)),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -228,30 +218,44 @@ PROGRESSION_MILESTONES_TEXT = {
         16:  "1e128 Points",
         17:  "1e256 Points",
         18:  "1e512 Points",
-        19:  "1e1024 Points",
-        20:  "1e2048 Points",
-        21:  "1e4096 Points",
+        19:  "1e1,024 Points",
+        20:  "1e2,048 Points",
+        21:  "1e4,096 Points",
         22:  "1 Beaver",
         23:  "10 Beavers",
         24:  "10,000 Beavers",
         25:  "1e16 Beavers",
         26:  "1e64 Beavers",
         27:  "1e256 Beavers",
-        28:  "1e1024 Beavers",
+        28:  "1e1,024 Beavers",
         29:  "1e729 Alligators",
-        30:  "1e2187 Alligators",
-        31:  "1e6561 Alligators",
+        30:  "1e2,187 Alligators",
+        31:  "1e6,561 Alligators",
         32:  "1e19,683 Alligators",
         33:  "1e59,049 Alligators",
         34:  "1e177,147 Alligators",
         35:  "1e531,441 Alligators",
-        36:  "1e8192 Points",
+        36:  "1e8,192 Points",
         37:  "1e16,384 Points",
         38:  "1e32,768 Points",
         39:  "1e65,536 Points",
         40:  "1e131,072 Points",
         41:  "1e262,144 Points",
         42:  "1e524,288 Points",
+        43:  "1e1,000,000 Points",
+        44:  "1e10,000,000 Points",
+        45:  "1e100,000,000 Points",
+        46:  "1e1,000,000,000 Points",
+        47:  "e1e10 Points",
+        48:  "e1e11 Points",
+        49:  "e1e12 Points",
+        50:  "1e4,096 Beavers",
+        51:  "1e16,384 Beavers",
+        52:  "1e65,536 Beavers",
+        53:  "1e262,144 Beavers",
+        54:  "1e1,000,000 Beavers",
+        55:  "1e10,000,000 Beavers",
+        56:  "1e100,000,000 Beavers",
 }
 
 
