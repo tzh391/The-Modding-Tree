@@ -317,6 +317,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Alligators per upgrade",
                 base: {
                         initial: new Decimal(1.2),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "mult",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["b33"].pow(player.b.upgrades.length)
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e214)
@@ -368,6 +377,7 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.01)
                         if (hasUpgrade("a", 41)) b0 = decimalOne
                         if (hasMilestone("b", 11)) b1 = new Decimal(1.3)
+                        if (hasMilestone("b", 13)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
                 b13: {active:() => hasUpgrade("b", 22)},
@@ -496,7 +506,7 @@ var MAIN_BUYABLE_DATA = {
         b32: {
                 name: "B 32",
                 func: "lin",
-                effects: "Prior Y 1X bases",
+                effects: "Prior left column bases",
                 base: {
                         initial: new Decimal(.01),
                 },
@@ -504,6 +514,20 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e1107")
                         let b1 = new Decimal(1e23)
                         let b2 = new Decimal(1.34) // fibonacci
+                        return [b0, b1, b2]
+                },
+        },
+        b33: {
+                name: "B 33",
+                func: "exp",
+                effects: "Beaver gain and A 33 base per upgrade",
+                base: {
+                        initial: new Decimal(1.2),
+                },
+                bases(){
+                        let b0 = new Decimal("5e1371")
+                        let b1 = new Decimal(1e161)
+                        let b2 = new Decimal(1.55) // fibonacci
                         return [b0, b1, b2]
                 },
         },

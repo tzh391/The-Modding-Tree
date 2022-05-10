@@ -707,6 +707,7 @@ addLayer("b", {
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["b11"])
                 if (hasMilestone("b", 8))       ret = ret.times(Decimal.pow(Math.max(6, player.b.milestones.length)/6, player.b.milestones.length))
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["b31"])
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["b33"].pow(player.b.upgrades.length))
 
                 return ret
         },
@@ -913,9 +914,9 @@ addLayer("b", {
                 32: getGeneralizedBuyableData("b", 32, function(){
                         return player.b.buyables[31].gte(58) //|| player.c.unlocked
                         }),
-                /*33: getGeneralizedBuyableData("b", 33, function(){
-                        return hasUpgrade("a", 23) //|| player.c.unlocked
-                        }),/**/
+                33: getGeneralizedBuyableData("b", 33, function(){
+                        return player.b.buyables[31].gte(71) //|| player.c.unlocked
+                        }),
         },
         milestones: {
                 1: {
@@ -1086,6 +1087,20 @@ addLayer("b", {
                                 return "Reward: B 32 gives free B 31 levels."
                         },
                 }, // hasMilestone("b", 12)
+                13: {
+                        requirementDescription(){
+                                return "1e1671 Beavers"
+                        },
+                        done(){
+                                return player.b.points.gte("1e1671")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Remove B 11 linear cost component."
+                        },
+                }, // hasMilestone("b", 13)
         },
         tabFormat: {
                 "Upgrades": {
