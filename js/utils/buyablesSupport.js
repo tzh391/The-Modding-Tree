@@ -92,6 +92,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
                 a21: {active:() => hasUpgrade("b", 21)},
+                a22: {active:() => hasMilestone("c", 1)},
                 a31: {active:() => hasMilestone("b", 6)},
                 a32: {active:() => hasMilestone("b", 4)},
         },
@@ -437,6 +438,7 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal(1e50)
                         let b1 = new Decimal(5)
                         let b2 = new Decimal(1.05)
+                        if (hasMilestone("c", 2)) b0 = decimalOne
                         return [b0, b1, b2]
                 },
                 b23: {active:() => hasUpgrade("a", 43)},
@@ -455,6 +457,7 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.08)
                         return [b0, b1, b2]
                 },
+                b32: {active:() => hasMilestone("c", 4)},
         },
         b23: {
                 name: "B 23",
@@ -1065,6 +1068,7 @@ function getABBulk(layer){
         let amt = decimalOne
         if (layer == "a"){
                 if (hasUpgrade("b", 12)) amt = amt.times(Math.max(1, player.b.upgrades.length))
+                if (hasUpgrade("c", 11)) amt = amt.times(10)
         }
         return amt
 }
@@ -1074,11 +1078,15 @@ function getABSpeed(layer){
         if (layer == "a") {
                 if (hasUpgrade("b", 11)) diffmult *= player.b.times + 1
         }
+        if (layer == "b") {
+                if (hasMilestone("c", 4)) diffmult *= Math.max(1, player.c.times)
+        }
         return diffmult
 }
 
 function canBuySimultaniously(layer){
-        if (layer == "a") return hasMilestone("b", 4)
+        if (layer == "b")               return hasMilestone("c", 3)
+        if (layer == "a")               return hasMilestone("b", 4)
         return false
 }
 
