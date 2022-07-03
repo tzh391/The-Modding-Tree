@@ -130,6 +130,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                         },
                         4: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c12"]
+                                },
+                        },
+                        5: {
                                 activation(){
                                         return hasUpgrade("a", 45)
                                 },
@@ -193,6 +202,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("a", 31)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                a22: {active:() => hasUpgrade("c", 14)},
                 a31: {active:() => hasUpgrade("a", 41)},
                 a32: {active:() => hasUpgrade("b", 15)},
         },
@@ -237,6 +247,15 @@ var MAIN_BUYABLE_DATA = {
                                 type: "add",
                                 amount(){
                                         return CURRENT_BUYABLE_EFFECTS["b22"]
+                                },
+                        },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c12"]
                                 },
                         },
                 },
@@ -322,6 +341,15 @@ var MAIN_BUYABLE_DATA = {
                                 active(){
                                         return true
                                 },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c12"]
+                                },
+                        },
+                        2: {
+                                active(){
+                                        return true
+                                },
                                 type: "mult",
                                 amount(){
                                         return CURRENT_BUYABLE_EFFECTS["b33"].pow(player.b.upgrades.length)
@@ -336,6 +364,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("b", 6)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                b11: {active:() => hasUpgrade("c", 15)},
                 b21: {active:() => hasUpgrade("b", 25)},
         },
         b11: {
@@ -408,12 +437,31 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Beaver effect exponent",
                 base: {
                         initial: new Decimal(2),
+                        1: {
+                                active(){
+                                        return hasMilestone("c", 6)
+                                },
+                                type: "add",
+                                amount(){
+                                        return player.c.milestones.length
+                                },
+                        },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c12"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e17)
                         let b1 = new Decimal(3)
                         let b2 = new Decimal(1.03)
                         if (hasMilestone("b", 10)) b0 = decimalOne
+                        if (hasUpgrade("c", 12)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
                 b31: {active:() => hasUpgrade("a", 44)},
@@ -439,6 +487,7 @@ var MAIN_BUYABLE_DATA = {
                         let b1 = new Decimal(5)
                         let b2 = new Decimal(1.05)
                         if (hasMilestone("c", 2)) b0 = decimalOne
+                        if (hasUpgrade("c", 15)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
                 b23: {active:() => hasUpgrade("a", 43)},
@@ -455,6 +504,8 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal(1e113)
                         let b1 = new Decimal(50)
                         let b2 = new Decimal(1.08)
+                        if (hasUpgrade("c", 13)) b0 = decimalOne
+                        if (hasUpgrade("c", 15)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
                 b32: {active:() => hasMilestone("c", 4)},
@@ -465,13 +516,25 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Beaver gain exponent",
                 base: {
                         initial: new Decimal(.2),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c12"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e200)
                         let b1 = new Decimal(1e7)
                         let b2 = new Decimal(1.13)
+                        if (hasUpgrade("c", 14)) b0 = decimalOne
+                        if (hasUpgrade("c", 15)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                b32: {active:() => hasMilestone("c", 5)},
         },
         b31: {
                 name: "B 31",
@@ -502,6 +565,7 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal(1e256)
                         let b1 = new Decimal(1e10)
                         let b2 = new Decimal(1.21) // fibonacci
+                        if (hasUpgrade("c", 15)) b0 = decimalOne
                         return [b0, b1, b2]
                 },
                 b32: {active:() => hasMilestone("b", 12)},
@@ -517,8 +581,10 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e1107")
                         let b1 = new Decimal(1e23)
                         let b2 = new Decimal(1.34) // fibonacci
+                        if (hasMilestone("c", 6)) b0 = decimalOne
                         return [b0, b1, b2]
                 },
+                c12: {active:() => hasUpgrade("c", 21)},
         },
         b33: {
                 name: "B 33",
@@ -526,11 +592,49 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Beaver gain and A 33 base per upgrade",
                 base: {
                         initial: new Decimal(1.2),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c12"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("5e1371")
                         let b1 = new Decimal(1e161)
                         let b2 = new Decimal(1.55) // fibonacci
+                        if (hasMilestone("c", 7)) b0 = decimalOne
+                        return [b0, b1, b2]
+                },
+        },
+        c11: {
+                name: "C 11",
+                func: "exp",
+                effects: "Capybara gain",
+                base: {
+                        initial: new Decimal(1.2),
+                },
+                bases(){
+                        let b0 = new Decimal(1e17)
+                        let b1 = new Decimal(1.3)
+                        let b2 = new Decimal(1.001) // 2**x
+                        return [b0, b1, b2]
+                },
+        },
+        c12: {
+                name: "C 12",
+                func: "lin",
+                effects: "Previous Right Column bases",
+                base: {
+                        initial: new Decimal(.01),
+                },
+                bases(){
+                        let b0 = new Decimal(1e18)
+                        let b1 = new Decimal(1.5)
+                        let b2 = new Decimal(1.002) // 2**x
                         return [b0, b1, b2]
                 },
         },
@@ -1069,6 +1173,11 @@ function getABBulk(layer){
         if (layer == "a"){
                 if (hasUpgrade("b", 12)) amt = amt.times(Math.max(1, player.b.upgrades.length))
                 if (hasUpgrade("c", 11)) amt = amt.times(10)
+                if (hasUpgrade("c", 12)) amt = amt.pow(player.c.upgrades.length)
+        }
+        if (layer == "b") {
+                if (hasMilestone("c", 5)) amt = amt.times(2)
+                if (hasUpgrade("c", 12)) amt = amt.times(player.c.upgrades.length)
         }
         return amt
 }

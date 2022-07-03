@@ -1238,6 +1238,8 @@ addLayer("c", {
         getGainMultPost(){
                 let ret = getGeneralizedInitialPostMult("c")
 
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["c11"])
+
                 return ret
         },
         effect(){
@@ -1297,44 +1299,107 @@ addLayer("c", {
                                 return true //|| player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 11)
+                12: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Ca-ybara"
+                        },
+                        description(){
+                                let a = "The number of upgrades multiplies B bulk amount and exponentiates A bulk amount and remove B 13 linear cost base"
+                                return a
+                        },
+                        cost: new Decimal(3e7),
+                        unlocked(){
+                                return hasUpgrade("c", 11) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("c", 12)
+                13: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>C--ybara"
+                        },
+                        description(){
+                                let a = "Remove B 22 base cost and gain 100% of your Capybara's per reset per second but you can no longer prestige"
+                                return a
+                        },
+                        cost: new Decimal(3e9),
+                        unlocked(){
+                                return hasUpgrade("c", 12) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("c", 13)
+                14: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Cap-bara"
+                        },
+                        description(){
+                                let a = "Remove B 23 base cost and A 22 gives free A 21 levels"
+                                return a
+                        },
+                        cost: new Decimal(3e12),
+                        unlocked(){
+                                return hasUpgrade("c", 13) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("c", 14)
+                15: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>C-p-bara"
+                        },
+                        description(){
+                                let a = "Remove B 31 base cost and B 2X linear cost bases and B 11 gives free A 33 levels"
+                                return a
+                        },
+                        cost: new Decimal(3e14),
+                        unlocked(){
+                                return hasUpgrade("c", 14) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("c", 15)
+                21: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Ca--bara"
+                        },
+                        description(){
+                                let a = "C 12 gives free B 32 levels"
+                                return a
+                        },
+                        cost: new Decimal(3e30),
+                        unlocked(){
+                                return hasUpgrade("c", 15) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("c", 21)
         },
         buyables: {
                 rows: 3,
                 cols: 3,
-                /*
-                11: getGeneralizedBuyableData("b", 11, function(){
-                        return hasUpgrade("b", 15) //|| player.d.unlocked
-                        }),   
-                *//*   
-                12: getGeneralizedBuyableData("b", 12, function(){
-                        return hasMilestone("b", 5) //|| player.d.unlocked
+                11: getGeneralizedBuyableData("c", 11, function(){
+                        return hasMilestone("c", 6) //|| player.d.unlocked
+                        }),     
+                12: getGeneralizedBuyableData("c", 12, function(){
+                        return player.c.buyables[11].gte(6) || hasMilestone("c", 7) //|| player.d.unlocked
                         }),
-                *//*
-                13: getGeneralizedBuyableData("b", 13, function(){
+                /*
+                13: getGeneralizedBuyableData("c", 13, function(){
                         return hasUpgrade("b", 21) //|| player.d.unlocked
                         }),
                 *//*
-                21: getGeneralizedBuyableData("b", 21, function(){
+                21: getGeneralizedBuyableData("c", 21, function(){
                         return player.b.best.gte(1e48) //|| player.d.unlocked
                         }),
                 *//*
-                22: getGeneralizedBuyableData("b", 22, function(){
+                22: getGeneralizedBuyableData("c", 22, function(){
                         return hasMilestone("b", 9) //|| player.d.unlocked
                         }),
                 *//*
-                23: getGeneralizedBuyableData("b", 23, function(){
+                23: getGeneralizedBuyableData("c", 23, function(){
                         return hasMilestone("b", 10) //|| player.d.unlocked
                         }),
                 *//*
-                31: getGeneralizedBuyableData("b", 31, function(){
+                31: getGeneralizedBuyableData("c", 31, function(){
                         return player.b.buyables[23].gte(8) //|| player.d.unlocked
                         }),
                 *//*
-                32: getGeneralizedBuyableData("b", 32, function(){
+                32: getGeneralizedBuyableData("c", 32, function(){
                         return player.b.buyables[31].gte(58) //|| player.d.unlocked
                         }),
                 *//*
-                33: getGeneralizedBuyableData("b", 33, function(){
+                33: getGeneralizedBuyableData("c", 33, function(){
                         return player.b.buyables[31].gte(71) //|| player.d.unlocked
                         }),
                 */
@@ -1396,6 +1461,48 @@ addLayer("c", {
                                 return "Reward: Keep an reset per reset, resets multiply Beaver autobuy times per second, and B 32 gives free levels to B 22."
                         },
                 }, // hasMilestone("c", 4)
+                5: {
+                        requirementDescription(){
+                                return "1,000,000 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte(1e6)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: B 32 gives free B 23 levels and you can bulk 2x Beaver buyables."
+                        },
+                }, // hasMilestone("c", 5)
+                6: {
+                        requirementDescription(){
+                                return "1e17 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte(1e17)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Unlock Capybara buyables, remove B 32 base cost, and per milestone add 1 to the B 13 base."
+                        },
+                }, // hasMilestone("c", 6)
+                7: {
+                        requirementDescription(){
+                                return "1e29 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte(1e29)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Remove B 33 base cost."
+                        },
+                }, // hasMilestone("c", 7)
         },
         tabFormat: {
                 "Upgrades": {
@@ -1431,7 +1538,7 @@ addLayer("c", {
                                 ],
                                 "buyables"],
                         unlocked(){
-                                return false //|| player.d.unlocked
+                                return hasMilestone("c", 6) //|| player.d.unlocked
                         },
                 },
                 "Milestones": {
