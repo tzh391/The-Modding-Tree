@@ -886,6 +886,19 @@ addLayer("b", {
                                 return hasUpgrade("b", 24) || player.c.unlocked
                         }, 
                 }, // hasUpgrade("b", 25)
+                31: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>B--v-r"
+                        },
+                        description(){
+                                let a = "B 31 gives free B 22 levels, add 1 to the Capybara gain exponent, and buy a Capybara buyable per second"
+                                return a
+                        },
+                        cost: new Decimal("ee6"),
+                        unlocked(){
+                                return hasUpgrade("c", 22) 
+                        }, 
+                }, // hasUpgrade("b", 31)
         },
         buyables: {
                 rows: 3,
@@ -1226,7 +1239,8 @@ addLayer("c", {
         getGainExp(){
                 let ret = new Decimal(4)
 
-                if (hasUpgrade("c", 11)) ret = ret.plus(player.c.upgrades.length)
+                if (hasUpgrade("c", 11))        ret = ret.plus(player.c.upgrades.length)
+                if (hasUpgrade("b", 31))        ret = ret.plus(1)
 
                 return ret
         },
@@ -1268,7 +1282,7 @@ addLayer("c", {
                 data.best = data.best.max(data.points)
                 doPassiveGain("c", diff)
                 
-                if (false) {
+                if (hasUpgrade("b", 31)) {
                         handleGeneralizedBuyableAutobuy(diff, "c")
                 } else {
                         data.abtime = 0
@@ -1364,6 +1378,19 @@ addLayer("c", {
                                 return hasUpgrade("c", 15) //|| player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 21)
+                22: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>C---bara"
+                        },
+                        description(){
+                                let a = "Remove B 31 linear cost base"
+                                return a
+                        },
+                        cost: new Decimal(3e60),
+                        unlocked(){
+                                return hasUpgrade("c", 21) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("c", 22)
         },
         buyables: {
                 rows: 3,
@@ -1374,11 +1401,10 @@ addLayer("c", {
                 12: getGeneralizedBuyableData("c", 12, function(){
                         return player.c.buyables[11].gte(6) || hasMilestone("c", 7) //|| player.d.unlocked
                         }),
-                /*
                 13: getGeneralizedBuyableData("c", 13, function(){
-                        return hasUpgrade("b", 21) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(125) //|| player.d.unlocked
                         }),
-                *//*
+                /*
                 21: getGeneralizedBuyableData("c", 21, function(){
                         return player.b.best.gte(1e48) //|| player.d.unlocked
                         }),
@@ -1503,6 +1529,20 @@ addLayer("c", {
                                 return "Reward: Remove B 33 base cost."
                         },
                 }, // hasMilestone("c", 7)
+                8: {
+                        requirementDescription(){
+                                return "1e53 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte(1e53)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: C 13 gives free C 12 and B 33 levels and remove B 32 linear cost base."
+                        },
+                }, // hasMilestone("c", 8)
         },
         tabFormat: {
                 "Upgrades": {

@@ -419,6 +419,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Alligators",
                 base: {
                         initial: new Decimal(1e10),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c13"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(2e8)
@@ -499,6 +508,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "A 2X and B 11 bases",
                 base: {
                         initial: new Decimal(.01),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c13"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e113)
@@ -508,6 +526,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("c", 15)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                b31: {active:() => hasUpgrade("b", 31)},
                 b32: {active:() => hasMilestone("c", 4)},
         },
         b23: {
@@ -566,6 +585,7 @@ var MAIN_BUYABLE_DATA = {
                         let b1 = new Decimal(1e10)
                         let b2 = new Decimal(1.21) // fibonacci
                         if (hasUpgrade("c", 15)) b0 = decimalOne
+                        if (hasUpgrade("c", 22)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
                 b32: {active:() => hasMilestone("b", 12)},
@@ -576,12 +596,22 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Prior left column bases",
                 base: {
                         initial: new Decimal(.01),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c13"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e1107")
                         let b1 = new Decimal(1e23)
                         let b2 = new Decimal(1.34) // fibonacci
                         if (hasMilestone("c", 6)) b0 = decimalOne
+                        if (hasMilestone("c", 8)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
                 c12: {active:() => hasUpgrade("c", 21)},
@@ -609,6 +639,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("c", 7)) b0 = decimalOne
                         return [b0, b1, b2]
                 },
+                c13: {active:() => hasMilestone("c", 8)},
         },
         c11: {
                 name: "C 11",
@@ -616,6 +647,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Capybara gain",
                 base: {
                         initial: new Decimal(1.2),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c13"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e17)
@@ -635,6 +675,21 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal(1e18)
                         let b1 = new Decimal(1.5)
                         let b2 = new Decimal(1.002) // 2**x
+                        return [b0, b1, b2]
+                },
+                c13: {active:() => hasMilestone("c", 8)},
+        },
+        c13: {
+                name: "C 13",
+                func: "lin",
+                effects: "C 11 and B X2 bases",
+                base: {
+                        initial: new Decimal(.01),
+                },
+                bases(){
+                        let b0 = new Decimal(1e39)
+                        let b1 = new Decimal(100)
+                        let b2 = new Decimal(1.004) // 2**x
                         return [b0, b1, b2]
                 },
         },
