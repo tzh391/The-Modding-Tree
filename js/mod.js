@@ -12,7 +12,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.023",
+	num: "0.024",
 	name: "Respecced Reincarnation",
 }
 
@@ -36,6 +36,9 @@ let changelog = `<h1>Changelog:</h1><br>
 		- B will be each content patch.<br>
 		- C will be small patches without content (bug/wording fixes).<br><br><br>
 
+	<br><h3 style='color: #CC0000'>v0.024</h3><br>
+	 	- Added four Alligator and Beaver upgrades.<br>
+		- Added a Capybara upgrade and five milestones.<br>
 	<br><h3 style='color: #CC0000'>v0.023</h3><br>
 		- Balanced until 1e1102 Capybaras.<br>
 		- Added a Beaver and Capybara upgrade.<br>
