@@ -452,6 +452,54 @@ addLayer("a", {
                                 return hasUpgrade("a", 44) || player.c.unlocked
                         }, 
                 }, // hasUpgrade("a", 45)
+                51: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A--ig-tor"
+                        },
+                        description(){
+                                return "Remove C 13 base cost and each upgrade in this row doubles Beaver bulk amount"
+                        },
+                        cost: new Decimal("e6e25"),
+                        unlocked(){
+                                return hasUpgrade("b", 23) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("a", 51)
+                52: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>All-g-tor"
+                        },
+                        description(){
+                                return "This row upgrades multiplies base Capybara gain"
+                        },
+                        cost: new Decimal("e2e26"),
+                        unlocked(){
+                                return hasUpgrade("a", 51) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("a", 52)
+                53: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-l-g-tor"
+                        },
+                        description(){
+                                return "B 22 gives free B 21 levels"
+                        },
+                        cost: new Decimal("e8.64e26"),
+                        unlocked(){
+                                return hasUpgrade("a", 52) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("a", 53)
+                54: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Al--g-tor"
+                        },
+                        description(){
+                                return "Each C 23 adds 1 to the C 23 base"
+                        },
+                        cost: new Decimal("e4.68e28"),
+                        unlocked(){
+                                return hasUpgrade("a", 53) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("a", 54)
         },
         buyables: {
                 rows: 3,
@@ -695,7 +743,8 @@ addLayer("b", {
         getGainMultPre(){
                 let ret = new Decimal(.05)
 
-                if (hasUpgrade("b", 23)) ret = ret.times(20)
+                if (hasUpgrade("b", 23))        ret = ret.times(20)
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["c22"])
 
                 return ret
         },
@@ -899,6 +948,58 @@ addLayer("b", {
                                 return hasUpgrade("c", 22) 
                         }, 
                 }, // hasUpgrade("b", 31)
+                32: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Bea--r"
+                        },
+                        description(){
+                                let a = "Remove C 12 linear cost base and each upgrade in this row adds .0001 to the C 13 base"
+                                return a
+                        },
+                        cost: new Decimal("e39.9e6"),
+                        unlocked(){
+                                return hasUpgrade("b", 31)
+                        }, 
+                }, // hasUpgrade("b", 32)
+                33: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>B-a--r"
+                        },
+                        description(){
+                                let a = "C 11 gives free B 33 levels"
+                                return a
+                        },
+                        cost: new Decimal("e157e6"),
+                        unlocked(){
+                                return hasUpgrade("b", 32)
+                        }, 
+                }, // hasUpgrade("b", 33)
+                34: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Be---r"
+                        },
+                        description(){
+                                let a = "B 22 gives free B 13 levels"
+                                return a
+                        },
+                        cost: new Decimal("e737.5e6"),
+                        unlocked(){
+                                return hasUpgrade("b", 33)
+                        }, 
+                }, // hasUpgrade("b", 34)
+                35: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Be---r"
+                        },
+                        description(){
+                                let a = "B 23 gives free B 22 levels"
+                                return a
+                        },
+                        cost: new Decimal("e4025e6"),
+                        unlocked(){
+                                return hasUpgrade("b", 33)
+                        }, 
+                }, // hasUpgrade("b", 35)
         },
         buyables: {
                 rows: 3,
@@ -1241,11 +1342,16 @@ addLayer("c", {
 
                 if (hasUpgrade("c", 11))        ret = ret.plus(player.c.upgrades.length)
                 if (hasUpgrade("b", 31))        ret = ret.plus(1)
+                                                ret = ret.plus(CURRENT_BUYABLE_EFFECTS["c21"])
 
                 return ret
         },
         getGainMultPre(){
                 let ret = new Decimal(.01)
+
+                if (hasUpgrade("a", 52)) ret = ret.times(player.a.upgrades.filter(x => x > 50 && x < 60).length)
+                                        
+                                        ret = ret.times(CURRENT_BUYABLE_EFFECTS["c31"])
 
                 return ret
         },
@@ -1253,6 +1359,7 @@ addLayer("c", {
                 let ret = getGeneralizedInitialPostMult("c")
 
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["c11"])
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["c22"])
 
                 return ret
         },
@@ -1263,6 +1370,8 @@ addLayer("c", {
 
                 let exp = new Decimal(5)
                 if (hasUpgrade("c", 11)) exp = exp.plus(player.c.upgrades.length)
+
+                exp = exp.times(CURRENT_BUYABLE_EFFECTS["c23"])
 
                 let ret = amt.times(2).plus(1).pow(exp)
 
@@ -1391,6 +1500,19 @@ addLayer("c", {
                                 return hasUpgrade("c", 21) //|| player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 22)
+                23: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Capy-ara"
+                        },
+                        description(){
+                                let a = "Remove C 11 base cost"
+                                return a
+                        },
+                        cost: new Decimal("3e1651"),
+                        unlocked(){
+                                return hasUpgrade("c", 22) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("c", 23)
         },
         buyables: {
                 rows: 3,
@@ -1404,31 +1526,27 @@ addLayer("c", {
                 13: getGeneralizedBuyableData("c", 13, function(){
                         return player.c.buyables[11].gte(125) //|| player.d.unlocked
                         }),
-                /*
                 21: getGeneralizedBuyableData("c", 21, function(){
-                        return player.b.best.gte(1e48) //|| player.d.unlocked
+                        return hasMilestone("c", 9) //|| player.d.unlocked
                         }),
-                *//*
                 22: getGeneralizedBuyableData("c", 22, function(){
-                        return hasMilestone("b", 9) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(2030) //|| player.d.unlocked
                         }),
-                *//*
                 23: getGeneralizedBuyableData("c", 23, function(){
-                        return hasMilestone("b", 10) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(2550) //|| player.d.unlocked
                         }),
-                *//*
                 31: getGeneralizedBuyableData("c", 31, function(){
-                        return player.b.buyables[23].gte(8) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(2800) //|| player.d.unlocked
                         }),
-                *//*
+                /*
                 32: getGeneralizedBuyableData("c", 32, function(){
                         return player.b.buyables[31].gte(58) //|| player.d.unlocked
                         }),
-                *//*
+                /*
                 33: getGeneralizedBuyableData("c", 33, function(){
                         return player.b.buyables[31].gte(71) //|| player.d.unlocked
                         }),
-                */
+                /**/
         },
         milestones: {
                 1: {
@@ -1543,6 +1661,76 @@ addLayer("c", {
                                 return "Reward: C 13 gives free C 12 and B 33 levels and remove B 32 linear cost base."
                         },
                 }, // hasMilestone("c", 8)
+                9: {
+                        requirementDescription(){
+                                return "1e1102 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e1102")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Remove B 33 linear cost base and C 12 cost base and unlock a new Capybara buyable."
+                        },
+                }, // hasMilestone("c", 9)
+                10: {
+                        requirementDescription(){
+                                return "1e2660 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e2660")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: B 12 gives free B 11 levels and each milestone adds .01 to the C 22 base."
+                        },
+                }, // hasMilestone("c", 10)
+                11: {
+                        requirementDescription(){
+                                return "1e2906 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e2906")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: B 21 gives free B 13 levels and Bea--r affects C 12."
+                        },
+                }, // hasMilestone("c", 11)
+                12: {
+                        requirementDescription(){
+                                return "3e3213 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("3e3213")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: C 23 gives free C 22 levels."
+                        },
+                }, // hasMilestone("c", 12)
+                13: {
+                        requirementDescription(){
+                                return "1e3943 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e3943")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Each B 33 subtracts 1 from the C 23 cost base (until 999,999)."
+                        },
+                }, // hasMilestone("c", 13)
         },
         tabFormat: {
                 "Upgrades": {

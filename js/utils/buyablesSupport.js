@@ -410,6 +410,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("b", 13)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                b12: {active:() => hasMilestone("c", 10)},
                 b13: {active:() => hasUpgrade("b", 22)},
                 b21: {active:() => hasMilestone("b", 7)},
         },
@@ -473,6 +474,8 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("c", 12)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                b21: {active:() => hasMilestone("c", 11)},
+                b22: {active:() => hasUpgrade("b", 34)},
                 b31: {active:() => hasUpgrade("a", 44)},
         },
         b21: {
@@ -499,6 +502,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("c", 15)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                b22: {active:() => hasUpgrade("a", 53)},
                 b23: {active:() => hasUpgrade("a", 43)},
                 b31: {active:() => hasUpgrade("a", 45)},
         },
@@ -526,6 +530,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("c", 15)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                b23: {active:() => hasUpgrade("b", 35)},
                 b31: {active:() => hasUpgrade("b", 31)},
                 b32: {active:() => hasMilestone("c", 4)},
         },
@@ -579,6 +584,15 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["b32"]
                                 },
                         },
+                        3: {
+                                active(){
+                                        return true
+                                },
+                                type: "times",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c31"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e256)
@@ -603,6 +617,15 @@ var MAIN_BUYABLE_DATA = {
                                 type: "add",
                                 amount(){
                                         return CURRENT_BUYABLE_EFFECTS["c13"]
+                                },
+                        },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "times",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c31"]
                                 },
                         },
                 },
@@ -631,14 +654,25 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["c12"]
                                 },
                         },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "times",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c31"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("5e1371")
                         let b1 = new Decimal(1e161)
                         let b2 = new Decimal(1.55) // fibonacci
                         if (hasMilestone("c", 7)) b0 = decimalOne
+                        if (hasMilestone("c", 9)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                c11: {active:() => hasUpgrade("b", 33)},
                 c13: {active:() => hasMilestone("c", 8)},
         },
         c11: {
@@ -661,6 +695,7 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal(1e17)
                         let b1 = new Decimal(1.3)
                         let b2 = new Decimal(1.001) // 2**x
+                        if (hasUpgrade("c", 23)) b0 = decimalOne
                         return [b0, b1, b2]
                 },
         },
@@ -670,11 +705,22 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Previous Right Column bases",
                 base: {
                         initial: new Decimal(.01),
+                        1: {
+                                active(){
+                                        return hasUpgrade("b", 32) && hasMilestone("c", 11)
+                                },
+                                type: "add",
+                                amount(){
+                                        return player.b.upgrades.filter(x => x > 30 && x < 40).length / 1e4
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e18)
                         let b1 = new Decimal(1.5)
                         let b2 = new Decimal(1.002) // 2**x
+                        if (hasMilestone("c", 9)) b0 = decimalOne
+                        if (hasUpgrade("b", 32)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
                 c13: {active:() => hasMilestone("c", 8)},
@@ -685,11 +731,97 @@ var MAIN_BUYABLE_DATA = {
                 effects: "C 11 and B X2 bases",
                 base: {
                         initial: new Decimal(.01),
+                        1: {
+                                active(){
+                                        return hasUpgrade("b", 32)
+                                },
+                                type: "add",
+                                amount(){
+                                        return player.b.upgrades.filter(x => x > 30 && x < 40).length / 1e4
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e39)
                         let b1 = new Decimal(100)
                         let b2 = new Decimal(1.004) // 2**x
+                        if (hasUpgrade("a", 51)) b0 = decimalOne
+                        return [b0, b1, b2]
+                },
+        },
+        c21: {
+                name: "C 21",
+                func: "lin",
+                effects: "Capybara Gain exponent",
+                base: {
+                        initial: new Decimal(.13),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1108")
+                        let b1 = new Decimal(1e4)
+                        let b2 = new Decimal(1.008) // 2**x
+                        return [b0, b1, b2]
+                },
+        },
+        c22: {
+                name: "C 22",
+                func: "exp",
+                effects: "Capybara and Base Beaver gain",
+                base: {
+                        initial: new Decimal(2),
+                        1: {
+                                active(){
+                                        return hasMilestone("c", 10)
+                                },
+                                type: "add",
+                                amount(){
+                                        return player.c.milestones.length / 100
+                                },
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e2024")
+                        let b1 = new Decimal(1e5)
+                        let b2 = new Decimal(1.016) // 2**x
+                        return [b0, b1, b2]
+                },
+                c23: {active:() => hasMilestone("c", 12)},
+        },
+        c23: {
+                name: "C 23",
+                func: "linp1",
+                effects: "Capybara effect exponent",
+                base: {
+                        initial: new Decimal(500),
+                        1: {
+                                active(){
+                                        return hasUpgrade("a", 54)
+                                },
+                                type: "add",
+                                amount(){
+                                        return getBuyableAmount("c", 23)
+                                },
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e3131")
+                        let b1 = new Decimal(1e6)
+                        let b2 = new Decimal(1.032) // 2**x
+                        if (hasMilestone("c", 13)) b1 = b1.sub(getBuyableAmount("b", 33)).max(1)
+                        return [b0, b1, b2]
+                },
+        },
+        c31: {
+                name: "C 31",
+                func: "linp1",
+                effects: "B 3X bases and base Capybara gain",
+                base: {
+                        initial: new Decimal(.05),
+                },
+                bases(){
+                        let b0 = new Decimal("1e3727")
+                        let b1 = new Decimal(1e10)
+                        let b2 = new Decimal(1.064) // 2**x
                         return [b0, b1, b2]
                 },
         },
@@ -763,6 +895,12 @@ var BUYABLES_FUNCTION_NAMES = {
         },
         "linp1": {
                 "func": BUYABLES_EFFECT_LINEAR_PLUS1,
+                "identity": decimalOne,
+                "string": "*x",
+                "eff": "*",
+        },
+        "linp1sq": {
+                "func": BUYABLES_EFFECT_LINEAR_PLUS1_SQUARE,
                 "identity": decimalOne,
                 "string": "*x",
                 "eff": "*",
@@ -947,6 +1085,10 @@ function BUYABLES_EFFECT_LINEAR(a,b){
 
 function BUYABLES_EFFECT_LINEAR_PLUS1(a,b){
         return a.times(b).plus(1)
+}
+
+function BUYABLES_EFFECT_LINEAR_PLUS1_SQUARE(a,b){
+        return a.times(b.pow(2)).plus(1)
 }
 
 function BUYABLES_EFFECT_LINEAR_SQRT(a,b){
@@ -1138,7 +1280,8 @@ function getBuyableDisplay(layer, id){
                 eformula = eformula.replace("[base]", format(getBuyableBase(layer, id), 4))
         } else {
                 eformula = format(getBuyableBase(layer, id), 4) + getBuyableEffectString(layer, id)
-                if (MAIN_BUYABLE_DATA[layer + id].func == "linp1") eformula = "1+"+eformula
+                if (MAIN_BUYABLE_DATA[layer + id].func == "linp1")      eformula = "1+" + eformula
+                if (MAIN_BUYABLE_DATA[layer + id].func == "linp1sq")    eformula = "1+" + eformula + "<sup>2</sup>"
         }
         let allEff = "<b><h2>Effect formula:</h2><br>" + eformula + "</b><br>"
 
@@ -1226,13 +1369,14 @@ function isBuyableActive(layer, id){
 function getABBulk(layer){
         let amt = decimalOne
         if (layer == "a"){
-                if (hasUpgrade("b", 12)) amt = amt.times(Math.max(1, player.b.upgrades.length))
-                if (hasUpgrade("c", 11)) amt = amt.times(10)
-                if (hasUpgrade("c", 12)) amt = amt.pow(player.c.upgrades.length)
+                if (hasUpgrade("b", 12))        amt = amt.times(Math.max(1, player.b.upgrades.length))
+                if (hasUpgrade("c", 11))        amt = amt.times(10)
+                if (hasUpgrade("c", 12))        amt = amt.pow(player.c.upgrades.length)
         }
         if (layer == "b") {
-                if (hasMilestone("c", 5)) amt = amt.times(2)
-                if (hasUpgrade("c", 12)) amt = amt.times(player.c.upgrades.length)
+                if (hasMilestone("c", 5))       amt = amt.times(2)
+                if (hasUpgrade("c", 12))        amt = amt.times(player.c.upgrades.length)
+                if (hasUpgrade("a", 51))        amt = amt.times(Decimal.pow(2, player.a.upgrades.filter(x => x < 60 && x > 50).length))
         }
         return amt
 }
