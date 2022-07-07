@@ -55,6 +55,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("a", 22)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                a12: {active:() => hasUpgrade("b", 43)},
                 a13: {active:() => hasMilestone("b", 1)},
                 a22: {active:() => hasUpgrade("b", 13)},
         },
@@ -268,6 +269,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
                 a31: {active:() => hasMilestone("b", 3)},
+                a32: {active:() => hasUpgrade("b", 41)},
         },
         a31: {
                 name: "A 31",
@@ -398,6 +400,15 @@ var MAIN_BUYABLE_DATA = {
                                 type: "add",
                                 amount(){
                                         return CURRENT_BUYABLE_EFFECTS["b32"]
+                                },
+                        },
+                        4: {
+                                active(){
+                                        return hasMilestone("c", 17)
+                                },
+                                type: "pow",
+                                amount(){
+                                        return new Decimal(2)
                                 },
                         },
                 },
@@ -558,6 +569,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("c", 15)) b1 = decimalOne
                         return [b0, b1, b2]
                 },
+                b31: {active:() => hasMilestone("c", 15)},
                 b32: {active:() => hasMilestone("c", 5)},
         },
         b31: {
@@ -696,6 +708,10 @@ var MAIN_BUYABLE_DATA = {
                         let b1 = new Decimal(1.3)
                         let b2 = new Decimal(1.001) // 2**x
                         if (hasUpgrade("c", 23)) b0 = decimalOne
+                        if (hasMilestone("c", 14)) {
+                                b1 = b1.sub(getBuyableAmount("c", 22).div(1e4)).max(1)
+                                if (hasUpgrade("b", 42)) b1 = b1.sub(getBuyableAmount("c", 32).sub(26).max(0).div(1e4)).max(1)
+                        }
                         return [b0, b1, b2]
                 },
         },
@@ -711,7 +727,16 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "add",
                                 amount(){
-                                        return player.b.upgrades.filter(x => x > 30 && x < 40).length / 1e4
+                                        return player.b.upgrades.filter(x => x > 30).length / 1e4
+                                },
+                        },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c32"]
                                 },
                         },
                 },
@@ -724,6 +749,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
                 c13: {active:() => hasMilestone("c", 8)},
+                c21: {active:() => hasUpgrade("c", 25)},
         },
         c13: {
                 name: "C 13",
@@ -737,7 +763,7 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "add",
                                 amount(){
-                                        return player.b.upgrades.filter(x => x > 30 && x < 40).length / 1e4
+                                        return player.b.upgrades.filter(x => x > 30).length / 1e4
                                 },
                         },
                 },
@@ -755,11 +781,25 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Capybara Gain exponent",
                 base: {
                         initial: new Decimal(.13),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c32"].min(.02)
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e1108")
                         let b1 = new Decimal(1e4)
                         let b2 = new Decimal(1.008) // 2**x
+                        if (hasUpgrade("a", 55)) {
+                                b1 = b1.sub(getBuyableAmount("c", 12)).max(1)
+                                if (hasUpgrade("b", 42)) b1 = b1.sub(getBuyableAmount("c", 32).sub(26).max(0)).max(1)
+                        }
+                        if (hasUpgrade("c", 24)) b0 = b0.div(getBuyableAmount("c", 31).pow10()).max(1)
                         return [b0, b1, b2]
                 },
         },
@@ -783,6 +823,7 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e2024")
                         let b1 = new Decimal(1e5)
                         let b2 = new Decimal(1.016) // 2**x
+                        if (hasUpgrade("c", 24)) b0 = b0.div(getBuyableAmount("c", 31).pow10()).max(1)
                         return [b0, b1, b2]
                 },
                 c23: {active:() => hasMilestone("c", 12)},
@@ -807,7 +848,8 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e3131")
                         let b1 = new Decimal(1e6)
                         let b2 = new Decimal(1.032) // 2**x
-                        if (hasMilestone("c", 13)) b1 = b1.sub(getBuyableAmount("b", 33)).max(1)
+                        if (hasMilestone("c", 13)) b1 = b1.sub(getBuyableAmount("b", 33)).max(25e3)
+                        if (hasMilestone("c", 16)) if (hasUpgrade("c", 24)) b0 = b0.div(getBuyableAmount("c", 31).pow10()).max(1)
                         return [b0, b1, b2]
                 },
         },
@@ -822,6 +864,20 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e3727")
                         let b1 = new Decimal(1e10)
                         let b2 = new Decimal(1.064) // 2**x
+                        return [b0, b1, b2]
+                },
+        },
+        c32: {
+                name: "C 32",
+                func: "lin",
+                effects: "C 12 and C 21 [max .02] bases",
+                base: {
+                        initial: new Decimal(.0001),
+                },
+                bases(){
+                        let b0 = new Decimal("1e5078")
+                        let b1 = new Decimal(3e7)
+                        let b2 = new Decimal(1.128) // 2**x
                         return [b0, b1, b2]
                 },
         },

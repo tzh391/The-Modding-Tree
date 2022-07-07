@@ -500,6 +500,18 @@ addLayer("a", {
                                 return hasUpgrade("a", 53) //|| player.d.unlocked
                         }, 
                 }, // hasUpgrade("a", 54)
+                55: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A---g-tor"
+                        },
+                        description(){
+                                return "Each C 12 subtracts 1 from the C 21 linear cost base"
+                        },
+                        cost: new Decimal("e1.28e30"),
+                        unlocked(){
+                                return hasUpgrade("a", 54) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("a", 55)
         },
         buyables: {
                 rows: 3,
@@ -953,7 +965,7 @@ addLayer("b", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>Bea--r"
                         },
                         description(){
-                                let a = "Remove C 12 linear cost base and each upgrade in this row adds .0001 to the C 13 base"
+                                let a = "Remove C 12 linear cost base and each upgrade in this row or below adds .0001 to the C 13 base"
                                 return a
                         },
                         cost: new Decimal("e39.9e6"),
@@ -989,7 +1001,7 @@ addLayer("b", {
                 }, // hasUpgrade("b", 34)
                 35: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>Be---r"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>B----r"
                         },
                         description(){
                                 let a = "B 23 gives free B 22 levels"
@@ -997,9 +1009,48 @@ addLayer("b", {
                         },
                         cost: new Decimal("e4025e6"),
                         unlocked(){
-                                return hasUpgrade("b", 33)
+                                return hasUpgrade("b", 34)
                         }, 
                 }, // hasUpgrade("b", 35)
+                41: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Beave-"
+                        },
+                        description(){
+                                let a = "A 32 gives free A 23 levels"
+                                return a
+                        },
+                        cost: new Decimal("e1.62e10"),
+                        unlocked(){
+                                return hasUpgrade("b", 35)
+                        }, 
+                }, // hasUpgrade("b", 41)
+                42: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>B-ave-"
+                        },
+                        description(){
+                                let a = "C 32's after 26 count towards Capybara milestone 14 and A---g-tor"
+                                return a
+                        },
+                        cost: new Decimal("e6.75e10"),
+                        unlocked(){
+                                return hasUpgrade("b", 41) && player.c.best.gte("1e4989") //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("b", 42)
+                43: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Be-ve-"
+                        },
+                        description(){
+                                let a = "A 12 gives free A 11 levels"
+                                return a
+                        },
+                        cost: new Decimal("e2.01e11"),
+                        unlocked(){
+                                return hasUpgrade("b", 42) && player.c.best.gte("1e5577") //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("b", 43)
         },
         buyables: {
                 rows: 3,
@@ -1513,6 +1564,32 @@ addLayer("c", {
                                 return hasUpgrade("c", 22) //|| player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 23)
+                24: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>C-py-ara"
+                        },
+                        description(){
+                                let a = "Each C 31 divides C 21 and C 22 base cost by 10 (min 1)"
+                                return a
+                        },
+                        cost: new Decimal("3e4461"),
+                        unlocked(){
+                                return hasUpgrade("c", 23) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("c", 24)
+                25: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Ca-y-ara"
+                        },
+                        description(){
+                                let a = "C 21 gives free C 12 levels"
+                                return a
+                        },
+                        cost: new Decimal("3e5765"),
+                        unlocked(){
+                                return hasUpgrade("c", 24) //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("c", 25)
         },
         buyables: {
                 rows: 3,
@@ -1538,9 +1615,8 @@ addLayer("c", {
                 31: getGeneralizedBuyableData("c", 31, function(){
                         return player.c.buyables[11].gte(2800) //|| player.d.unlocked
                         }),
-                /*
                 32: getGeneralizedBuyableData("c", 32, function(){
-                        return player.b.buyables[31].gte(58) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(3300) //|| player.d.unlocked
                         }),
                 /*
                 33: getGeneralizedBuyableData("c", 33, function(){
@@ -1731,6 +1807,62 @@ addLayer("c", {
                                 return "Reward: Each B 33 subtracts 1 from the C 23 cost base (until 999,999)."
                         },
                 }, // hasMilestone("c", 13)
+                14: {
+                        requirementDescription(){
+                                return "1e4210 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e4210")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Each C 22 subtracts .0001 from the C 11 linear cost base until 25,000."
+                        },
+                }, // hasMilestone("c", 14)
+                15: {
+                        requirementDescription(){
+                                return "1e4682 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e4682")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: B 31 gives free B 23 levels."
+                        },
+                }, // hasMilestone("c", 15)
+                16: {
+                        requirementDescription(){
+                                return "1e4943 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e4943")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: C-py-ara affects C 23."
+                        },
+                }, // hasMilestone("c", 16)
+                17: {
+                        requirementDescription(){
+                                return "1e5325 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e5325")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Square B 11 base."
+                        },
+                }, // hasMilestone("c", 17)
         },
         tabFormat: {
                 "Upgrades": {

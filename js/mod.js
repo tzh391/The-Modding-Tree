@@ -12,7 +12,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.024",
+	num: "0.025",
 	name: "Respecced Reincarnation",
 }
 
@@ -24,18 +24,22 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.c.points.gte("1e1102")
+	return player.c.points.gte("1e6067")
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<br><h2 style='color: #DDDD00'>Endgame:</h2><br>
-		Reaching the endgame screen (updated at least as of v0.023)<br><br>
+		Reaching the endgame screen (updated at least as of v0.025)<br><br>
 	<br><h2 style='color: #00CC00'>Notes</h2><br>
 		- Versions will be vA.B.C<br>
 		- A will be big releases.<br>
 		- B will be each content patch.<br>
 		- C will be small patches without content (bug/wording fixes).<br><br><br>
 
+	<br><h3 style='color: #CC0000'>v0.025</h3><br>
+		- Balanced until 1e6067 Capybaras.<br>
+		- Added a Alligator and three Beaver upgrades.<br>
+		- Added two Capybara upgrades and four milestones.<br>
 	<br><h3 style='color: #CC0000'>v0.024</h3><br>
 	 	- Added four Alligator and Beaver upgrades.<br>
 		- Added a Capybara upgrade and five milestones.<br>
