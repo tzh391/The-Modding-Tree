@@ -64,7 +64,7 @@ function isPrestigeEffectActive(layer){
         if (layer == "f") return true
         if (layer == "e") return true
         if (layer == "d") return true
-        if (layer == "c") return true
+        if (layer == "c") return !inChallenge("c", 11)
         if (layer == "b") return true
         if (layer == "a") return true
         console.log("issue")

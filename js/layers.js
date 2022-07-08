@@ -769,6 +769,7 @@ addLayer("b", {
                 if (hasMilestone("b", 8))       ret = ret.times(Decimal.pow(Math.max(6, player.b.milestones.length)/6, player.b.milestones.length))
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["b31"])
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["b33"].pow(player.b.upgrades.length))
+                if (hasUpgrade("b", 44))        ret = ret.times(CURRENT_BUYABLE_EFFECTS["b12"])
 
                 return ret
         },
@@ -1017,7 +1018,7 @@ addLayer("b", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>Beave-"
                         },
                         description(){
-                                let a = "A 32 gives free A 23 levels"
+                                let a = "A 32 gives free A 23 levels and square Beaver buyable bulk amount"
                                 return a
                         },
                         cost: new Decimal("e1.62e10"),
@@ -1051,6 +1052,32 @@ addLayer("b", {
                                 return hasUpgrade("b", 42) && player.c.best.gte("1e5577") //|| player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 43)
+                44: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>B--ve-"
+                        },
+                        description(){
+                                let a = "B 12 affects Beaver gain"
+                                return a
+                        },
+                        cost: new Decimal("e9.94e11"),
+                        unlocked(){
+                                return hasUpgrade("b", 42) && player.c.best.gte("1e6614") //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("b", 44)
+                45: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Bea-e-"
+                        },
+                        description(){
+                                let a = "Disable B-av-r and unlock a challenge"
+                                return a
+                        },
+                        cost: new Decimal("e9.94e11"),
+                        unlocked(){
+                                return hasUpgrade("b", 42) && player.c.best.gte("1e6614") //|| player.d.unlocked
+                        }, 
+                }, // hasUpgrade("b", 45)
         },
         buyables: {
                 rows: 3,
@@ -1372,6 +1399,7 @@ addLayer("c", {
                 time: 0,
                 times: 0,
                 autotimes: 0,
+                everC12: false,
         }},
         color: "#6B8B2E",
         branches: [],
@@ -1411,6 +1439,11 @@ addLayer("c", {
 
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["c11"])
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["c22"])
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["c33"].pow(player.c.upgrades.length))
+                
+                if (player.c.everC12)           ret = ret.times(10)
+                if (hasMilestone("c", 21))      ret = ret.times(getBuyableAmount("c", 33).sub(33).max(0).div(4).floor().pow10())
+                if (hasMilestone("c", 26))      ret = ret.times(getBuyableAmount("c", 33).sub(58).pow10().min(100).max(1))
 
                 return ret
         },
@@ -1420,9 +1453,10 @@ addLayer("c", {
                 let amt = player.c.points
 
                 let exp = new Decimal(5)
-                if (hasUpgrade("c", 11)) exp = exp.plus(player.c.upgrades.length)
+                if (hasUpgrade("c", 11))        exp = exp.plus(player.c.upgrades.length)
 
-                exp = exp.times(CURRENT_BUYABLE_EFFECTS["c23"])
+                                                exp = exp.times(CURRENT_BUYABLE_EFFECTS["c23"])
+                if (hasMilestone("c", 27))      exp = exp.times(10)
 
                 let ret = amt.times(2).plus(1).pow(exp)
 
@@ -1448,6 +1482,8 @@ addLayer("c", {
                         data.abtime = 0
                 }
                 data.time += diff
+
+                if (hasChallenge("c", 12)) player.c.everC12 = true
         },
         layerShown(){return player.b.best.gte("1e1900") || player.c.unlocked},
         prestigeButtonText(){
@@ -1618,11 +1654,9 @@ addLayer("c", {
                 32: getGeneralizedBuyableData("c", 32, function(){
                         return player.c.buyables[11].gte(3300) //|| player.d.unlocked
                         }),
-                /*
                 33: getGeneralizedBuyableData("c", 33, function(){
-                        return player.b.buyables[31].gte(71) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(3620) //|| player.d.unlocked
                         }),
-                /**/
         },
         milestones: {
                 1: {
@@ -1804,7 +1838,7 @@ addLayer("c", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Each B 33 subtracts 1 from the C 23 cost base (until 999,999)."
+                                return "Reward: Each B 33 subtracts 1 from the C 23 cost base (until 25,000)."
                         },
                 }, // hasMilestone("c", 13)
                 14: {
@@ -1818,7 +1852,7 @@ addLayer("c", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Each C 22 subtracts .0001 from the C 11 linear cost base until 25,000."
+                                return "Reward: Each C 22 subtracts .0001 from the C 11 linear cost base until 1."
                         },
                 }, // hasMilestone("c", 14)
                 15: {
@@ -1863,6 +1897,196 @@ addLayer("c", {
                                 return "Reward: Square B 11 base."
                         },
                 }, // hasMilestone("c", 17)
+                18: {
+                        requirementDescription(){
+                                return "1e6202 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e6202")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: You can bulk 2x more Alligator and Beaver buyables."
+                        },
+                }, // hasMilestone("c", 18)
+                19: {
+                        requirementDescription(){
+                                return "1e6531 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e6531")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: B 12 base is raised to the C 33 levels and subtract 1 from the C 32 linear cost base per B 33 (min 100,000)."
+                        },
+                }, // hasMilestone("c", 19)
+                20: {
+                        requirementDescription(){
+                                return "1e7761 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e7761")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Unlock another challenge, B 23 gives free B 13 levels, and B 32 gives free B 21 levels."
+                        },
+                }, // hasMilestone("c", 20)
+                21: {
+                        requirementDescription(){
+                                return "1e8443 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e8443")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: C 33's after 33 divide C 23's linear cost base by 2.5 (until 1) and each 4th gives you 10x Capybaras."
+                        },
+                }, // hasMilestone("c", 21)
+                22: {
+                        requirementDescription(){
+                                return "1e9214 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e9214")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Add .015 to the C 33 base per successive milestone."
+                        },
+                }, // hasMilestone("c", 22)
+                23: {
+                        requirementDescription(){
+                                return "1e9418 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e9418")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: B 23 gives free B 12 levels."
+                        },
+                }, // hasMilestone("c", 23)
+                24: {
+                        requirementDescription(){
+                                return "1e9488 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e9488")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Each C 32 divides C 31's base cost by 10."
+                        },
+                }, // hasMilestone("c", 24)
+                25: {
+                        requirementDescription(){
+                                return "1e9658 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e9658")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Each C 33 divides C 32's base cost by 10."
+                        },
+                }, // hasMilestone("c", 25)
+                26: {
+                        requirementDescription(){
+                                return "1e10,050 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e10050")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: B 22 gives free B 11 levels, each C 33 after 54 to the .8 divides C 31's linear cost base by 40 (min 1), and each C 33 after 58 gives you 10x Capybaras."
+                        },
+                }, // hasMilestone("c", 26)
+                27: {
+                        requirementDescription(){
+                                return "1e10,933 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e10933")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Raise Capybara effect to the tenth power and each C 33 after 65 divides C 22's linear cost base by 1.4 (min 1)."
+                        },
+                }, // hasMilestone("c", 27)
+        },
+        challenges: {
+                11: {
+                        name: "Challenge?",
+                        goal(){
+                                let id = player.c.challenges[11]
+                                return Decimal.pow(10, [4.428e9, 5.305e9, 5.777e9, 6.269e9, 6.7821e9, 3.586e10, 3.878e10, 4.028e10, 4.181e10, 4.337e10][id])
+                        },
+                        canComplete: () => player.b.points.gte(tmp.c.challenges[11].goal),
+                        fullDisplay(){
+                                let a = "Nullify Capybara and B 23 effects" + br 
+                                a += "Goal: " + format(tmp.c.challenges[11].goal, 4) + " Beavers" + br2
+                                a += "Reward: Add " + format(tmp.c.challenges[11].rewardEffect) + br
+                                a += "to the C 11, C 22, and C 33 bases."
+                                return a + br2 + "Completions: " + player.c.challenges[11] + "/10"
+                        },
+                        rewardEffect(){
+                                return new Decimal(player.c.challenges[11] / 100)
+                        },
+                        unlocked(){
+                                return hasUpgrade("b", 45)
+                        },
+                        countsAs: [],
+                        completionLimit: 10,
+                }, // inChallenge("c", 11)
+                12: {
+                        name: "Challenge!",
+                        goal(){
+                                let id = player.c.challenges[12]
+                                return Decimal.pow(10, [3.15e12, 5.99e12, 6.095e12, 6.421e12, 6.615e12][id])
+                        },
+                        canComplete: () => player.b.points.gte(tmp.c.challenges[12].goal),
+                        fullDisplay(){
+                                if (player.shiftAlias) return "Formula: (x-1)<sup>1.4</sup>"
+                                let a = "Nullify B 12 effect" + br 
+                                a += "Goal: " + format(tmp.c.challenges[12].goal, 4) + " Beavers" + br2
+                                a += "Reward: C 22 gives free C 12 levels, gain 10x Capybara's permanently, "
+                                a += "and per Capybara buyable subtract " + formatWhole(tmp.c.challenges[12].rewardEffect) + br
+                                a += "from C 22 linear cost base."
+                                return a + br2 + "Completions: " + player.c.challenges[12] + "/5"
+                        },
+                        rewardEffect(){
+                                return new Decimal(player.c.challenges[12]).sub(1).max(0).pow(1.4)
+                        },
+                        unlocked(){
+                                return hasMilestone("c", 20)
+                        },
+                        countsAs: [],
+                        completionLimit: 5,
+                }, // inChallenge("c", 12)
         },
         tabFormat: {
                 "Upgrades": {
@@ -1913,6 +2137,20 @@ addLayer("c", {
                         ],
                         unlocked(){
                                 return player.c.times > 0 //|| player.d.unlocked
+                        },
+                },
+                "Challenges": {
+                        content: [
+                                "main-display",
+                                ["display-text",
+                                        function() {
+                                                return "You have done " + formatWhole(player.c.times) + " Capybara resets"
+                                        }
+                                ],
+                                "challenges"
+                        ],
+                        unlocked(){
+                                return hasUpgrade("b", 45) //|| player.d.unlocked
                         },
                 },
                 "Info": {
