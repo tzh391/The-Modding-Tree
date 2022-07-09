@@ -411,6 +411,15 @@ var MAIN_BUYABLE_DATA = {
                                         return new Decimal(2)
                                 },
                         },
+                        5: {
+                                active(){
+                                        return hasMilestone("c", 28)
+                                },
+                                type: "pow",
+                                amount(){
+                                        return getBuyableAmount("c", 33).max(1).pow(getBuyableAmount("c", 33).gte(69) ? .76 : .5)
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e8)
@@ -824,6 +833,7 @@ var MAIN_BUYABLE_DATA = {
                         let b1 = new Decimal(100)
                         let b2 = new Decimal(1.004) // 2**x
                         if (hasUpgrade("a", 51)) b0 = decimalOne
+                        if (hasMilestone("c", 29)) b1 = b1.sub(getBuyableAmount("c", 33).sub(72).max(0).pow(.8).times(6)).max(15)
                         return [b0, b1, b2]
                 },
         },
@@ -932,6 +942,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "B 3X bases and base Capybara gain",
                 base: {
                         initial: new Decimal(.05),
+                        1: {
+                                active(){
+                                        return hasMilestone("c", 29)
+                                },
+                                type: "add",
+                                amount(){
+                                        return getBuyableAmount("c", 33).sub(74).max(0).times(.0008)
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e3727")
@@ -987,6 +1006,7 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e6067")
                         let b1 = new Decimal(1e69)
                         let b2 = new Decimal(1.256) // 2**x
+                        if (hasMilestone("c", 31)) b1 = b1.div(Decimal.pow(2.041, getBuyableAmount("c", 33).sub(100).max(0))).max(1)
                         return [b0, b1, b2]
                 },
         },

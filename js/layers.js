@@ -1457,6 +1457,8 @@ addLayer("c", {
 
                                                 exp = exp.times(CURRENT_BUYABLE_EFFECTS["c23"])
                 if (hasMilestone("c", 27))      exp = exp.times(10)
+                if (hasMilestone("c", 29))      exp = exp.times(2.5)
+                if (hasMilestone("c", 30))      exp = exp.times(getBuyableAmount("c", 33).max(40).log(40).pow(getBuyableAmount("c", 33).sub(94).max(0).min(3)))
 
                 let ret = amt.times(2).plus(1).pow(exp)
 
@@ -2037,13 +2039,73 @@ addLayer("c", {
                                 return "Reward: Raise Capybara effect to the tenth power and each C 33 after 65 divides C 22's linear cost base by 1.4 (min 1)."
                         },
                 }, // hasMilestone("c", 27)
+                28: {
+                        requirementDescription(){
+                                return "1e11,116 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e11116")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Raise B 11 base to sqrt(C 33) (exponent becomes .76 at 69 C 33s)."
+                        },
+                }, // hasMilestone("c", 28)
+                29: {
+                        requirementDescription(){
+                                return "1e11,363 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e11363")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Multiply Capybara effect exponent by 2.5, each C 33 after 74 adds .0008 to the C 31 base, and each C 33 after 72 to the .8 subtracts 6 from the C 13 linear cost base (min 15)."
+                        },
+                }, // hasMilestone("c", 29)
+                30: {
+                        requirementDescription(){
+                                return "1e12,896 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e12896")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: log40(C 33s)<sup>min(3, C 33 - 94)</sup> multiplies Capybara effect exponent."
+                        },
+                }, // hasMilestone("c", 30)
+                31: {
+                        requirementDescription(){
+                                return "1e14,001 Capybaras"
+                        },
+                        done(){
+                                return player.c.points.gte("1e14001")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Each C 33 after 100 divides its linear cost base by 2.041 (min 1)."
+                        },
+                }, // hasMilestone("c", 31)
         },
         challenges: {
                 11: {
                         name: "Challenge?",
                         goal(){
                                 let id = player.c.challenges[11]
-                                return Decimal.pow(10, [4.428e9, 5.305e9, 5.777e9, 6.269e9, 6.7821e9, 3.586e10, 3.878e10, 4.028e10, 4.181e10, 4.337e10][id])
+                                let x = [
+                                        4.428e9, 5.305e9, 5.777e9, 6.269e9, 6.7821e9, 
+                                        3.586e10, 3.878e10, 4.028e10, 4.181e10, 4.337e10, 
+                                        7.432e11, 7.702e11, 7.975e11, 8.533e11, 8.963e11]
+                                return Decimal.pow(10, x[id])
                         },
                         canComplete: () => player.b.points.gte(tmp.c.challenges[11].goal),
                         fullDisplay(){
@@ -2051,7 +2113,7 @@ addLayer("c", {
                                 a += "Goal: " + format(tmp.c.challenges[11].goal, 4) + " Beavers" + br2
                                 a += "Reward: Add " + format(tmp.c.challenges[11].rewardEffect) + br
                                 a += "to the C 11, C 22, and C 33 bases."
-                                return a + br2 + "Completions: " + player.c.challenges[11] + "/10"
+                                return a + br2 + "Completions: " + player.c.challenges[11] + "/15"
                         },
                         rewardEffect(){
                                 return new Decimal(player.c.challenges[11] / 100)
@@ -2060,7 +2122,7 @@ addLayer("c", {
                                 return hasUpgrade("b", 45)
                         },
                         countsAs: [],
-                        completionLimit: 10,
+                        completionLimit: 15,
                 }, // inChallenge("c", 11)
                 12: {
                         name: "Challenge!",
