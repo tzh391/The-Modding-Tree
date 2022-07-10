@@ -126,7 +126,7 @@ addLayer("a", {
         baseAmount() {return player.points.floor()}, // Get the current amount of baseResource
         type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
         getResetGain() {
-                return getGeneralizedPrestigeGain("a")
+                return getGeneralizedPrestigeGain("a").pow(hasMilestone("d", 1) + 1)
         },
         getBaseDiv(){
                 let ret = decimalOne
@@ -184,7 +184,7 @@ addLayer("a", {
                 data.best = data.best.max(data.points)
                 doPassiveGain("a", diff)
                 
-                if (hasMilestone("b", 3) || hasMilestone("b", 1) && (player.c.best.gt(0) /*|| player.d.unlocked */)) {
+                if (hasMilestone("b", 3) || player.c.unlocked) {
                         handleGeneralizedBuyableAutobuy(diff, "a")
                 } else {
                         data.abtime = 0
@@ -461,7 +461,7 @@ addLayer("a", {
                         },
                         cost: new Decimal("e6e25"),
                         unlocked(){
-                                return hasUpgrade("b", 23) //|| player.d.unlocked
+                                return hasUpgrade("b", 23) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("a", 51)
                 52: {
@@ -473,7 +473,7 @@ addLayer("a", {
                         },
                         cost: new Decimal("e2e26"),
                         unlocked(){
-                                return hasUpgrade("a", 51) //|| player.d.unlocked
+                                return hasUpgrade("a", 51) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("a", 52)
                 53: {
@@ -485,7 +485,7 @@ addLayer("a", {
                         },
                         cost: new Decimal("e8.64e26"),
                         unlocked(){
-                                return hasUpgrade("a", 52) //|| player.d.unlocked
+                                return hasUpgrade("a", 52) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("a", 53)
                 54: {
@@ -497,7 +497,7 @@ addLayer("a", {
                         },
                         cost: new Decimal("e4.68e28"),
                         unlocked(){
-                                return hasUpgrade("a", 53) //|| player.d.unlocked
+                                return hasUpgrade("a", 53) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("a", 54)
                 55: {
@@ -509,7 +509,7 @@ addLayer("a", {
                         },
                         cost: new Decimal("e1.28e30"),
                         unlocked(){
-                                return hasUpgrade("a", 54) //|| player.d.unlocked
+                                return hasUpgrade("a", 54) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("a", 55)
         },
@@ -692,7 +692,7 @@ addLayer("a", {
                         }
                 }
 
-                if (!false /*player.d.unlocked*/) { //milestones
+                if (!player.d.unlocked) { //milestones
                         let keptMilestones = 0
                         if (hasMilestone("b", 2)) keptMilestones += player.b.times
                         if (!false) {
@@ -800,7 +800,7 @@ addLayer("b", {
                 data.best = data.best.max(data.points)
                 doPassiveGain("b", diff)
                 
-                if (hasMilestone("c", 1)) {
+                if (hasMilestone("c", 1) || player.d.unlocked) {
                         handleGeneralizedBuyableAutobuy(diff, "b")
                 } else {
                         data.abtime = 0
@@ -958,7 +958,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("ee6"),
                         unlocked(){
-                                return hasUpgrade("c", 22) 
+                                return hasUpgrade("c", 22) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 31)
                 32: {
@@ -971,7 +971,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("e39.9e6"),
                         unlocked(){
-                                return hasUpgrade("b", 31)
+                                return hasUpgrade("b", 31) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 32)
                 33: {
@@ -984,7 +984,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("e157e6"),
                         unlocked(){
-                                return hasUpgrade("b", 32)
+                                return hasUpgrade("b", 32) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 33)
                 34: {
@@ -997,7 +997,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("e737.5e6"),
                         unlocked(){
-                                return hasUpgrade("b", 33)
+                                return hasUpgrade("b", 33) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 34)
                 35: {
@@ -1010,7 +1010,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("e4025e6"),
                         unlocked(){
-                                return hasUpgrade("b", 34)
+                                return hasUpgrade("b", 34) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 35)
                 41: {
@@ -1023,7 +1023,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("e1.62e10"),
                         unlocked(){
-                                return hasUpgrade("b", 35)
+                                return hasUpgrade("b", 35) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 41)
                 42: {
@@ -1036,7 +1036,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("e6.75e10"),
                         unlocked(){
-                                return hasUpgrade("b", 41) && player.c.best.gte("1e4989") //|| player.d.unlocked
+                                return hasUpgrade("b", 41) && player.c.best.gte("1e4989") || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 42)
                 43: {
@@ -1049,7 +1049,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("e2.01e11"),
                         unlocked(){
-                                return hasUpgrade("b", 42) && player.c.best.gte("1e5577") //|| player.d.unlocked
+                                return hasUpgrade("b", 42) && player.c.best.gte("1e5577") || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 43)
                 44: {
@@ -1062,7 +1062,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("e9.94e11"),
                         unlocked(){
-                                return hasUpgrade("b", 42) && player.c.best.gte("1e6614") //|| player.d.unlocked
+                                return hasUpgrade("b", 42) && player.c.best.gte("1e6614") || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 44)
                 45: {
@@ -1075,7 +1075,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("e9.94e11"),
                         unlocked(){
-                                return hasUpgrade("b", 42) && player.c.best.gte("1e6614") //|| player.d.unlocked
+                                return hasUpgrade("b", 42) && player.c.best.gte("1e6614") || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 45)
         },
@@ -1122,7 +1122,6 @@ addLayer("b", {
                                 return true
                         },
                         effectDescription(){
-                                if (/*player.d.unlocked ||*/ player.c.best.gt(0)) return "Reward: A13 gives free A11 levels" + makeRed(" and autobuy Alligator buyables") + "."
                                 return "Reward: A13 gives free A11 levels."
                         },
                 }, // hasMilestone("b", 1)
@@ -1478,7 +1477,7 @@ addLayer("c", {
                 data.best = data.best.max(data.points)
                 doPassiveGain("c", diff)
                 
-                if (hasUpgrade("b", 31)) {
+                if (hasUpgrade("b", 31) || hasMilestone("d", 1)) {
                         handleGeneralizedBuyableAutobuy(diff, "c")
                 } else {
                         data.abtime = 0
@@ -1508,7 +1507,7 @@ addLayer("c", {
                         },
                         cost: new Decimal(100),
                         unlocked(){
-                                return true //|| player.d.unlocked
+                                return true
                         }, 
                 }, // hasUpgrade("c", 11)
                 12: {
@@ -1521,7 +1520,7 @@ addLayer("c", {
                         },
                         cost: new Decimal(3e7),
                         unlocked(){
-                                return hasUpgrade("c", 11) //|| player.d.unlocked
+                                return hasUpgrade("c", 11) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 12)
                 13: {
@@ -1534,7 +1533,7 @@ addLayer("c", {
                         },
                         cost: new Decimal(3e9),
                         unlocked(){
-                                return hasUpgrade("c", 12) //|| player.d.unlocked
+                                return hasUpgrade("c", 12) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 13)
                 14: {
@@ -1547,7 +1546,7 @@ addLayer("c", {
                         },
                         cost: new Decimal(3e12),
                         unlocked(){
-                                return hasUpgrade("c", 13) //|| player.d.unlocked
+                                return hasUpgrade("c", 13) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 14)
                 15: {
@@ -1560,7 +1559,7 @@ addLayer("c", {
                         },
                         cost: new Decimal(3e14),
                         unlocked(){
-                                return hasUpgrade("c", 14) //|| player.d.unlocked
+                                return hasUpgrade("c", 14) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 15)
                 21: {
@@ -1573,7 +1572,7 @@ addLayer("c", {
                         },
                         cost: new Decimal(3e30),
                         unlocked(){
-                                return hasUpgrade("c", 15) //|| player.d.unlocked
+                                return hasUpgrade("c", 15) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 21)
                 22: {
@@ -1586,7 +1585,7 @@ addLayer("c", {
                         },
                         cost: new Decimal(3e60),
                         unlocked(){
-                                return hasUpgrade("c", 21) //|| player.d.unlocked
+                                return hasUpgrade("c", 21) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 22)
                 23: {
@@ -1599,7 +1598,7 @@ addLayer("c", {
                         },
                         cost: new Decimal("3e1651"),
                         unlocked(){
-                                return hasUpgrade("c", 22) //|| player.d.unlocked
+                                return hasUpgrade("c", 22) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 23)
                 24: {
@@ -1612,7 +1611,7 @@ addLayer("c", {
                         },
                         cost: new Decimal("3e4461"),
                         unlocked(){
-                                return hasUpgrade("c", 23) //|| player.d.unlocked
+                                return hasUpgrade("c", 23) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 24)
                 25: {
@@ -1625,7 +1624,7 @@ addLayer("c", {
                         },
                         cost: new Decimal("3e5765"),
                         unlocked(){
-                                return hasUpgrade("c", 24) //|| player.d.unlocked
+                                return hasUpgrade("c", 24) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 25)
         },
@@ -1633,31 +1632,31 @@ addLayer("c", {
                 rows: 3,
                 cols: 3,
                 11: getGeneralizedBuyableData("c", 11, function(){
-                        return hasMilestone("c", 6) //|| player.d.unlocked
+                        return hasMilestone("c", 6) || player.d.unlocked
                         }),     
                 12: getGeneralizedBuyableData("c", 12, function(){
-                        return player.c.buyables[11].gte(6) || hasMilestone("c", 7) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(6) || hasMilestone("c", 7) || player.d.unlocked
                         }),
                 13: getGeneralizedBuyableData("c", 13, function(){
-                        return player.c.buyables[11].gte(125) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(125) || player.d.unlocked
                         }),
                 21: getGeneralizedBuyableData("c", 21, function(){
-                        return hasMilestone("c", 9) //|| player.d.unlocked
+                        return hasMilestone("c", 9) || player.d.unlocked
                         }),
                 22: getGeneralizedBuyableData("c", 22, function(){
-                        return player.c.buyables[11].gte(2030) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(2030) || player.d.unlocked
                         }),
                 23: getGeneralizedBuyableData("c", 23, function(){
-                        return player.c.buyables[11].gte(2550) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(2550) || player.d.unlocked
                         }),
                 31: getGeneralizedBuyableData("c", 31, function(){
-                        return player.c.buyables[11].gte(2800) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(2800) || player.d.unlocked
                         }),
                 32: getGeneralizedBuyableData("c", 32, function(){
-                        return player.c.buyables[11].gte(3300) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(3300) || player.d.unlocked
                         }),
                 33: getGeneralizedBuyableData("c", 33, function(){
-                        return player.c.buyables[11].gte(3620) //|| player.d.unlocked
+                        return player.c.buyables[11].gte(3620) || player.d.unlocked
                         }),
         },
         milestones: {
@@ -1672,6 +1671,7 @@ addLayer("c", {
                                 return true
                         },
                         effectDescription(){
+                                if (player.d.unlocked) return "Reward: A 22 gives free A 12 levels and autobuy " + makeRed("each") + " Beaver buyable once per second."
                                 return "Reward: A 22 gives free A 12 levels and autobuy a Beaver buyable once per second."
                         },
                 }, // hasMilestone("c", 1)
@@ -1714,7 +1714,7 @@ addLayer("c", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Keep an reset per reset, resets multiply Beaver autobuy times per second, and B 32 gives free levels to B 22."
+                                return "Reward: Keep a reset per reset, resets multiply Beaver autobuy times per second, and B 32 gives free levels to B 22."
                         },
                 }, // hasMilestone("c", 4)
                 5: {
@@ -2184,7 +2184,7 @@ addLayer("c", {
                                 ],
                                 "buyables"],
                         unlocked(){
-                                return hasMilestone("c", 6) //|| player.d.unlocked
+                                return hasMilestone("c", 6) || player.d.unlocked
                         },
                 },
                 "Milestones": {
@@ -2198,7 +2198,7 @@ addLayer("c", {
                                 "milestones"
                         ],
                         unlocked(){
-                                return player.c.times > 0 //|| player.d.unlocked
+                                return player.c.times > 0 || player.d.unlocked
                         },
                 },
                 "Challenges": {
@@ -2212,14 +2212,15 @@ addLayer("c", {
                                 "challenges"
                         ],
                         unlocked(){
-                                return hasUpgrade("b", 45) //|| player.d.unlocked
+                                return hasUpgrade("b", 45) || player.d.unlocked
                         },
                 },
                 "Info": {
                         content: [
-                                ["display-text", "Unlocking a layer makes layers two above it get passive generation."],
-                                ["display-text", "Unlocking a layer makes layers three above it keep all milestones."],
-                                ["display-text", "Unlocking a layer makes layers four above it keep all upgrades."],
+                                ["display-text", "Unlocking a layer makes layers...<br>" + makeRed("2") + " above it get passive generation and autobuying."],
+                                ["display-text", makeRed("3") + " above it keep all milestones and makes the autobuyer buy all buyables at once."],
+                                ["display-text", makeRed("4") + " above it keep all upgrades."],
+                                ["display-text", function(){return player.d.unlocked ? makeRed("5") + " above it keep all challenges." : ""}],
                         ],
                         unlocked(){
                                 return true
@@ -2227,14 +2228,14 @@ addLayer("c", {
                 },
         },
         onPrestige(gain){
-                player.c.times += /*player.d.best.gt(0)*/ false ? 3 : 1
+                player.c.times += player.d.best.gt(0) ? 3 : 1
         },
         doReset(layer){
                 let data = player.c
                 if (layer == "c") data.time = 0
                 if (!getsReset("c", layer)) return
                 
-                data.times = 0
+                data.times = Math.min(hasMilestone("d", 2) ? player.d.times : 0, data.times)
 
                 if (!false/*player.g.unlocked*/) { //upgrades
                         let keptUpgrades = 0
@@ -2245,6 +2246,278 @@ addLayer("c", {
                 }
 
                 if (!false/*player.f.unlocked*/) { //milestones
+                        let keptMilestones = 0
+                        if (false) keptMilestones += 0
+                        if (!false) {
+                                data.milestones = data.milestones.slice(0, keptMilestones)
+                        }
+                }
+
+                //resources
+                data.points = decimalZero
+                data.total = decimalZero
+                data.best = decimalZero
+
+                //buyables
+                let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
+                for (let j = 0; j < resetBuyables.length; j++) {
+                        data.buyables[resetBuyables[j]] = decimalZero
+                }
+
+                //challenges
+                let resetChallenges = [11, 12]
+                for (let j = 0; j < resetChallenges.length; j++) {
+                        data.challenges[resetChallenges[j]] = 0
+                }
+        },
+})
+
+
+
+addLayer("d", {
+        name: "D---", // This is optional, only used in a few places, If absent it just uses the layer id.
+        symbol: "D", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        row: 3, // Row the layer is in on the tree (0 is the first row)
+        startData() { return {
+                unlocked: false,
+		points: decimalZero,
+                best: decimalZero,
+                total: decimalZero,
+                abtime: 0,
+                time: 0,
+                times: 0,
+                autotimes: 0,
+        }},
+        color: "#6B46B9",
+        branches: [],
+        requires: new Decimal("1e15020"), // Can be a function that takes requirement increases into account
+        resource: "D----", // Name of prestige currency
+        baseResource: "Capybaras", // Name of resource prestige is based on
+        baseAmount() {return player.c.points.floor()}, // Get the current amount of baseResource
+        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        getResetGain() {
+                return getGeneralizedPrestigeGain("d")
+        },
+        getBaseDiv(){
+                let ret = new Decimal("1e14020")
+                
+                return ret
+        },
+        getGainExp(){
+                let ret = new Decimal(5)
+
+                return ret
+        },
+        getGainMultPre(){
+                let ret = new Decimal(.001)
+
+                return ret
+        },
+        getGainMultPost(){
+                let ret = getGeneralizedInitialPostMult("d")
+
+                return ret
+        },
+        effect(){
+                if (!isPrestigeEffectActive("d")) return decimalOne
+
+                let amt = player.d.points
+
+                let exp = amt.plus(999).log10().min(10)
+
+                let ret = amt.plus(1).pow(exp)
+
+                return ret
+        },
+        effectDescription(){
+                return getGeneralizedEffectDisplay("d")
+        },
+        getNextAt(){
+                return getGeneralizedNextAt("d")
+        },
+        update(diff){
+                let data = player.d
+
+                if (tmp.d.getResetGain.gt(0)) data.unlocked = true
+
+                data.best = data.best.max(data.points)
+                doPassiveGain("d", diff)
+                
+                if (false) {
+                        handleGeneralizedBuyableAutobuy(diff, "d")
+                } else {
+                        data.abtime = 0
+                }
+                data.time += diff
+        },
+        layerShown(){return player.c.best.gte("1e15000") || player.d.unlocked},
+        prestigeButtonText(){
+                if (isPassiveGainActive("d")) return ""
+                return getGeneralizedPrestigeButtonText("d")
+        },
+        canReset(){
+                return player.d.time >= 2 && !isPassiveGainActive("d") && tmp.d.getResetGain.gt(0)
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                11: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D-----"
+                        },
+                        description(){
+                                let a = "Stuff"
+                                return a
+                        },
+                        cost: new Decimal(100),
+                        unlocked(){
+                                return true //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("d", 11)
+        },
+        buyables: {
+                rows: 3,
+                cols: 3,
+                /*
+                11: getGeneralizedBuyableData("c", 11, function(){
+                        return hasMilestone("c", 6) //|| player.e.unlocked
+                        }),
+                /*  
+                12: getGeneralizedBuyableData("c", 12, function(){
+                        return player.c.buyables[11].gte(6) || hasMilestone("c", 7) //|| player.e.unlocked
+                        }),
+                /*
+                13: getGeneralizedBuyableData("c", 13, function(){
+                        return player.c.buyables[11].gte(125) //|| player.e.unlocked
+                        }),
+                /*
+                21: getGeneralizedBuyableData("c", 21, function(){
+                        return hasMilestone("c", 9) //|| player.e.unlocked
+                        }),
+                /*
+                22: getGeneralizedBuyableData("c", 22, function(){
+                        return player.c.buyables[11].gte(2030) //|| player.e.unlocked
+                        }),
+                /*
+                23: getGeneralizedBuyableData("c", 23, function(){
+                        return player.c.buyables[11].gte(2550) //|| player.e.unlocked
+                        }),
+                /*
+                31: getGeneralizedBuyableData("c", 31, function(){
+                        return player.c.buyables[11].gte(2800) //|| player.e.unlocked
+                        }),
+                /*
+                32: getGeneralizedBuyableData("c", 32, function(){
+                        return player.c.buyables[11].gte(3300) //|| player.e.unlocked
+                        }),
+                /*
+                33: getGeneralizedBuyableData("c", 33, function(){
+                        return player.c.buyables[11].gte(3620) //|| player.e.unlocked
+                        }),
+                /* */
+        },
+        milestones: {
+                1: {
+                        requirementDescription(){
+                                return "1 D-- reset"
+                        },
+                        done(){
+                                return player.d.times >= 1
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Autobuy Capybara buyables, each Capybara autobuy tick buys each buyable once, square Alligator gain, and subtract .01 from the C 11 base cost."
+                        },
+                }, // hasMilestone("d", 1)
+                2: {
+                        requirementDescription(){
+                                return "2 D-- resets"
+                        },
+                        done(){
+                                return player.d.times >= 2
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Bulk 2x Beaver and Capybara buyables, per reset keep a Capybara reset, and C 32's effect past .05 adds to C 22's base."
+                        },
+                }, // hasMilestone("d", 2)
+        },
+        tabFormat: {
+                "Upgrades": {
+                        content: ["main-display",
+                                ["prestige-button", "", function (){ return isPassiveGainActive("d") ? {'display': 'none'} : {}}],
+                                ["display-text",
+                                        function() {
+                                                return shiftDown ? "Your best D--- is " + format(player.d.best) : "You have done " + formatWhole(player.d.times) + " D--- resets"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (isPassiveGainActive("d")) {
+                                                        if (player.shiftAlias) return "D--- gain formula is " + getGeneralizedPrestigeButtonText("d")
+                                                        return "You are gaining " + format(tmp.d.getResetGain) + " D--- per second"
+                                                }
+                                                return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.d.time)) + ")" 
+                                        },
+                                ],
+                                "blank", 
+                                "upgrades"],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Buyables": {
+                        content: ["main-display",
+                                ["display-text",
+                                        function() {
+                                                if (isPassiveGainActive("d")) return "You are gaining " + format(tmp.d.getResetGain) + " D--- per second"
+                                                return ""
+                                        },
+                                ],
+                                "buyables"],
+                        unlocked(){
+                                return false //|| player.e.unlocked
+                        },
+                },
+                "Milestones": {
+                        content: [
+                                "main-display",
+                                ["display-text",
+                                        function() {
+                                                return "You have done " + formatWhole(player.d.times) + " D--- resets"
+                                        }
+                                ],
+                                "milestones"
+                        ],
+                        unlocked(){
+                                return player.d.times > 0 //|| player.e.unlocked
+                        },
+                },
+        },
+        onPrestige(gain){
+                player.d.times += /*player.e.best.gt(0)*/ false ? 3 : 1
+        },
+        doReset(layer){
+                let data = player.d
+                if (layer == "d") data.time = 0
+                if (!getsReset("d", layer)) return
+                
+                data.times = 0
+
+                if (!false/*player.h.unlocked*/) { //upgrades
+                        let keptUpgrades = 0
+                        if (false) keptUpgrades += 0
+                        if (!false) {
+                                data.upgrades = data.upgrades.slice(0, keptUpgrades)
+                        }
+                }
+
+                if (!false/*player.g.unlocked*/) { //milestones
                         let keptMilestones = 0
                         if (false) keptMilestones += 0
                         if (!false) {

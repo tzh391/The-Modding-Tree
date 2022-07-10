@@ -32,8 +32,8 @@ function isPassiveGainActive(layer){
         if (layer == "f") return false
         if (layer == "e") return false
         if (layer == "d") return false
-        if (layer == "c") return hasUpgrade("c", 13)
-        if (layer == "b") return hasUpgrade("a", 32)
+        if (layer == "c") return hasUpgrade("c", 13) //|| player.e.unlocked
+        if (layer == "b") return hasUpgrade("a", 32) || player.d.unlocked
         if (layer == "a") return hasUpgrade("a", 14) || player.c.unlocked
         console.log("issue")
 }

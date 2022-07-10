@@ -766,6 +766,7 @@ var MAIN_BUYABLE_DATA = {
                         let b1 = new Decimal(1.3)
                         let b2 = new Decimal(1.001) // 2**x
                         if (hasUpgrade("c", 23)) b0 = decimalOne
+                        if (hasMilestone("d", 1)) b1 = b1.sub(.01)
                         if (hasMilestone("c", 14)) {
                                 b1 = b1.sub(getBuyableAmount("c", 22).div(1e4)).max(1)
                                 if (hasUpgrade("b", 42) && !hasUpgrade("b", 45)) {
@@ -889,6 +890,15 @@ var MAIN_BUYABLE_DATA = {
                                 type: "add",
                                 amount(){
                                         return tmp.c.challenges[11].rewardEffect
+                                },
+                        },
+                        3: {
+                                active(){
+                                        return hasMilestone("d", 2)
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["c32"].sub(.05).max(0)
                                 },
                         },
                 },
@@ -1563,8 +1573,12 @@ function getABBulk(layer){
                 if (hasMilestone("c", 5))       amt = amt.times(2)
                 if (hasUpgrade("c", 12))        amt = amt.times(player.c.upgrades.length)
                 if (hasMilestone("c", 18))      amt = amt.times(2)
+                if (hasMilestone("d", 2))       amt = amt.times(2)
                 if (hasUpgrade("a", 51))        amt = amt.times(Decimal.pow(2, player.a.upgrades.filter(x => x < 60 && x > 50).length))
                 if (hasUpgrade("b", 41))        amt = amt.pow(2)
+        }
+        if (layer == "c") {
+                if (hasMilestone("d", 2))       amt = amt.times(2)
         }
         return amt
 }
@@ -1577,12 +1591,17 @@ function getABSpeed(layer){
         if (layer == "b") {
                 if (hasMilestone("c", 4)) diffmult *= Math.max(1, player.c.times)
         }
+        if (layer == "c"){
+                // do multiplications first
+                if (hasMilestone("d", 1) && hasUpgrade("b", 31)) diffmult += 1
+        }
         return diffmult
 }
 
 function canBuySimultaniously(layer){
-        if (layer == "b")               return hasMilestone("c", 3)
-        if (layer == "a")               return hasMilestone("b", 4)
+        if (layer == "c")               return hasMilestone("d", 1) //|| player.f.unlocked
+        if (layer == "b")               return hasMilestone("c", player.d.unlocked ? 1 : 3) //|| player.e.unlocked
+        if (layer == "a")               return hasMilestone("b", 4) || player.d.unlocked
         return false
 }
 
