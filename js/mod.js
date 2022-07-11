@@ -39,7 +39,7 @@ let changelog = `<h1>Changelog:</h1><br>
 	<br><h3 style='color: #CC0000'>v0.028</h3><br>
 		- Balanced until 3000 Ducks.<br>
 		- Added a new layer, Ducks!<br>
-		- Added six Duck milestones.<br>
+		- Added seven Duck milestones.<br>
 	<br><h3 style='color: #CC0000'>v0.027</h3><br>
 		- Balanced until 1e15,020 Capybaras.<br>
 		- Added four Capybara milestones.<br>

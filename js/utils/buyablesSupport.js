@@ -844,6 +844,7 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.004) // 2**x
                         if (hasUpgrade("a", 51)) b0 = decimalOne
                         if (hasMilestone("c", 29)) b1 = b1.sub(getBuyableAmount("c", 33).sub(72).max(0).pow(.8).times(6)).max(15)
+                        if (hasUpgrade("d", 11)) b1 = b1.sub(getBuyableAmount("c", 33).sub(150).max(0).div(10)).max(1)
                         return [b0, b1, b2]
                 },
         },
@@ -859,7 +860,7 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "add",
                                 amount(){
-                                        return CURRENT_BUYABLE_EFFECTS["c32"].min(.07)
+                                        return CURRENT_BUYABLE_EFFECTS["c32"].min(hasUpgrade("d", 13) ? .27 : .07)
                                 },
                         },
                 },
@@ -926,6 +927,8 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
                 c23: {active:() => hasMilestone("c", 12)},
+                c31: {active:() => hasUpgrade("c", 32)},
+                c32: {active:() => player.c.challenges[21] >= 3},
         },
         c23: {
                 name: "C 23",
@@ -954,6 +957,8 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("c", 16)) if (hasUpgrade("c", 24)) b0 = b0.div(getBuyableAmount("c", 31).pow10()).max(1)
                         return [b0, b1, b2]
                 },
+                c31: {active:() => hasUpgrade("d", 14)},
+                c32: {active:() => player.c.challenges[21] >= 2},
         },
         c31: {
                 name: "C 31",
@@ -979,6 +984,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("c", 26)) b1 = b1.div(Decimal.pow(40, getBuyableAmount("c", 33).sub(54).max(0).pow(.8))).max(1)
                         return [b0, b1, b2]
                 },
+                c32: {active:() => player.c.challenges[21] >= 1},
         },
         c32: {
                 name: "C 32",
@@ -994,8 +1000,9 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("c", 25)) b0 = b0.div(getBuyableAmount("c", 33).pow10()).max(1)
                         if (hasMilestone("c", 19)) b1 = b1.sub(getBuyableAmount("b", 33)).max(1e5)
                         if (hasMilestone("d", 4)) {
-                                b1 = b1.div(Decimal.pow(1.01, player.d.times ** 1.5)).max(1)
+                                b1 = b1.div(Decimal.pow(1.02, player.d.times ** 1.5)).max(1)
                         }
+                        if (player.d.everU15) b0 = decimalOne
                         return [b0, b1, b2]
                 },
         },
@@ -1023,13 +1030,27 @@ var MAIN_BUYABLE_DATA = {
                                         return .015 * Math.max(player.c.milestones.length - 21, 0)
                                 },
                         },
+                        3: {
+                                active(){
+                                        return player.c.challenges[21] >= 4
+                                },
+                                type: "add",
+                                amount(){
+                                        return (player.c.challenges[21] - 3)
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e6067")
                         let b1 = new Decimal(1e69)
                         let b2 = new Decimal(1.256) // 2**x
-                        if (hasMilestone("c", 31)) b1 = b1.div(Decimal.pow(2.041, getBuyableAmount("c", 33).sub(100).max(0))).max(1e58)
-                        if (hasMilestone("d", 5)) b1 = b1.div(Decimal.pow10(player.d.milestones.length)).max(1)
+                        if (hasMilestone("c", 31))      b1 = b1.div(Decimal.pow(2.041, getBuyableAmount("c", 33).sub(100).max(0))).max(1e58)
+                        if (hasMilestone("d", 5)){
+                                b1 = b1.div(Decimal.pow10(player.d.milestones.length)).max(1)
+                                if (hasUpgrade("b", 51)) b1 = b1.div(Decimal.pow10(player.d.upgrades.length)).max(1)
+                        }
+                        if (hasUpgrade("d", 13))        b1 = b1.div(Decimal.pow10(player.d.points.div(1e10).max(10).log10().floor())).max(1)
+                        if (hasMilestone("d", 7)) b0 = b0.div(player.d.points.max(1).pow(player.d.times)).max(1)
                         return [b0, b1, b2]
                 },
         },
@@ -1587,6 +1608,7 @@ function getABBulk(layer){
                 if (hasUpgrade("c", 12))        amt = amt.times(player.c.upgrades.length)
                 if (hasMilestone("c", 18))      amt = amt.times(2)
                 if (hasMilestone("d", 2))       amt = amt.times(2)
+                if (hasUpgrade("d", 14))        amt = amt.times(3)
                 if (hasUpgrade("a", 51))        amt = amt.times(Decimal.pow(2, player.a.upgrades.filter(x => x < 60 && x > 50).length))
                 if (hasUpgrade("b", 41))        amt = amt.pow(2)
         }
@@ -1623,6 +1645,10 @@ function canBuySimultaniously(layer){
 
 function getMaxBuyablesAmount(layer){
         let ret = Decimal.pow(10, 20)
+
+        if (layer == "a") {
+                if (hasUpgrade("b", 51)) ret = ret.pow(5)
+        }
         return ret
 }
 

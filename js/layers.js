@@ -755,6 +755,8 @@ addLayer("b", {
         getGainMultPre(){
                 let ret = new Decimal(.05)
 
+                if (inChallenge("c", 21))       return ret
+
                 if (hasUpgrade("b", 23))        ret = ret.times(20)
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["c22"])
 
@@ -1078,6 +1080,19 @@ addLayer("b", {
                                 return hasUpgrade("b", 44) && player.c.best.gte("1e7182") || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 45)
+                51: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>B-a-e-"
+                        },
+                        description(){
+                                let a = "Alligator buyable max amount is 1e100 and Duck upgrades count towards Duck milestone 5"
+                                return a
+                        },
+                        cost: new Decimal("e2.39e18"),
+                        unlocked(){
+                                return hasUpgrade("d", 15) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("b", 51)
         },
         buyables: {
                 rows: 3,
@@ -1427,9 +1442,10 @@ addLayer("c", {
         getGainMultPre(){
                 let ret = new Decimal(.01)
 
-                if (hasUpgrade("a", 52)) ret = ret.times(player.a.upgrades.filter(x => x > 50 && x < 60).length)
+                if (hasUpgrade("a", 52))        ret = ret.times(player.a.upgrades.filter(x => x > 50 && x < 60).length)
                                         
-                                        ret = ret.times(CURRENT_BUYABLE_EFFECTS["c31"])
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["c31"])
+                if (hasUpgrade("d", 15))        ret = ret.times(2)
 
                 return ret
         },
@@ -1458,6 +1474,7 @@ addLayer("c", {
                 if (hasMilestone("c", 27))      exp = exp.times(10)
                 if (hasMilestone("c", 29))      exp = exp.times(2.5)
                 if (hasMilestone("c", 30))      exp = exp.times(getBuyableAmount("c", 33).max(40).log(40).pow(getBuyableAmount("c", 33).sub(94).max(0).min(3)))
+                if (hasUpgrade("c", 31))        exp = exp.times(player.d.points.max(10).log10())
 
                 let ret = amt.times(2).plus(1).pow(exp)
 
@@ -1627,6 +1644,32 @@ addLayer("c", {
                                 return hasUpgrade("c", 24) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("c", 25)
+                31: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>C--y-ara"
+                        },
+                        description(){
+                                let a = "log10(Ducks) multiplies the Capybara effect exponent"
+                                return a
+                        },
+                        cost: new Decimal("3e37619"),
+                        unlocked(){
+                                return hasUpgrade("d", 13) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("c", 31)
+                32: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Cap--ara"
+                        },
+                        description(){
+                                let a = "Per Duck upgrade Duck upgrades multiply Duck gain and C 31 gives free C 22 levels"
+                                return a
+                        },
+                        cost: new Decimal("3e39714"),
+                        unlocked(){
+                                return hasUpgrade("c", 31) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("c", 32)
         },
         buyables: {
                 rows: 3,
@@ -2149,6 +2192,25 @@ addLayer("c", {
                         countsAs: [],
                         completionLimit: 5,
                 }, // inChallenge("c", 12)
+                21: {
+                        name: "Challenge!?",
+                        goal(){
+                                let id = player.c.challenges[21]
+                                return Decimal.pow(10, [6.7e13, 7.85e13, 1.53e14, 2e14, 2.73e14, 5.46e16, 6.36e16, 1.26e17, 1.462e17][id])
+                        },
+                        canComplete: () => player.b.points.gte(tmp.c.challenges[21].goal),
+                        fullDisplay(){
+                                let a = "Base beaver gain multipliers are disabled" + br 
+                                a += "Goal: " + format(tmp.c.challenges[21].goal, 4) + " Beavers" + br2
+                                a += "Reward: C 32 gives free C 31/23/22 levels completions after 3 add 1 to the C 33 base"
+                                return a + br2 + "Completions: " + player.c.challenges[21] + "/9"
+                        },
+                        unlocked(){
+                                return hasUpgrade("d", 12)
+                        },
+                        countsAs: [],
+                        completionLimit: 9,
+                }, // inChallenge("c", 21)
         },
         tabFormat: {
                 "Upgrades": {
@@ -2289,6 +2351,7 @@ addLayer("d", {
                 time: 0,
                 times: 0,
                 autotimes: 0,
+                everU15: false,
         }},
         color: "#6B46B9",
         branches: [],
@@ -2308,6 +2371,8 @@ addLayer("d", {
         getGainExp(){
                 let ret = new Decimal(5)
 
+                if (hasUpgrade("d", 11)) ret = ret.plus(player.d.upgrades.length)
+
                 return ret
         },
         getGainMultPre(){
@@ -2318,6 +2383,8 @@ addLayer("d", {
         getGainMultPost(){
                 let ret = getGeneralizedInitialPostMult("d")
 
+                if (hasUpgrade("c", 32))        ret = ret.times(Decimal.pow(player.d.upgrades.length, player.d.upgrades.length))
+
                 return ret
         },
         effect(){
@@ -2325,7 +2392,7 @@ addLayer("d", {
 
                 let amt = player.d.points
 
-                let exp = amt.plus(999).log10().min(10)
+                let exp = amt.plus(999).log10().min(100)
 
                 let ret = amt.plus(1).pow(exp)
 
@@ -2351,6 +2418,8 @@ addLayer("d", {
                         data.abtime = 0
                 }
                 data.time += diff
+
+                if (hasUpgrade("d", 15)) data.everU15 = true
         },
         layerShown(){return player.c.best.gte("1e15000") || player.d.unlocked},
         prestigeButtonText(){
@@ -2368,14 +2437,66 @@ addLayer("d", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>D-cks"
                         },
                         description(){
-                                let a = "Stuff"
+                                let a = "C 13 linear cost base is .1 less per C 33 past 150 and each upgrade adds 1 to the gain exponent"
                                 return a
                         },
-                        cost: new Decimal(1e100),
+                        cost: new Decimal(1e4),
                         unlocked(){
                                 return true //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("d", 11)
+                12: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Du-ks"
+                        },
+                        description(){
+                                let a = "Remove the ability to prestige for Ducks but gain 100% of your ducks on reset and a reset per second"
+                                return a
+                        },
+                        cost: new Decimal(1e5),
+                        unlocked(){
+                                return player.d.times >= 70 //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("d", 12)
+                13: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D--ks"
+                        },
+                        description(){
+                                let a = "C 32's boost to C 21's cap is now .27 and each OoM of Ducks after 1e10 divides C 33's linear cost base by 10"
+                                return a
+                        },
+                        cost: new Decimal(1e10),
+                        unlocked(){
+                                return hasUpgrade("d", 12) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("d", 13)
+                14: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Duc-s"
+                        },
+                        description(){
+                                let a = "C 31 gives free C 23 levels and triple Beaver bulk amount"
+                                return a
+                        },
+                        cost: new Decimal(5e15),
+                        unlocked(){
+                                return hasUpgrade("d", 13) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("d", 14)
+                15: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D-c-s"
+                        },
+                        description(){
+                                let a = "Permanently remove C 32's base cost and double base Capybara gain"
+                                return a
+                        },
+                        cost: new Decimal(1e20),
+                        unlocked(){
+                                return hasUpgrade("d", 14) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("d", 15)
         },
         buyables: {
                 rows: 3,
@@ -2472,7 +2593,7 @@ addLayer("d", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Keep challenges and per reset<sup>1.5</sup> divide C 32 linear cost base by 1.01 (min 1)."
+                                return "Reward: Keep challenges and per reset<sup>1.5</sup> divide C 32 linear cost base by 1.02 (min 1)."
                         },
                 }, // hasMilestone("d", 4)
                 5: {
