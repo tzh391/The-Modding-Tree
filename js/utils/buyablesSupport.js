@@ -828,6 +828,15 @@ var MAIN_BUYABLE_DATA = {
                                         return player.b.upgrades.filter(x => x > 30).length / 1e4
                                 },
                         },
+                        2: {
+                                active(){
+                                        return hasMilestone("d", 6)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e39)
@@ -984,6 +993,9 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.128) // 2**x
                         if (hasMilestone("c", 25)) b0 = b0.div(getBuyableAmount("c", 33).pow10()).max(1)
                         if (hasMilestone("c", 19)) b1 = b1.sub(getBuyableAmount("b", 33)).max(1e5)
+                        if (hasMilestone("d", 4)) {
+                                b1 = b1.div(Decimal.pow(1.01, player.d.times ** 1.5)).max(1)
+                        }
                         return [b0, b1, b2]
                 },
         },
@@ -1016,7 +1028,8 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e6067")
                         let b1 = new Decimal(1e69)
                         let b2 = new Decimal(1.256) // 2**x
-                        if (hasMilestone("c", 31)) b1 = b1.div(Decimal.pow(2.041, getBuyableAmount("c", 33).sub(100).max(0))).max(1)
+                        if (hasMilestone("c", 31)) b1 = b1.div(Decimal.pow(2.041, getBuyableAmount("c", 33).sub(100).max(0))).max(1e58)
+                        if (hasMilestone("d", 5)) b1 = b1.div(Decimal.pow10(player.d.milestones.length)).max(1)
                         return [b0, b1, b2]
                 },
         },
@@ -1579,6 +1592,8 @@ function getABBulk(layer){
         }
         if (layer == "c") {
                 if (hasMilestone("d", 2))       amt = amt.times(2)
+                if (hasMilestone("d", 5))       amt = amt.times(3)
+                if (hasMilestone("d", 6))       amt = amt.pow(2)
         }
         return amt
 }
@@ -1593,6 +1608,7 @@ function getABSpeed(layer){
         }
         if (layer == "c"){
                 // do multiplications first
+                if (hasMilestone("d", 3)) diffmult *= Math.max(1, player.d.times)
                 if (hasMilestone("d", 1) && hasUpgrade("b", 31)) diffmult += 1
         }
         return diffmult

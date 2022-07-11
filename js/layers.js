@@ -1062,7 +1062,7 @@ addLayer("b", {
                         },
                         cost: new Decimal("e9.94e11"),
                         unlocked(){
-                                return hasUpgrade("b", 42) && player.c.best.gte("1e6614") || player.d.unlocked
+                                return hasUpgrade("b", 43) && player.c.best.gte("1e6614") || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 44)
                 45: {
@@ -1073,9 +1073,9 @@ addLayer("b", {
                                 let a = "Disable B-av-r and unlock a challenge"
                                 return a
                         },
-                        cost: new Decimal("e9.94e11"),
+                        cost: new Decimal("e1.00e12"),
                         unlocked(){
-                                return hasUpgrade("b", 42) && player.c.best.gte("1e6614") || player.d.unlocked
+                                return hasUpgrade("b", 44) && player.c.best.gte("1e7182") || player.d.unlocked
                         }, 
                 }, // hasUpgrade("b", 45)
         },
@@ -2092,7 +2092,7 @@ addLayer("c", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Each C 33 after 100 divides its linear cost base by 2.041 (min 1)."
+                                return "Reward: Each C 33 after 100 divides its linear cost base by 2.041 (min 1e58)."
                         },
                 }, // hasMilestone("c", 31)
         },
@@ -2119,7 +2119,7 @@ addLayer("c", {
                                 return new Decimal(player.c.challenges[11] / 100)
                         },
                         unlocked(){
-                                return hasUpgrade("b", 45)
+                                return hasUpgrade("b", 45) || player.d.unlocked
                         },
                         countsAs: [],
                         completionLimit: 15,
@@ -2144,7 +2144,7 @@ addLayer("c", {
                                 return new Decimal(player.c.challenges[12]).sub(1).max(0).pow(1.4)
                         },
                         unlocked(){
-                                return hasMilestone("c", 20)
+                                return hasMilestone("c", 20) || player.d.unlocked
                         },
                         countsAs: [],
                         completionLimit: 5,
@@ -2239,7 +2239,7 @@ addLayer("c", {
 
                 if (!false/*player.g.unlocked*/) { //upgrades
                         let keptUpgrades = 0
-                        if (false) keptUpgrades += 0
+                        if (hasMilestone("d", 5)) keptUpgrades += player.d.times
                         if (!false) {
                                 data.upgrades = data.upgrades.slice(0, keptUpgrades)
                         }
@@ -2247,7 +2247,7 @@ addLayer("c", {
 
                 if (!false/*player.f.unlocked*/) { //milestones
                         let keptMilestones = 0
-                        if (false) keptMilestones += 0
+                        if (hasMilestone("d", 3)) keptMilestones += player.d.times
                         if (!false) {
                                 data.milestones = data.milestones.slice(0, keptMilestones)
                         }
@@ -2267,6 +2267,7 @@ addLayer("c", {
                 //challenges
                 let resetChallenges = [11, 12]
                 for (let j = 0; j < resetChallenges.length; j++) {
+                        if (hasMilestone("d", 4)) break
                         data.challenges[resetChallenges[j]] = 0
                 }
         },
@@ -2275,7 +2276,7 @@ addLayer("c", {
 
 
 addLayer("d", {
-        name: "D---", // This is optional, only used in a few places, If absent it just uses the layer id.
+        name: "Ducks", // This is optional, only used in a few places, If absent it just uses the layer id.
         symbol: "D", // This appears on the layer's node. Default is the id with the first letter capitalized
         position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
         row: 3, // Row the layer is in on the tree (0 is the first row)
@@ -2292,7 +2293,7 @@ addLayer("d", {
         color: "#6B46B9",
         branches: [],
         requires: new Decimal("1e15020"), // Can be a function that takes requirement increases into account
-        resource: "D----", // Name of prestige currency
+        resource: "Ducks", // Name of prestige currency
         baseResource: "Capybaras", // Name of resource prestige is based on
         baseAmount() {return player.c.points.floor()}, // Get the current amount of baseResource
         type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -2364,13 +2365,13 @@ addLayer("d", {
                 cols: 5,
                 11: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>D-----"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D-cks"
                         },
                         description(){
                                 let a = "Stuff"
                                 return a
                         },
-                        cost: new Decimal(100),
+                        cost: new Decimal(1e100),
                         unlocked(){
                                 return true //|| player.e.unlocked
                         }, 
@@ -2420,7 +2421,7 @@ addLayer("d", {
         milestones: {
                 1: {
                         requirementDescription(){
-                                return "1 D-- reset"
+                                return "1 Duck reset"
                         },
                         done(){
                                 return player.d.times >= 1
@@ -2434,7 +2435,7 @@ addLayer("d", {
                 }, // hasMilestone("d", 1)
                 2: {
                         requirementDescription(){
-                                return "2 D-- resets"
+                                return "2 Duck resets"
                         },
                         done(){
                                 return player.d.times >= 2
@@ -2446,6 +2447,76 @@ addLayer("d", {
                                 return "Reward: Bulk 2x Beaver and Capybara buyables, per reset keep a Capybara reset, and C 32's effect past .05 adds to C 22's base."
                         },
                 }, // hasMilestone("d", 2)
+                3: {
+                        requirementDescription(){
+                                return "3 Duck resets"
+                        },
+                        done(){
+                                return player.d.times >= 3
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Per reset keep a milestone, resets multiplies the Capybara autobuyer speed, and add .0001 to the C 13 base."
+                        },
+                }, // hasMilestone("d", 3)
+                4: {
+                        requirementDescription(){
+                                return "4 Duck resets"
+                        },
+                        done(){
+                                return player.d.times >= 4
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Keep challenges and per reset<sup>1.5</sup> divide C 32 linear cost base by 1.01 (min 1)."
+                        },
+                }, // hasMilestone("d", 4)
+                5: {
+                        requirementDescription(){
+                                return "100 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte(100)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Per reset keep a upgrade, triple Capybara bulk amount, and per milestone divide C 33 linear cost base by 10."
+                        },
+                }, // hasMilestone("d", 5)
+                6: {
+                        requirementDescription(){
+                                return "1000 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte(1000)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Square Capybara bulk amount and add .0001 to the C 13 base."
+                        },
+                }, // hasMilestone("d", 6)
+                7: {
+                        requirementDescription(){
+                                return "200,000 Ducks times Duck resets (+1)"
+                        },
+                        done(){
+                                return player.d.points.times(player.d.times + 1).gte(2e5)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Ducks<sup>Duck resets</sup> divides C 33 cost base."
+                        },
+                }, // hasMilestone("d", 7)
         },
         tabFormat: {
                 "Upgrades": {
@@ -2453,14 +2524,14 @@ addLayer("d", {
                                 ["prestige-button", "", function (){ return isPassiveGainActive("d") ? {'display': 'none'} : {}}],
                                 ["display-text",
                                         function() {
-                                                return shiftDown ? "Your best D--- is " + format(player.d.best) : "You have done " + formatWhole(player.d.times) + " D--- resets"
+                                                return shiftDown ? "Your best Ducks is " + format(player.d.best) : "You have done " + formatWhole(player.d.times) + " Duck resets"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (isPassiveGainActive("d")) {
-                                                        if (player.shiftAlias) return "D--- gain formula is " + getGeneralizedPrestigeButtonText("d")
-                                                        return "You are gaining " + format(tmp.d.getResetGain) + " D--- per second"
+                                                        if (player.shiftAlias) return "Duck gain formula is " + getGeneralizedPrestigeButtonText("d")
+                                                        return "You are gaining " + format(tmp.d.getResetGain) + " Ducks per second"
                                                 }
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.d.time)) + ")" 
                                         },
@@ -2475,7 +2546,7 @@ addLayer("d", {
                         content: ["main-display",
                                 ["display-text",
                                         function() {
-                                                if (isPassiveGainActive("d")) return "You are gaining " + format(tmp.d.getResetGain) + " D--- per second"
+                                                if (isPassiveGainActive("d")) return "You are gaining " + format(tmp.d.getResetGain) + " Ducks per second"
                                                 return ""
                                         },
                                 ],
@@ -2489,7 +2560,7 @@ addLayer("d", {
                                 "main-display",
                                 ["display-text",
                                         function() {
-                                                return "You have done " + formatWhole(player.d.times) + " D--- resets"
+                                                return "You have done " + formatWhole(player.d.times) + " Ducks resets"
                                         }
                                 ],
                                 "milestones"
