@@ -12,7 +12,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.028",
+	num: "0.029",
 	name: "Respecced Reincarnation",
 }
 
@@ -24,18 +24,21 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.d.points.gte("3000")
+	return player.d.points.gte("3e24")
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<br><h2 style='color: #DDDD00'>Endgame:</h2><br>
-		Reaching the endgame screen (updated at least as of v0.027)<br><br>
+		Reaching the endgame screen (updated at least as of v0.029)<br><br>
 	<br><h2 style='color: #00CC00'>Notes</h2><br>
 		- Versions will be vA.B.C<br>
 		- A will be big releases.<br>
 		- B will be each content patch.<br>
 		- C will be small patches without content (bug/wording fixes).<br><br><br>
 
+	<br><h3 style='color: #CC0000'>v0.029</h3><br>
+		- Balanced until 3e24 Ducks.<br>
+		- Added a Beaver upgrade, two Capybara upgrades, and four Duck upgrades.<br>
 	<br><h3 style='color: #CC0000'>v0.028</h3><br>
 		- Balanced until 3000 Ducks.<br>
 		- Added a new layer, Ducks!<br>
