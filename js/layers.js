@@ -1093,6 +1093,19 @@ addLayer("b", {
                                 return hasUpgrade("d", 15) //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("b", 51)
+                52: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Be--e-"
+                        },
+                        description(){
+                                let a = "C 22 gives free C 13 levels"
+                                return a
+                        },
+                        cost: new Decimal("e2.24e19"),
+                        unlocked(){
+                                return hasUpgrade("b", 51) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("b", 52)
         },
         buyables: {
                 rows: 3,
@@ -1670,6 +1683,19 @@ addLayer("c", {
                                 return hasUpgrade("c", 31) //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("c", 32)
+                33: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>C-p--ara"
+                        },
+                        description(){
+                                let a = "Upgrades - 11 multiplies base Duck gain and C 23 gives free C 13 levels"
+                                return a
+                        },
+                        cost: new Decimal("3e94525"),
+                        unlocked(){
+                                return hasUpgrade("c", 32) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("c", 33)
         },
         buyables: {
                 rows: 3,
@@ -2196,20 +2222,20 @@ addLayer("c", {
                         name: "Challenge!?",
                         goal(){
                                 let id = player.c.challenges[21]
-                                return Decimal.pow(10, [6.7e13, 7.85e13, 1.53e14, 2e14, 2.73e14, 5.46e16, 6.36e16, 1.26e17, 1.462e17][id])
+                                return Decimal.pow(10, [6.7e13, 7.85e13, 1.53e14, 2e14, 2.73e14, 5.46e16, 6.36e16, 1.26e17, 1.462e17, 7.45e17][id])
                         },
                         canComplete: () => player.b.points.gte(tmp.c.challenges[21].goal),
                         fullDisplay(){
                                 let a = "Base beaver gain multipliers are disabled" + br 
                                 a += "Goal: " + format(tmp.c.challenges[21].goal, 4) + " Beavers" + br2
                                 a += "Reward: C 32 gives free C 31/23/22 levels completions after 3 add 1 to the C 33 base"
-                                return a + br2 + "Completions: " + player.c.challenges[21] + "/9"
+                                return a + br2 + "Completions: " + player.c.challenges[21] + "/10"
                         },
                         unlocked(){
                                 return hasUpgrade("d", 12)
                         },
                         countsAs: [],
-                        completionLimit: 9,
+                        completionLimit: 10,
                 }, // inChallenge("c", 21)
         },
         tabFormat: {
@@ -2377,6 +2403,8 @@ addLayer("d", {
         },
         getGainMultPre(){
                 let ret = new Decimal(.001)
+
+                if (hasUpgrade("c", 33))        ret = ret.times(Math.max(player.c.upgrades.length - 11, 1))
 
                 return ret
         },

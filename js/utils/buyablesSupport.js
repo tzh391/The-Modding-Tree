@@ -847,6 +847,8 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("d", 11)) b1 = b1.sub(getBuyableAmount("c", 33).sub(150).max(0).div(10)).max(1)
                         return [b0, b1, b2]
                 },
+                c22: {active:() => hasUpgrade("b", 52)},
+                c23: {active:() => hasUpgrade("c", 33)},
         },
         c21: {
                 name: "C 21",
