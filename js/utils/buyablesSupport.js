@@ -775,6 +775,9 @@ var MAIN_BUYABLE_DATA = {
                         }
                         return [b0, b1, b2]
                 },
+                c12: {active:() => hasMilestone("d", 10) && player.d.buyables[11].gte(1000)},
+                c13: {active:() => hasUpgrade("b", 55)},
+                c21: {active:() => hasUpgrade("b", 54)},
         },
         c12: {
                 name: "C 12",
@@ -837,6 +840,15 @@ var MAIN_BUYABLE_DATA = {
                                         return .0001
                                 },
                         },
+                        3: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["d12"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e39)
@@ -847,6 +859,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("d", 11)) b1 = b1.sub(getBuyableAmount("c", 33).sub(150).max(0).div(10)).max(1)
                         return [b0, b1, b2]
                 },
+                c21: {active:() => hasUpgrade("b", 53)},
                 c22: {active:() => hasUpgrade("b", 52)},
                 c23: {active:() => hasUpgrade("c", 33)},
         },
@@ -879,6 +892,9 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("c", 24)) b0 = b0.div(getBuyableAmount("c", 31).pow10()).max(1)
                         return [b0, b1, b2]
                 },
+                c22: {active:() => hasMilestone("d", 9)},
+                c23: {active:() => hasUpgrade("d", 22)},
+                c31: {active:() => hasMilestone("d", 8)},
         },
         c22: {
                 name: "C 22",
@@ -1041,6 +1057,15 @@ var MAIN_BUYABLE_DATA = {
                                         return (player.c.challenges[21] - 3)
                                 },
                         },
+                        4: {
+                                active(){
+                                        return hasMilestone("d", 10)
+                                },
+                                type: "exp",
+                                amount(){
+                                        return player.d.milestones.length
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e6067")
@@ -1053,6 +1078,44 @@ var MAIN_BUYABLE_DATA = {
                         }
                         if (hasUpgrade("d", 13))        b1 = b1.div(Decimal.pow10(player.d.points.div(1e10).max(10).log10().floor())).max(1)
                         if (hasMilestone("d", 7)) b0 = b0.div(player.d.points.max(1).pow(player.d.times)).max(1)
+                        return [b0, b1, b2]
+                },
+                d11: {active:() => hasUpgrade("c", 34)},
+        },
+        d11: {
+                name: "D 11",
+                func: "exp",
+                effects: "Duck gain",
+                base: {
+                        initial: new Decimal(1.2),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["d12"]
+                                },
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal(1e33)
+                        let b1 = new Decimal(1.25)
+                        let b2 = new Decimal(1.0001) // 3**x
+                        return [b0, b1, b2]
+                },
+        },
+        d12: {
+                name: "D 12",
+                func: "lin",
+                effects: "D 11 and C 13 bases",
+                base: {
+                        initial: new Decimal(.0001),
+                },
+                bases(){
+                        let b0 = new Decimal(1e91)
+                        let b1 = new Decimal(1)
+                        let b2 = new Decimal(1.0003) // 3**x
                         return [b0, b1, b2]
                 },
         },
@@ -1439,7 +1502,8 @@ function canAffordBuyable(layer, id, cost = undefined){
 
 function isBuyableFree(layer){
         // Spec function
-        if (hasMilestone("a", 4) && layer == "a") return true
+        if (hasUpgrade("d", 21) && layer == "d")        return true
+        if (hasMilestone("a", 4) && layer == "a")       return true
         return false
 }
 
@@ -1613,11 +1677,13 @@ function getABBulk(layer){
                 if (hasUpgrade("d", 14))        amt = amt.times(3)
                 if (hasUpgrade("a", 51))        amt = amt.times(Decimal.pow(2, player.a.upgrades.filter(x => x < 60 && x > 50).length))
                 if (hasUpgrade("b", 41))        amt = amt.pow(2)
+                if (hasUpgrade("c", 34))        amt = amt.pow(2)
         }
         if (layer == "c") {
                 if (hasMilestone("d", 2))       amt = amt.times(2)
                 if (hasMilestone("d", 5))       amt = amt.times(3)
                 if (hasMilestone("d", 6))       amt = amt.pow(2)
+                if (hasUpgrade("b", 55))        amt = amt.pow(2)
         }
         return amt
 }

@@ -1106,6 +1106,45 @@ addLayer("b", {
                                 return hasUpgrade("b", 51) //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("b", 52)
+                53: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>B---e-"
+                        },
+                        description(){
+                                let a = "C 21 gives free C 13 levels"
+                                return a
+                        },
+                        cost: new Decimal("e9.70e20"),
+                        unlocked(){
+                                return player.d.buyables[11].gte(6) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("b", 53)
+                54: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Beav--"
+                        },
+                        description(){
+                                let a = "C 21 gives free C 11 levels"
+                                return a
+                        },
+                        cost: new Decimal("e1.36e21"),
+                        unlocked(){
+                                return player.d.buyables[11].gte(12) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("b", 54)
+                55: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>B-av--"
+                        },
+                        description(){
+                                let a = "C 13 gives free C 11 levels and square Capybara bulk buy amount"
+                                return a
+                        },
+                        cost: new Decimal("e2.02e26"),
+                        unlocked(){
+                                return player.d.buyables[11].gte(870) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("b", 55)
         },
         buyables: {
                 rows: 3,
@@ -1696,6 +1735,19 @@ addLayer("c", {
                                 return hasUpgrade("c", 32) //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("c", 33)
+                34: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Ca---ara"
+                        },
+                        description(){
+                                let a = "D 11 gives free C 33 levels and square Beaver buyable bulk amount"
+                                return a
+                        },
+                        cost: new Decimal("3e538070"),
+                        unlocked(){
+                                return hasUpgrade("c", 33) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("c", 34)
         },
         buyables: {
                 rows: 3,
@@ -2412,6 +2464,7 @@ addLayer("d", {
                 let ret = getGeneralizedInitialPostMult("d")
 
                 if (hasUpgrade("c", 32))        ret = ret.times(Decimal.pow(player.d.upgrades.length, player.d.upgrades.length))
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["d11"])
 
                 return ret
         },
@@ -2525,44 +2578,68 @@ addLayer("d", {
                                 return hasUpgrade("d", 14) //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("d", 15)
+                21: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Du--s"
+                        },
+                        description(){
+                                let a = "Duck buyables are free"
+                                return a
+                        },
+                        cost: new Decimal(1e41),
+                        unlocked(){
+                                return hasUpgrade("d", 15) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("d", 21)
+                22: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D---s"
+                        },
+                        description(){
+                                let a = "C 23 gives free C 21 levels"
+                                return a
+                        },
+                        cost: new Decimal(1e66),
+                        unlocked(){
+                                return hasUpgrade("d", 21) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("d", 22)
         },
         buyables: {
                 rows: 3,
                 cols: 3,
-                /*
-                11: getGeneralizedBuyableData("c", 11, function(){
-                        return hasMilestone("c", 6) //|| player.e.unlocked
+                11: getGeneralizedBuyableData("d", 11, function(){
+                        return hasMilestone("d", 8) //|| player.e.unlocked
                         }),
-                /*  
-                12: getGeneralizedBuyableData("c", 12, function(){
-                        return player.c.buyables[11].gte(6) || hasMilestone("c", 7) //|| player.e.unlocked
+                12: getGeneralizedBuyableData("d", 12, function(){
+                        return player.d.buyables[11].gte(500) //|| player.e.unlocked
                         }),
                 /*
-                13: getGeneralizedBuyableData("c", 13, function(){
+                13: getGeneralizedBuyableData("d", 13, function(){
                         return player.c.buyables[11].gte(125) //|| player.e.unlocked
                         }),
                 /*
-                21: getGeneralizedBuyableData("c", 21, function(){
+                21: getGeneralizedBuyableData("d", 21, function(){
                         return hasMilestone("c", 9) //|| player.e.unlocked
                         }),
                 /*
-                22: getGeneralizedBuyableData("c", 22, function(){
+                22: getGeneralizedBuyableData("d", 22, function(){
                         return player.c.buyables[11].gte(2030) //|| player.e.unlocked
                         }),
                 /*
-                23: getGeneralizedBuyableData("c", 23, function(){
+                23: getGeneralizedBuyableData("d", 23, function(){
                         return player.c.buyables[11].gte(2550) //|| player.e.unlocked
                         }),
                 /*
-                31: getGeneralizedBuyableData("c", 31, function(){
+                31: getGeneralizedBuyableData("d", 31, function(){
                         return player.c.buyables[11].gte(2800) //|| player.e.unlocked
                         }),
                 /*
-                32: getGeneralizedBuyableData("c", 32, function(){
+                32: getGeneralizedBuyableData("d", 32, function(){
                         return player.c.buyables[11].gte(3300) //|| player.e.unlocked
                         }),
                 /*
-                33: getGeneralizedBuyableData("c", 33, function(){
+                33: getGeneralizedBuyableData("d", 33, function(){
                         return player.c.buyables[11].gte(3620) //|| player.e.unlocked
                         }),
                 /* */
@@ -2666,6 +2743,48 @@ addLayer("d", {
                                 return "Reward: Ducks<sup>Duck resets</sup> divides C 33 cost base."
                         },
                 }, // hasMilestone("d", 7)
+                8: {
+                        requirementDescription(){
+                                return "1e30 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte(1e30)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: C 31 gives free C 21 levels and unlock a Duck buyable."
+                        },
+                }, // hasMilestone("d", 8)
+                9: {
+                        requirementDescription(){
+                                return "1e115 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte(1e115)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: C 22 gives free C 21 levels."
+                        },
+                }, // hasMilestone("d", 9)
+                10: {
+                        requirementDescription(){
+                                return "1e168 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte(1e168)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: C 33 base is raised to the number of milestones and if you have 1,000 D 11 C 11 gets free levels from C 12."
+                        },
+                }, // hasMilestone("d", 10)
         },
         tabFormat: {
                 "Upgrades": {
@@ -2701,7 +2820,7 @@ addLayer("d", {
                                 ],
                                 "buyables"],
                         unlocked(){
-                                return false //|| player.e.unlocked
+                                return hasMilestone("d", 8) //|| player.e.unlocked
                         },
                 },
                 "Milestones": {
