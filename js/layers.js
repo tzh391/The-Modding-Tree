@@ -729,7 +729,7 @@ addLayer("b", {
                 autotimes: 0,
         }},
         color: "#EC7D20",
-        branches: [],
+        branches: ["a"],
         requires: new Decimal("1e250"), // Can be a function that takes requirement increases into account
         resource: "Beavers", // Name of prestige currency
         baseResource: "Alligators", // Name of resource prestige is based on
@@ -1468,7 +1468,7 @@ addLayer("c", {
                 everC12: false,
         }},
         color: "#6B8B2E",
-        branches: [],
+        branches: ["b"],
         requires: new Decimal("1e1971"), // Can be a function that takes requirement increases into account
         resource: "Capybaras", // Name of prestige currency
         baseResource: "Beavers", // Name of resource prestige is based on
@@ -2432,7 +2432,7 @@ addLayer("d", {
                 everU15: false,
         }},
         color: "#6B46B9",
-        branches: [],
+        branches: ["c"],
         requires: new Decimal("1e15020"), // Can be a function that takes requirement increases into account
         resource: "Ducks", // Name of prestige currency
         baseResource: "Capybaras", // Name of resource prestige is based on
@@ -3009,6 +3009,25 @@ addLayer("ach", {
                 {key: "shift+B", description: "Shift+B: Go to Beaver", 
                         onPress(){
                                 if (player.b.unlocked) player.tab = "b"
+                        },
+                        unlocked(){
+                                return player.b.unlocked
+                        }
+                },
+                {key: "shift+C", description: "Shift+C: Go to Capybara", 
+                        onPress(){
+                                if (player.c.unlocked) player.tab = "c"
+                        },
+                        unlocked(){
+                                return player.c.unlocked
+                        }
+                },
+                {key: "shift+D", description: "Shift+D: Go to Duck", 
+                        onPress(){
+                                if (player.d.unlocked) player.tab = "d"
+                        },
+                        unlocked(){
+                                return player.d.unlocked
                         }
                 },
                 {
@@ -3029,6 +3048,25 @@ addLayer("ach", {
                 {key: "b", description: "B: Reset for Beavers",
                         onPress(){
                                 if (canReset("b")) doReset("b")
+                        },
+                        unlocked(){
+                                return player.b.unlocked
+                        }
+                },
+                {key: "c", description: "C: Reset for Capybaras",
+                        onPress(){
+                                if (canReset("c")) doReset("c")
+                        },
+                        unlocked(){
+                                return player.c.unlocked
+                        }
+                },
+                {key: "d", description: "D: Reset for Ducks",
+                        onPress(){
+                                if (canReset("d")) doReset("d")
+                        },
+                        unlocked(){
+                                return player.d.unlocked
                         }
                 },
                 {
