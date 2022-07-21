@@ -1478,17 +1478,10 @@ function getBuyableBases(layer, id){
 
 function getBuyableCost(layer, id, delta = decimalZero){
         // assuming the cost formula is alwuas the same fully general
-        let bases = getBuyableBases(layer, id)
+        let b = getBuyableBases(layer, id)
         let x = getBuyableAmount(layer, id).plus(delta)
 
-        let base0 = bases[0]
-        let base1 = bases[1]
-        let base2 = bases[2]
-        let exp0 = 1
-        let exp1 = x
-        let exp2 = x.pow(2)
-
-        return new Decimal(base0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+        return new Decimal(b[0]).times(Decimal.pow(b[1], x)).times(Decimal.pow(b[2], x.pow(2))).ceil()
 }
 
 function canAffordBuyable(layer, id, cost = undefined){
@@ -1639,6 +1632,20 @@ function getGeneralizedBuyableData(layer, id, unlockedTF){
                 buyMax: buyMax,
                 unlocked: unlockedTF,
                 }
+}
+
+function getLayerGeneralizedBuyableData(layer, unlocks){
+        let ret = {
+                rows: 3,
+                cols: 3,
+        }
+        let ids = [11, 12, 13, 21, 22, 23, 31, 32, 33]
+        for (i = 0; i < unlocks.length; i ++) {
+                let id = ids[i]
+                ret[id] = getGeneralizedBuyableData(layer, id, unlocks[i])
+        }
+
+        return ret
 }
 
 function isBuyableActive(layer, id){

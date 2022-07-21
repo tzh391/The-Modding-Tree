@@ -298,7 +298,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 22)
                 23: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-li-ator"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Alli-ator"
                         },
                         description(){
                                 return "Remove A 22's base cost"
@@ -310,7 +310,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 23)
                 24: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>Al-i-ator"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-li-ator"
                         },
                         description(){
                                 return "Remove A 23's base cost and unlock Beavers"
@@ -322,7 +322,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 24)
                 25: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>A--i-ator"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Al-i-ator"
                         },
                         description(){
                                 return "Remove A 21's base cost and per upgrade add .01 to A 13's base"
@@ -513,37 +513,35 @@ addLayer("a", {
                         }, 
                 }, // hasUpgrade("a", 55)
         },
-        buyables: {
-                rows: 3,
-                cols: 3,
-                11: getGeneralizedBuyableData("a", 11, function(){
-                        return hasUpgrade("a", 12) || player.b.unlocked
-                        }),
-                12: getGeneralizedBuyableData("a", 12, function(){
-                        return hasUpgrade("a", 12) || player.b.unlocked
-                        }),
-                13: getGeneralizedBuyableData("a", 13, function(){
-                        return hasUpgrade("a", 13) || player.b.unlocked
-                        }),
-                21: getGeneralizedBuyableData("a", 21, function(){
-                        return hasUpgrade("a", 14) || player.b.unlocked
-                        }),
-                22: getGeneralizedBuyableData("a", 22, function(){
-                        return hasUpgrade("a", 15) || player.b.unlocked
-                        }),
-                23: getGeneralizedBuyableData("a", 23, function(){
-                        return hasUpgrade("a", 21) || player.b.unlocked
-                        }),
-                31: getGeneralizedBuyableData("a", 31, function(){
-                        return hasUpgrade("a", 22) || player.b.unlocked
-                        }),
-                32: getGeneralizedBuyableData("a", 32, function(){
-                        return hasUpgrade("a", 23) || player.b.unlocked
-                        }),
-                33: getGeneralizedBuyableData("a", 33, function(){
-                        return hasUpgrade("a", 24) || player.b.unlocked
-                        }),
-        },
+        buyables: getLayerGeneralizedBuyableData("a", [
+                        function(){
+                                return hasUpgrade("a", 12) || player.b.unlocked
+                        },
+                        function(){
+                                return hasUpgrade("a", 12) || player.b.unlocked
+                        },
+                        function(){
+                                return hasUpgrade("a", 13) || player.b.unlocked
+                        },
+                        function(){
+                                return hasUpgrade("a", 14) || player.b.unlocked
+                        },
+                        function(){
+                                return hasUpgrade("a", 15) || player.b.unlocked
+                        },
+                        function(){
+                                return hasUpgrade("a", 21) || player.b.unlocked
+                        },
+                        function(){
+                                return hasUpgrade("a", 22) || player.b.unlocked
+                        },
+                        function(){
+                                return hasUpgrade("a", 23) || player.b.unlocked
+                        },
+                        function(){
+                                return hasUpgrade("a", 24) || player.b.unlocked
+                        },
+                ]),
         milestones: {
                 1: {
                         requirementDescription(){
@@ -1146,37 +1144,35 @@ addLayer("b", {
                         }, 
                 }, // hasUpgrade("b", 55)
         },
-        buyables: {
-                rows: 3,
-                cols: 3,
-                11: getGeneralizedBuyableData("b", 11, function(){
-                        return hasUpgrade("b", 15) || player.c.unlocked
-                        }),      
-                12: getGeneralizedBuyableData("b", 12, function(){
-                        return hasMilestone("b", 5) || player.c.unlocked
-                        }),
-                13: getGeneralizedBuyableData("b", 13, function(){
-                        return hasUpgrade("b", 21) || player.c.unlocked
-                        }),
-                21: getGeneralizedBuyableData("b", 21, function(){
-                        return player.b.best.gte(1e48) || player.c.unlocked
-                        }),
-                22: getGeneralizedBuyableData("b", 22, function(){
-                        return hasMilestone("b", 9) || player.c.unlocked
-                        }),
-                23: getGeneralizedBuyableData("b", 23, function(){
-                        return hasMilestone("b", 10) || player.c.unlocked
-                        }),
-                31: getGeneralizedBuyableData("b", 31, function(){
-                        return player.b.buyables[23].gte(8) || player.c.unlocked
-                        }),
-                32: getGeneralizedBuyableData("b", 32, function(){
-                        return player.b.buyables[31].gte(58) || player.c.unlocked
-                        }),
-                33: getGeneralizedBuyableData("b", 33, function(){
-                        return player.b.buyables[31].gte(71) || player.c.unlocked
-                        }),
-        },
+        buyables: getLayerGeneralizedBuyableData("b", [
+                        function(){
+                                return hasUpgrade("b", 15) || player.c.unlocked
+                        },
+                        function(){
+                                return hasMilestone("b", 5) || player.c.unlocked
+                        },
+                        function(){
+                                return hasUpgrade("b", 21) || player.c.unlocked
+                        },
+                        function(){
+                                return player.b.best.gte(1e48) || player.c.unlocked
+                        },
+                        function(){
+                                return hasMilestone("b", 9) || player.c.unlocked
+                        },
+                        function(){
+                                return hasMilestone("b", 10) || player.c.unlocked
+                        },
+                        function(){
+                                return player.b.buyables[23].gte(8) || player.c.unlocked
+                        },
+                        function(){
+                                return player.b.buyables[31].gte(58) || player.c.unlocked
+                        },
+                        function(){
+                                return player.b.buyables[31].gte(71) || player.c.unlocked
+                        },
+                ]),
         milestones: {
                 1: {
                         requirementDescription(){
@@ -1749,37 +1745,35 @@ addLayer("c", {
                         }, 
                 }, // hasUpgrade("c", 34)
         },
-        buyables: {
-                rows: 3,
-                cols: 3,
-                11: getGeneralizedBuyableData("c", 11, function(){
-                        return hasMilestone("c", 6) || player.d.unlocked
-                        }),     
-                12: getGeneralizedBuyableData("c", 12, function(){
-                        return player.c.buyables[11].gte(6) || hasMilestone("c", 7) || player.d.unlocked
-                        }),
-                13: getGeneralizedBuyableData("c", 13, function(){
-                        return player.c.buyables[11].gte(125) || player.d.unlocked
-                        }),
-                21: getGeneralizedBuyableData("c", 21, function(){
-                        return hasMilestone("c", 9) || player.d.unlocked
-                        }),
-                22: getGeneralizedBuyableData("c", 22, function(){
-                        return player.c.buyables[11].gte(2030) || player.d.unlocked
-                        }),
-                23: getGeneralizedBuyableData("c", 23, function(){
-                        return player.c.buyables[11].gte(2550) || player.d.unlocked
-                        }),
-                31: getGeneralizedBuyableData("c", 31, function(){
-                        return player.c.buyables[11].gte(2800) || player.d.unlocked
-                        }),
-                32: getGeneralizedBuyableData("c", 32, function(){
-                        return player.c.buyables[11].gte(3300) || player.d.unlocked
-                        }),
-                33: getGeneralizedBuyableData("c", 33, function(){
-                        return player.c.buyables[11].gte(3620) || player.d.unlocked
-                        }),
-        },
+        buyables: getLayerGeneralizedBuyableData("c", [
+                        function(){
+                                return hasMilestone("c", 6) || player.d.unlocked
+                        },
+                        function(){
+                                return player.c.buyables[11].gte(6) || hasMilestone("c", 7) || player.d.unlocked
+                        },
+                        function(){
+                                return player.c.buyables[11].gte(125) || player.d.unlocked
+                        },
+                        function(){
+                                return hasMilestone("c", 9) || player.d.unlocked
+                        },
+                        function(){
+                                return player.c.buyables[11].gte(2030) || player.d.unlocked
+                        },
+                        function(){
+                                return player.c.buyables[11].gte(2550) || player.d.unlocked
+                        },
+                        function(){
+                                return player.c.buyables[11].gte(2800) || player.d.unlocked
+                        },
+                        function(){
+                                return player.c.buyables[11].gte(3300) || player.d.unlocked
+                        },
+                        function(){
+                                return player.c.buyables[11].gte(3620) || player.d.unlocked
+                        },
+                ]),
         milestones: {
                 1: {
                         requirementDescription(){
@@ -2605,45 +2599,14 @@ addLayer("d", {
                         }, 
                 }, // hasUpgrade("d", 22)
         },
-        buyables: {
-                rows: 3,
-                cols: 3,
-                11: getGeneralizedBuyableData("d", 11, function(){
-                        return hasMilestone("d", 8) //|| player.e.unlocked
-                        }),
-                12: getGeneralizedBuyableData("d", 12, function(){
-                        return player.d.buyables[11].gte(500) //|| player.e.unlocked
-                        }),
-                /*
-                13: getGeneralizedBuyableData("d", 13, function(){
-                        return player.c.buyables[11].gte(125) //|| player.e.unlocked
-                        }),
-                /*
-                21: getGeneralizedBuyableData("d", 21, function(){
-                        return hasMilestone("c", 9) //|| player.e.unlocked
-                        }),
-                /*
-                22: getGeneralizedBuyableData("d", 22, function(){
-                        return player.c.buyables[11].gte(2030) //|| player.e.unlocked
-                        }),
-                /*
-                23: getGeneralizedBuyableData("d", 23, function(){
-                        return player.c.buyables[11].gte(2550) //|| player.e.unlocked
-                        }),
-                /*
-                31: getGeneralizedBuyableData("d", 31, function(){
-                        return player.c.buyables[11].gte(2800) //|| player.e.unlocked
-                        }),
-                /*
-                32: getGeneralizedBuyableData("d", 32, function(){
-                        return player.c.buyables[11].gte(3300) //|| player.e.unlocked
-                        }),
-                /*
-                33: getGeneralizedBuyableData("d", 33, function(){
-                        return player.c.buyables[11].gte(3620) //|| player.e.unlocked
-                        }),
-                /* */
-        },
+        buyables: getLayerGeneralizedBuyableData("d", [
+                        function(){
+                                return hasMilestone("d", 8) //|| player.e.unlocked
+                        },
+                        function(){
+                                return player.d.buyables[11].gte(500) //|| player.e.unlocked
+                        },
+                ]),
         milestones: {
                 1: {
                         requirementDescription(){
