@@ -1744,6 +1744,19 @@ addLayer("c", {
                                 return hasUpgrade("c", 33) //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("c", 34)
+                35: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>C----ara"
+                        },
+                        description(){
+                                let a = "Bulk 5x Duck buyables"
+                                return a
+                        },
+                        cost: new Decimal("e73.9e6"),
+                        unlocked(){
+                                return hasUpgrade("c", 34) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("c", 35)
         },
         buyables: getLayerGeneralizedBuyableData("c", [
                         function(){
@@ -2487,7 +2500,7 @@ addLayer("d", {
                 data.best = data.best.max(data.points)
                 doPassiveGain("d", diff)
                 
-                if (false) {
+                if (hasMilestone("d", 11)) {
                         handleGeneralizedBuyableAutobuy(diff, "d")
                 } else {
                         data.abtime = 0
@@ -2605,6 +2618,9 @@ addLayer("d", {
                         },
                         function(){
                                 return player.d.buyables[11].gte(500) //|| player.e.unlocked
+                        },
+                        function(){
+                                return player.d.buyables[11].gte(1100) //|| player.e.unlocked
                         },
                 ]),
         milestones: {
@@ -2748,6 +2764,20 @@ addLayer("d", {
                                 return "Reward: C 33 base is raised to the number of milestones and if you have 1,000 D 11 C 11 gets free levels from C 12."
                         },
                 }, // hasMilestone("d", 10)
+                11: {
+                        requirementDescription(){
+                                return "1e196 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte(1e196)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Autobuy a Duck buyable per second and each D 13 divides D 11 and D 12 cost base by 1.03 ."
+                        },
+                }, // hasMilestone("d", 11)
         },
         tabFormat: {
                 "Upgrades": {

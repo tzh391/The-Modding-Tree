@@ -878,6 +878,15 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["c32"].min(hasUpgrade("d", 13) ? .27 : .07)
                                 },
                         },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["d13"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e1108")
@@ -1100,7 +1109,9 @@ var MAIN_BUYABLE_DATA = {
                 },
                 bases(){
                         let b0 = new Decimal(1e33)
+                        if (hasMilestone("d", 11)) b0 = b0.div(Decimal.pow(1.03, getBuyableAmount("d", 13))).max(1)
                         let b1 = new Decimal(1.25)
+                        b1 = b1.sub(CURRENT_BUYABLE_EFFECTS["d13"]).max(1)
                         let b2 = new Decimal(1.0001) // 3**x
                         return [b0, b1, b2]
                 },
@@ -1114,8 +1125,23 @@ var MAIN_BUYABLE_DATA = {
                 },
                 bases(){
                         let b0 = new Decimal(1e91)
+                        if (hasMilestone("d", 11)) b0 = b0.div(Decimal.pow(1.03, getBuyableAmount("d", 13))).max(1)
                         let b1 = new Decimal(1)
                         let b2 = new Decimal(1.0003) // 3**x
+                        return [b0, b1, b2]
+                },
+        },
+        d13: {
+                name: "D 13",
+                func: "lin",
+                effects: "C 21 base and minus D 11 linear cost base [max .25]",
+                base: {
+                        initial: new Decimal(.001),
+                },
+                bases(){
+                        let b0 = new Decimal(1e191)
+                        let b1 = new Decimal(8)
+                        let b2 = new Decimal(1.0009) // 3**x
                         return [b0, b1, b2]
                 },
         },
@@ -1648,6 +1674,26 @@ function getLayerGeneralizedBuyableData(layer, unlocks){
         return ret
 }
 
+function getBuyableDataDisplay(layer, id) {
+        let data = MAIN_BUYABLE_DATA[layer + id]
+        if (data == undefined) return "Not defined"
+        if (!tmp[layer].buyables[id].unlocked) return "Not unlocked"
+
+        let a = "Buyable " + layer + id + " is named " + data.name + " and it's function is " + data.func
+
+        if (data.func == "exp") a += " meaning it's formula is base<sup>amount</sup>"
+        if (data.func == "lin") a += " meaning it's formula is base*amount"
+        if (data.func == "linp1") a += " meaning it's formula is base*amount+1"
+
+        let b = "It affects " + data.effects + ". It's base is initially " + format(data.base.initial)
+        b += " and is affected by the following things:"
+        //MAIN_BUYABLE_DATA['a11'].base[1] + ""
+
+        let c = "It is given extra levels by the following things:"
+        // MAIN_BUYABLE_DATA['a11'].a12.active + ""
+        
+}
+
 function isBuyableActive(layer, id){
         if (layer == "o") return true
         if (layer == "n") return true
@@ -1691,6 +1737,9 @@ function getABBulk(layer){
                 if (hasMilestone("d", 5))       amt = amt.times(3)
                 if (hasMilestone("d", 6))       amt = amt.pow(2)
                 if (hasUpgrade("b", 55))        amt = amt.pow(2)
+        }
+        if (layer == "d") {
+                if (hasUpgrade("c", 35))        amt = amt.times(5)
         }
         return amt
 }
