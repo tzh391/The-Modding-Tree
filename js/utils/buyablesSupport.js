@@ -1086,7 +1086,7 @@ var MAIN_BUYABLE_DATA = {
                                 if (hasUpgrade("b", 51)) b1 = b1.div(Decimal.pow10(player.d.upgrades.length)).max(1)
                         }
                         if (hasUpgrade("d", 13))        b1 = b1.div(Decimal.pow10(player.d.points.div(1e10).max(10).log10().floor())).max(1)
-                        if (hasMilestone("d", 7)) b0 = b0.div(player.d.points.max(1).pow(player.d.times)).max(1)
+                        if (hasMilestone("d", 7))       b0 = b0.div(player.d.points.max(1).pow(player.d.times)).max(1)
                         return [b0, b1, b2]
                 },
                 d11: {active:() => hasUpgrade("c", 34)},

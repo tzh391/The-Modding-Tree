@@ -2663,7 +2663,7 @@ addLayer("d", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Per reset keep a milestone, resets multiplies the Capybara autobuyer speed, and add .0001 to the C 13 base."
+                                return "Reward: Per reset keep a milestone and resets multiplies the Capybara autobuyer speed."
                         },
                 }, // hasMilestone("d", 3)
                 4: {
