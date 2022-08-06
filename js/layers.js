@@ -461,7 +461,7 @@ addLayer("a", {
                         },
                         cost: new Decimal("e6e25"),
                         unlocked(){
-                                return hasUpgrade("b", 23) || player.d.unlocked
+                                return hasUpgrade("c", 23) || player.d.unlocked
                         }, 
                 }, // hasUpgrade("a", 51)
                 52: {
