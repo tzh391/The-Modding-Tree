@@ -418,7 +418,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 42)
                 43: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-lig-tor"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Al-ig-tor"
                         },
                         description(){
                                 return "B 23 gives free B 21 levels"
@@ -430,7 +430,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 43)
                 44: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-lig-tor"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A--ig-tor"
                         },
                         description(){
                                 return "B 31 gives free B 13 levels and multiplies A 11 base"
@@ -442,7 +442,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 44)
                 45: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>Al-ig-tor"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>All-g-tor"
                         },
                         description(){
                                 return "B 31 gives free B 21 levels and multiplies A 13 base"
@@ -454,7 +454,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 45)
                 51: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>A--ig-tor"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-l-g-tor"
                         },
                         description(){
                                 return "Remove C 13 base cost and each upgrade in this row doubles Beaver bulk amount"
@@ -466,7 +466,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 51)
                 52: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>All-g-tor"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Al--g-tor"
                         },
                         description(){
                                 return "This row upgrades multiplies base Capybara gain"
@@ -478,7 +478,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 52)
                 53: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-l-g-tor"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A---g-tor"
                         },
                         description(){
                                 return "B 22 gives free B 21 levels"
@@ -490,7 +490,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 53)
                 54: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>Al--g-tor"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Alli--tor"
                         },
                         description(){
                                 return "Each C 23 adds 1 to the C 23 base"
@@ -502,7 +502,7 @@ addLayer("a", {
                 }, // hasUpgrade("a", 54)
                 55: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>A---g-tor"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>A-li--tor"
                         },
                         description(){
                                 return "Each C 12 subtracts 1 from the C 21 linear cost base"
