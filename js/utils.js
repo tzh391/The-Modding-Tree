@@ -324,8 +324,8 @@ function updateMilestones(layer) {
 	shouldPopup = !options.hideMilestonePopups && (tmp[layer].milestonePopups || tmp[layer].milestonePopups === undefined)
 	for (id in layers[layer].milestones) {
 		if (!(hasMilestone(layer, id)) && layers[layer].milestones[id].done()) {
-			player[layer].milestones.push(Number(id))
 			if (!tmp[layer].milestones[id].unlocked) continue
+			player[layer].milestones.push(Number(id))
 			if (layers[layer].milestones[id].onComplete) layers[layer].milestones[id].onComplete()
 			if (shouldPopup) {
 				doPopup("milestone", tmp[layer].milestones[id].requirementDescription, "Milestone Gotten!", 3, tmp[layer].color);
@@ -340,7 +340,7 @@ function updateAchievements(layer) {
 	for (id in layers[layer].achievements) {
 		if (!isPlainObject(layers[layer].achievements[id])) continue
 		if (hasAchievement(layer, Number(id))) continue
-		if (!tmp[layer].achievements[id].unlocked) return // none more should be unlockable
+		//if (layer != "ach" && !tmp[layer].achievements[id].unlocked) return // none more should be unlockable
 		if (layers[layer].achievements[id].done()) {
 			player[layer].achievements.push(Number(id))
 			if (layers[layer].achievements[id].onComplete) layers[layer].achievements[id].onComplete()
