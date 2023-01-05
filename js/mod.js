@@ -12,7 +12,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.033",
+	num: "0.033.1",
 	name: "Respecced Reincarnation",
 }
 
@@ -36,6 +36,8 @@ let changelog = `<h1>Changelog:</h1><br>
 		- B will be each content patch.<br>
 		- C will be small patches without content (bug/wording fixes).<br><br><br>
 
+	<br><h3 style='color: #CC0000'>v0.033.1</h3><br>
+		- Implemented the save bank display feature from Tree of Life.<br>
 	<br><h3 style='color: #CC0000'>v0.033</h3><br>
 		- Balanced until 1e712 Ducks.<br>
 		- Added a Duck upgrade.<br>
@@ -203,6 +205,7 @@ function addedPlayerData() { return {
 	paused: false,
 	shiftAlias: false,
 	controlAlias: false,
+	CUSTOM_SAVES_PAGE: 0,
 }}
 
 function getLastSaveDisplay(a){
