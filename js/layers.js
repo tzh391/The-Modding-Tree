@@ -2611,6 +2611,19 @@ addLayer("d", {
                                 return hasUpgrade("d", 21) //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("d", 22)
+                23: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Duck-"
+                        },
+                        description(){
+                                let a = "If you have above 1e600 Ducks, D 13 gives free D 11 and C 33 levels but D 11 base cost is 1e100 higher"
+                                return a
+                        },
+                        cost: new Decimal("1e613"),
+                        unlocked(){
+                                return hasUpgrade("d", 22) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("d", 23)
         },
         buyables: getLayerGeneralizedBuyableData("d", [
                         function(){

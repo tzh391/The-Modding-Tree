@@ -1090,6 +1090,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
                 d11: {active:() => hasUpgrade("c", 34)},
+                d13: {active:() => hasUpgrade("d", 23) && player.d.points.gte("1e600")},
         },
         d11: {
                 name: "D 11",
@@ -1109,12 +1110,14 @@ var MAIN_BUYABLE_DATA = {
                 },
                 bases(){
                         let b0 = new Decimal(1e33)
+                        if (hasUpgrade("d", 23) && player.d.points.gte("1e600")) b0 = b0.times(1e100)
                         if (hasMilestone("d", 11)) b0 = b0.div(Decimal.pow(1.03, getBuyableAmount("d", 13))).max(1)
                         let b1 = new Decimal(1.25)
                         b1 = b1.sub(CURRENT_BUYABLE_EFFECTS["d13"]).max(1)
                         let b2 = new Decimal(1.0001) // 3**x
                         return [b0, b1, b2]
                 },
+                d13: {active:() => hasUpgrade("d", 23) && player.d.points.gte("1e600")},
         },
         d12: {
                 name: "D 12",
