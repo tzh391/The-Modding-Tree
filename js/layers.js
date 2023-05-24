@@ -2456,13 +2456,16 @@ addLayer("d", {
         getGainExp(){
                 let ret = new Decimal(5)
 
-                if (hasUpgrade("d", 11)) ret = ret.plus(player.d.upgrades.length)
+                if (hasUpgrade("d", 11))        ret = ret.plus(player.d.upgrades.length)
+                                                ret = ret.plus(CURRENT_BUYABLE_EFFECTS["d21"])
 
                 return ret
         },
         getGainMultPre(){
                 let ret = new Decimal(.001)
 
+                                                ret = ret.plus(CURRENT_BUYABLE_EFFECTS["d21"])
+                
                 if (hasUpgrade("c", 33))        ret = ret.times(Math.max(player.c.upgrades.length - 11, 1))
 
                 return ret
@@ -2635,6 +2638,9 @@ addLayer("d", {
                         function(){
                                 return player.d.buyables[11].gte(1100) //|| player.e.unlocked
                         },
+                        function(){
+                                return player.d.buyables[11].gte(3750) //|| player.e.unlocked
+                        },
                 ]),
         milestones: {
                 1: {
@@ -2791,6 +2797,20 @@ addLayer("d", {
                                 return "Reward: Autobuy a Duck buyable per second and each D 13 divides D 11 and D 12 cost base by 1.03 ."
                         },
                 }, // hasMilestone("d", 11)
+                12: {
+                        requirementDescription(){
+                                return "1e727 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e727")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 13 subtracts from its linear base (max 8) and the previous milestone also affects D 13."
+                        },
+                }, // hasMilestone("d", 12)
         },
         tabFormat: {
                 "Upgrades": {

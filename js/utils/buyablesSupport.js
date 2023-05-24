@@ -1145,6 +1145,27 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal(1e191)
                         let b1 = new Decimal(8)
                         let b2 = new Decimal(1.0009) // 3**x
+
+                        if (hasMilestone("d", 12)) {
+                                b1 = b1.sub(CURRENT_BUYABLE_EFFECTS["d13"]).max(1)
+                                b0 = b0.div(Decimal.pow(1.03, getBuyableAmount("d", 13))).max(1)
+                        }
+
+                        return [b0, b1, b2]
+                },
+        },
+        d21: {
+                name: "D 21",
+                func: "lin",
+                effects: "Base Ducks and Duck exponent",
+                base: {
+                        initial: new Decimal(.001),
+                },
+                bases(){
+                        let b0 = new Decimal("1e745")
+                        let b1 = new Decimal(1e6)
+                        let b2 = new Decimal(1.0027) // 3**x
+
                         return [b0, b1, b2]
                 },
         },

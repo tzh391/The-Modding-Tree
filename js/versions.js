@@ -1,6 +1,6 @@
 // Set your version in num and name
 var VERSION = {
-	num: ".033.2",
+	num: ".034",
 	name: /*"Advil's Auspicious Acension"*/ "",
 }
 
@@ -11,13 +11,16 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.d.points.gte("1e742")
+	return player.d.points.gte("1e831")
 }
 
-var CHANELOG_VERSION = "v0.033.2"
+var CHANELOG_VERSION = "v0.034"
 
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC0000'>v0.034</h3><br>
+		- Balanced until 1e831 Ducks.<br>
+		- Added a Duck milestone and buyable.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.033.2</h3><br>
 		- Implemented the changelog display feature from Tree of Life.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.033.1</h3><br>
