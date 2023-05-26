@@ -1757,6 +1757,19 @@ addLayer("c", {
                                 return hasUpgrade("c", 34) //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("c", 35)
+                41: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Capyb-ra"
+                        },
+                        description(){
+                                let a = "Each upgrade multiplies C 32 and Duck gain by 1.2"
+                                return a
+                        },
+                        cost: new Decimal("e1.52e9"),
+                        unlocked(){
+                                return hasUpgrade("d", 21) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("c", 41)
         },
         buyables: getLayerGeneralizedBuyableData("c", [
                         function(){
@@ -2475,6 +2488,7 @@ addLayer("d", {
 
                 if (hasUpgrade("c", 32))        ret = ret.times(Decimal.pow(player.d.upgrades.length, player.d.upgrades.length))
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["d11"])
+                if (hasUpgrade("c", 41))        ret = ret.times(Decimal.pow(1.2, player.c.upgrades.length))
 
                 return ret
         },
@@ -2484,6 +2498,7 @@ addLayer("d", {
                 let amt = player.d.points
 
                 let exp = amt.plus(999).log10().min(100)
+                if (hasUpgrade("d", 24)) exp = exp.times(player.d.upgrades.length ** 2)
 
                 let ret = amt.plus(1).pow(exp)
 
@@ -2627,6 +2642,32 @@ addLayer("d", {
                                 return hasUpgrade("d", 22) //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("d", 23)
+                24: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D-ck-"
+                        },
+                        description(){
+                                let a = "C 11 subtracts from D 21 base (max 900,000) and upgrades<sup>2</sup> multiply Duck effect exponent"
+                                return a
+                        },
+                        cost: new Decimal("1e831"),
+                        unlocked(){
+                                return hasUpgrade("d", 23) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("d", 24)
+                25: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Du-k-"
+                        },
+                        description(){
+                                let a = "D 21 gives free levels to D 11, D 12, and D 13"
+                                return a
+                        },
+                        cost: new Decimal("1e895"),
+                        unlocked(){
+                                return hasUpgrade("d", 24) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("d", 25)
         },
         buyables: getLayerGeneralizedBuyableData("d", [
                         function(){
@@ -2811,6 +2852,34 @@ addLayer("d", {
                                 return "Reward: D 13 subtracts from its linear base (max 8) and the previous milestone also affects D 13."
                         },
                 }, // hasMilestone("d", 12)
+                13: {
+                        requirementDescription(){
+                                return "1e1134 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e1134")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 13 gives free D 12 levels, subtract .1 from D 11's base, and divide D 21 base cost by 1e145."
+                        },
+                }, // hasMilestone("d", 13)
+                14: {
+                        requirementDescription(){
+                                return "1e4000 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e4000")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: The Duck autobuyer triggers twice as often, for twice as much, and on every buyable at once, and D 21's linear base is 1e6 - C 21."
+                        },
+                }, // hasMilestone("d", 14)
         },
         tabFormat: {
                 "Upgrades": {

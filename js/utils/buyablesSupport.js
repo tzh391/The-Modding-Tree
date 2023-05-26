@@ -1019,6 +1019,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "C 12 and C 21 [max .07] bases",
                 base: {
                         initial: new Decimal(.0001),
+                        1: {
+                                active(){
+                                        return hasUpgrade("c", 41)
+                                },
+                                type: "mult",
+                                amount(){
+                                        return Decimal.pow(1.2, player.c.upgrades.length)
+                                }
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e5078")
@@ -1107,6 +1116,15 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["d12"]
                                 },
                         },
+                        2: {
+                                active(){
+                                        return hasMilestone("d", 13)
+                                },
+                                type: "add",
+                                amount(){
+                                        return new Decimal(-.1)
+                                },
+                        }
                 },
                 bases(){
                         let b0 = new Decimal(1e33)
@@ -1118,6 +1136,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
                 d13: {active:() => hasUpgrade("d", 23) && player.d.points.gte("1e600")},
+                d21: {active:() => hasUpgrade("d", 25)},
         },
         d12: {
                 name: "D 12",
@@ -1133,6 +1152,8 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0003) // 3**x
                         return [b0, b1, b2]
                 },
+                d13: {active:() => hasMilestone("d", 13)},
+                d21: {active:() => hasUpgrade("d", 25)},
         },
         d13: {
                 name: "D 13",
@@ -1153,6 +1174,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0, b1, b2]
                 },
+                d21: {active:() => hasUpgrade("d", 25)},
         },
         d21: {
                 name: "D 21",
@@ -1165,6 +1187,10 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e745")
                         let b1 = new Decimal(1e6)
                         let b2 = new Decimal(1.0027) // 3**x
+
+                        if (hasMilestone("d", 13))      b0 = b0.div(1e145)
+                        if (hasMilestone("d", 14))      b1 = b1.sub(getBuyableAmount("c", 21)).max(1e5)
+                        else if (hasUpgrade("d", 24))   b1 = b1.sub(getBuyableAmount("c", 11)).max(1e5)
 
                         return [b0, b1, b2]
                 },
@@ -1764,6 +1790,7 @@ function getABBulk(layer){
         }
         if (layer == "d") {
                 if (hasUpgrade("c", 35))        amt = amt.times(5)
+                if (hasMilestone("d", 14))      amt = amt.times(2)
         }
         return amt
 }
@@ -1781,10 +1808,14 @@ function getABSpeed(layer){
                 if (hasMilestone("d", 3)) diffmult *= Math.max(1, player.d.times)
                 if (hasMilestone("d", 1) && hasUpgrade("b", 31)) diffmult += 1
         }
+        if (layer == "d") {
+                diffmult *= 2
+        }
         return diffmult
 }
 
 function canBuySimultaniously(layer){
+        if (hasMilestone("d", 14))      return hasMilestone("d", 14) // || player.g.unlocked
         if (layer == "c")               return hasMilestone("d", 1) //|| player.f.unlocked
         if (layer == "b")               return hasMilestone("c", player.d.unlocked ? 1 : 3) //|| player.e.unlocked
         if (layer == "a")               return hasMilestone("b", 4) || player.d.unlocked
