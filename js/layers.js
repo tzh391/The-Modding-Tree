@@ -1753,7 +1753,7 @@ addLayer("e", {
                 },
                 51:{
                         title: "Gate",
-                        description: "Peace is rasied to the power of Energy upgrades",
+                        description: "Peace is raised to the power of Energy upgrades",
                         cost: new Decimal("1e10370"),
                         currencyDisplayName: "Incrementy",
                         currencyInternalName: "points",
@@ -3431,7 +3431,7 @@ addLayer("g", {
                 },
                 52: {
                         title: "Mote",
-                        description: "Antimatter Gain buyables also gives free levels to Incrementry Boost", 
+                        description: "Antimatter Gain buyables also gives free levels to Incrementy Boost", 
                         cost: new Decimal(2e64),
                         unlocked(){
                                 return hasUpgrade("g", 51) || hasUnlockedRow(3)
@@ -4332,7 +4332,7 @@ addLayer("b", {
                 },
                 14: {
                         title: "Maize",
-                        description: "Boson gain is rasied to the square root of Boson Challenge completions",
+                        description: "Boson gain is raised to the square root of Boson Challenge completions",
                         cost: new Decimal(5e5),
                         currencyDisplayName: "Tokens",
                         currencyInternalName: "tokens",
