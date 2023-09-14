@@ -1770,6 +1770,58 @@ addLayer("c", {
                                 return hasUpgrade("d", 21) //|| player.e.unlocked
                         }, 
                 }, // hasUpgrade("c", 41)
+                42: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>C-pyb-ra"
+                        },
+                        description(){
+                                let a = "Each D 11 level past 16,000 decreases D 21 lienar base by .01% (until it is 1)"
+                                return a
+                        },
+                        cost: new Decimal("e4.401e9"),
+                        unlocked(){
+                                return hasUpgrade("c", 41) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("c", 42)
+                43: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Ca-yb-ra"
+                        },
+                        description(){
+                                let a = "Square Alligator bulk amount, Beaver bulk amount, and Beaver buyable limit"
+                                return a
+                        },
+                        cost: new Decimal("e5.272e9"),
+                        unlocked(){
+                                return hasUpgrade("c", 42) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("c", 43)
+                44: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>C--yb-ra"
+                        },
+                        description(){
+                                let a = "D 12 levels past 10,000 decrease D 21 and D 22 base cost by 1%, reapply this effect at 1e14,042 and 1e14,126 Ducks"
+                                return a
+                        },
+                        cost: new Decimal("e5.619e9"),
+                        unlocked(){
+                                return hasUpgrade("c", 43) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("c", 44)
+                45: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Cap-b-ra"
+                        },
+                        description(){
+                                let a = "Per tenth D 22 level past 160 add .0001 to D 21 base and increase D 11 and D 12 base cost by 1e4x (max 10 times)"
+                                return a
+                        },
+                        cost: new Decimal("e5.75247e9"),
+                        unlocked(){
+                                return hasUpgrade("c", 44) //|| player.e.unlocked
+                        }, 
+                }, // hasUpgrade("c", 45)
         },
         buyables: getLayerGeneralizedBuyableData("c", [
                         function(){
@@ -2471,6 +2523,7 @@ addLayer("d", {
 
                 if (hasUpgrade("d", 11))        ret = ret.plus(player.d.upgrades.length)
                                                 ret = ret.plus(CURRENT_BUYABLE_EFFECTS["d21"])
+                if (hasMilestone("d", 18))      ret = ret.plus(1)
 
                 return ret
         },
@@ -2486,9 +2539,12 @@ addLayer("d", {
         getGainMultPost(){
                 let ret = getGeneralizedInitialPostMult("d")
 
-                if (hasUpgrade("c", 32))        ret = ret.times(Decimal.pow(player.d.upgrades.length, player.d.upgrades.length))
-                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["d11"])
-                if (hasUpgrade("c", 41))        ret = ret.times(Decimal.pow(1.2, player.c.upgrades.length))
+                if (!hasMilestone("d", 19)) {
+                        if (hasUpgrade("c", 32))        ret = ret.times(Decimal.pow(player.d.upgrades.length, player.d.upgrades.length))
+                        if (hasUpgrade("c", 41))        ret = ret.times(Decimal.pow(1.2, player.c.upgrades.length))
+                }
+                                                        ret = ret.times(CURRENT_BUYABLE_EFFECTS["d11"])
+                
 
                 return ret
         },
@@ -2499,6 +2555,7 @@ addLayer("d", {
 
                 let exp = amt.plus(999).log10().min(100)
                 if (hasUpgrade("d", 24)) exp = exp.times(player.d.upgrades.length ** 2)
+                if (hasMilestone("d", 18) && player.d.points.gte("1e14830")) exp = exp.times(5)
 
                 let ret = amt.plus(1).pow(exp)
 
@@ -2519,7 +2576,10 @@ addLayer("d", {
                 doPassiveGain("d", diff)
                 
                 if (hasMilestone("d", 11)) {
-                        handleGeneralizedBuyableAutobuy(diff, "d")
+                        let mincost = getBuyableCost("d", 11).min(getBuyableCost("d", 12)).min(getBuyableCost("d", 13))
+                        if (mincost.div(10).lte(tmp.d.getResetGain)) {
+                                handleGeneralizedBuyableAutobuy(diff, "d")
+                        }
                 } else {
                         data.abtime = 0
                 }
@@ -2682,6 +2742,9 @@ addLayer("d", {
                         function(){
                                 return player.d.buyables[11].gte(3750) //|| player.e.unlocked
                         },
+                        function(){
+                                return player.d.buyables[11].gte(17000) //|| player.e.unlocked
+                        },
                 ]),
         milestones: {
                 1: {
@@ -2835,7 +2898,7 @@ addLayer("d", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Autobuy a Duck buyable per second and each D 13 divides D 11 and D 12 cost base by 1.03 ."
+                                return "Reward: Autobuy a Duck buyable per second (if you can buy a level of the first row with ten seconds of production) and each D 13 divides D 11 and D 12 cost base by 1.03 ."
                         },
                 }, // hasMilestone("d", 11)
                 12: {
@@ -2880,6 +2943,76 @@ addLayer("d", {
                                 return "Reward: The Duck autobuyer triggers twice as often, for twice as much, and on every buyable at once, and D 21's linear base is 1e6 - C 21."
                         },
                 }, // hasMilestone("d", 14)
+                15: {
+                        requirementDescription(){
+                                return "1e12,825 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e12825")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: The Duck autobuyer triggers twice as often and for twice as much and halve D 22 linear base, reapply this at 1e12,859 and 1e13,059 Ducks."
+                        },
+                }, // hasMilestone("d", 15)
+                16: {
+                        requirementDescription(){
+                                return "1e13,440 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e13440")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Halve D 22 base but multiply D 12 cost base by 1e21. Reapply this 1e13,475 Ducks. At 1e13,631 Ducks, each D 22 level decreases D 21 base by 1 + milestones / 400."
+                        },
+                }, // hasMilestone("d", 16)
+                17: {
+                        requirementDescription(){
+                                return "1e14,393 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e14393")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Decrease D 22 linear cost base by 1,250,000. Reapply this effect at 203, 214, 215, and 226 D 22 levels."
+                        },
+                }, // hasMilestone("d", 17)
+                18: {
+                        requirementDescription(){
+                                return "1e14,668 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e14668")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Increase D 11 and D 12 base cost by 1e18 and add 1 to the Duck exponent. At 1e14,830 Ducks multiply Duck effect exponent by 5."
+                        },
+                }, // hasMilestone("d", 18)
+                19: {
+                        requirementDescription(){
+                                return "1e14,938 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e14938")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Increase D 21 base by .0005 but Cap--ara and Capyb-ra don't multiply Duck gain."
+                        },
+                }, // hasMilestone("d", 19)
         },
         tabFormat: {
                 "Upgrades": {
