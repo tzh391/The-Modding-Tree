@@ -2480,7 +2480,7 @@ addLayer("c", {
 
                 //challenges
                 let resetChallenges = [11, 12]
-                if (layer != "d") resetChallenges.push(13)
+                if (layer != "d") resetChallenges = [11, 12, 13]
                 for (let j = 0; j < resetChallenges.length; j++) {
                         if (hasMilestone("d", 4)) break
                         data.challenges[resetChallenges[j]] = 0
@@ -2527,7 +2527,7 @@ addLayer("d", {
                 if (hasUpgrade("d", 11))        ret = ret.plus(player.d.upgrades.length)
                                                 ret = ret.plus(CURRENT_BUYABLE_EFFECTS["d21"])
                 if (hasMilestone("d", 18))      ret = ret.plus(1)
-                if (hasMilestone("d", 20))      ret = ret.sub(6)
+                if (hasMilestone("d", 20) && player.d.points.gte("1e15000"))      ret = ret.sub(6)
 
                 return ret
         },
@@ -2537,6 +2537,7 @@ addLayer("d", {
                                                 ret = ret.plus(CURRENT_BUYABLE_EFFECTS["d21"])
                 
                 if (hasUpgrade("c", 33))        ret = ret.times(Math.max(player.c.upgrades.length - 11, 1))
+                if (hasMilestone("d", 22))      ret = ret.times(player.e.points.max(10).log10())
 
                 return ret
         },
@@ -2547,6 +2548,10 @@ addLayer("d", {
                         if (hasUpgrade("c", 32))        ret = ret.times(Decimal.pow(player.d.upgrades.length, player.d.upgrades.length))
                         if (hasUpgrade("c", 41))        ret = ret.times(Decimal.pow(1.2, player.c.upgrades.length))
                 }
+                if (hasMilestone("e", 5) && player.d.points.lt("1e10000")) {
+                        ret = ret.times(1e20)
+                }
+                if (hasUpgrade("e", 12))                ret = ret.times(Decimal.pow(player.e.upgrades.length, player.e.upgrades.length))
                                                         ret = ret.times(CURRENT_BUYABLE_EFFECTS["d11"])
                 
 
@@ -2733,6 +2738,19 @@ addLayer("d", {
                                 return hasUpgrade("d", 24) || player.e.unlocked
                         }, 
                 }, // hasUpgrade("d", 25)
+                31: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D--k-"
+                        },
+                        description(){
+                                let a = "C 13 base is raised to the power of cbrt(D 11)"
+                                return a
+                        },
+                        cost: new Decimal("1e21916"),
+                        unlocked(){
+                                return hasUpgrade("e", 14) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("d", 31)
         },
         buyables: getLayerGeneralizedBuyableData("d", [
                         function(){
@@ -2931,6 +2949,7 @@ addLayer("d", {
                                 return true
                         },
                         effectDescription(){
+                                if (player.shiftAlias) return "Note: Only works above 1e1111 Ducks"
                                 return "Reward: D 13 gives free D 12 levels, subtract .1 from D 11's base, and divide D 21 base cost by 1e145."
                         },
                 }, // hasMilestone("d", 13)
@@ -3032,9 +3051,38 @@ addLayer("d", {
                                 player.d.buyables[22] = player.d.buyables[22].min(260)
                         },
                         effectDescription(){
+                                if (player.shiftAlias) return "Only works above 1e15,000 Ducks"
                                 return "Reward: Reduce the Duck gain exponent by 6, reduce D 22 levels to 260, sextuple its linear base, and it gives free levels to D 12. At 1e15,444 Ducks double Duck effect exponent."
                         },
                 }, // hasMilestone("d", 20)
+                21: {
+                        requirementDescription(){
+                                return "1e19,205 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e19205")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 22 gives free levels to D 13, subtract .1 from the D 11 base, Duck milestone 16 no longer divides D 21 base cost, divide D 22 base cost by 1e2182, and D 22 linear base is 1e5 times more."
+                        },
+                }, // hasMilestone("d", 21)
+                22: {
+                        requirementDescription(){
+                                return "1e20,480 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e20480")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: log10(Eagles) multiplies Eagles and base Duck gain. Raise C 22 base to sqrt(D 21 levels + 1)."
+                        },
+                }, // hasMilestone("d", 22)
         },
         tabFormat: {
                 "Upgrades": {
@@ -3096,11 +3144,12 @@ addLayer("d", {
                 if (layer == "d") data.time = 0
                 if (!getsReset("d", layer)) return
                 
-                data.times = 0
+                if (hasMilestone("e", 2)) data.times = Math.min(data.times, player.e.times)
+                else data.times = 0
 
                 if (!false/*player.h.unlocked*/) { //upgrades
                         let keptUpgrades = 0
-                        if (false) keptUpgrades += 0
+                        if (hasMilestone("e", 4)) keptUpgrades += player.e.times
                         if (!false) {
                                 data.upgrades = data.upgrades.slice(0, keptUpgrades)
                         }
@@ -3108,7 +3157,7 @@ addLayer("d", {
 
                 if (!false/*player.g.unlocked*/) { //milestones
                         let keptMilestones = 0
-                        if (false) keptMilestones += 0
+                        if (hasMilestone("e", 3)) keptMilestones += player.e.times
                         if (!false) {
                                 data.milestones = data.milestones.slice(0, keptMilestones)
                         }
@@ -3153,24 +3202,32 @@ addLayer("e", {
                 return getGeneralizedPrestigeGain("e")
         },
         getBaseDiv(){
-                let ret = new Decimal("1e15500")
+                let ret = new Decimal("1e15100")
                 
                 return ret
         },
         getGainExp(){
                 let ret = new Decimal(2)
 
+                if (hasMilestone("e", 6)) ret = ret.plus(player.e.milestones.length / 25)
+                if (hasUpgrade("e", 14))        ret = ret.plus(player.e.upgrades.length * .08)
+
                 return ret
         },
         getGainMultPre(){
                 let ret = new Decimal(1)
+
+                if (hasUpgrade("e", 12)) ret = ret.times(Decimal.pow(1.1, player.e.upgrades.length))
 
                 return ret
         },
         getGainMultPost(){
                 let ret = getGeneralizedInitialPostMult("e")
 
-                ret = ret.div(1e4)
+                ret = ret.div(25e4)
+                if (hasMilestone("e", 7))       ret = ret.times(player.e.milestones.length)
+                if (hasUpgrade("e", 13))        ret = ret.times(Decimal.pow(2, player.e.upgrades.length))
+                if (hasMilestone("d", 22))      ret = ret.times(player.e.points.max(10).log10())
 
                 return ret
         },
@@ -3183,7 +3240,7 @@ addLayer("e", {
 
                 amtlog = amt.log10().floor()
 
-                let exp = amtlog.plus(1).min(100)
+                let exp = amtlog.plus(hasUpgrade("e", 13) ? 0 : 1).min(100)
 
                 let ret = amtlog.pow10().plus(1).pow(exp)
 
@@ -3226,14 +3283,53 @@ addLayer("e", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>E-gle"
                         },
                         description(){
-                                let a = "idk"
+                                let a = "Note: Each upgrade in this tab is applied per upgrade. Add .0001 to D 13 base."
+                                return a
+                        },
+                        cost: new Decimal(1),
+                        unlocked(){
+                                return player.e.best.gte(10) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("e", 11)
+                12: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Ea-le"
+                        },
+                        description(){
+                                let a = "Multiply Duck gain by upgrades and multiply pre-exponent Eagle gain by 1.1"
+                                return a
+                        },
+                        cost: new Decimal(10),
+                        unlocked(){
+                                return player.e.best.gte(61) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("e", 12)
+                13: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>E--le"
+                        },
+                        description(){
+                                let a = "Double Eagle gain but remove the +1 in the Eagle effect exponent"
                                 return a
                         },
                         cost: new Decimal(1e4),
                         unlocked(){
-                                return true //|| player.e.unlocked
+                                return player.e.best.gte(3000) //|| player.f.unlocked
                         }, 
-                }, // hasUpgrade("d", 11)
+                }, // hasUpgrade("e", 13)
+                14: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Eag-e"
+                        },
+                        description(){
+                                let a = "Add .08 to the Eagle gain exponent and add .0001 to the D 21 base but multiply D 1X base cost by 1e7"
+                                return a
+                        },
+                        cost: new Decimal(1e9),
+                        unlocked(){
+                                return player.e.best.gte(5e8) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("e", 14)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
                         /*function(){
@@ -3255,6 +3351,104 @@ addLayer("e", {
                                 return "Reward: Square beaver gain, double and square Capybara bulk amount, and add 1.5 to C 33's base."
                         },
                 }, // hasMilestone("e", 1)
+                2: {
+                        requirementDescription(){
+                                return "2 Eagle resets"
+                        },
+                        done(){
+                                return player.e.times >= 2
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Per reset keep a Duck reset and D 12 gives free levels to C 32."
+                        },
+                }, // hasMilestone("e", 2)
+                3: {
+                        requirementDescription(){
+                                return "3 Eagle resets"
+                        },
+                        done(){
+                                return player.e.times >= 3
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Per reset keep a Duck milestone, multiply Duck autobuyer speed and bulk amount by resets + 1, and D 11 gives free C 32 levels."
+                        },
+                }, // hasMilestone("e", 3)
+                4: {
+                        requirementDescription(){
+                                return "4 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(4)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Per reset keep a Duck upgrade and each of the first forty resets gives a free D 11 level."
+                        },
+                }, // hasMilestone("e", 4)
+                5: {
+                        requirementDescription(){
+                                return "50 Eagles (or 17 Eagle resets)"
+                        },
+                        done(){
+                                return player.e.points.gte(50) || player.e.times >= 17
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Gain 1e20x Ducks below 1e10,000 and square C 22 base."
+                        },
+                }, // hasMilestone("e", 5)
+                6: {
+                        requirementDescription(){
+                                return "150 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(150)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 22 linear base is 7e10 and its base is .0001 more. Increase the Eagle gain exponent by .04 per milestone."
+                        },
+                }, // hasMilestone("e", 6)
+                7: {
+                        requirementDescription(){
+                                return "1000 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(1000)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 22 linear base is 1e14 and decreases by .1% per level. D 22 gives free levels to D 11 and milestones multiplies Eagle gain."
+                        },
+                }, // hasMilestone("e", 7)
+                8: {
+                        requirementDescription(){
+                                return "200,000 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(2e5)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Remove the ability to Eagle prestige, gain 100% of your Eagle gained on reset per second, and gain one Eagle reset per second. Eagle resets no longer give free D 11 levels."
+                        },
+                }, // hasMilestone("e", 8)
         },
         tabFormat: {
                 "Upgrades": {
@@ -3267,7 +3461,7 @@ addLayer("e", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (isPassiveGainActive("d")) {
+                                                if (isPassiveGainActive("e")) {
                                                         if (player.shiftAlias) return "Eagle gain formula is " + getGeneralizedPrestigeButtonText("e")
                                                         return "You are gaining " + format(tmp.e.getResetGain) + " Eagles per second"
                                                 }
