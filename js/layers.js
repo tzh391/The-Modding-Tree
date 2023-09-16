@@ -129,9 +129,7 @@ addLayer("a", {
                 return getGeneralizedPrestigeGain("a").pow(hasMilestone("d", 1) + 1)
         },
         getBaseDiv(){
-                let ret = decimalOne
-                
-                return ret
+                return decimalOne
         },
         getGainExp(){
                 let ret = new Decimal(2)
@@ -737,9 +735,7 @@ addLayer("b", {
                 return getGeneralizedPrestigeGain("b").pow(1 + hasMilestone("e", 1))
         },
         getBaseDiv(){
-                let ret = new Decimal(1e230)
-                
-                return ret
+                return hasUpgrade("c", 51) ? decimalOne : new Decimal(1e230)
         },
         getGainExp(){
                 let ret = new Decimal(2)
@@ -1474,9 +1470,7 @@ addLayer("c", {
                 return getGeneralizedPrestigeGain("c")
         },
         getBaseDiv(){
-                let ret = new Decimal("1e1871")
-                
-                return ret
+                return hasUpgrade("c", 51) ? decimalOne : new Decimal("1e1871")
         },
         getGainExp(){
                 let ret = new Decimal(4)
@@ -1494,6 +1488,7 @@ addLayer("c", {
                                         
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["c31"])
                 if (hasUpgrade("d", 15))        ret = ret.times(2)
+                if (hasUpgrade("d", 34))        ret = ret.times(player.e.points.max(1).pow(hasUpgrade("c", 52) ? player.c.upgrades.filter(x => x > 50).length ** 2 : 1))
 
                 return ret
         },
@@ -1824,6 +1819,32 @@ addLayer("c", {
                                 return hasUpgrade("c", 44) || player.e.unlocked
                         }, 
                 }, // hasUpgrade("c", 45)
+                51: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>C-p-b-ra"
+                        },
+                        description(){
+                                let a = "Remove gain dividers for the first five layers and log10(Eagles) multiplies Eagles and base Duck gain"
+                                return a
+                        },
+                        cost: new Decimal("e1.05e11"),
+                        unlocked(){
+                                return hasUpgrade("d", 23) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("c", 51)
+                52: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Ca--b-ra"
+                        },
+                        description(){
+                                let a = "Apply Du--- per this row upgrade<sup>2</sup> and log10(log10(Capybaras)) multiplies Eagle gain per this row upgrade"
+                                return a
+                        },
+                        cost: new Decimal("e1.76e11"),
+                        unlocked(){
+                                return player.d.points.gte("e26630") //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("c", 52)
         },
         buyables: getLayerGeneralizedBuyableData("c", [
                         function(){
@@ -2517,9 +2538,7 @@ addLayer("d", {
                 return getGeneralizedPrestigeGain("d")
         },
         getBaseDiv(){
-                let ret = new Decimal("1e14020")
-                
-                return ret
+                return hasUpgrade("c", 51) ? decimalOne : new Decimal("1e14020")
         },
         getGainExp(){
                 let ret = new Decimal(5)
@@ -2538,6 +2557,8 @@ addLayer("d", {
                 
                 if (hasUpgrade("c", 33))        ret = ret.times(Math.max(player.c.upgrades.length - 11, 1))
                 if (hasMilestone("d", 22))      ret = ret.times(player.e.points.max(10).log10())
+                if (hasUpgrade("c", 51))        ret = ret.times(player.e.points.max(10).log10())
+                if (hasUpgrade("e", 15))        ret = ret.times(player.e.points.max(10).log10().div(16).pow(player.e.upgrades.length))
 
                 return ret
         },
@@ -2751,6 +2772,45 @@ addLayer("d", {
                                 return hasUpgrade("e", 14) //|| player.f.unlocked
                         }, 
                 }, // hasUpgrade("d", 31)
+                32: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Duc--"
+                        },
+                        description(){
+                                let a = "C 33 base is raised to the power of cbrt(D 12)"
+                                return a
+                        },
+                        cost: new Decimal("1e22675"),
+                        unlocked(){
+                                return hasUpgrade("d", 31) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("d", 32)
+                33: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D-c--"
+                        },
+                        description(){
+                                let a = "D 22 levels multiply Eagle gain and add .0004 to D 13's base"
+                                return a
+                        },
+                        cost: new Decimal("1e22990"),
+                        unlocked(){
+                                return hasUpgrade("d", 32) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("d", 33)
+                34: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Du---"
+                        },
+                        description(){
+                                let a = "Eagles multiply base Capybara gain"
+                                return a
+                        },
+                        cost: new Decimal("1e26375"),
+                        unlocked(){
+                                return hasUpgrade("d", 33) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("d", 34)
         },
         buyables: getLayerGeneralizedBuyableData("d", [
                         function(){
@@ -3065,6 +3125,9 @@ addLayer("d", {
                         unlocked(){
                                 return true
                         },
+                        onComplete(){
+                                player.d.buyables[22] = player.d.buyables[22].min(260)
+                        },
                         effectDescription(){
                                 return "Reward: D 22 gives free levels to D 13, subtract .1 from the D 11 base, Duck milestone 16 no longer divides D 21 base cost, divide D 22 base cost by 1e2182, and D 22 linear base is 1e5 times more."
                         },
@@ -3202,9 +3265,7 @@ addLayer("e", {
                 return getGeneralizedPrestigeGain("e")
         },
         getBaseDiv(){
-                let ret = new Decimal("1e15100")
-                
-                return ret
+                return hasUpgrade("c", 51) ? decimalOne : new Decimal("1e15100")
         },
         getGainExp(){
                 let ret = new Decimal(2)
@@ -3228,6 +3289,9 @@ addLayer("e", {
                 if (hasMilestone("e", 7))       ret = ret.times(player.e.milestones.length)
                 if (hasUpgrade("e", 13))        ret = ret.times(Decimal.pow(2, player.e.upgrades.length))
                 if (hasMilestone("d", 22))      ret = ret.times(player.e.points.max(10).log10())
+                if (hasUpgrade("c", 51))        ret = ret.times(player.e.points.max(10).log10())
+                if (hasUpgrade("d", 33))        ret = ret.times(getBuyableAmount("d", 22).max(1))
+                if (hasUpgrade("c", 52))        ret = ret.times(player.c.points.max(10).log10().max(10).log10().pow(player.c.upgrades.filter(x => x > 50).length))
 
                 return ret
         },
@@ -3330,6 +3394,19 @@ addLayer("e", {
                                 return player.e.best.gte(5e8) //|| player.f.unlocked
                         }, 
                 }, // hasUpgrade("e", 14)
+                15: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>E-g-e"
+                        },
+                        description(){
+                                let a = "Multiply base Duck gain by log10(Eagles)/16"
+                                return a
+                        },
+                        cost: new Decimal(1e16),
+                        unlocked(){
+                                return player.e.best.gte(2e15) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("e", 15)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
                         /*function(){

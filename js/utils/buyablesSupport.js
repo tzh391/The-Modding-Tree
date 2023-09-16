@@ -1140,6 +1140,15 @@ var MAIN_BUYABLE_DATA = {
                                         return player.d.milestones.length
                                 },
                         },
+                        6: {
+                                active(){
+                                        return hasUpgrade("d", 32)
+                                },
+                                type: "exp",
+                                amount(){
+                                        return getBuyableAmount("d", 12).cbrt().max(1)
+                                }
+                        }
                 },
                 bases(){
                         let b0 = new Decimal("1e6067")
@@ -1271,6 +1280,15 @@ var MAIN_BUYABLE_DATA = {
                                 type: "add",
                                 amount(){
                                         return player.e.upgrades.length / 10000
+                                },
+                        },
+                        3: {
+                                active(){
+                                        return hasUpgrade("d", 33)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0004
                                 },
                         },
                 },
