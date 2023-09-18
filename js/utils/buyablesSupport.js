@@ -1472,6 +1472,15 @@ var MAIN_BUYABLE_DATA = {
                                         return 2.5
                                 },
                         },
+                        2: {
+                                active(){
+                                        return hasUpgrade("d", 43)
+                                },
+                                type: "add",
+                                amount(){
+                                        return getBuyableAmount("d", 12).sub(18000).max(0).div(5000).times(1 + player.d.points.gte("1e43052") + player.d.points.gte("1e43161"))
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e31083")
@@ -1481,6 +1490,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("c", 54)) {
                                 b0 = b0.div("1e483").times(Decimal.pow(.99, getBuyableAmount("d", 12).sub(1e4).max(0)).pow(1 + player.d.points.gte("1e14042") + player.d.points.gte("14126")))
                         }
+                        if (hasUpgrade("d", 42)) b0 = b0.div("1e1000")
                         
                         if (hasMilestone("d", 24) && player.d.points.gte("1e32132")) {
                                 b1 = b1.times(Decimal.pow(.99, getBuyableAmount("d", 23)))

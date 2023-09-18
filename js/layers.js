@@ -2604,6 +2604,7 @@ addLayer("d", {
                 if (hasMilestone("d", 24))      ret = ret.div(2)
                 if (hasMilestone("d", 25))      ret = ret.div(24)
                 if (hasUpgrade("c", 54))        ret = ret.div(1e5)
+                if (hasUpgrade("d", 42))        ret = ret.div(65432)
 
 
                 return ret
@@ -2883,6 +2884,32 @@ addLayer("d", {
                                 return hasUpgrade("c", 55) //|| player.f.unlocked
                         }, 
                 }, // hasUpgrade("d", 41)
+                42: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D<sup>2</sup>-cks"
+                        },
+                        description(){
+                                let a = "Divide D 23 base cost by 1e1000 and divide base Duck gain by 65,432"
+                                return a
+                        },
+                        cost: new Decimal("1e40342"),
+                        unlocked(){
+                                return hasUpgrade("d", 41) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("d", 42)
+                43: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D<sup>2</sup>u-ks"
+                        },
+                        description(){
+                                let a = "Each D 12 past 18,000 adds .0002 to the D 23 base, reapply this at 1e43,052 and 1e43,161 Ducks"
+                                return a
+                        },
+                        cost: new Decimal("1e42943"),
+                        unlocked(){
+                                return hasUpgrade("d", 42) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("d", 43)
         },
         buyables: getLayerGeneralizedBuyableData("d", [
                         function(){
@@ -3267,6 +3294,20 @@ addLayer("d", {
                                 return "Reward: D 23 gives free D 11 levels and divide base Duck gain by 24."
                         },
                 }, // hasMilestone("d", 25)
+                26: {
+                        requirementDescription(){
+                                return "1e40,473 Ducks"
+                        },
+                        done(){
+                                return player.d.points.gte("1e40473")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 23 levels multiply Eagle gain."
+                        },
+                }, // hasMilestone("d", 26)
         },
         tabFormat: {
                 "Upgrades": {
@@ -3386,7 +3427,7 @@ addLayer("e", {
                 let ret = getGeneralizedPrestigeGain("e")
 
                 if (hasMilestone("e", 11)) {
-                        let x = ret.max(100).log10().sub(2).max(player.e.points.max(10).log10()).min(100)
+                        let x = ret.max(100).log10().times(.6989700043360189).sub(2).max(player.e.points.max(10).log10()).min(100)
                         ret = ret.div(Decimal.pow(2, x.floor()))
                 }
 
@@ -3423,6 +3464,8 @@ addLayer("e", {
                 if (hasUpgrade("c", 52))        ret = ret.times(player.c.points.max(10).log10().max(10).log10().pow(player.c.upgrades.filter(x => x > 50).length))
                 if (hasUpgrade("d", 35))        ret = ret.times(player.d.upgrades.length)
                 if (hasMilestone("e", 10))      ret = ret.div(100)
+                if (hasMilestone("e", 11))      ret = ret.div(250)
+                if (hasMilestone("d", 26))      ret = ret.times(getBuyableAmount("d", 23).max(1))
 
                 return ret
         },
@@ -3709,7 +3752,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Each order of magnitude (up to 100) of Eagles halves Eagle, add 2 to the Eagle gain exponent, and divide D 23 linear base by 1e5 but multiply its base cost by 1e1000."
+                                return "Reward: Divide Eagle gain by 250, each order of magnitude (up to 100) of Eagles halves Eagle, add 2 to the Eagle gain exponent, and divide D 23 linear base by 1e5 but multiply its base cost by 1e1000."
                         },
                 }, // hasMilestone("e", 11)
         },
