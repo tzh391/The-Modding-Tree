@@ -1,6 +1,6 @@
 // Set your version in num and name
 var VERSION = {
-	num: ".038",
+	num: ".039",
 	name: /*"Advil's Auspicious Acension"*/ "",
 }
 
@@ -11,18 +11,26 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.e.points.gte("1e11")
+	return player.e.points.gte("8e30")
 }
 
-var CHANELOG_VERSION = "v0.038"
+var CHANELOG_VERSION = "v0.039"
 
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC0000'>v0.039</h3><br>
+		- Balanced until 8e30 Eagles.<br>
+		- Added three Capybara upgrades
+		- Added five Duck upgrades.<br>
+		- Added three Duck milestones.<br>
+		- Added a Duck buyable.<br>
+		- Added three Eagle milestones.<br>
+		- Added two Eagle upgrades.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.038</h3><br>
 		- Balanced until 1e11 Eagles.<br>
 		- Added two Duck milestones.<br>
 		- Added a Duck upgrade.<br>
-		- Added seven Eagle milestones.
+		- Added seven Eagle milestones.<br>
 		- Added four Eagle upgrades.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.037</h3><br>
 		- Balanced until 2 Eagles.<br>
