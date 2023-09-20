@@ -228,7 +228,7 @@ addLayer("a", {
                         },
                         cost: new Decimal(30),
                         effect(){
-                                return Decimal.pow(2, Math.min(9, player.a.upgrades.length))
+                                return Decimal.pow(2, player.a.upgrades.length).min(512)
                         },
                         unlocked(){
                                 return player.a.best.gt(10) || player.b.unlocked
@@ -762,7 +762,7 @@ addLayer("b", {
                 if (hasUpgrade("b", 13))        ret = ret.times(Decimal.pow(2, player.b.upgrades.length))
                 if (hasUpgrade("a", 33))        ret = ret.times(Decimal.pow(player.a.upgrades.length/10, player.a.upgrades.length).max(1))
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["b11"])
-                if (hasMilestone("b", 8))       ret = ret.times(Decimal.pow(Math.max(6, player.b.milestones.length)/6, player.b.milestones.length))
+                if (hasMilestone("b", 8))       ret = ret.times(Decimal.pow(player.b.milestones.length/6, player.b.milestones.length).max(1))
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["b31"])
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["b33"].pow(player.b.upgrades.length))
                 if (hasUpgrade("b", 44))        ret = ret.times(CURRENT_BUYABLE_EFFECTS["b12"])
@@ -2588,6 +2588,7 @@ addLayer("d", {
                                                 ret = ret.plus(CURRENT_BUYABLE_EFFECTS["d21"])
                 if (hasMilestone("d", 18))      ret = ret.plus(1)
                 if (hasMilestone("d", 20) && player.d.points.gte("1e15000"))      ret = ret.sub(6)
+                                                ret = ret.plus(CURRENT_BUYABLE_EFFECTS["e12"])
 
                 return ret
         },
@@ -2597,15 +2598,31 @@ addLayer("d", {
                                                 ret = ret.plus(CURRENT_BUYABLE_EFFECTS["d21"])
 
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["d23"])
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["e11"])
                 if (hasUpgrade("c", 33))        ret = ret.times(Math.max(player.c.upgrades.length - 11, 1))
-                if (hasMilestone("d", 22))      ret = ret.times(player.e.points.max(10).log10())
-                if (hasUpgrade("c", 51))        ret = ret.times(player.e.points.max(10).log10().pow(hasUpgrade("c", 53) ? player.c.upgrades.filter(x => x > 50).length : 1))
-                if (hasUpgrade("e", 15))        ret = ret.times(player.e.points.max(10).log10().div(16).pow(player.e.upgrades.length))
+                
+                /* */
+                let eaglesexp = hasMilestone("d", 22) ? 1 : 0
+                if (hasUpgrade("c", 51)) eaglesexp += hasUpgrade("c", 53) ? player.c.upgrades.filter(x => x > 50).length : 1
+                if (hasUpgrade("e", 15)) {
+                        eaglesexp += player.e.upgrades.length
+                                                ret = ret.div(Decimal.pow(16, player.e.upgrades.length))
+                }
+
+                if (hasMilestone("e", 13) && getBuyableAmount("e", 11).gte(150)) {
+                                                ret = ret.times(player.e.points.max(10).log10().ceil().pow(eaglesexp))
+                } else {
+                                                ret = ret.times(player.e.points.max(10).log10().pow(eaglesexp))
+                }
+                /* */ 
+                
                 if (hasMilestone("d", 24))      ret = ret.div(2)
                 if (hasMilestone("d", 25))      ret = ret.div(24)
                 if (hasUpgrade("c", 54))        ret = ret.div(1e5)
                 if (hasUpgrade("d", 42))        ret = ret.div(65432)
-
+                if (hasMilestone("e", 14) && getBuyableAmount("e", 11).gte(200)) {
+                        ret = ret.div(700)
+                }
 
                 return ret
         },
@@ -2634,6 +2651,7 @@ addLayer("d", {
                 if (hasUpgrade("d", 24)) exp = exp.times(player.d.upgrades.length ** 2)
                 if (hasMilestone("d", 18) && player.d.points.gte("1e14830")) exp = exp.times(5)
                 if (hasMilestone("d", 20) && player.d.points.gte("1e15444")) exp = exp.times(2)
+                if (hasMilestone("e", 12))      exp = exp.times(player.e.milestones.length ** 2)
 
                 let ret = amt.plus(1).pow(exp)
 
@@ -2910,6 +2928,32 @@ addLayer("d", {
                                 return hasUpgrade("d", 42) //|| player.f.unlocked
                         }, 
                 }, // hasUpgrade("d", 43)
+                44: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D<sup>2</sup>--ks"
+                        },
+                        description(){
+                                let a = "Each D 23 level (up to 10,000) increases Eagle gain by D 22 levels / 1e5"
+                                return a
+                        },
+                        cost: new Decimal("1e43377"),
+                        unlocked(){
+                                return hasUpgrade("d", 43) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("d", 44)
+                45: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D<sup>2</sup>uc-s"
+                        },
+                        description(){
+                                let a = "log10(log10(Ducks)) multiplies Eagle gain"
+                                return a
+                        },
+                        cost: new Decimal("1e49380"),
+                        unlocked(){
+                                return getBuyableAmount("e", 11).gte(7) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("d", 45)
         },
         buyables: getLayerGeneralizedBuyableData("d", [
                         function(){
@@ -3442,6 +3486,7 @@ addLayer("e", {
                 if (hasMilestone("e", 6))       ret = ret.plus(player.e.milestones.length / 25)
                 if (hasUpgrade("e", 14))        ret = ret.plus(player.e.upgrades.length * .08)
                 if (hasMilestone("e", 11))      ret = ret.plus(2)
+                                                ret = ret.plus(CURRENT_BUYABLE_EFFECTS["e12"])
 
                 return ret
         },
@@ -3455,7 +3500,9 @@ addLayer("e", {
         getGainMultPost(){
                 let ret = getGeneralizedInitialPostMult("e")
 
-                ret = ret.div(25e4)
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["e11"].pow(player.e.milestones.length))
+
+                                                ret = ret.div(25e4)
                 if (hasMilestone("e", 7))       ret = ret.times(player.e.milestones.length)
                 if (hasUpgrade("e", 13))        ret = ret.times(Decimal.pow(2, player.e.upgrades.length))
                 if (hasMilestone("d", 22))      ret = ret.times(player.e.points.max(10).log10())
@@ -3466,19 +3513,22 @@ addLayer("e", {
                 if (hasMilestone("e", 10))      ret = ret.div(100)
                 if (hasMilestone("e", 11))      ret = ret.div(250)
                 if (hasMilestone("d", 26))      ret = ret.times(getBuyableAmount("d", 23).max(1))
+                if (hasUpgrade("d", 44))        ret = ret.times(getBuyableAmount("d", 22).div(1e5).plus(1).pow(getBuyableAmount("d", 23).min(10000)))
+                if (hasUpgrade("d", 45))        ret = ret.times(player.d.points.max(10).log10().max(10).log10())
 
                 return ret
         },
         effect(){
-                if (!isPrestigeEffectActive("e")) return decimalOne
+                if (!isPrestigeEffectActive("e") || player.e.points.lt(1)) return decimalOne
 
                 let amt = player.e.points
-
-                if (amt.lt(1)) return decimalOne
-
                 amtlog = amt.log10().floor()
 
                 let exp = amtlog.plus(hasUpgrade("e", 13) ? 0 : 1).min(20)
+
+                if (hasMilestone("e", 12)) exp = exp.div(2)
+                if (hasMilestone("e", 13)) exp = exp.div(2)
+                if (hasMilestone("e", 16)) exp = exp.sub(1)
 
                 let ret = amtlog.pow10().plus(1).pow(exp)
 
@@ -3594,11 +3644,40 @@ addLayer("e", {
                                 return player.e.best.gte(1e20) //|| player.f.unlocked
                         }, 
                 }, // hasUpgrade("e", 21)
+                22: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>E---e"
+                        },
+                        description(){
+                                let a = "Each D 23 multiplies its linear base by .9998 but multiply D 2X base cost by 1e22"
+                                return a
+                        },
+                        cost: new Decimal(1e36),
+                        unlocked(){
+                                return player.e.best.gte(1e35) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("e", 22)
+                23: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Eagl-"
+                        },
+                        description(){
+                                let a = "Multiply E 11 base cost by 10 and add .0003 to its base"
+                                return a
+                        },
+                        cost: new Decimal(1e64),
+                        unlocked(){
+                                return player.e.best.gte(1e63) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("e", 23)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
-                        /*function(){
-                                return hasMilestone("d", 8) //|| player.e.unlocked
-                        },*/
+                        function(){
+                                return hasUpgrade("e", 22) //|| player.f.unlocked
+                        },
+                        function(){
+                                return (getBuyableAmount("e", 11).gte(150) && hasMilestone("e", 13)) //|| player.f.unlocked
+                        },
                 ]),
         milestones: {
                 1: {
@@ -3755,6 +3834,76 @@ addLayer("e", {
                                 return "Reward: Divide Eagle gain by 250, each order of magnitude (up to 100) of Eagles halves Eagle, add 2 to the Eagle gain exponent, and divide D 23 linear base by 1e5 but multiply its base cost by 1e1000."
                         },
                 }, // hasMilestone("e", 11)
+                12: {
+                        requirementDescription(){
+                                return "4.34e34 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("4.34e34")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Halve Eagle effect exponent, multiply Duck exponent by milestones squared and divide D 23 linear cost base by 123,456. At 1e46,428 Ducks further halve D 23's linear cost base."
+                        },
+                }, // hasMilestone("e", 12)
+                13: {
+                        requirementDescription(){
+                                return "121 E 11 levels"
+                        },
+                        done(){
+                                return getBuyableAmount("e", 11).gte(121) || player.e.points.gte(1e100)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Halve Eagle effect exponent and sixth D 22 base. At 150 E 11 levels, unlock a new buyable and log10(Eagles) that multiply base Duck gain is ceilinged."
+                        },
+                }, // hasMilestone("e", 13)
+                14: {
+                        requirementDescription(){
+                                return "2e47 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(2e47)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: E 11 levels subtract .0001 from the E 12 linear base and vice versa. At 200 E 11 levels, its levels decrease D 23 base by 1% but divide base Duck gain by 700."
+                        },
+                }, // hasMilestone("e", 14)
+                15: {
+                        requirementDescription(){
+                                return "2e52 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(2e52)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Each milestone squares Alligator buyable limit and bulk amount and adds .0001 to the E 12 base."
+                        },
+                }, // hasMilestone("e", 15)
+                16: {
+                        requirementDescription(){
+                                return "2e58 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(2e58)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Subtract 1 from the Eagle effect exponent. At 1e62,000 Ducks, E 12 adds to D 23 base and add .0002 to the E 11 base."
+                        },
+                }, // hasMilestone("e", 16)
         },
         tabFormat: {
                 "Upgrades": {
@@ -3790,7 +3939,7 @@ addLayer("e", {
                                 ],
                                 "buyables"],
                         unlocked(){
-                                return false //|| player.f.unlocked
+                                return hasUpgrade("e", 22) //|| player.f.unlocked
                         },
                 },
                 "Milestones": {
@@ -4000,6 +4149,14 @@ addLayer("ach", {
                                 return player.d.unlocked
                         }
                 },
+                {key: "shift+E", description: "Shift+E: Go to Eagle", 
+                        onPress(){
+                                if (player.e.unlocked) player.tab = "e"
+                        },
+                        unlocked(){
+                                return player.e.unlocked
+                        }
+                },
                 {
                         key: "THIS SHOULD NOT BE POSSIBLE3",
                         description: br + makeBlue("<b>Prestige</b>:"),
@@ -4037,6 +4194,14 @@ addLayer("ach", {
                         },
                         unlocked(){
                                 return player.d.unlocked
+                        }
+                },
+                {key: "e", description: "E: Reset for Eagles",
+                        onPress(){
+                                if (canReset("e")) doReset("e")
+                        },
+                        unlocked(){
+                                return player.e.unlocked
                         }
                 },
                 {
