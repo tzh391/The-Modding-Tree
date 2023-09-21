@@ -3508,6 +3508,7 @@ addLayer("e", {
                 if (hasMilestone("e", 18) && !hasMilestone("e", 22)) {
                                                 ret = ret.times(2)
                 }
+                if (hasMilestone("e", 31))      ret = ret.times(7)
 
                 return ret
         },
@@ -3523,7 +3524,9 @@ addLayer("e", {
                 if (hasUpgrade("c", 51) && !hasMilestone("e", 24)) {
                                                 ret = ret.times(player.e.points.max(10).log10().pow(hasUpgrade("c", 53) ? player.c.upgrades.filter(x => x > 50).length : 1))
                 }
-                if (hasUpgrade("d", 33))        ret = ret.times(getBuyableAmount("d", 22).max(1))
+                if (hasUpgrade("d", 33) && !hasMilestone("e", 25)) {
+                                                ret = ret.times(getBuyableAmount("d", 22).max(1))
+                }
                 if (hasUpgrade("c", 52) && !hasMilestone("e", 23)) {
                                                 ret = ret.times(player.c.points.max(10).log10().max(10).log10().pow(player.c.upgrades.filter(x => x > 50).length))
                 }
@@ -3532,6 +3535,7 @@ addLayer("e", {
                 if (hasMilestone("e", 11))      ret = ret.div(250)
                 if (hasMilestone("e", 20))      ret = ret.div(4e32)
                 if (hasMilestone("e", 21))      ret = ret.div(56789)
+                if (hasUpgrade("e", 24))        ret = ret.div(Decimal.pow(10, player.e.upgrades.length))
                 if (hasMilestone("d", 26))      ret = ret.times(getBuyableAmount("d", 23).max(1))
                 if (hasUpgrade("d", 44))        ret = ret.times(getBuyableAmount("d", 22).div(1e5).plus(1).pow(getBuyableAmount("d", 23).min(10000)))
                 if (hasUpgrade("d", 45))        ret = ret.times(player.d.points.max(10).log10().max(10).log10())
@@ -3692,6 +3696,19 @@ addLayer("e", {
                                 return player.e.best.gte(1e63) //|| player.f.unlocked
                         }, 
                 }, // hasUpgrade("e", 23)
+                24: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>E-gl-"
+                        },
+                        description(){
+                                let a = "Cube C 22 and C 33 bases but tenth Eagle gain"
+                                return a
+                        },
+                        cost: new Decimal(1e256),
+                        unlocked(){
+                                return player.e.best.gte(1e200) //|| player.f.unlocked
+                        }, 
+                }, // hasUpgrade("e", 24)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
                         function(){
@@ -4041,6 +4058,131 @@ addLayer("e", {
                                 return "Reward: C-p-b-ra is disabled (except first half), add .0002 to D 31's base, add 1 to the Eagle gain exponent, and add 1.5 to the Eagle effect exponent."
                         },
                 }, // hasMilestone("e", 24)
+                25: {
+                        requirementDescription(){
+                                return "1e174 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(1e174)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        onComplete(){
+                                player.d.buyables[31] = decimalZero
+                        },
+                        effectDescription(){
+                                return "Reward: D 22 levels no longer multiply Eagle gain, D 31 gives free D 23 levels, but reset its levels, multiply its effect by 2.5, and increase its linear cost base to 1e175."
+                        },
+                }, // hasMilestone("e", 25)
+                26: {
+                        requirementDescription(){
+                                return "1e192 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(1e192)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        onComplete(){
+                                CURRENT_BUYABLE_BASES["e11"] = decimalOne
+                                CURRENT_BUYABLE_EFFECTS["e11"] = decimalOne
+                        },
+                        effectDescription(){
+                                return "Reward: Each of the next five milestones subtracts .0004 from the E 11 base and increase the D 31 base cost by 1e10,00 but each D 12 past 16,000 divides D 31 linear cost base by 1.01."
+                        },
+                }, // hasMilestone("e", 26)
+                27: {
+                        requirementDescription(){
+                                return "1e206 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(1e206)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        onComplete(){
+                                CURRENT_BUYABLE_BASES["e11"] = decimalOne
+                                CURRENT_BUYABLE_EFFECTS["e11"] = decimalOne
+                        },
+                        effectDescription(){
+                                return "Reward: D 31 gives free D 22 levels and add .0001 to the D 22 base but D 23 no longer gives D 11 levels."
+                        },
+                }, // hasMilestone("e", 27)
+                28: {
+                        requirementDescription(){
+                                return "1e226 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(1e226)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        onComplete(){
+                                CURRENT_BUYABLE_BASES["e11"] = decimalOne
+                                CURRENT_BUYABLE_EFFECTS["e11"] = decimalOne
+                        },
+                        effectDescription(){
+                                return "Reward: Square Beaver buyable limit, sources to D 23 base multiply instead of add, and 1 + milestones / 100 exponentiates its base."
+                        },
+                }, // hasMilestone("e", 28)
+                29: {
+                        requirementDescription(){
+                                return "1e234 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(1e234)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        onComplete(){
+                                CURRENT_BUYABLE_BASES["e11"] = decimalOne
+                                CURRENT_BUYABLE_EFFECTS["e11"] = decimalOne
+                        },
+                        effectDescription(){
+                                return "Reward: E 12 levels divide D 31 base by 1.01."
+                        },
+                }, // hasMilestone("e", 29)
+                30: {
+                        requirementDescription(){
+                                return "1e243 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(1e243)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        onComplete(){
+                                CURRENT_BUYABLE_BASES["e11"] = decimalOne
+                                CURRENT_BUYABLE_EFFECTS["e11"] = decimalOne
+                        },
+                        effectDescription(){
+                                return "Reward: D 31 affects itself at 30x rate."
+                        },
+                }, // hasMilestone("e", 30)
+                31: {
+                        requirementDescription(){
+                                return "1e265 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte(1e265)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        onComplete(){
+                                CURRENT_BUYABLE_BASES["e11"] = decimalOne
+                                CURRENT_BUYABLE_EFFECTS["e11"] = decimalOne
+                        },
+                        effectDescription(){
+                                return "Reward: Multiply base Eagle gain by 7 but subtract .001 from the E 11 base."
+                        },
+                }, // hasMilestone("e", 31)
         },
         tabFormat: {
                 "Upgrades": {
