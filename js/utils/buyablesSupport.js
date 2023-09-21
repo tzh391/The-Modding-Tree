@@ -1231,6 +1231,15 @@ var MAIN_BUYABLE_DATA = {
                                         return -.1
                                 },
                         },
+                        5: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["d31"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e33)
@@ -1383,14 +1392,16 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0027) // 3**x
 
                         if (hasMilestone("d", 13) && player.d.points.gte("1e1111")) {
-                                b0 = b0.div(1e145)
+                                                        b0 = b0.div(1e145)
                         }
                         if (hasMilestone("d", 16) && !hasMilestone("d", 21)) {
-                                b0 = b0.div(Decimal.pow(1 + player.d.milestones.length / 400, getBuyableAmount("d", 22)))
+                                                        b0 = b0.div(Decimal.pow(1 + player.d.milestones.length / 400, getBuyableAmount("d", 22)))
                         }
                         if (hasUpgrade("c", 44)) {
-                                b0 = b0.times(Decimal.pow(.99, getBuyableAmount("d", 12).sub(1e4).max(0)).pow(1 + player.d.points.gte("1e14042") + player.d.points.gte("14126")))
+                                                        b0 = b0.times(Decimal.pow(.99, getBuyableAmount("d", 12).sub(1e4).max(0)).pow(1 + player.d.points.gte("1e14042") + player.d.points.gte("14126")))
                         }
+                        if (hasUpgrade("e", 22))        b0 = b0.times(Decimal.pow(1e25, player.e.upgrades.length))
+
                         if (hasMilestone("d", 14))      b1 = b1.sub(getBuyableAmount("c", 21)).max(1e5)
                         else if (hasUpgrade("d", 24))   b1 = b1.sub(getBuyableAmount("c", 11)).max(1e5)
                         if (hasUpgrade("c", 42))        b1 = b1.times(Decimal.pow(.9999, getBuyableAmount("d", 11).sub(15000).max(0))).max(1)
@@ -1398,11 +1409,13 @@ var MAIN_BUYABLE_DATA = {
                                                         b1 = b1.times(.999)
                                 if (player.d.points.gte("1e32305")) b1 = b1.times(.999)
                         }
-                        if (hasUpgrade("e", 22)) b0 = b0.times(Decimal.pow(1e25, player.e.upgrades.length))
+                                                        b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]))
+                        
 
                         return [b0.max(1), b1, b2]
                 },
                 d23: {active:() => hasMilestone("d", 24)},
+                d31: {active:() => hasMilestone("e", 21)},
         },
         d22: {
                 name: "D 22",
@@ -1456,6 +1469,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("d", 21))      b1 = b1.times(1e5)
                         if (hasMilestone("e", 13))      b1 = b1.div(6)
                         if (hasUpgrade("e", 21))        b1 = b1.times(Decimal.pow(.9999, getBuyableAmount("d", 22).times(player.e.upgrades.length)))
+                                                        b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]))
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -1523,9 +1537,46 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 14) && getBuyableAmount("e", 11).gte(200)) {
                                 b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 11)))
                         }
+                                b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]))
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+        },
+        d31: {
+                name: "D 31",
+                func: "lin",
+                effects: "D 11 base and (exponentially) decreasing D 2X linear bases",
+                base: {
+                        initial: new Decimal(.0001),
+                        1: {
+                                active(){
+                                        return hasMilestone("e", 23)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
+                        2: {
+                                active(){
+                                        return hasMilestone("e", 24)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0002
+                                },
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e68e3")
+                        let b1 = new Decimal(1e50)
+                        let b2 = new Decimal(1.0729) // 3**x
+
+                        if (hasMilestone("e", 20))      b0 = b0.div(CURRENT_BUYABLE_EFFECTS["e11"].pow(getLayerBuyableTotal("e")))
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+                e11: {active:() => hasMilestone("e", 19) && !hasMilestone("e", 21)},
         },
         e11: {
                 name: "E 11",
@@ -1535,7 +1586,7 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1.01),
                         1: {
                                 active(){
-                                        return hasMilestone("e", 16) && player.d.points.gte("1e62000")
+                                        return hasMilestone("e", 16) && player.d.points.gte("1e62000") && !hasMilestone("e", 22)
                                 },
                                 type: "add",
                                 amount(){
@@ -1557,8 +1608,11 @@ var MAIN_BUYABLE_DATA = {
                         let b1 = new Decimal(1.1)
                         let b2 = new Decimal(1.0003) // odd primes
 
-                        if (hasMilestone("e", 14)) b1 = b1.sub(getBuyableAmount("e", 12).div(1e4))
+                        if (hasMilestone("e", 14))      b1 = b1.sub(getBuyableAmount("e", 12).div(1e4))
                         if (hasUpgrade("e", 23))        b0 = b0.times(Decimal.pow(10, player.e.upgrades.length))
+                        if (hasMilestone("e", 17) && getBuyableAmount("e", 12).gte(100)) {
+                                                        b0 = b0.div(10)
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -1585,6 +1639,7 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0005) // odd primes
 
                         if (hasMilestone("e", 14)) b1 = b1.sub(getBuyableAmount("e", 11).div(1e4))
+                        if (hasMilestone("e", 21)) b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]))
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -1615,6 +1670,7 @@ Function order:
 - is buyable defined (bool)
 - is buyable unlocked (booL)
 - getBuyableTotal (Decimal, amount)
+- getLayerBuyableTotal (layer => decimal)
 - getCodedBuyableAmount (Decimal, amount)
 - isValidBuyableCode (bool)
 - getBuyableName (string)
@@ -1744,6 +1800,15 @@ function getBuyableTotal(layer, id){
         // Fully general
         if (!isBuyableDefined(layer, id)) return decimalZero
         return getBuyableAmount(layer, id).plus(calcBuyableExtra(layer, id))
+}
+
+function getLayerBuyableTotal(layer){
+        // Fully general
+        let a = decimalZero
+        for (i in player[layer].buyables){
+                a = a.plus(player[layer].buyables[i])
+        }
+        return a
 }
 
 function getCodedBuyableAmount(code){
