@@ -2609,7 +2609,7 @@ addLayer("d", {
                                                 ret = ret.div(Decimal.pow(16, player.e.upgrades.length))
                 }
 
-                if (hasMilestone("e", 13) && getBuyableAmount("e", 11).gte(150)) {
+                if (hasMilestone("e", 13) && getBuyableAmount("e", 11).gte(150) && !hasMilestone("e", 33)) {
                                                 ret = ret.times(player.e.points.max(10).log10().ceil().pow(eaglesexp))
                 } else {
                                                 ret = ret.times(player.e.points.max(10).log10().pow(eaglesexp))
@@ -2641,7 +2641,7 @@ addLayer("d", {
                 }
                 if (hasUpgrade("e", 12))                ret = ret.times(Decimal.pow(player.e.upgrades.length, player.e.upgrades.length))
                                                         ret = ret.times(CURRENT_BUYABLE_EFFECTS["d11"])
-                
+                                                        ret = ret.times(CURRENT_BUYABLE_EFFECTS["d32"])
 
                 return ret
         },
@@ -2983,6 +2983,9 @@ addLayer("d", {
                         },
                         function(){
                                 return hasMilestone("e", 18) //|| player.f.unlocked
+                        },
+                        function(){
+                                return player.d.buyables[11].gte(52e3) //|| player.f.unlocked
                         },
                 ]),
         milestones: {
@@ -3509,6 +3512,7 @@ addLayer("e", {
                                                 ret = ret.times(2)
                 }
                 if (hasMilestone("e", 31))      ret = ret.times(7)
+                if (hasMilestone("e", 32))      ret = ret.times(100/7)
 
                 return ret
         },
@@ -3535,6 +3539,7 @@ addLayer("e", {
                 if (hasMilestone("e", 11))      ret = ret.div(250)
                 if (hasMilestone("e", 20))      ret = ret.div(4e32)
                 if (hasMilestone("e", 21))      ret = ret.div(56789)
+                if (hasMilestone("e", 32))      ret = ret.div(1e35)
                 if (hasUpgrade("e", 24))        ret = ret.div(Decimal.pow(10, player.e.upgrades.length))
                 if (hasMilestone("d", 26))      ret = ret.times(getBuyableAmount("d", 23).max(1))
                 if (hasUpgrade("d", 44))        ret = ret.times(getBuyableAmount("d", 22).div(1e5).plus(1).pow(getBuyableAmount("d", 23).min(10000)))
@@ -3546,7 +3551,7 @@ addLayer("e", {
                 if (!isPrestigeEffectActive("e") || player.e.points.lt(1)) return decimalOne
 
                 let amt = player.e.points
-                amtlog = amt.log10().floor()
+                amtlog = hasMilestone("e", 33) ? amt.log10() : amt.log10().floor()
 
                 let exp = amtlog.plus(hasUpgrade("e", 13) ? 0 : 1).min(20)
 
@@ -3555,6 +3560,7 @@ addLayer("e", {
                 if (hasMilestone("e", 16)) exp = exp.sub(1)
                 if (hasMilestone("e", 17)) exp = exp.sub(1)
                 if (hasMilestone("e", 24)) exp = exp.plus(1.5)
+                if (hasMilestone("e", 33)) exp = exp.plus(.25)
 
                 let ret = amtlog.pow10().plus(1).pow(exp)
 
@@ -4183,6 +4189,34 @@ addLayer("e", {
                                 return "Reward: Multiply base Eagle gain by 7 but subtract .001 from the E 11 base."
                         },
                 }, // hasMilestone("e", 31)
+                32: {
+                        requirementDescription(){
+                                return "1e313 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e313")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Each D 32 adds 1 to its base, its linear cost base is 1e20, multiply base Eagle gain by 100/7, but divide Eagle gain by 1e35."
+                        },
+                }, // hasMilestone("e", 32)
+                33: {
+                        requirementDescription(){
+                                return "1e331 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e331")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 13 no longer gives free levels to D 12 but D 23 gives free levels to D 22, add .25 to the Eagle effect exponent, and no longer floor or ceiling Eagle to Duck gain."
+                        },
+                }, // hasMilestone("e", 33)
         },
         tabFormat: {
                 "Upgrades": {

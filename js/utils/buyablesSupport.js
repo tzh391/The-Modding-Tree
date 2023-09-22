@@ -1314,7 +1314,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1, b2]
                 },
-                d13: {active:() => hasMilestone("d", 13) && player.d.points.gte("1e1111")},
+                d13: {active:() => hasMilestone("d", 13) && player.d.points.gte("1e1111") && !hasMilestone("e", 33)},
                 d21: {active:() => hasUpgrade("d", 25)},
                 d22: {active:() => hasMilestone("d", 20) && player.d.points.gte("1e15000")},
                 d23: {active:() => hasMilestone("d", 23) && player.d.points.gte("1e31304")},
@@ -1510,6 +1510,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                d23: {active:() => hasMilestone("e", 33)},
                 d31: {active:() => hasMilestone("e", 27)},
         },
         d23: {
@@ -1630,6 +1631,7 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0729) // 3**x
 
                         if (hasMilestone("e", 20))      b0 = b0.div(CURRENT_BUYABLE_EFFECTS["e11"].pow(getLayerBuyableTotal("e")))
+                                                        b0 = b0.div(CURRENT_BUYABLE_EFFECTS["d32"])
                         if (hasMilestone("e", 25))      b1 = new Decimal(1e175)
                         if (hasMilestone("e", 26)) {
                                 b1 = b1.div(Decimal.pow(1.01, getBuyableAmount("d", 22)))
@@ -1637,6 +1639,34 @@ var MAIN_BUYABLE_DATA = {
                         }
                         if (hasMilestone("e", 29))      b1 = b1.div(Decimal.pow(1.01, getBuyableAmount("e", 12)))
                         if (hasMilestone("e", 30))      b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]).pow(30))
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+                e11: {active:() => hasMilestone("e", 19) && !hasMilestone("e", 21)},
+        },
+        d32: {
+                name: "D 32",
+                func: "exp",
+                effects: "Duck and divide D 3X base cost",
+                base: {
+                        initial: new Decimal(10),
+                        1: {
+                                active(){
+                                        return hasMilestone("e", 32)
+                                },
+                                type: "add",
+                                amount(){
+                                        return getBuyableAmount("d", 32)
+                                },
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("e119500")
+                        let b1 = new Decimal(1e10)
+                        let b2 = new Decimal(1.2187) // 3**x
+
+                        b0 = b0.div(CURRENT_BUYABLE_EFFECTS["d32"])
+                        if (hasMilestone("e", 32)) b1 = new Decimal(1e20)
 
                         return [b0.max(1), b1.max(1), b2]
                 },

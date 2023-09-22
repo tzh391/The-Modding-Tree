@@ -120,8 +120,6 @@ function formatSmall(x, precision=2) {
 function invertOOM(x){
         let e = x.log10().ceil()
         let m = x.div(Decimal.pow(10, e))
-        e = e.neg()
-        x = new Decimal(10).pow(e).times(m)
-
-        return x
+        
+        return new Decimal(.1).pow(e).times(m)
 }
