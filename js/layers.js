@@ -2987,6 +2987,9 @@ addLayer("d", {
                         function(){
                                 return player.d.buyables[11].gte(52e3) //|| player.f.unlocked
                         },
+                        function(){
+                                return player.d.buyables[11].gte(62e3) //|| player.f.unlocked
+                        },
                 ]),
         milestones: {
                 1: {
@@ -3513,6 +3516,7 @@ addLayer("e", {
                 }
                 if (hasMilestone("e", 31))      ret = ret.times(7)
                 if (hasMilestone("e", 32))      ret = ret.times(100/7)
+                if (hasMilestone("e", 34))      ret = ret.div(4)
 
                 return ret
         },
@@ -4217,6 +4221,20 @@ addLayer("e", {
                                 return "Reward: D 13 no longer gives free levels to D 12 but D 23 gives free levels to D 22, add .25 to the Eagle effect exponent, and no longer floor or ceiling Eagle to Duck gain."
                         },
                 }, // hasMilestone("e", 33)
+                34: {
+                        requirementDescription(){
+                                return "1e410 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e410")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: E 11 gives free D 32 levels but quarter base Eagle gain and subtract 1 from the D 11 base. At 1e416 Eagles, Eagle Milestone 30 affects D 32 and square Capybara bulk amount."
+                        },
+                }, // hasMilestone("e", 34)
         },
         tabFormat: {
                 "Upgrades": {

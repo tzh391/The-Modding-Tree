@@ -1171,6 +1171,15 @@ var MAIN_BUYABLE_DATA = {
                         },
                         5: {
                                 active(){
+                                        return true
+                                },
+                                type: "times",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["d33"].pow(player.d.upgrades.length)
+                                },
+                        },
+                        6: {
+                                active(){
                                         return hasMilestone("d", 10)
                                 },
                                 type: "exp",
@@ -1178,7 +1187,7 @@ var MAIN_BUYABLE_DATA = {
                                         return player.d.milestones.length
                                 },
                         },
-                        6: {
+                        7: {
                                 active(){
                                         return hasUpgrade("d", 32)
                                 },
@@ -1187,7 +1196,7 @@ var MAIN_BUYABLE_DATA = {
                                         return getBuyableAmount("d", 12).cbrt().max(1)
                                 }
                         },
-                        7: {
+                        8: {
                                 active(){
                                         return hasUpgrade("e", 24)
                                 },
@@ -1266,6 +1275,15 @@ var MAIN_BUYABLE_DATA = {
                                 type: "add",
                                 amount(){
                                         return CURRENT_BUYABLE_EFFECTS["d31"]
+                                },
+                        },
+                        6: {
+                                active(){
+                                        return hasMilestone("e", 34)
+                                },
+                                type: "add",
+                                amount(){
+                                        return -1
                                 },
                         },
                 },
@@ -1667,10 +1685,30 @@ var MAIN_BUYABLE_DATA = {
 
                         b0 = b0.div(CURRENT_BUYABLE_EFFECTS["d32"])
                         if (hasMilestone("e", 32)) b1 = new Decimal(1e20)
+                        if (hasMilestone("e", 34) && player.e.points.gte("1e416")) {
+                                b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]).pow(30))
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
-                e11: {active:() => hasMilestone("e", 19) && !hasMilestone("e", 21)},
+                e11: {active:() => (hasMilestone("e", 19) && !hasMilestone("e", 21)) || hasMilestone("e", 34)},
+        },
+        d33: {
+                name: "D 33",
+                func: "exp",
+                effects: "Duck gain and C 33 base per upgrade",
+                base: {
+                        initial: new Decimal(10),
+                },
+                bases(){
+                        let b0 = new Decimal("e176400")
+                        let b1 = new Decimal("1e666")
+                        let b2 = new Decimal(1.6561) // 3**x
+
+                        b0 = b0.div(CURRENT_BUYABLE_EFFECTS["d32"])
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
         },
         e11: {
                 name: "E 11",
@@ -2374,6 +2412,7 @@ function getABBulk(layer){
                 if (hasMilestone("e", 1))       amt = amt.times(2).pow(2)
                 if (hasMilestone("d", 6))       amt = amt.pow(2)
                 if (hasUpgrade("b", 55))        amt = amt.pow(2)
+                if (hasMilestone("e", 34))      amt = amt.pow(2)
         }
         if (layer == "d") {
                 if (hasUpgrade("c", 35))        amt = amt.times(5)
