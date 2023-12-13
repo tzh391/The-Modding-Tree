@@ -1431,6 +1431,15 @@ var MAIN_BUYABLE_DATA = {
                                         return 2
                                 },
                         },
+                        5: {
+                                active(){
+                                        return hasMilestone("e", 35)
+                                },
+                                type: "add",
+                                amount(){
+                                        return -.0035
+                                }
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e745")
@@ -1458,10 +1467,11 @@ var MAIN_BUYABLE_DATA = {
                                                         b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]))
                         
 
-                        return [b0.max(1), b1, b2]
+                        return [b0.max(1), b1.max(1), b2]
                 },
                 d23: {active:() => hasMilestone("d", 24)},
                 d31: {active:() => hasMilestone("e", 21)},
+                d32: {active:() => hasMilestone("e", 35)},
         },
         d22: {
                 name: "D 22",
@@ -1485,6 +1495,15 @@ var MAIN_BUYABLE_DATA = {
                                 type: "add",
                                 amount(){
                                         return .0001
+                                }
+                        },
+                        3: {
+                                active(){
+                                        return hasMilestone("e", 35)
+                                },
+                                type: "add",
+                                amount(){
+                                        return -.0001
                                 }
                         },
                 },
@@ -1661,6 +1680,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
                 e11: {active:() => hasMilestone("e", 19) && !hasMilestone("e", 21)},
+                e13: {active:() => hasMilestone("e", 39)},
         },
         d32: {
                 name: "D 32",
@@ -1688,17 +1708,28 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 34) && player.e.points.gte("1e416")) {
                                 b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]).pow(30))
                         }
+                        if (hasMilestone("e", 39)) b0 = b0.times("1e3000")
 
                         return [b0.max(1), b1.max(1), b2]
                 },
                 e11: {active:() => (hasMilestone("e", 19) && !hasMilestone("e", 21)) || hasMilestone("e", 34)},
+                e13: {active:() => hasMilestone("e", 37)},
         },
         d33: {
                 name: "D 33",
                 func: "exp",
                 effects: "Duck gain and C 33 base per upgrade",
                 base: {
-                        initial: new Decimal(10),
+                        initial: new Decimal(1.5),
+                        1:{
+                                active(){
+                                        return hasMilestone("e", 36)
+                                },
+                                type: "exp",
+                                amount(){
+                                        return player.e.milestones.length ** .5
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("e176400")
@@ -1706,6 +1737,16 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.6561) // 3**x
 
                         b0 = b0.div(CURRENT_BUYABLE_EFFECTS["d32"])
+                        if (hasMilestone("e", 38)) b0 = b0.div("1e900")
+                        if (hasMilestone("e", 35)) {
+                                let t = hasMilestone("e", 36) ? CURRENT_BUYABLE_EFFECTS["d33"] : Decimal.pow10(player.d.buyables[33])
+                                if (t.gte(1e100)) {
+                                        s = t.log10()
+                                        t = s.pow(s.sqrt().times(5))
+                                }
+                                b1 = b1.div(t)
+                        }
+                        if (hasMilestone("e", 39)) b0 = b0.times("1e7000")
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -1794,6 +1835,36 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
         },
+        e13: {
+                name: "E 13",
+                func: "exp_.8",
+                effects: "Base Duck and Eagle gain",
+                base: {
+                        initial: new Decimal(2),
+                        1: {
+                                active(){
+                                        return hasUpgrade("e", 25)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .1 * player.e.upgrades.length
+                                },
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e465")
+                        let b1 = new Decimal(100)
+                        let b2 = new Decimal(1.0007) // odd primes
+
+                        if (hasMilestone("e", 38)) {
+                                let l = player.e.buyables[13]
+                                if (l.gte(100)) l = l.plus(400).div(5)
+                                b1 = b1.sub(l.div(10))
+                        }
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
@@ -1854,6 +1925,12 @@ var BUYABLES_FUNCTION_NAMES = {
                 "func": BUYABLE_EFFECT_EXPONENTIAL,
                 "identity": decimalOne,
                 "string": "^x",
+                "eff": "*",
+        },
+        "exp_.8": {
+                "func": BUYABLE_EFFECT_EXPONENTIAL_POINT8,
+                "identity": decimalOne,
+                "string": "^x<sup>.8</sup>",
                 "eff": "*",
         },
         "exp_sqrt":{
@@ -2063,6 +2140,10 @@ function BUYABLE_EFFECT_EXPONENTIAL(a,b){
 
 function BUYABLE_EFFECT_EXPONENTIAL_SQRT(a,b){
         return a.pow(b.sqrt())
+}
+
+function BUYABLE_EFFECT_EXPONENTIAL_POINT8(a,b){
+        return a.pow(b.pow(.8))
 }
 
 function BUYABLE_EFFECT_EXPONENTIAL_CBRT(a,b){
