@@ -1392,7 +1392,7 @@ var MAIN_BUYABLE_DATA = {
         d21: {
                 name: "D 21",
                 func: "lin",
-                effects: "Base Ducks and Duck exponent",
+                effects:() => hasMilestone("e", 45) ? "Duck exponent" : "Base Ducks and Duck exponent",
                 base: {
                         initial: new Decimal(.001),
                         1: {
@@ -1439,6 +1439,33 @@ var MAIN_BUYABLE_DATA = {
                                 amount(){
                                         return -.0035
                                 }
+                        },
+                        6: {
+                                active(){
+                                        return hasMilestone("e", 45)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0003 + (player.e.points.gte("1e1402") ? .0001 : 0) + (player.e.points.gte("1e1428") ? .0001 : 0)
+                                },
+                        },
+                        7: {
+                                active(){
+                                        return hasMilestone("e", 48)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
+                        8: {
+                                active(){
+                                        return hasMilestone("e", 49)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
                         },
                 },
                 bases(){
@@ -1544,6 +1571,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 13))      b1 = b1.div(6)
                         if (hasUpgrade("e", 21))        b1 = b1.times(Decimal.pow(.9999, getBuyableAmount("d", 22).times(player.e.upgrades.length)))
                                                         b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]))
+                        if (hasMilestone("e", 41))      b0 = b0.div("1e10000")
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -1623,6 +1651,7 @@ var MAIN_BUYABLE_DATA = {
                                 b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 11)))
                         }
                                 b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]))
+                        if (hasMilestone("e", 41))      b0 = b0.div("1e30000")
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -1697,6 +1726,15 @@ var MAIN_BUYABLE_DATA = {
                                         return getBuyableAmount("d", 32)
                                 },
                         },
+                        2: {
+                                active(){
+                                        return hasMilestone("e", 47)
+                                },
+                                type: "set",
+                                amount(){
+                                        return getBuyableTotal("d", 32).div(2)
+                                }
+                        }
                 },
                 bases(){
                         let b0 = new Decimal("e119500")
@@ -1723,12 +1761,30 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1.5),
                         1:{
                                 active(){
-                                        return hasMilestone("e", 36)
+                                        return hasMilestone("e", 36) && !hasMilestone("e", 40)
                                 },
                                 type: "exp",
                                 amount(){
                                         return player.e.milestones.length ** .5
                                 },
+                        },
+                        2: {
+                                active(){
+                                        return hasMilestone("e", 40)
+                                },
+                                type: "add",
+                                amount(){
+                                        return 8.5
+                                },
+                        },
+                        3: {
+                                active(){
+                                        return true
+                                },
+                                type: "times",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e21"]
+                                }
                         },
                 },
                 bases(){
@@ -1747,6 +1803,8 @@ var MAIN_BUYABLE_DATA = {
                                 b1 = b1.div(t)
                         }
                         if (hasMilestone("e", 39)) b0 = b0.times("1e7000")
+                        if (hasMilestone("e", 43)) b0 = b0.div("1e10000")
+                        if (hasMilestone("e", 44)) b0 = b0.div("1e50000")
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -1804,6 +1862,11 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 17) && getBuyableAmount("e", 12).gte(100)) {
                                                         b0 = b0.div(10)
                         }
+                        if (hasMilestone("e", 41))      b0 = b0.times(1e4)
+                        if (hasMilestone("e", 42)) {
+                                let l = getLayerBuyableTotal("e").sub(5500).max(0)
+                                                        b0 = b0.times(Decimal.pow(.99, l))
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -1831,9 +1894,15 @@ var MAIN_BUYABLE_DATA = {
 
                         if (hasMilestone("e", 14)) b1 = b1.sub(getBuyableAmount("e", 11).div(1e4))
                         if (hasMilestone("e", 21)) b1 = b1.div(Decimal.exp(CURRENT_BUYABLE_EFFECTS["d31"]))
+                        if (hasMilestone("e", 41))      b0 = b0.times(1e4)
+                        if (hasMilestone("e", 42)) {
+                                let l = getLayerBuyableTotal("e").sub(5500).max(0)
+                                                        b0 = b0.times(Decimal.pow(.99, l))
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                e21: {active:() => hasMilestone("e", 40) && player.e.best.gte("1e1078")}
         },
         e13: {
                 name: "E 13",
@@ -1850,6 +1919,15 @@ var MAIN_BUYABLE_DATA = {
                                         return .1 * player.e.upgrades.length
                                 },
                         },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "times",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e21"]
+                                }
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e465")
@@ -1861,6 +1939,38 @@ var MAIN_BUYABLE_DATA = {
                                 if (l.gte(100)) l = l.plus(400).div(5)
                                 b1 = b1.sub(l.div(10))
                         }
+                        if (hasMilestone("e", 41))      b0 = b0.times(1e35)
+                        if (hasMilestone("e", 42)) {
+                                let l = getLayerBuyableTotal("e").sub(5500).max(0)
+                                                        b0 = b0.times(Decimal.pow(.99, l.times(10)))
+                        }
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        e21: {
+                name: "E 21",
+                func: "linp1",
+                effects: "Base Eagle gain and E 13 and D 33 base",
+                base: {
+                        initial: new Decimal(.01),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1028")
+                        let b1 = new Decimal(1000)
+                        let b2 = new Decimal(1.0011) // odd primes
+
+                        if (hasMilestone("e", 40)) {
+                                if (player.e.best.gte("1e1041")) b0 = b0.div(1e13)
+                                if (player.e.best.gte("1e1045")) b0 = b0.div(1e13)
+                                if (player.e.best.gte("1e1055")) b0 = b0.div(1e7)
+                                if (player.e.best.gte("1e1078")) b1 = b1.sub(getBuyableAmount("e", 21))
+                        }
+                        if (hasMilestone("e", 42) && player.e.best.gte("1e1180")) {
+                                let l = getLayerBuyableTotal("e").sub(5500).max(0)
+                                                        b0 = b0.times(Decimal.pow(.88, l)).times(1e5)
+                        }
+                        if (hasMilestone("e", 44)) b0 = getBuyableBases("e", 13)[0].pow(2).log10().floor().pow10()
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2212,7 +2322,8 @@ function reCalcBuyableBase(layer, id){
                 if (typeof func == "function") func = func()
                 let eff = data2.amount()
                 //effect of the effect... 
-                if (func == "add" || func == "plus") a = a.plus(eff)
+                if (func == "set") a = eff
+                else if (func == "add" || func == "plus") a = a.plus(eff)
                 else if (func == "mult" || func == "times") a = a.times(eff)
                 else if (func == "exp" || func == "pow") a = a.pow(eff)
                 else {
@@ -2486,6 +2597,7 @@ function getABBulk(layer){
                 if (hasUpgrade("b", 41))        amt = amt.pow(2)
                 if (hasUpgrade("c", 34))        amt = amt.pow(2)
                 if (hasUpgrade("c", 43))        amt = amt.pow(2)
+                if (hasMilestone("e", 45))      amt = amt.pow(2)
         }
         if (layer == "c") {
                 if (hasMilestone("d", 2))       amt = amt.times(2)
@@ -2552,6 +2664,7 @@ function getMaxBuyablesAmount(layer){
         if (layer == "b") {
                 if (hasUpgrade("c", 43))        ret = ret.times(1e5)
                 if (hasMilestone("e", 28))      ret = ret.pow(2)
+                if (hasMilestone("e", 45))      ret = ret.pow(2)
         }
         return ret
 }
