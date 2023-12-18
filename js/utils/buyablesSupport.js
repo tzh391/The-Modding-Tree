@@ -1286,6 +1286,15 @@ var MAIN_BUYABLE_DATA = {
                                         return -1
                                 },
                         },
+                        7: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e22"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e33)
@@ -1465,6 +1474,42 @@ var MAIN_BUYABLE_DATA = {
                                 type: "add",
                                 amount(){
                                         return .0001
+                                },
+                        },
+                        9: {
+                                active(){
+                                        return hasMilestone("e", 50)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
+                        10: {
+                                active(){
+                                        return hasMilestone("e", 51)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
+                        11: {
+                                active(){
+                                        return hasMilestone("e", 52)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
+                        12: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e22"]
                                 },
                         },
                 },
@@ -1690,6 +1735,60 @@ var MAIN_BUYABLE_DATA = {
                                         return .0006
                                 }
                         },
+                        4: {
+                                active(){
+                                        return hasMilestone("e", 48) && player.e.points.gte("1e1720")
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
+                        5: {
+                                active(){
+                                        return hasMilestone("e", 49) && player.e.points.gte("1e1745")
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
+                        6: {
+                                active(){
+                                        return hasMilestone("e", 50) && player.e.points.gte("1e1776")
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
+                        7: {
+                                active(){
+                                        return hasMilestone("e", 52)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
+                        8: {
+                                active(){
+                                        return hasMilestone("e", 51) && player.e.points.gte("1e1790")
+                                },
+                                type: "add",
+                                amount(){
+                                        return .0001
+                                },
+                        },
+                        9: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e22"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e68e3")
@@ -1808,6 +1907,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                e22: {active:() => hasMilestone("e", 53) && player.e.points.gte("1e2088")},
         },
         e11: {
                 name: "E 11",
@@ -1870,6 +1970,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                e22: {active:() => hasMilestone("e", 53)},
         },
         e12: {
                 name: "E 12",
@@ -1902,7 +2003,8 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
-                e21: {active:() => hasMilestone("e", 40) && player.e.best.gte("1e1078")}
+                e21: {active:() => hasMilestone("e", 40) && player.e.best.gte("1e1078")},
+                e22: {active:() => hasMilestone("e", 54)},
         },
         e13: {
                 name: "E 13",
@@ -1947,6 +2049,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                e22: {active:() => hasMilestone("e", 54) && player.e.points.gte("1e2189")},
         },
         e21: {
                 name: "E 21",
@@ -1971,6 +2074,25 @@ var MAIN_BUYABLE_DATA = {
                                                         b0 = b0.times(Decimal.pow(.88, l)).times(1e5)
                         }
                         if (hasMilestone("e", 44)) b0 = getBuyableBases("e", 13)[0].pow(2).log10().floor().pow10()
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        e22: {
+                name: "E 22",
+                func: "lin",
+                effects: "D X1 bases",
+                base: {
+                        initial: new Decimal(.0001),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1830")
+                        let b1 = new Decimal(1e18)
+                        let b2 = new Decimal(1.0013) // odd primes
+
+                        if (hasMilestone("e", 53)) b1 = b1.times(10)
+                        if (hasMilestone("e", 54)) b1 = b1.times(10)
+                        if (hasMilestone("e", 54) && player.e.points.gte("1e2189")) b0 = b0.times(1e30)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2310,7 +2432,7 @@ function reCalcBuyableBase(layer, id){
         let data = MAIN_BUYABLE_DATA[layer + id].base
         let a = data.initial
         let b = 0
-        while (b < 10){ //maybe change later
+        while (b < 20){ //maybe change later
                 b ++
                 let data2 = data[b]
                 //this is the data
