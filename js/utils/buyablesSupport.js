@@ -1002,6 +1002,15 @@ var MAIN_BUYABLE_DATA = {
                                         return Decimal.pow(3, player.e.upgrades.length)
                                 },
                         },
+                        7: {
+                                active(){
+                                        return hasMilestone("e", 55)
+                                },
+                                type: "exp",
+                                amount(){
+                                        return player.e.points.plus(10).log10()
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e2024")
@@ -1571,7 +1580,7 @@ var MAIN_BUYABLE_DATA = {
                         },
                         3: {
                                 active(){
-                                        return hasMilestone("e", 35)
+                                        return hasMilestone("e", 35) && !hasMilestone("e", 57)
                                 },
                                 type: "add",
                                 amount(){
@@ -1782,6 +1791,15 @@ var MAIN_BUYABLE_DATA = {
                         },
                         9: {
                                 active(){
+                                        return hasMilestone("e", 57)
+                                },
+                                type: "set",
+                                amount(){
+                                        return 0
+                                },
+                        },
+                        10: {
+                                active(){
                                         return true
                                 },
                                 type: "add",
@@ -1833,7 +1851,25 @@ var MAIN_BUYABLE_DATA = {
                                 amount(){
                                         return getBuyableTotal("d", 32).div(2)
                                 }
-                        }
+                        },
+                        3: {
+                                active(){
+                                        return true
+                                },
+                                type: "mult",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e23"]
+                                }
+                        },
+                        4: {
+                                active(){
+                                        return hasMilestone("e", 57)
+                                },
+                                type: "mult",
+                                amount(){
+                                        return 10
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("e119500")
@@ -2005,6 +2041,7 @@ var MAIN_BUYABLE_DATA = {
                 },
                 e21: {active:() => hasMilestone("e", 40) && player.e.best.gte("1e1078")},
                 e22: {active:() => hasMilestone("e", 54)},
+                e23: {active:() => hasMilestone("e", 56)},
         },
         e13: {
                 name: "E 13",
@@ -2068,6 +2105,7 @@ var MAIN_BUYABLE_DATA = {
                                 if (player.e.best.gte("1e1045")) b0 = b0.div(1e13)
                                 if (player.e.best.gte("1e1055")) b0 = b0.div(1e7)
                                 if (player.e.best.gte("1e1078")) b1 = b1.sub(getBuyableAmount("e", 21))
+                                if (b1.lte(250)) b1 = b1.plus(2250).div(10)
                         }
                         if (hasMilestone("e", 42) && player.e.best.gte("1e1180")) {
                                 let l = getLayerBuyableTotal("e").sub(5500).max(0)
@@ -2093,6 +2131,36 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 53)) b1 = b1.times(10)
                         if (hasMilestone("e", 54)) b1 = b1.times(10)
                         if (hasMilestone("e", 54) && player.e.points.gte("1e2189")) b0 = b0.times(1e30)
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        e23: {
+                name: "E 23",
+                func: "linp1",
+                effects: "D 32 base and Eagle effect exponent",
+                base: {
+                        initial: new Decimal(.1),
+                        1: {
+                                active(){
+                                        return hasMilestone("e", 56) && player.e.points.gte("1e3342")
+                                },
+                                type: "add",
+                                amount(){
+                                        return getBuyableAmount("e", 23).div(1e4).times(1 + player.e.points.gte("1e3442"))
+                                },
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e2758")
+                        let b1 = new Decimal(1e18)
+                        let b2 = new Decimal(1.0017) // odd primes
+
+                        if (hasMilestone("e", 56)) b1 = b1.times(10)
+                        if (hasMilestone("e", 57)) {
+                                if (player.e.points.gte("1e3660")) b1 = b1.div(2)
+                                if (player.e.points.gte("1e3703")) b1 = b1.div(2)
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2444,7 +2512,7 @@ function reCalcBuyableBase(layer, id){
                 if (typeof func == "function") func = func()
                 let eff = data2.amount()
                 //effect of the effect... 
-                if (func == "set") a = eff
+                if (func == "set") a = new Decimal(eff)
                 else if (func == "add" || func == "plus") a = a.plus(eff)
                 else if (func == "mult" || func == "times") a = a.times(eff)
                 else if (func == "exp" || func == "pow") a = a.pow(eff)

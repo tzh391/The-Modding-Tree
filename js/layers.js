@@ -3540,6 +3540,7 @@ addLayer("e", {
                         if (hasMilestone("e", 49) && player.e.points.gte("1e1808")) b *= 1.05
                         if (hasMilestone("e", 50) && player.e.points.gte("1e1820")) b *= 1.05
                         if (hasMilestone("e", 51) && player.e.points.gte("1e2127")) b *= 1.02
+                        if (hasMilestone("e", 52) && player.e.points.gte("1e2378")) b *= 1.01
                                                 ret = ret.times(Decimal.pow(.4, l.min(14)))
                                                 ret = ret.times(Decimal.pow(b, l.sub(14).max(0)))
                 }
@@ -3552,6 +3553,7 @@ addLayer("e", {
                         if (player.e.points.gte("1e1591")) ret = ret.times(100)
                         if (player.e.points.gte("1e1606")) ret = ret.times(100)
                 }
+                if (hasMilestone("e", 56))      ret = ret.times(10)
 
                 return ret
         },
@@ -3593,6 +3595,8 @@ addLayer("e", {
                         if (player.e.points.gte("1e1591")) ret = ret.div(1e100)
                         if (player.e.points.gte("1e1606")) ret = ret.div(1e100)
                 }
+                if (hasMilestone("e", 56))      ret = ret.div(1e85)
+
                 return ret
         },
         effect(){
@@ -3612,6 +3616,7 @@ addLayer("e", {
                                 if (player.e.points.gte("1e1527")) exp = exp.plus(1)
                                 if (player.e.points.gte("1e1554")) exp = exp.plus(1)
                         }
+                        exp = exp.times(CURRENT_BUYABLE_EFFECTS["e23"])
                 }
                 else {
                         if (hasMilestone("e", 12))      exp = exp.div(2)
@@ -3805,6 +3810,9 @@ addLayer("e", {
                         },
                         function(){
                                 return hasMilestone("e", 51)
+                        },
+                        function(){
+                                return getBuyableAmount("e", 11).gte(4550)
                         },
                 ]),
         milestones: {
@@ -4395,7 +4403,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Eagle Milestone 36 no longer affects D 33, unlock a new Eagle buyable, and add 8.5 to D 33 base. At 1e1041 / 1e1045 / 1e1055 Eagles divide E 21 cost base by 1e13 / 1e13 / 1e7. At 1e1078 Eagles, E 21 gives free levels to E 13 and subtract from its linear cost base."
+                                return "Reward: Eagle Milestone 36 no longer affects D 33, unlock a new Eagle buyable, and add 8.5 to D 33 base. At 1e1041 / 1e1045 / 1e1055 Eagles divide E 21 cost base by 1e13 / 1e13 / 1e7. At 1e1078 Eagles, E 21 gives free levels to E 13 and subtract from its linear cost base (tenth below 250)."
                         },
                 }, // hasMilestone("e", 40)
                 41: {
@@ -4563,7 +4571,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Add .0001 to the D 21 base. Add .0001 to D 31 base."
+                                return "Reward: Add .0001 to the D 21 base. Add .0001 to D 31 base. At 1e2378 Eagles, milestones past 50 increase base Eagle gain by 1%."
                         },
                 }, // hasMilestone("e", 52)
                 53: {
@@ -4594,6 +4602,48 @@ addLayer("e", {
                                 return "Reward: E 22 gives free E 12 levels but multiply its linear cost base by 10. At 1e2189, E 22 gives free E 13 levels but increase its base cost by 1e30."
                         },
                 }, // hasMilestone("e", 54)
+                55: {
+                        requirementDescription(){
+                                return "1e2259 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e2259")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Raise C 22 base to the log10(10+Eagles)."
+                        },
+                }, // hasMilestone("e", 55)
+                56: {
+                        requirementDescription(){
+                                return "1e3081 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e3081")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: E 23 gives free E 13 levels, divide Eagle gain by 1e85, multiply base Eagle gain by 10, and multiply E 23 linear cost base by 10. At 1e3342 Eagles, each E 23 adds .0001 to its base (doubled at 1e3442)."
+                        },
+                }, // hasMilestone("e", 56)
+                57: {
+                        requirementDescription(){
+                                return "1e3643 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e3643")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 31 base becomes E 22's effect, multiply D 32's base by 10, and add .0001 to the D 22 base. At 1e3660 and 1e3703 Eagles halve E 23 linear base."
+                        },
+                }, // hasMilestone("e", 57)
         },
         tabFormat: {
                 "Upgrades": {
