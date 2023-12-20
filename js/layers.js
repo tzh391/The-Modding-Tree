@@ -2639,6 +2639,7 @@ addLayer("d", {
                 if (hasMilestone("e", 51) && player.e.points.gte("1e1790")) {
                         ret = ret.div(1e6)
                 }
+                if (hasMilestone("e", 58))      ret = ret.div(1e50)
 
                 return ret
         },
@@ -3554,6 +3555,7 @@ addLayer("e", {
                         if (player.e.points.gte("1e1606")) ret = ret.times(100)
                 }
                 if (hasMilestone("e", 56))      ret = ret.times(10)
+                if (hasMilestone("e", 59))      ret = ret.times(10)
 
                 return ret
         },
@@ -3596,6 +3598,10 @@ addLayer("e", {
                         if (player.e.points.gte("1e1606")) ret = ret.div(1e100)
                 }
                 if (hasMilestone("e", 56))      ret = ret.div(1e85)
+                if (hasMilestone("e", 58) && player.e.best.gte("1e3922")) {
+                                                ret = ret.div(1e29)
+                }
+                if (hasMilestone("e", 59))      ret = ret.div(1e100)
 
                 return ret
         },
@@ -4641,9 +4647,51 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: D 31 base becomes E 22's effect, multiply D 32's base by 10, and add .0001 to the D 22 base. At 1e3660 and 1e3703 Eagles halve E 23 linear base."
+                                return "Reward: D 31 base becomes E 22's effect, multiply D 32's base by 10, and add .0001 to the D 22 base. At 1e3660 and 1e3703 Eagles halve E 23 linear base; at 1e3764 divide it by 2.5."
                         },
                 }, // hasMilestone("e", 57)
+                58: {
+                        requirementDescription(){
+                                return "1e3905 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e3905")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 32 gives free D 22 levels but divide base Duck gain by 1e50. At 1e3922 Eagles, divide Eagle gain by 1e29 and E 23 gives free E 13 levels."
+                        },
+                }, // hasMilestone("e", 58)
+                59: {
+                        requirementDescription(){
+                                return "1e4146 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e4146")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Multiply base Eagle gain by 10 but divide Eagle gain by 1e100 and at 100 E 23 levels double its linear cost base."
+                        },
+                }, // hasMilestone("e", 59)
+                60: {
+                        requirementDescription(){
+                                return "1e4649 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e4649")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: E 22 levels decrease E 23 linear cost base by .1% and vise versa. Multiply E 23 initial base by 1e22, reduce this to 1e14 at 5e4701 Eagles."
+                        },
+                }, // hasMilestone("e", 60)
         },
         tabFormat: {
                 "Upgrades": {
