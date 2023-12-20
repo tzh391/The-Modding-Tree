@@ -2640,6 +2640,11 @@ addLayer("d", {
                         ret = ret.div(1e6)
                 }
                 if (hasMilestone("e", 58))      ret = ret.div(1e50)
+                if (hasMilestone("e", 61)) {
+                        ret = ret.div(1e10)
+                        if (player.e.best.gte("1e5183")) ret = ret.div(1e51)
+                }
+                if (hasMilestone("e", 62))      ret = ret.div(1e31)
 
                 return ret
         },
@@ -3514,7 +3519,9 @@ addLayer("e", {
         getGainExp(){
                 let ret = new Decimal(2)
 
-                if (hasMilestone("e", 6))       ret = ret.plus(player.e.milestones.length / 25)
+                if (hasMilestone("e", 6) && !hasMilestone("e", 63)) {
+                        ret = ret.plus(player.e.milestones.length / 25)
+                }       
                 if (hasUpgrade("e", 14))        ret = ret.plus(player.e.upgrades.length * .08)
                 if (hasMilestone("e", 11))      ret = ret.plus(2)
                 if (hasMilestone("e", 24))      ret = ret.plus(1)
@@ -3602,6 +3609,7 @@ addLayer("e", {
                                                 ret = ret.div(1e29)
                 }
                 if (hasMilestone("e", 59))      ret = ret.div(1e100)
+                if (hasMilestone("e", 63))      ret = ret.div(1e6)
 
                 return ret
         },
@@ -4689,9 +4697,51 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: E 22 levels decrease E 23 linear cost base by .1% and vise versa. Multiply E 23 initial base by 1e22, reduce this to 1e14 at 5e4701 Eagles."
+                                return "Reward: E 22 levels decrease E 23 linear cost base by .1% and vise versa. Multiply E 23 initial base by 1e22, reduce this to 1e14 / 1e9 at 5e4701 / 1e5000 Eagles."
                         },
                 }, // hasMilestone("e", 60)
+                61: {
+                        requirementDescription(){
+                                return "1e5121 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e5121")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 13 gives free levels to D 12 instead of D 23 but divide base Duck gain by 1e10. At 1e5183 Eagles, E 12 gives free D 32 levels but divide base Duck gain by 1e51."
+                        },
+                }, // hasMilestone("e", 61)
+                62: {
+                        requirementDescription(){
+                                return "1e5302 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e5302")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Multiply D 33 base by 10 but divide base Duck gain by 1e31."
+                        },
+                }, // hasMilestone("e", 62)
+                63: {
+                        requirementDescription(){
+                                return "1e5361 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e5361")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: E 23 gives free E 11 levels but Eagle milestone 6 does not effect Eagle gain exponent and divide Eagle gain by 1,000,000."
+                        },
+                }, // hasMilestone("e", 63)
         },
         tabFormat: {
                 "Upgrades": {

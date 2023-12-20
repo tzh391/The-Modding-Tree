@@ -1350,10 +1350,10 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1, b2]
                 },
-                d13: {active:() => hasMilestone("d", 13) && player.d.points.gte("1e1111") && !hasMilestone("e", 33)},
+                d13: {active:() => hasMilestone("e", 61) || (hasMilestone("d", 13) && player.d.points.gte("1e1111") && !hasMilestone("e", 33))},
                 d21: {active:() => hasUpgrade("d", 25)},
                 d22: {active:() => hasMilestone("d", 20) && player.d.points.gte("1e15000")},
-                d23: {active:() => hasMilestone("d", 23) && player.d.points.gte("1e31304")},
+                d23: {active:() => hasMilestone("d", 23) && player.d.points.gte("1e31304") && !hasMilestone("e", 61)},
         },
         d13: {
                 name: "D 13",
@@ -1887,6 +1887,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
                 e11: {active:() => (hasMilestone("e", 19) && !hasMilestone("e", 21)) || hasMilestone("e", 34)},
+                e12: {active:() => hasMilestone("e", 61) && player.e.best.gte("1e5183")},
                 e13: {active:() => hasMilestone("e", 37)},
         },
         d33: {
@@ -1921,6 +1922,15 @@ var MAIN_BUYABLE_DATA = {
                                 amount(){
                                         return CURRENT_BUYABLE_EFFECTS["e21"]
                                 }
+                        },
+                        4: {
+                                active(){
+                                        return hasMilestone("e", 62)
+                                },
+                                type: "times",
+                                amount(){
+                                        return 10
+                                },
                         },
                 },
                 bases(){
@@ -2008,6 +2018,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
                 e22: {active:() => hasMilestone("e", 53)},
+                e23: {active:() => hasMilestone("e", 63)},
         },
         e12: {
                 name: "E 12",
@@ -2169,6 +2180,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 60)) {
                                 b0 = b0.times(1e22)
                                 if (player.e.points.gte("5e4701")) b0 = b0.div(1e8)
+                                if (player.e.points.gte("1e5000")) b0 = b0.div(1e5)
                                 b1 = b1.times(Decimal.pow(.999, getBuyableAmount("e", 22)))
                         }
 
