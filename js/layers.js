@@ -3563,6 +3563,10 @@ addLayer("e", {
                 }
                 if (hasMilestone("e", 56))      ret = ret.times(10)
                 if (hasMilestone("e", 59))      ret = ret.times(10)
+                if (hasMilestone("e", 63)) {
+                        if (player.e.points.gte("1e5422")) ret = ret.times(2)
+                        if (player.e.points.gte("1e5624")) ret = ret.times(2)
+                }
 
                 return ret
         },
@@ -3609,7 +3613,11 @@ addLayer("e", {
                                                 ret = ret.div(1e29)
                 }
                 if (hasMilestone("e", 59))      ret = ret.div(1e100)
-                if (hasMilestone("e", 63))      ret = ret.div(1e6)
+                if (hasMilestone("e", 63)) {
+                        ret = ret.div(1e6)
+                        if (player.e.points.gte("1e5422")) ret = ret.div(3e35)
+                        if (player.e.points.gte("1e5624")) ret = ret.div(3e36)
+                }
 
                 return ret
         },
@@ -4739,7 +4747,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: E 23 gives free E 11 levels but Eagle milestone 6 does not effect Eagle gain exponent and divide Eagle gain by 1,000,000."
+                                return "Reward: E 23 gives free E 11 levels but Eagle milestone 6 does not affect Eagle gain exponent and divide Eagle gain by 1,000,000. At 1e5422 / 1e5624 Eagles, gain double base Eagle gain, but divide Eagle gain by 3e35 / 3e36."
                         },
                 }, // hasMilestone("e", 63)
         },
