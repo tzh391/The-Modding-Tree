@@ -19,10 +19,11 @@ var CUSTOM_SAVES = {
 
 var CUSTOM_SAVES_IDS = Object.keys(CUSTOM_SAVES)
 var CUSTOM_SAVE_IDS = CUSTOM_SAVES_IDS //proxy
-REORDER = [
+/*REORDER = [
         0, 1, 2, 3, 4,
         5, 6, 7, 8, 9,
-        10, 11,
+        10, 11, 12, 13,
+        14,
             ]
 
 function reorderSaveIds(){
@@ -33,7 +34,7 @@ function reorderSaveIds(){
         CUSTOM_SAVES_IDS = a
 }
 
-reorderSaveIds()
+reorderSaveIds()*/
 
 
 

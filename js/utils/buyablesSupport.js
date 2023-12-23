@@ -1321,9 +1321,10 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1, b2]
                 },
+                d12: {active:() => hasMilestone("e", 75)},
                 d13: {active:() => hasUpgrade("d", 23) && player.d.points.gte("1e600")},
                 d21: {active:() => hasUpgrade("d", 25)},
-                d22: {active:() => hasMilestone("e", 7)},
+                d22: {active:() => hasMilestone("e", 7) && !hasMilestone("e", 75)},
                 d23: {active:() => hasMilestone("d", 25) && !hasMilestone("e", 27)},
         },
         d12: {
@@ -1587,6 +1588,15 @@ var MAIN_BUYABLE_DATA = {
                                         return -.0001
                                 }
                         },
+                        4: {
+                                active(){
+                                        return true
+                                },
+                                type: "plus",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e31"]
+                                }
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e12782")
@@ -1711,6 +1721,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
                 d31: {active:() => hasMilestone("e", 25)},
+                d32: {active:() => hasMilestone("e", 67)},
         },
         d31: {
                 name: "D 31",
@@ -2014,11 +2025,13 @@ var MAIN_BUYABLE_DATA = {
                                 let l = getLayerBuyableTotal("e").sub(5500).max(0)
                                                         b0 = b0.times(Decimal.pow(.99, l))
                         }
+                        if (hasMilestone("e", 64))      b0 = b0.times(100)
+                        if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
 
                         return [b0.max(1), b1.max(1), b2]
                 },
                 e22: {active:() => hasMilestone("e", 53)},
-                e23: {active:() => hasMilestone("e", 63)},
+                e23: {active:() => hasMilestone("e", 63) && !hasMilestone("e", 71)},
         },
         e12: {
                 name: "E 12",
@@ -2048,6 +2061,8 @@ var MAIN_BUYABLE_DATA = {
                                 let l = getLayerBuyableTotal("e").sub(5500).max(0)
                                                         b0 = b0.times(Decimal.pow(.99, l))
                         }
+                        if (hasMilestone("e", 64))      b0 = b0.times(100)
+                        if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2074,6 +2089,15 @@ var MAIN_BUYABLE_DATA = {
                                 active(){
                                         return true
                                 },
+                                type: "plus",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e31"]
+                                }
+                        },
+                        3: {
+                                active(){
+                                        return true
+                                },
                                 type: "times",
                                 amount(){
                                         return CURRENT_BUYABLE_EFFECTS["e21"]
@@ -2088,6 +2112,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 38)) {
                                 let l = player.e.buyables[13]
                                 if (l.gte(100)) l = l.plus(400).div(5)
+                                if (l.gte(750)) l = l.plus(750).div(2)
                                 b1 = b1.sub(l.div(10))
                         }
                         if (hasMilestone("e", 41))      b0 = b0.times(1e35)
@@ -2095,6 +2120,8 @@ var MAIN_BUYABLE_DATA = {
                                 let l = getLayerBuyableTotal("e").sub(5500).max(0)
                                                         b0 = b0.times(Decimal.pow(.99, l.times(10)))
                         }
+                        if (hasMilestone("e", 64))      b0 = b0.times(1e20)
+                        if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2107,6 +2134,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Base Eagle gain and E 13 and D 33 base",
                 base: {
                         initial: new Decimal(.01),
+                        1: {
+                                active(){
+                                        return hasMilestone("e", 76)
+                                },
+                                type: "times",
+                                amount(){
+                                        return getBuyableAmount("e", 31).sub(97).max(0).div(1e3).plus(1)
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e1028")
@@ -2119,6 +2155,8 @@ var MAIN_BUYABLE_DATA = {
                                 if (player.e.best.gte("1e1055")) b0 = b0.div(1e7)
                                 if (player.e.best.gte("1e1078")) b1 = b1.sub(getBuyableAmount("e", 21))
                                 if (b1.lte(250)) b1 = b1.plus(2250).div(10)
+                                if (b1.lte(75))  b1 = b1.plus(75).div(2)
+                                if (b1.lte(50))  b1 = b1.plus(200).div(5)
                         }
                         if (hasMilestone("e", 42) && player.e.best.gte("1e1180")) {
                                 let l = getLayerBuyableTotal("e").sub(5500).max(0)
@@ -2128,6 +2166,8 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                e23: {active:() => hasMilestone("e", 71)},
+                e31: {active:() => hasMilestone("e", 65)},
         },
         e22: {
                 name: "E 22",
@@ -2135,6 +2175,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "D X1 bases",
                 base: {
                         initial: new Decimal(.0001),
+                        1: {
+                                active(){
+                                        return hasMilestone("e", 72)
+                                },
+                                type: "times",
+                                amount(){
+                                        return getBuyableAmount("e", 31).sub(53).max(0).min(75).div(1e3).plus(1)
+                                }
+                        }
                 },
                 bases(){
                         let b0 = new Decimal("1e1830")
@@ -2145,6 +2194,11 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 54)) b1 = b1.times(10)
                         if (hasMilestone("e", 54) && player.e.points.gte("1e2189")) b0 = b0.times(1e30)
                         if (hasMilestone("e", 60)) b1 = b1.times(Decimal.pow(.999, getBuyableAmount("e", 22)))
+                        if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
+                        if (hasMilestone("e", 66)) b0 = b0.times(1e7)
+                        if (hasMilestone("e", 77) && player.e.points.gte("1e10317")) {
+                                b1 = b1.times(Decimal.pow(.998, getBuyableAmount("e", 31).sub(100).max(0)))
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2183,6 +2237,30 @@ var MAIN_BUYABLE_DATA = {
                                 if (player.e.points.gte("1e5000")) b0 = b0.div(1e5)
                                 b1 = b1.times(Decimal.pow(.999, getBuyableAmount("e", 22)))
                         }
+                        if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
+                        if (hasMilestone("e", 77) && player.e.points.gte("1e10317")) {
+                                b1 = b1.times(Decimal.pow(.998, getBuyableAmount("e", 31).sub(100).max(0)))
+                        }
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        e31: {
+                name: "E 31",
+                func: "lin.8",
+                effects: "E 13 and D 22 base",
+                base: {
+                        initial: new Decimal(.0001),
+                },
+                bases(){
+                        let b0 = new Decimal("1e6304")
+                        let b1 = new Decimal(1e40)
+                        let b2 = new Decimal(1.0019) // odd primes
+
+                        if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
+                        if (hasMilestone("e", 66)) b0 = b0.div(1e137)
+                        if (hasMilestone("e", 76) && player.e.points.gte("1e10095")) b1 = new Decimal(7.5e39)
+                        if (hasMilestone("e", 77)) b1 = new Decimal(7e39)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2271,6 +2349,12 @@ var BUYABLES_FUNCTION_NAMES = {
                 "func": BUYABLES_EFFECT_LINEAR,
                 "identity": decimalZero,
                 "string": "*x",
+                "eff": "+",
+        },
+        "lin.8": {
+                "func": BUYABLES_EFFECT_LINEAR_POINT8,
+                "identity": decimalZero,
+                "string": "*x<sup>.8</sup>",
                 "eff": "+",
         },
         "linp1": {
@@ -2476,6 +2560,10 @@ function BUYABLES_EFFECT_LINEAR(a,b){
         return a.times(b)
 }
 
+function BUYABLES_EFFECT_LINEAR_POINT8(a,b){
+        return a.times(b.pow(.8))
+}
+
 function BUYABLES_EFFECT_LINEAR_PLUS1(a,b){
         return a.times(b).plus(1)
 }
@@ -2656,19 +2744,23 @@ function getBuyableDisplay(layer, id){
                 let eff1 = "<b><h2>Effect</h2>: " + getBuyableEffectSymbol(layer, id) 
                 let effectsName = MAIN_BUYABLE_DATA[layer + id]["effects"]
                 if (typeof effectsName == "function") effectsName = effectsName()
-                let eff2 = format(CURRENT_BUYABLE_EFFECTS[layer + id], 4) + " " + effectsName + "</b><br>"
+                let b = CURRENT_BUYABLE_EFFECTS[layer + id]
+                let effDisp = (b.gte(.1) || controlDown) ? format(b, 4) : (format(b.times(1000), 4) + "/1000")
+                let eff2 = effDisp + " " + effectsName + "</b><br>"
                 let cost = "<b><h2>Cost</h2>: " + format(getBuyableCost(layer, id)) + " " + layers[layer].name + "</b><br>"
         
                 return br + amt + eff1 + eff2 + cost + "Shift to see details"
         }
 
         let eformula = ""
+        let b = getBuyableBase(layer, id)
+        let baseDisplay = (b.gte(.1) || controlDown) ? format(getBuyableBase(layer, id), 4) : (format(getBuyableBase(layer, id).times(1000), 4) + "/1000" )
         if (MAIN_BUYABLE_DATA[layer + id]["eFormula"] != undefined) {
                 eformula = MAIN_BUYABLE_DATA[layer + id]["eFormula"]
                 if (typeof eformula == "function") eformula = eformula()
-                eformula = eformula.replace("[base]", format(getBuyableBase(layer, id), 4))
+                eformula = eformula.replace("[base]", baseDisplay)
         } else {
-                eformula = format(getBuyableBase(layer, id), 4) + getBuyableEffectString(layer, id)
+                eformula = baseDisplay + getBuyableEffectString(layer, id)
                 if (MAIN_BUYABLE_DATA[layer + id].func == "linp1")      eformula = "1+" + eformula
                 if (MAIN_BUYABLE_DATA[layer + id].func == "linp1sq")    eformula = "1+" + eformula + "<sup>2</sup>"
         }

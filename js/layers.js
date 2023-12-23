@@ -2645,6 +2645,9 @@ addLayer("d", {
                         if (player.e.best.gte("1e5183")) ret = ret.div(1e51)
                 }
                 if (hasMilestone("e", 62))      ret = ret.div(1e31)
+                if (hasMilestone("e", 67))      ret = ret.div(1e210)
+                if (hasMilestone("e", 75))      ret = ret.div("1e409")
+                if (hasMilestone("e", 77))      ret = ret.times(Decimal.pow(2, getBuyableAmount("e", 31).sub(100).max(0)))
 
                 return ret
         },
@@ -3549,6 +3552,19 @@ addLayer("e", {
                         if (hasMilestone("e", 50) && player.e.points.gte("1e1820")) b *= 1.05
                         if (hasMilestone("e", 51) && player.e.points.gte("1e2127")) b *= 1.02
                         if (hasMilestone("e", 52) && player.e.points.gte("1e2378")) b *= 1.01
+                        if (hasMilestone("e", 68))                                  b *= 1.01
+                        if (hasMilestone("e", 69))                                  b *= 1.01
+                        if (hasMilestone("e", 70))                                  b *= 1.01
+                        if (hasMilestone("e", 68) && player.e.points.gte("1e8223")) b *= 1.01
+                        if (hasMilestone("e", 69) && player.e.points.gte("1e8261")) b *= 1.01
+                        if (hasMilestone("e", 70) && player.e.points.gte("1e8300")) b *= 1.01
+                        if (hasMilestone("e", 72) && player.e.points.gte("1e8620")) b *= 1.01
+                        if (hasMilestone("e", 73) && player.e.points.gte("1e9496")) b *= 1.01
+                        if (hasMilestone("e", 74) && player.e.points.gte("1e9658")) b *= 1.01
+                        if (hasMilestone("e", 74) && player.e.points.gte("1e9855")) b *= 1.01
+                        if (hasMilestone("e", 74) && player.e.points.gte("1e9895")) b *= 1.01
+                        if (hasMilestone("e", 75) && player.e.points.gte("1e9935")) b *= 1.01
+                        if (hasMilestone("e", 75) && player.e.points.gte("1e9974")) b *= 1.01
                                                 ret = ret.times(Decimal.pow(.4, l.min(14)))
                                                 ret = ret.times(Decimal.pow(b, l.sub(14).max(0)))
                 }
@@ -3566,6 +3582,32 @@ addLayer("e", {
                 if (hasMilestone("e", 63)) {
                         if (player.e.points.gte("1e5422")) ret = ret.times(2)
                         if (player.e.points.gte("1e5624")) ret = ret.times(2)
+                }
+                if (hasMilestone("e", 64))      ret = ret.times(1.24)
+                if (hasMilestone("e", 65) && player.e.points.gte("1e6563")) {
+                                                ret = ret.times(1.01)
+                }
+                if (hasMilestone("e", 66)) {
+                        if (player.e.points.gte("1e6829"))      ret = ret.times(1.02)
+                        if (player.e.points.gte("1e6906"))      ret = ret.times(1.02)
+                        if (player.e.points.gte("1e7067"))      ret = ret.times(1.02)
+                        if (player.e.points.gte("1e7267"))      ret = ret.times(1.02)
+                        if (player.e.points.gte("1e7765"))      ret = ret.times(1.02)
+                }
+                if (hasMilestone("e", 71)) {
+                        if (player.e.points.gte("1e8401"))      ret = ret.times(1.015)
+                        if (player.e.points.gte("1e8420"))      ret = ret.times(1.015)
+                        if (player.e.points.gte("1e8461"))      ret = ret.times(1.015)
+                        if (player.e.points.gte("1e8500"))      ret = ret.times(1.015)
+                }
+                if (hasMilestone("e", 73))      ret = ret.times(10)
+                if (hasMilestone("e", 74))      ret = ret.times(10)
+                if (hasMilestone("e", 76)) {
+                        if (player.e.points.gte("1e10117"))     ret = ret.times(1.01)
+                        if (player.e.points.gte("1e10155"))     ret = ret.times(1.01)
+                        if (player.e.points.gte("1e10157"))     ret = ret.times(1.01)
+                        if (player.e.points.gte("1e10277"))     ret = ret.times(1.01)
+                        if (player.e.points.gte("1e10593"))     ret = ret.times(1.01)
                 }
 
                 return ret
@@ -3618,6 +3660,23 @@ addLayer("e", {
                         if (player.e.points.gte("1e5422")) ret = ret.div(3e35)
                         if (player.e.points.gte("1e5624")) ret = ret.div(3e36)
                 }
+                if (hasMilestone("e", 68))      ret = ret.div(1e8)
+                if (hasMilestone("e", 68) && player.e.points.gte("1e8223")) ret = ret.div(1e13)
+                if (hasMilestone("e", 69))      ret = ret.div(3e7)
+                if (hasMilestone("e", 69) && player.e.points.gte("1e8261")) ret = ret.div(15e11)
+                if (hasMilestone("e", 70))      ret = ret.div(3e7)
+                if (hasMilestone("e", 70) && player.e.points.gte("1e8300")) ret = ret.div(3e12)
+                if (hasMilestone("e", 71))      ret = ret.div(1e40)
+                if (hasMilestone("e", 72) && player.e.points.gte("1e8620")) ret = ret.div(1e16)
+                if (hasMilestone("e", 73) && player.e.points.gte("1e9496")) ret = ret.div(1e18)
+                if (hasMilestone("e", 74) && player.e.points.gte("1e9658")) ret = ret.div(1e19)
+                if (hasMilestone("e", 74) && player.e.points.gte("1e9855")) ret = ret.div(1e19)
+                if (hasMilestone("e", 74) && player.e.points.gte("1e9895")) ret = ret.div(1e19)
+                if (hasMilestone("e", 75) && player.e.points.gte("1e9935")) ret = ret.div(1e20)
+                if (hasMilestone("e", 75) && player.e.points.gte("1e9974")) ret = ret.div(1e20)
+
+                if (hasMilestone("e", 73))      ret = ret.div(1e176)
+                if (hasMilestone("e", 74))      ret = ret.div(1e190)
 
                 return ret
         },
@@ -3835,6 +3894,9 @@ addLayer("e", {
                         },
                         function(){
                                 return getBuyableAmount("e", 11).gte(4550)
+                        },
+                        function(){
+                                return getBuyableAmount("e", 11).gte(6950)
                         },
                 ]),
         milestones: {
@@ -4397,7 +4459,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: E 13 levels subtract .1 from its linear base (fifthed after 100) and divide D 33 base cost by 1e900."
+                                return "Reward: E 13 levels subtract .1 from its linear base (fifthed below 90 and halve below 25) and divide D 33 base cost by 1e900."
                         },
                 }, // hasMilestone("e", 38)
                 39: {
@@ -4425,7 +4487,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Eagle Milestone 36 no longer affects D 33, unlock a new Eagle buyable, and add 8.5 to D 33 base. At 1e1041 / 1e1045 / 1e1055 Eagles divide E 21 cost base by 1e13 / 1e13 / 1e7. At 1e1078 Eagles, E 21 gives free levels to E 13 and subtract from its linear cost base (tenth below 250)."
+                                return "Reward: Eagle Milestone 36 no longer affects D 33, unlock a new Eagle buyable, and add 8.5 to D 33 base. At 1e1041 / 1e1045 / 1e1055 Eagles divide E 21 cost base by 1e13 / 1e13 / 1e7. At 1e1078 Eagles, E 21 gives free levels to E 13 and subtract from its linear cost base (tenth below 250, halve below 75, and fifth below 50)."
                         },
                 }, // hasMilestone("e", 40)
                 41: {
@@ -4750,6 +4812,202 @@ addLayer("e", {
                                 return "Reward: E 23 gives free E 11 levels but Eagle milestone 6 does not affect Eagle gain exponent and divide Eagle gain by 1,000,000. At 1e5422 / 1e5624 Eagles, gain double base Eagle gain, but divide Eagle gain by 3e35 / 3e36."
                         },
                 }, // hasMilestone("e", 63)
+                64: {
+                        requirementDescription(){
+                                return "1e6043 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e6043")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Multiply E 11 base cost by 100 and E 13 base cost by 1e20 and increase base Eagle gain by 24%."
+                        },
+                }, // hasMilestone("e", 64)
+                65: {
+                        requirementDescription(){
+                                return "1e6428 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e6428")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: E 31 gives free E 21 levels. At 1e6503, E 31 levels halve all E buyable base costs. At 1e6563 Eagles increase base Eagle gain by 1%."
+                        },
+                }, // hasMilestone("e", 65)
+                66: {
+                        requirementDescription(){
+                                return "1e6723 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e6723")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Increase E 22 base cost by 1e7 and decrease E 31 base cost by 1e137. At 1e6829, 1e6906, 1e7067, 1e7267, and 1e7765 Eagles increase base Eagle gain by 2%."
+                        },
+                }, // hasMilestone("e", 66)
+                67: {
+                        requirementDescription(){
+                                return "1e7823 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e7823")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: D 32 gives free D 23 levels but divide base Duck gain by 1e210."
+                        },
+                }, // hasMilestone("e", 67)
+                68: {
+                        requirementDescription(){
+                                return "1e8024 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e8024")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Increase the multiplier per Eagle milestone past 50 by 1% but divide Eagle gain by 1e8. At 1e8223 Eagles, reapply this but divide Eagle gain by 1e5."
+                        },
+                }, // hasMilestone("e", 68)
+                69: {
+                        requirementDescription(){
+                                return "1e8142 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e8142")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Increase the multiplier per Eagle milestone past 50 by 1% but divide Eagle gain by 3e7. At 1e8261 Eagles, reapply this but divide Eagle gain by 5e4."
+                        },
+                }, // hasMilestone("e", 69)
+                70: {
+                        requirementDescription(){
+                                return "1e8181 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e8181")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Increase the multiplier per Eagle milestone past 50 by 1% but divide Eagle gain by 3e7. At 1e8300 Eagles, reapply this but divide Eagle gain by 1e5."
+                        },
+                }, // hasMilestone("e", 70)
+                71: {
+                        requirementDescription(){
+                                return "1e8357 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e8357")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: E 23 gives free E 21 levels instead of E 11 levels but divide Eagle gain by 1e40. At 1e8401, 1e8420, 1e8461, and 1e8500 Eagles, increase base Eagle gain by 1.5%."
+                        },
+                }, // hasMilestone("e", 71)
+                72: {
+                        requirementDescription(){
+                                return "1e8441 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e8441")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: E 31 levels past 53 increase E 22 base by .1% (max 75 times). At 1e8620 Eagles, increase the multiplier per Eagle milestone past 50 by 1% but divide Eagle gain by 1e16."
+                        },
+                }, // hasMilestone("e", 72)
+                73: {
+                        requirementDescription(){
+                                return "1e8662 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e8662")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Gain 10x base Eagles but 1e176 less Eagles. At 1e9496 Eagles, increase the multiplier per Eagle milestone past 50 by 1% but divide Eagle gain by 1e18."
+                        },
+                }, // hasMilestone("e", 73)
+                74: {
+                        requirementDescription(){
+                                return "1e9577 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e9577")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Gain 10x base Eagles but 1e190 less Eagles. At 1e9658, 1e9855 and 1e9895 Eagles, increase the multiplier per Eagle milestone past 50 by 1% but divide Eagle gain by 1e19."
+                        },
+                }, // hasMilestone("e", 74)
+                75: {
+                        requirementDescription(){
+                                return "1e9818 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e9818")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Reduce base Duck gain by 1e409 and D 12 gives free D 11 levels instead of D 22. At 1e9935 and 1e9974 Eagles, increase the multiplier per Eagle milestone past 50 by 1% but divide Eagle gain by 1e20."
+                        },
+                }, // hasMilestone("e", 75)
+                76: {
+                        requirementDescription(){
+                                return "1e10,018 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e10018")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: E 31 levels past 97 increase E 21 base by .1%. At 1e10,095 Eagles, decrease the E 31 linear base to 7.5e39. At 1e10,117, 1e10,155, 1e10,157, 1e10,277, and 1e10,593 Eagles, increase base Eagle gain by 1%."
+                        },
+                }, // hasMilestone("e", 76)
+                77: {
+                        requirementDescription(){
+                                return "1e10,250 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e10250")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Decrease the E 31 linear base to 7e39. At 1e10,317 Eagles, each E 31 past 100 decreases E 22 and E 23 linear base by .2%, and at 1e10,354 Eagles they also double base Duck gain."
+                        },
+                }, // hasMilestone("e", 77)
         },
         tabFormat: {
                 "Upgrades": {
