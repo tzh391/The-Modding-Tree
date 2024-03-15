@@ -107,7 +107,7 @@ function filterOut(list, out){
 addLayer("a", {
         name: "Alligators", // This is optional, only used in a few places, If absent it just uses the layer id.
         symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
         startData() { return {
                 unlocked: false,
 		points: decimalZero,
@@ -712,7 +712,7 @@ addLayer("a", {
 addLayer("b", {
         name: "Beavers", // This is optional, only used in a few places, If absent it just uses the layer id.
         symbol: "B", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
         row: 1, // Row the layer is in on the tree (0 is the first row)
         startData() { return {
                 unlocked: false,
@@ -3619,6 +3619,7 @@ addLayer("e", {
                         if (player.e.points.gte("1e11607")) ret = ret.times(.76)
                         if (player.e.points.gte("1e11645")) ret = ret.times(.76)
                 }
+                if (hasUpgrade("E", 11))       ret = ret.times(Decimal.pow(1.01, player.E.upgrades.length))
 
                 
                 return ret
@@ -5456,5 +5457,271 @@ addLayer("ach", {
                 },
         },
         doReset(layer){},
+})
+
+addLayer("E", {
+        name: "Emerald", // This is optional, only used in a few places, If absent it just uses the layer id.
+        symbol: "Em", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        row: 0, // Row the layer is in on the tree (0 is the first row)
+        startData() { return {
+                unlocked: false,
+		points: decimalZero,
+                best: decimalZero,
+                total: decimalZero,
+                abtime: 0,
+                time: 0,
+                times: 0,
+                autotimes: 0,
+                tier: decimalOne,
+        }},
+        color: "#3CED20",
+        branches: [],
+        requires: new Decimal("1e13500"), // Can be a function that takes requirement increases into account
+        resource(){
+                return "Emerald " + romanize(player.E.tier)
+        }, // Name of prestige currency
+        baseResource: "Eagles", // Name of resource prestige is based on
+        baseAmount() {return player.e.points.floor()}, // Get the current amount of baseResource
+        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        getResetGain() {
+                return tmp.E.getGainMultPre.pow(tmp.E.getGainExp).times(tmp.E.getGainMultPost)
+        },
+        getNextAt(){
+                return decimalOne
+        },
+        getGainExp(){
+                let div = new Decimal(1)
+                let tier = player.E.tier
+
+                div = div.plus(tier.div(10).pow(2))
+
+                return div.pow(-1)
+        },
+        getGainWeights(layer){
+               return {
+                        "a": .001,
+                        "b": .002,
+                        "c": .005,
+                        "d": .01,
+                        "e": .02,
+                }[layer]
+        },
+        getGainMultPre(){
+                let ret = new Decimal(.1)
+
+                let layersCurrent = ["a", "b", "c", "d", "e",]
+                let calcLayerWeight = function(amt){
+                        return amt.max(10).log10().pow(.1).min(Decimal.pow(2, 1024))
+                }
+                for (j in layersCurrent){
+                        i = layersCurrent[j]
+                        ret = ret.times(calcLayerWeight(player[i].points).pow(layers.E.getGainWeights(i)))
+                }
+
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["E11"])
+
+                return ret
+        },
+        getGainMultPost(){
+                let ret = decimalOne
+
+                return ret
+        },
+        update(diff){
+                let data = player.E
+
+                if (player.e.best.gt("1e13500")) data.unlocked = true
+                if (!data.unlocked) return
+                
+                data.points = data.points.plus(tmp.E.getResetGain.times(diff))
+
+                data.best = data.best.max(data.points)
+                data.time += diff
+        },
+        layerShown(){return player.E.unlocked || player.e.best.gte("1e13500")},
+        canReset(){
+                return false
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                11: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>I Emerald"
+                        },
+                        description(){
+                                let a = "Each upgrade unlocks a buyable and increases base Eagle gain by 1%"
+                                return a
+                        },
+                        cost: new Decimal(10),
+                        unlocked(){
+                                return true
+                        }, 
+                }, // hasUpgrade("E", 11)
+        },
+        milestones: {
+                1: {
+                        requirementDescription(){
+                                return "idk yet"
+                        },
+                        done(){
+                                return false
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: unknown atm."
+                        },
+                }, // hasMilestone("E", 1)
+        },
+        buyables: getLayerGeneralizedBuyableData("E", [
+                        function(){
+                                return hasUpgrade("E", 11)
+                        },
+                ]),
+        tabFormat: {
+                "Upgrades": {
+                        content: ["main-display",
+                                ["display-text",
+                                        function() {
+                                                return "You are on tier " + formatWhole(player.E.tier) + ". This roots Emerald " + romanize(player.E.tier) + " gain by " + format(tmp.E.getGainExp.pow(-1))
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                return "You are gaining " + format(tmp.E.getResetGain) + " Emerald " + romanize(player.E.tier) + " per second."
+                                        }
+                                ],
+                                "blank", 
+                                "upgrades"],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Buyables": {
+                        content: ["main-display",
+                                ["display-text",
+                                        function() {
+                                                return "You are on tier " + formatWhole(player.E.tier) + ". This roots Emerald " + romanize(player.E.tier) + " gain by " + format(tmp.E.getGainExp.pow(-1))
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                return "You are gaining " + format(tmp.E.getResetGain) + " Emerald " + romanize(player.E.tier) + " per second."
+                                        }
+                                ],
+                                "buyables"],
+                        unlocked(){
+                                return hasUpgrade("E", 11)
+                        },
+                },
+                "Milestones": {
+                        content: [
+                                "main-display",
+                                ["display-text",
+                                        function() {
+                                                return "You are on tier " + formatWhole(player.E.tier) + ". This roots Emerald " + romanize(player.E.tier) + " gain by " + format(tmp.E.getGainExp.pow(-1))
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                return "You are gaining " + format(tmp.E.getResetGain) + " Emerald " + romanize(player.E.tier) + " per second."
+                                        }
+                                ],
+                                "milestones"],
+                        unlocked(){
+                                return true
+                        },
+                },
+        },
+})
+
+addLayer("T", {
+        name: "Tier", // This is optional, only used in a few places, If absent it just uses the layer id.
+        symbol: "Ti", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        row: 1, // Row the layer is in on the tree (0 is the first row)
+        startData() { return {
+                unlocked: false,
+		points: decimalOne,
+                best: decimalOne,
+                abtime: 0,
+                time: 0,
+                times: 0,
+                autotimes: 0,
+                tier: decimalOne,
+        }},
+        color: "#3CED20",
+        branches: [],
+        requires: new Decimal("1e6"), // Can be a function that takes requirement increases into account
+        resource: "Tiers", // Name of prestige currency
+        baseResource: "Emeralds", // Name of resource prestige is based on
+        baseAmount() {return player.E.points.floor()}, // Get the current amount of baseResource
+        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        update(diff){
+                let data = player.E
+
+                if (player.e.best.gt("1e13500")) data.unlocked = true
+                if (!data.unlocked) return
+                
+                data.points = data.points.plus(tmp.E.getResetGain.times(diff))
+
+                data.best = data.best.max(data.points)
+                data.time += diff
+        },
+        layerShown(){return player.E.best.gte(1e5)},
+        canReset(){
+                return false
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                11: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>I Tier"
+                        },
+                        description(){
+                                let a = "idk"
+                                return a
+                        },
+                        cost: new Decimal(100),
+                        unlocked(){
+                                return true
+                        }, 
+                }, // hasUpgrade("T", 11)
+        },
+        milestones: {
+                1: {
+                        requirementDescription(){
+                                return "idk yet"
+                        },
+                        done(){
+                                return false
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: unknown atm."
+                        },
+                }, // hasMilestone("T", 1)
+        },
+        tabFormat: {
+                "Upgrades": {
+                        content: ["main-display",
+                                ["display-text",
+                                        function() {
+                                                return "You are on Emerald tier " + formatWhole(player.E.tier) + "."
+                                        }
+                                ],
+                                "blank", 
+                                "upgrades"],
+                        unlocked(){
+                                return true
+                        },
+                },
+        },
 })
 

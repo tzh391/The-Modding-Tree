@@ -2308,6 +2308,22 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
         },
+
+        E11: {
+                name: "Faster Mining",
+                func: "exp",
+                effects: "Emerald gain",
+                base: {
+                        initial: new Decimal(2),
+                },
+                bases(){
+                        let b0 = new Decimal(3)
+                        let b1 = new Decimal(2)
+                        let b2 = new Decimal(1.0001)
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
@@ -2874,7 +2890,7 @@ function getGeneralizedBuyableData(layer, id, unlockedTF){
                 }
 }
 
-function getLayerGeneralizedBuyableData(layer, unlocks){
+function getLayerGeneralizedBuyableData(layer, unlocks, additional){
         let ret = {
                 rows: 3,
                 cols: 3,
@@ -2883,6 +2899,11 @@ function getLayerGeneralizedBuyableData(layer, unlocks){
         for (i = 0; i < unlocks.length; i ++) {
                 let id = ids[i]
                 ret[id] = getGeneralizedBuyableData(layer, id, unlocks[i])
+        }
+        if (!additional) return ret
+        let keys = additional.keys()
+        for (i in keys){
+                ret[keys[i]] = additional[keys[i]]
         }
 
         return ret
