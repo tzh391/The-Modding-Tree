@@ -1304,6 +1304,15 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["e22"]
                                 },
                         },
+                        8: {
+                                active(){
+                                        return hasUpgrade("E", 13)
+                                },
+                                type: "times",
+                                amount(){
+                                        return Decimal.pow(7, player.E.upgrades.length - 2).max(1)
+                                }
+                        }
                 },
                 bases(){
                         let b0 = new Decimal(1e33)
@@ -2305,6 +2314,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 79) && getBuyableAmount("e", 32).gte(5)) {
                                 b1 = b1.times(Decimal.pow(getBuyableAmount("e", 32).gte(7) ? 4321 : 100, getBuyableAmount("e", 32).min(24)))
                         }
+                        if (hasMilestone("T", 4)) b0 = b0.times(1e139)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2331,13 +2341,19 @@ var MAIN_BUYABLE_DATA = {
                         let b1 = new Decimal(2)
                         let b2 = new Decimal(1.0001)
 
+                        if (hasMilestone("E", 1)) {
+                                b0 = decimalOne
+                                if (player.E.points.gte(tmp.E.milestones[1].goal.times(1e4))) b1 = b1.sub(player.E.tier.div(100))
+                        }
+
                         return [b0.max(1), b1.max(1), b2]
                 },
+                E13: {active:() => hasMilestone("T", 5)},
         },
         E12: {
                 name: "Faster Sifter",
                 func: "lin",
-                effects: "Emerald gain",
+                effects: "Sifter base",
                 base: {
                         initial: new Decimal(.05),
                 },
@@ -2345,6 +2361,26 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal(1e6)
                         let b1 = new Decimal(100)
                         let b2 = new Decimal(1.0001)
+
+                        if (hasMilestone("T", 4)) b0 = b0.div(10)
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        E13: {
+                name: "Lazy Tiers",
+                func: "lin.8",
+                effectSymbol: "-",
+                effects: "effective Tiers",
+                base: {
+                        initial: new Decimal(.2),
+                },
+                bases(){
+                        let b0 = new Decimal(1e8)
+                        let b1 = new Decimal(1000)
+                        let b2 = new Decimal(2)
+
+                        if (hasMilestone("E", 2)) b0 = b0.div(Decimal.pow(2, player.T.points))
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2577,6 +2613,7 @@ function reCalcBuyableExtra(layer, id){
                 let i = data2[j]
                 amt = amt.plus(getCodedBuyableAmount(i))
         }
+        if (layer.toLowerCase() != layer) return amt 
         let data3 = EXTRA_FREE_BUYABLE_DATA[key] || {}
         for (i in data3) {
                 if (data3[i].active() == true) amt = amt.plus(data3[i].amount())
