@@ -3694,6 +3694,7 @@ addLayer("e", {
                 if (hasMilestone("e", 74))      ret = ret.div(1e190)
 
                 if (hasMilestone("T", 3))       ret = ret.times(player.E.best.max(1).pow(player.T.milestones.length))
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["e33"])
 
                 return ret
         },
@@ -3916,6 +3917,9 @@ addLayer("e", {
                         },
                         function(){
                                 return hasMilestone("e", 79)
+                        },
+                        function(){
+                                return hasMilestone("T", 7)
                         },
                 ]),
         milestones: {
@@ -5517,7 +5521,10 @@ addLayer("E", {
 
                 tier = tier.sub(CURRENT_BUYABLE_EFFECTS["E13"])
 
-                div = div.plus(tier.div(10).pow(2))
+                if (!hasMilestone("T", 6) || tier.lte(16)) {
+                        div = div.plus(tier.div(10).pow(2))
+                }
+                else    div = div.plus(tier.pow(1.5).div(25))
 
                 return div.pow(-1)
         },
@@ -5543,6 +5550,7 @@ addLayer("E", {
                 }
 
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E11"])
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["E21"])
                 if (hasMilestone("T", 1)) ret = ret.times(Decimal.pow(2, player.T.points))
                 if (hasMilestone("T", 2)) ret = ret.times(Decimal.pow(3, player.T.milestones.length))
                 if (hasMilestone("T", 3)) ret = ret.times(Decimal.pow(4, getBuyableAmount("e", 32).sub(21).max(0).min(100)))
@@ -5618,6 +5626,19 @@ addLayer("E", {
                                 return player.E.tier.gte(11)
                         }, 
                 }, // hasUpgrade("E", 13)
+                14: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>IV Emerald"
+                        },
+                        description(){
+                                let a = "E 32 gives free E 22 levels"
+                                return a
+                        },
+                        cost: new Decimal(1e17),
+                        unlocked(){
+                                return player.E.tier.gte(17)
+                        }, 
+                }, // hasUpgrade("E", 14)
         },
         milestones: {
                 1: {
@@ -5672,6 +5693,9 @@ addLayer("E", {
                         function(){
                                 return hasUpgrade("E", 13) || player.E.tier.gte(12)
                         },
+                        function(){
+                                return hasUpgrade("E", 14) || player.E.tier.gte(18)
+                        },
                 ]),
         tabFormat: {
                 "Upgrades": {
@@ -5706,7 +5730,7 @@ addLayer("E", {
                                 ],
                                 "buyables"],
                         unlocked(){
-                                return hasUpgrade("E", 11)
+                                return hasUpgrade("E", 11) || player.T.best.gte(2)
                         },
                 },
                 "Milestones": {
@@ -5782,6 +5806,10 @@ addLayer("T", {
                 player.E.tier = data.points
 
                 data.best = data.best.max(data.points)
+
+                if (hasUpgrade("T", 11) && player.T.points.lt(player.T.best)) {
+                        handleGeneralizedBuyableAutobuy(diff, "E")
+                }
                 data.time += diff
         },
         layerShown(){return player.E.best.gte(1e5) || player.T.unlocked},
@@ -5796,12 +5824,13 @@ addLayer("T", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>I Tier"
                         },
                         description(){
-                                let a = "idk"
+                                let a = "Autobuy Emerald buyables if you have less Tiers than your best, Emerald buyables are free, and add .02 to the Faster Sifter base"
                                 return a
                         },
-                        cost: new Decimal(100),
+                        cost: new Decimal(16),
                         unlocked(){
-                                return false
+                                if (hasUpgrade("T", 11) || player.T.points.gte(17)) return true 
+                                return player.T.points.gte(16) && player.E.points.gte(1e20)
                         }, 
                 }, // hasUpgrade("T", 11)
         },
@@ -5876,6 +5905,34 @@ addLayer("T", {
                                 return "Reward: Lazy Tiers gives free Sifter levels."
                         },
                 }, // hasMilestone("T", 5)
+                6: {
+                        requirementDescription(){
+                                return "1e27 Emerald XVIII"
+                        },
+                        done(){
+                                return player.T.points.gte(19) || (player.T.points.gte(18) && player.E.points.gte(1e27))
+                        },
+                        unlocked(){
+                                return player.T.points.gte(18)
+                        },
+                        effectDescription(){
+                                return "Reward: Reduce Tier's Emerald reducing effect (above 16 Tiers)."
+                        },
+                }, // hasMilestone("T", 6)
+                7: {
+                        requirementDescription(){
+                                return "1e30 Emerald XIX"
+                        },
+                        done(){
+                                return player.T.points.gte(20) || (player.T.points.gte(19) && player.E.points.gte(1e30))
+                        },
+                        unlocked(){
+                                return player.T.points.gte(19)
+                        },
+                        effectDescription(){
+                                return "Reward: Tiers subtract from Faster Sifter linear cost base and quarter E 32 linear cost base."
+                        },
+                }, // hasMilestone("T", 7)
         },
         tabFormat: {
                 "Upgrades": {

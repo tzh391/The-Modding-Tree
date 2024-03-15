@@ -1952,6 +1952,15 @@ var MAIN_BUYABLE_DATA = {
                                         return 10
                                 },
                         },
+                        5: {
+                                active(){
+                                        return true
+                                },
+                                type: "times",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e33"].pow(player.e.upgrades.length)
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("e176400")
@@ -2231,6 +2240,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                e32: {active:() => hasUpgrade("E", 14)},
         },
         e23: {
                 name: "E 23",
@@ -2315,6 +2325,24 @@ var MAIN_BUYABLE_DATA = {
                                 b1 = b1.times(Decimal.pow(getBuyableAmount("e", 32).gte(7) ? 4321 : 100, getBuyableAmount("e", 32).min(24)))
                         }
                         if (hasMilestone("T", 4)) b0 = b0.times(1e139)
+                        if (hasMilestone("T", 7)) b1 = b1.div(Decimal.pow(4, player.T.points))
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        e33: {
+                name: "E 33",
+                func: "exp",
+                effects: "Eagle gain and D 33 base per upgrade",
+                base: {
+                        initial: new Decimal(10),
+                },
+                bases(){
+                        let b0 = new Decimal("1e24500")
+                        let b1 = new Decimal("1e500")
+                        let b2 = new Decimal(1.0029) // odd primes
+
+                        if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2356,6 +2384,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Sifter base",
                 base: {
                         initial: new Decimal(.05),
+                        1: {
+                                active(){
+                                        return hasUpgrade("T", 11)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .02
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e6)
@@ -2363,6 +2400,7 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0001)
 
                         if (hasMilestone("T", 4)) b0 = b0.div(10)
+                        if (hasMilestone("T", 7)) b1 = b1.sub(player.T.points)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2381,6 +2419,21 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(2)
 
                         if (hasMilestone("E", 2)) b0 = b0.div(Decimal.pow(2, player.T.points))
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        E21: {
+                name: "Miner",
+                func: "exp",
+                effects: "Emerald gain",
+                base: {
+                        initial: new Decimal(2),
+                },
+                bases(){
+                        let b0 = new Decimal(1e15)
+                        let b1 = new Decimal(3)
+                        let b2 = new Decimal(1.0001)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2809,6 +2862,7 @@ function canAffordBuyable(layer, id, cost = undefined){
 
 function isBuyableFree(layer){
         // Spec function
+        if (hasUpgrade("T", 11) && layer == "E")        return true
         if (hasUpgrade("d", 21) && layer == "d")        return true
         if (hasMilestone("a", 4) && layer == "a")       return true
         return false
