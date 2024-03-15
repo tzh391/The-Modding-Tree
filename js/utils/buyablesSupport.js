@@ -2103,6 +2103,15 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["e21"]
                                 }
                         },
+                        4: {
+                                active(){
+                                        return true
+                                },
+                                type: "times",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e32"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e465")
@@ -2113,6 +2122,7 @@ var MAIN_BUYABLE_DATA = {
                                 let l = player.e.buyables[13]
                                 if (l.gte(100)) l = l.plus(400).div(5)
                                 if (l.gte(750)) l = l.plus(750).div(2)
+                                if (l.gte(860)) l = l.times(5).floor().div(10).plus(430)
                                 b1 = b1.sub(l.div(10))
                         }
                         if (hasMilestone("e", 41))      b0 = b0.times(1e35)
@@ -2141,6 +2151,15 @@ var MAIN_BUYABLE_DATA = {
                                 type: "times",
                                 amount(){
                                         return getBuyableAmount("e", 31).sub(97).max(0).div(1e3).plus(1)
+                                },
+                        },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "times",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["e32"]
                                 },
                         },
                 },
@@ -2181,7 +2200,7 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "times",
                                 amount(){
-                                        return getBuyableAmount("e", 31).sub(53).max(0).min(75).div(1e3).plus(1)
+                                        return getBuyableAmount("e", 31).sub(53).max(0).div(1e3).plus(1)
                                 }
                         }
                 },
@@ -2241,6 +2260,8 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 77) && player.e.points.gte("1e10317")) {
                                 b1 = b1.times(Decimal.pow(.998, getBuyableAmount("e", 31).sub(100).max(0)))
                         }
+                        if (hasMilestone("e", 78) && player.e.points.gte("1e11260")) b1 = b1.times(2)
+                        if (hasMilestone("e", 79))      b0 = b0.times(1e100)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2261,6 +2282,28 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 66)) b0 = b0.div(1e137)
                         if (hasMilestone("e", 76) && player.e.points.gte("1e10095")) b1 = new Decimal(7.5e39)
                         if (hasMilestone("e", 77)) b1 = new Decimal(7e39)
+                        if (hasMilestone("e", 78)) b1 = b1.times(Decimal.pow(.999, getBuyableAmount("e", 31)))
+                        if (hasMilestone("e", 78) && player.e.points.gte("1e11260")) b0 = b0.div(1e300)
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        e32: {
+                name: "E 32",
+                func: "linp1",
+                effects: "E 13 and E 21 base and base Eagle gain",
+                base: {
+                        initial: new Decimal(.005),
+                },
+                bases(){
+                        let b0 = new Decimal("1e11728")
+                        let b1 = new Decimal(1e202)
+                        let b2 = new Decimal(1.0023) // odd primes
+
+                        if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
+                        if (hasMilestone("e", 79) && getBuyableAmount("e", 32).gte(5)) {
+                                b1 = b1.times(Decimal.pow(getBuyableAmount("e", 32).gte(7) ? 4321 : 100, getBuyableAmount("e", 32).min(24)))
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2566,6 +2609,10 @@ function BUYABLES_EFFECT_LINEAR_POINT8(a,b){
 
 function BUYABLES_EFFECT_LINEAR_PLUS1(a,b){
         return a.times(b).plus(1)
+}
+
+function BUYABLES_EFFECT_LINEAR_PLUS1SQRT(a,b){
+        return a.times(b).plus(1).sqrt()
 }
 
 function BUYABLES_EFFECT_LINEAR_PLUS1_SQUARE(a,b){
