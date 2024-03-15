@@ -1,6 +1,6 @@
 // Set your version in num and name
 var VERSION = {
-	num: ".043.1",
+	num: ".044",
 	name: /*"Advil's Auspicious Acension"*/ "",
 }
 
@@ -14,10 +14,20 @@ function isEndgameRaw(){
 	return player.T.points.gte("16")
 }
 
-var CHANELOG_VERSION = "v0.043.1"
+var CHANELOG_VERSION = "v0.044"
 
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC0000'>v0.044</h3><br>
+		- Balanced until 16 Tiers.<br>
+		- Added two new layers (Emerald + Tiers).<br>
+		- Added five Tier milestones.<br>
+		- Added two Emerald milestones.<br>
+		- Added three Emerald buyables.<br>
+		- Added three Emerald upgrades.<br>
+		- Added seventeen Eagle milestones.<br>
+		- Added an Eagle buyable.<br>
+		- Added two custom saves.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.043</h3><br>
 		- Balanced until 1e5403 Eagles.<br>
 		- Added nine Eagle milestones.<br>`,
