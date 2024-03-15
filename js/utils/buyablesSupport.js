@@ -2123,6 +2123,7 @@ var MAIN_BUYABLE_DATA = {
                                 if (l.gte(100)) l = l.plus(400).div(5)
                                 if (l.gte(750)) l = l.plus(750).div(2)
                                 if (l.gte(860)) l = l.times(5).floor().div(10).plus(430)
+                                if (l.gte(950)) l = l.div(10).plus(855)
                                 b1 = b1.sub(l.div(10))
                         }
                         if (hasMilestone("e", 41))      b0 = b0.times(1e35)
@@ -2310,15 +2311,39 @@ var MAIN_BUYABLE_DATA = {
         },
 
         E11: {
-                name: "Faster Mining",
+                name: "Sifter",
                 func: "exp",
                 effects: "Emerald gain",
                 base: {
                         initial: new Decimal(2),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["E12"]
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(3)
                         let b1 = new Decimal(2)
+                        let b2 = new Decimal(1.0001)
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        E12: {
+                name: "Faster Sifter",
+                func: "lin",
+                effects: "Emerald gain",
+                base: {
+                        initial: new Decimal(.05),
+                },
+                bases(){
+                        let b0 = new Decimal(1e6)
+                        let b1 = new Decimal(100)
                         let b2 = new Decimal(1.0001)
 
                         return [b0.max(1), b1.max(1), b2]
@@ -2808,7 +2833,7 @@ function getBuyableDisplay(layer, id){
                 let effectsName = MAIN_BUYABLE_DATA[layer + id]["effects"]
                 if (typeof effectsName == "function") effectsName = effectsName()
                 let b = CURRENT_BUYABLE_EFFECTS[layer + id]
-                let effDisp = (b.gte(.1) || controlDown) ? format(b, 4) : (format(b.times(1000), 4) + "/1000")
+                let effDisp = (b.gte(.1) || b.eq(0) || controlDown) ? format(b, 4) : (format(b.times(1000), 4) + "/1000")
                 let eff2 = effDisp + " " + effectsName + "</b><br>"
                 let cost = "<b><h2>Cost</h2>: " + format(getBuyableCost(layer, id)) + " " + layers[layer].name + "</b><br>"
         
@@ -2941,6 +2966,7 @@ function isBuyableActive(layer, id){
         if (layer == "g") return true
         if (layer == "f") return true
         if (layer == "e") return true
+        if (layer == "E") return true
         if (layer == "d") return true
         if (layer == "c") return true
         if (layer == "b") return true
@@ -2989,6 +3015,9 @@ function getABBulk(layer){
                 }
                 if (hasMilestone("e", 3)) amt = amt.times(1 + player.e.times)
         }
+        if (layer == "e") {
+                if (hasMilestone("T", 2))       amt = amt.times(player.T.milestones.length)
+        }
         return amt.floor()
 }
 
@@ -3014,11 +3043,14 @@ function getABSpeed(layer){
                 }
                 if (hasMilestone("e", 3)) diffmult *= 1 + player.e.times
         }
+        if (layer == "e") {
+                diffmult *= player.E.tier.sqrt().div(2).min(1000).toNumber()
+        }
         return diffmult
 }
 
 function canBuySimultaniously(layer){
-        if (layer == "e")               return false //||player.h.unlocked
+        if (layer == "e")               return hasUpgrade("E", 12) //||player.h.unlocked
         if (layer == "d")               return hasMilestone("d", 14) // || player.g.unlocked
         if (layer == "c")               return hasMilestone("d", 1) || (hasUpgrade("c", 23) && player.e.unlocked) //|| player.f.unlocked
         if (layer == "b")               return hasMilestone("c", player.d.unlocked ? 1 : 3) || player.e.unlocked

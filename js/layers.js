@@ -3619,7 +3619,9 @@ addLayer("e", {
                         if (player.e.points.gte("1e11607")) ret = ret.times(.76)
                         if (player.e.points.gte("1e11645")) ret = ret.times(.76)
                 }
-                if (hasUpgrade("E", 11))       ret = ret.times(Decimal.pow(1.01, player.E.upgrades.length))
+                if (hasUpgrade("E", 11))        ret = ret.times(Decimal.pow(1.01, player.E.upgrades.length))
+                if (hasMilestone("T", 1))       ret = ret.times(Decimal.pow(1.02, player.T.points))
+                if (hasMilestone("T", 2))       ret = ret.times(Decimal.pow(1.02, player.T.milestones))
 
                 
                 return ret
@@ -3738,8 +3740,8 @@ addLayer("e", {
                 data.best = data.best.max(data.points)
                 doPassiveGain("e", diff)
                 
-                if (false) {
-                        handleGeneralizedBuyableAutobuy(diff, "d")
+                if (hasMilestone("T", 1)) {
+                        handleGeneralizedBuyableAutobuy(diff, "e")
                 } else {
                         data.abtime = 0
                 }
@@ -4473,7 +4475,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: E 13 levels subtract .1 from its linear base (fifthed below 90, halve below 25, and become every other below 14) and divide D 33 base cost by 1e900."
+                                return "Reward: E 13 levels subtract .1 from its linear base (fifthed below 90, halve below 25, become every other below 14, and tenth below 5) and divide D 33 base cost by 1e900."
                         },
                 }, // hasMilestone("e", 38)
                 39: {
@@ -5520,6 +5522,8 @@ addLayer("E", {
                 }
 
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E11"])
+                if (hasMilestone("T", 1)) ret = ret.times(Decimal.pow(2, player.T.points))
+                if (hasMilestone("T", 2)) ret = ret.times(Decimal.pow(3, player.T.milestones.length))
 
                 return ret
         },
@@ -5559,6 +5563,19 @@ addLayer("E", {
                                 return true
                         }, 
                 }, // hasUpgrade("E", 11)
+                12: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>II Emerald"
+                        },
+                        description(){
+                                let a = "Buy each Eagle buyable once per trigger, and increase its speed by sqrt(Tier)/2"
+                                return a
+                        },
+                        cost: new Decimal(1e7),
+                        unlocked(){
+                                return player.E.tier.gte(5)
+                        }, 
+                }, // hasUpgrade("E", 12)
         },
         milestones: {
                 1: {
@@ -5579,6 +5596,9 @@ addLayer("E", {
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){
                                 return hasUpgrade("E", 11)
+                        },
+                        function(){
+                                return hasUpgrade("E", 12) || player.E.tier.gte(6)
                         },
                 ]),
         tabFormat: {
@@ -5653,28 +5673,49 @@ addLayer("T", {
                 autotimes: 0,
                 tier: decimalOne,
         }},
-        color: "#3CED20",
-        branches: [],
+        color: "#333333",
+        branches: ["E"],
         requires: new Decimal("1e6"), // Can be a function that takes requirement increases into account
         resource: "Tiers", // Name of prestige currency
         baseResource: "Emeralds", // Name of resource prestige is based on
         baseAmount() {return player.E.points.floor()}, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-        update(diff){
-                let data = player.E
+        type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        base(){
+                let ret = new Decimal(100).max(player.T.points)
 
-                if (player.e.best.gt("1e13500")) data.unlocked = true
+                return ret
+        },
+        gainMult(){
+                return new Decimal(.01)
+        },
+        exponent(){
+                let ret = new Decimal(1000).max(player.T.points)
+
+                return ret.div(1000)
+        },
+        prestigeButtonText(){
+                if (player.shiftAlias) {
+                        if (player.T.points.gte(1001)) return "10,000 * Tiers<sup>Tiers^(Tiers/1000)</sup>"
+                        if (player.T.points.gte(101)) return "10,000 * Tiers<sup>Tiers</sup>"
+                        return "10,000 * 100<sup>Tiers</sup>"
+                }
+                return "Reset for a Tier<br>Req: " + format(player.E.points) + "/" + format(tmp.T.nextAtDisp)
+        },
+        update(diff){
+                let data = player.T
+
+                if (player.E.best.gt("1e6")) data.unlocked = true
                 if (!data.unlocked) return
-                
-                data.points = data.points.plus(tmp.E.getResetGain.times(diff))
+
+                player.E.tier = data.points
 
                 data.best = data.best.max(data.points)
                 data.time += diff
         },
-        layerShown(){return player.E.best.gte(1e5)},
-        canReset(){
-                return false
-        },
+        layerShown(){return player.E.best.gte(1e5) || player.T.unlocked},
+        //canReset(){
+        //        return player.E.points.gte(tmp.T.getNextAt)
+        //},
         upgrades: {
                 rows: 5,
                 cols: 5,
@@ -5688,25 +5729,39 @@ addLayer("T", {
                         },
                         cost: new Decimal(100),
                         unlocked(){
-                                return true
+                                return false
                         }, 
                 }, // hasUpgrade("T", 11)
         },
         milestones: {
                 1: {
                         requirementDescription(){
-                                return "idk yet"
+                                return "Tier 2"
                         },
                         done(){
-                                return false
+                                return player.T.points.gte(2)
                         },
                         unlocked(){
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: unknown atm."
+                                return "Reward: Each Tier doubles Emerald gain and increases base Eagle gain by 2%. Autobuy a Eagle buyable once per second."
                         },
                 }, // hasMilestone("T", 1)
+                2: {
+                        requirementDescription(){
+                                return "100,000,000 Emerald VI"
+                        },
+                        done(){
+                                return player.T.points.gte(7) || (player.T.points.gte(6) && player.E.points.gte(1e8))
+                        },
+                        unlocked(){
+                                return player.T.points.gte(6)
+                        },
+                        effectDescription(){
+                                return "Reward: Each milestone triples Emerald gain and increases base Eagle gain by 2%. Bulk [milestone] many Eagle buyables at once."
+                        },
+                }, // hasMilestone("T", 2)
         },
         tabFormat: {
                 "Upgrades": {
@@ -5716,8 +5771,18 @@ addLayer("T", {
                                                 return "You are on Emerald tier " + formatWhole(player.E.tier) + "."
                                         }
                                 ],
+                                "prestige-button",
                                 "blank", 
                                 "upgrades"],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Milestones": {
+                        content: [
+                                "main-display",
+                                "milestones"
+                        ],
                         unlocked(){
                                 return true
                         },
