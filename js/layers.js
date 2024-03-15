@@ -3565,10 +3565,13 @@ addLayer("e", {
                         if (hasMilestone("e", 74) && player.e.points.gte("1e9895")) b *= 1.01
                         if (hasMilestone("e", 75) && player.e.points.gte("1e9935")) b *= 1.01
                         if (hasMilestone("e", 75) && player.e.points.gte("1e9974")) b *= 1.01
+                        if (hasMilestone("e", 79) && player.e.points.gte("1e11607"))b *= 1.01
+                        if (hasMilestone("e", 79) && player.e.points.gte("1e11645"))b *= 1.01
                                                 ret = ret.times(Decimal.pow(.4, l.min(14)))
                                                 ret = ret.times(Decimal.pow(b, l.sub(14).max(0)))
                 }
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["e21"])
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["e32"])
                 if (hasMilestone("e", 41) && player.e.best.gte("1e1163")) {
                                                 ret = ret.times(1e5)
                 }
@@ -3608,8 +3611,16 @@ addLayer("e", {
                         if (player.e.points.gte("1e10157"))     ret = ret.times(1.01)
                         if (player.e.points.gte("1e10277"))     ret = ret.times(1.01)
                         if (player.e.points.gte("1e10593"))     ret = ret.times(1.01)
+                        if (player.e.points.gte("1e11161"))     ret = ret.times(1.01)
+                        if (player.e.points.gte("1e11197"))     ret = ret.times(1.01)
+                }
+                if (hasMilestone("e", 79)) {
+                        ret = ret.times(1.2)
+                        if (player.e.points.gte("1e11607")) ret = ret.times(.76)
+                        if (player.e.points.gte("1e11645")) ret = ret.times(.76)
                 }
 
+                
                 return ret
         },
         getGainMultPost(){
@@ -3707,7 +3718,6 @@ addLayer("e", {
                         if (hasMilestone("e", 24))      exp = exp.plus(1.5)
                         if (hasMilestone("e", 33))      exp = exp.plus(.25)
                 }
-
 
                 let ret = amtlog.pow10().plus(1).pow(exp)
 
@@ -3897,6 +3907,9 @@ addLayer("e", {
                         },
                         function(){
                                 return getBuyableAmount("e", 11).gte(6950)
+                        },
+                        function(){
+                                return hasMilestone("e", 79)
                         },
                 ]),
         milestones: {
@@ -4459,7 +4472,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: E 13 levels subtract .1 from its linear base (fifthed below 90 and halve below 25) and divide D 33 base cost by 1e900."
+                                return "Reward: E 13 levels subtract .1 from its linear base (fifthed below 90, halve below 25, and become every other below 14) and divide D 33 base cost by 1e900."
                         },
                 }, // hasMilestone("e", 38)
                 39: {
@@ -4935,7 +4948,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: E 31 levels past 53 increase E 22 base by .1% (max 75 times). At 1e8620 Eagles, increase the multiplier per Eagle milestone past 50 by 1% but divide Eagle gain by 1e16."
+                                return "Reward: E 31 levels past 53 increase E 22 base by .1%. At 1e8620 Eagles, increase the multiplier per Eagle milestone past 50 by 1% but divide Eagle gain by 1e16."
                         },
                 }, // hasMilestone("e", 72)
                 73: {
@@ -4991,7 +5004,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: E 31 levels past 97 increase E 21 base by .1%. At 1e10,095 Eagles, decrease the E 31 linear base to 7.5e39. At 1e10,117, 1e10,155, 1e10,157, 1e10,277, and 1e10,593 Eagles, increase base Eagle gain by 1%."
+                                return "Reward: E 31 levels past 97 increase E 21 base by .1%. At 1e10,095 Eagles, decrease the E 31 linear base to 7.5e39. At 1e10,117, 1e10,155, 1e10,157, 1e10,277, 1e10,593, 1e11,161, and 1e11,197 Eagles, increase base Eagle gain by 1%."
                         },
                 }, // hasMilestone("e", 76)
                 77: {
@@ -5008,6 +5021,34 @@ addLayer("e", {
                                 return "Reward: Decrease the E 31 linear base to 7e39. At 1e10,317 Eagles, each E 31 past 100 decreases E 22 and E 23 linear base by .2%, and at 1e10,354 Eagles they also double base Duck gain."
                         },
                 }, // hasMilestone("e", 77)
+                78: {
+                        requirementDescription(){
+                                return "1e11,235 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e11235")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: E 31 levels decrease its linear base by .1%. At 1e11,260 Eagles, double E 23 linear base cost but decrease E 31 linear base by 1e300."
+                        },
+                }, // hasMilestone("e", 78)
+                79: {
+                        requirementDescription(){
+                                return "1e11,474 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e11474")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Increase base Eagle gain by 20% and increase the E 23 base cost by 1e100. At 1e11,607 and 1e11,645 Eagles, increase multiplier per Eagle milestone past 50 by 1% but decrease base Eagle gain by 24%. At 5 E 32 levels, the E 32's multiply its linear cost base by 100, increased to 4321 at 7."
+                        },
+                }, // hasMilestone("e", 79)
         },
         tabFormat: {
                 "Upgrades": {
