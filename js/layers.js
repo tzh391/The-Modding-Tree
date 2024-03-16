@@ -3695,6 +3695,7 @@ addLayer("e", {
 
                 if (hasMilestone("T", 3))       ret = ret.times(player.E.best.max(1).pow(player.T.milestones.length))
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["e33"])
+                if (hasMilestone("T", 8))       ret = ret.div("1e2650")
 
                 return ret
         },
@@ -5073,6 +5074,62 @@ addLayer("e", {
                                 return "Reward: Milestones multiply Emerald gain."
                         },
                 }, // hasMilestone("e", 80)
+                81: {
+                        requirementDescription(){
+                                return "1e41,320 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e41320")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Milestones multiply Emerald gain per Tier past 30."
+                        },
+                }, // hasMilestone("e", 81)
+                82: {
+                        requirementDescription(){
+                                return "1e43,176 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e43176")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Milestones^3 multiply Emerald gain per Tier past 33."
+                        },
+                }, // hasMilestone("e", 82)
+                83: {
+                        requirementDescription(){
+                                return "1e44,180 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e44180")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Milestones^2 multiply Emerald gain per Tier past 33."
+                        },
+                }, // hasMilestone("e", 83)
+                84: {
+                        requirementDescription(){
+                                return "1e48,080 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e48080")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Milestones^3 multiply Emerald gain per Tier past 38."
+                        },
+                }, // hasMilestone("e", 84)
         },
         tabFormat: {
                 "Upgrades": {
@@ -5520,6 +5577,8 @@ addLayer("E", {
                 let tier = player.T.points //player.E.tier
 
                 tier = tier.sub(CURRENT_BUYABLE_EFFECTS["E13"])
+                tier = tier.sub(CURRENT_BUYABLE_EFFECTS["E22"])
+                if (hasMilestone("E", 3)) tier = tier.sub(.5)
 
                 if (!hasMilestone("T", 6) || tier.lte(16)) {
                         div = div.plus(tier.div(10).pow(2))
@@ -5553,14 +5612,28 @@ addLayer("E", {
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E21"])
                 if (hasMilestone("T", 1)) ret = ret.times(Decimal.pow(2, player.T.points))
                 if (hasMilestone("T", 2)) ret = ret.times(Decimal.pow(3, player.T.milestones.length))
-                if (hasMilestone("T", 3)) ret = ret.times(Decimal.pow(4, getBuyableAmount("e", 32).sub(21).max(0).min(100)))
-                if (hasMilestone("T", 4)) ret = ret.times(Decimal.pow(6, player.E.points.max(1e15).log10().floor().sub(15)))
+                if (hasMilestone("T", 3)) ret = ret.times(Decimal.pow(4, getBuyableAmount("e", 32).sub(player.T.points.gte(25) ? 0 : 21).max(0).min(1000)))
+                if (hasMilestone("T", 4)) ret = ret.times(Decimal.pow(6, player.E.points.max(1e15).log10().floor().sub(player.T.points.gte(24) ? 0 : 15)))
+                if (hasMilestone("T", 9)) {
+                        let exp = player.T.milestones.length
+                        if (player.T.points.gte(28)) exp *= player.T.upgrades.length ** .7
+                        ret = ret.times(Decimal.pow(player.T.points.max(1), exp))
+                }
+                if (hasMilestone("T", 10) && player.T.points.gte(29) && player.E.points.gte(player.T.points.gte(30) ? 0 : 1e57)) {
+                                          ret = ret.times(getBuyableAmount("e", 11).max(1))
+                }
+                if (hasMilestone("T", 11)) ret = ret.times(Decimal.pow(player.d.points.max(10).log10().min(1e20).pow(player.T.points.sub(29).max(0))))
 
                 if (hasMilestone("E", 1)) ret = ret.times(Decimal.pow(player.T.points.gte(12) ? 5 : 2, player.T.points.sub(player.T.points.gte(13) ? 0 : 7).max(0)))
 
                 if (hasUpgrade("E", 13))  ret = ret.times(Decimal.pow(7, player.E.upgrades.length - 2).max(1))
+                if (hasUpgrade("E", 15))  ret = ret.div(1e40)
 
                 if (hasMilestone("e", 80))      ret = ret.times(player.e.milestones.length)
+                if (hasMilestone("e", 81))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(30).max(0)))
+                if (hasMilestone("e", 82))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(33).max(0).times(3)))
+                if (hasMilestone("e", 83))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(33).max(0).times(2)))
+                if (hasMilestone("e", 84))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(38).max(0).times(3)))
 
                 return ret
         },
@@ -5639,49 +5712,85 @@ addLayer("E", {
                                 return player.E.tier.gte(17)
                         }, 
                 }, // hasUpgrade("E", 14)
+                15: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>V Emerald"
+                        },
+                        description(){
+                                let a = "Faster Sifter gives free Sifter levels but divide Emerald gain by 1e40"
+                                return a
+                        },
+                        cost(){
+                                return new Decimal(1e77).div(Decimal.pow(100, player.T.points.sub(37).max(0))).max(1e19)
+                        },
+                        unlocked(){
+                                return player.E.tier.gte(37)
+                        }, 
+                }, // hasUpgrade("E", 15)
         },
         milestones: {
                 1: {
                         requirementDescription(){
-                                return format(tmp.E.milestones[1].goal) + " Emeralds"
+                                return formatWhole(tmp.E.milestones[1].goal) + " Emeralds"
                         },
                         goal(){
-                                let ret = new Decimal(1.28e13).div(Decimal.pow(2, player.E.tier))
+                                let ret = new Decimal(1.28e13).div(Decimal.pow(2, player.T.points))
                                 if (ret.lt(1)) return new Decimal(0)
                                 return ret.ceil()
                         },
                         done(){
-                                return player.E.points.gte(tmp.E.milestones[1].goal) && player.E.tier.gte(7)
+                                return player.E.points.gte(tmp.E.milestones[1].goal) && player.T.points.gte(7)
                         },
                         unlocked(){
-                                return player.E.tier.gte(7)
+                                return player.T.points.gte(7)
                         },
                         effectDescription(){
-                                if (player.E.tier.gte(13)) return "Reward: Each Tier halves the goal of the milestone " + makePurple("and quintuples Emerald gain") + ". Divide Sifter base cost by 3. At 10,000 times this milestone's goal (" + format(tmp.E.milestones[1].goal.times(1e4)) + ") each Tier reduces Sifter's linear cost base by .01 ."
-                                if (player.E.tier.gte(12)) return "Reward: Each Tier halves the goal of the milestone " + makePurple("and quintuples Emerald gain (only those after unlock until Tier 13)") + ". Divide Sifter base cost by 3. At 10,000 times this milestone's goal (" + format(tmp.E.milestones[1].goal.times(1e4)) + ") each Tier reduces Sifter's linear cost base by .01 ."
-                                if (player.E.tier.gte(8))  return "Reward: Each Tier halves the goal of the milestone " + makePurple("and doubles (quintuple at Tier 12) Emerald gain (only those after unlock until Tier 13)") + ". Divide Sifter base cost by 3. At 10,000 times this milestone's goal (" + format(tmp.E.milestones[1].goal.times(1e4)) + ") each Tier reduces Sifter's linear cost base by .01 ."
+                                if (player.T.points.gte(44)) return "Reward: Each Tier quintuples Emerald gain, divide Sifter base cost by 3, and each Tier reduces Sifter's linear cost base by .01 ."
+                                if (player.T.points.gte(13)) return "Reward: Each Tier halves the goal of the milestone " + makePurple("and quintuples Emerald gain") + ". Divide Sifter base cost by 3. At 10,000 times this milestone's goal (" + format(tmp.E.milestones[1].goal.times(1e4)) + ") each Tier reduces Sifter's linear cost base by .01 ."
+                                if (player.T.points.gte(12)) return "Reward: Each Tier halves the goal of the milestone " + makePurple("and quintuples Emerald gain (only those after unlock until Tier 13)") + ". Divide Sifter base cost by 3. At 10,000 times this milestone's goal (" + format(tmp.E.milestones[1].goal.times(1e4)) + ") each Tier reduces Sifter's linear cost base by .01 ."
+                                if (player.T.points.gte(8))  return "Reward: Each Tier halves the goal of the milestone " + makePurple("and doubles (quintuple at Tier 12) Emerald gain (only those after unlock until Tier 13)") + ". Divide Sifter base cost by 3. At 10,000 times this milestone's goal (" + format(tmp.E.milestones[1].goal.times(1e4)) + ") each Tier reduces Sifter's linear cost base by .01 ."
                                 return "Reward: Each Tier halves the goal of the milestone. Divide Sifter base cost by 3. At 10,000 times this milestone's goal (" + format(tmp.E.milestones[1].goal.times(1e4)) + ") each Tier reduces Sifter's linear cost base by .01 ."
                         },
                 }, // hasMilestone("E", 1)
                 2: {
                         requirementDescription(){
-                                return format(tmp.E.milestones[2].goal) + " Emeralds"
+                                return formatWhole(tmp.E.milestones[2].goal) + " Emeralds"
                         },
                         goal(){
-                                let ret = new Decimal(1e22).div(Decimal.pow(3, player.E.tier.sub(15)))
+                                let ret = new Decimal(1e22).div(Decimal.pow(3, player.T.points.sub(15)))
                                 if (ret.lt(1)) return new Decimal(0)
                                 return ret.ceil()
                         },
                         done(){
-                                return player.E.points.gte(tmp.E.milestones[2].goal) && player.E.tier.gte(15)
+                                return player.E.points.gte(tmp.E.milestones[2].goal) && player.T.points.gte(15)
                         },
                         unlocked(){
-                                return player.E.tier.gte(15)
+                                return player.T.points.gte(15)
                         },
                         effectDescription(){
                                 return "Reward: Each Tier thirds the goal of the milestone, halves the Lazy Tiers base, and adds 1 to the Eagle gain exponent."
                         },
                 }, // hasMilestone("E", 2)
+                3: {
+                        requirementDescription(){
+                                return formatWhole(tmp.E.milestones[3].goal) + " Emeralds"
+                        },
+                        goal(){
+                                let ret = new Decimal(1e63).div(Decimal.pow(10, player.T.points))
+                                if (ret.lt(1)) return new Decimal(0)
+                                return ret.ceil()
+                        },
+                        done(){
+                                return player.E.points.gte(tmp.E.milestones[3].goal) && player.T.points.gte(23)
+                        },
+                        unlocked(){
+                                return player.T.points.gte(23)
+                        },
+                        effectDescription(){
+                                if (player.T.points.gte(26)) return "Reward: Subtract .5 effective Tiers and each Tier tenths the goal of the milestone and E 33 base. " + makePurple("At 1e8 times the goal of this milestone (" + format(tmp.E.milestones[3].goal.times(1e8)) + ") Lazy Tiers give free Faster Sifter levels.")
+                                return "Reward: Subtract .5 effective Tiers and each Tier tenths the goal of the milestone and E 33 base."
+                        },
+                }, // hasMilestone("E", 3)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){
@@ -5695,6 +5804,9 @@ addLayer("E", {
                         },
                         function(){
                                 return hasUpgrade("E", 14) || player.E.tier.gte(18)
+                        },
+                        function(){
+                                return hasUpgrade("E", 15) || player.E.tier.gte(38)
                         },
                 ]),
         tabFormat: {
@@ -5833,6 +5945,34 @@ addLayer("T", {
                                 return player.T.points.gte(16) && player.E.points.gte(1e20)
                         }, 
                 }, // hasUpgrade("T", 11)
+                12: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>II Tier"
+                        },
+                        description(){
+                                let a = "E 31 levels subtract from Lazy Tiers linear cost base (max 990), the Emerald buyable bulks and increases speed by [upgrades]"
+                                return a
+                        },
+                        cost: new Decimal(28),
+                        unlocked(){
+                                if (hasUpgrade("T", 12) || player.T.points.gte(29)) return true 
+                                return player.T.points.gte(28) && player.E.points.gte(1e50)
+                        }, 
+                }, // hasUpgrade("T", 12)
+                13: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>III Tier"
+                        },
+                        description(){
+                                let a = "All future upgrades cost 1 Tier. Per Tier past 31 add .0001 to the E 11 base."
+                                return a
+                        },
+                        cost: new Decimal(1),
+                        unlocked(){
+                                if (hasUpgrade("T", 13) || player.T.points.gte(33)) return true 
+                                return player.T.points.gte(32) && player.E.points.gte(1e62)
+                        }, 
+                }, // hasUpgrade("T", 13)
         },
         milestones: {
                 1: {
@@ -5874,7 +6014,8 @@ addLayer("T", {
                                 return player.T.points.gte(8)
                         },
                         effectDescription(){
-                                return "Reward: Each E 32 after 21 quadruples Emerald gain (max 100). Best Emeralds multiplies Eagle gain per milestone."
+                                if (player.T.points.gte(25)) return "Reward: Each E 32 quadruples Emerald gain (max 1000). Best Emeralds multiplies Eagle gain per milestone."
+                                return "Reward: Each E 32 after 21 (removed at 25 Tiers) quadruples Emerald gain (max 1000). Best Emeralds multiplies Eagle gain per milestone."
                         },
                 }, // hasMilestone("T", 3)
                 4: {
@@ -5888,7 +6029,8 @@ addLayer("T", {
                                 return player.T.points.gte(10)
                         },
                         effectDescription(){
-                                return "Reward: Each OoM of Emeralds after 1e15 sextuples Emerald gain. Tenth Faster Sifter base cost but E 32 base cost is 1e139x larger."
+                                if (player.T.points.gte(24)) return "Reward: Each OoM of Emeralds sextuples Emerald gain. Tenth Faster Sifter base cost but E 32 base cost is 1e139x larger."
+                                return "Reward: Each OoM of Emeralds after 1e15 (removed at 24 Tiers) sextuples Emerald gain. Tenth Faster Sifter base cost but E 32 base cost is 1e139x larger."
                         },
                 }, // hasMilestone("T", 4)
                 5: {
@@ -5933,6 +6075,63 @@ addLayer("T", {
                                 return "Reward: Tiers subtract from Faster Sifter linear cost base and quarter E 32 linear cost base."
                         },
                 }, // hasMilestone("T", 7)
+                8: {
+                        requirementDescription(){
+                                return "1e23 Emerald XXI"
+                        },
+                        done(){
+                                return player.T.points.gte(22) || (player.T.points.gte(21) && player.E.points.gte(1e23))
+                        },
+                        unlocked(){
+                                return player.T.points.gte(21)
+                        },
+                        effectDescription(){
+                                return "Reward: Emerald buyables no longer give free normal buyables and E 21 gives free E 11 levels and divide Eagle gain by 1e2650."
+                        },
+                }, // hasMilestone("T", 8)
+                9: {
+                        requirementDescription(){
+                                return "1e39 Emerald XXVII"
+                        },
+                        done(){
+                                return player.T.points.gte(28) || (player.T.points.gte(27) && player.E.points.gte(1e39))
+                        },
+                        unlocked(){
+                                return player.T.points.gte(27)
+                        },
+                        effectDescription(){
+                                if (player.T.points.gte(28)) return "Reward: Per milestone multiply Emerald gain by Tiers" + makePurple("*Upgrades<sup>.7</sup>") + "."
+                                return "Reward: Per milestone multiply Emerald gain by Tiers."
+                        },
+                }, // hasMilestone("T", 9)
+                10: {
+                        requirementDescription(){
+                                return "1e50 Emerald XXIX"
+                        },
+                        done(){
+                                return player.T.points.gte(30) || (player.T.points.gte(29) && player.E.points.gte(1e50))
+                        },
+                        unlocked(){
+                                return player.T.points.gte(29)
+                        },
+                        effectDescription(){
+                                return "Reward: Each Tier subtracts .01 from the Lazy Tier quadratic cost base (max 50) at 1e57 Emerald XXIX E 11 gives free D 33 levels and multiply Emerald gain."
+                        },
+                }, // hasMilestone("T", 10)
+                11: {
+                        requirementDescription(){
+                                return "30 Tiers"
+                        },
+                        done(){
+                                return player.T.points.gte(30)
+                        },
+                        unlocked(){
+                                return player.T.points.gte(29)
+                        },
+                        effectDescription(){
+                                return "Reward: Each Tier past 29 makes log10(Ducks) (max 1e20) multiply Emerald gain and adds 1 to the Miner effect base."
+                        },
+                }, // hasMilestone("T", 11)
         },
         tabFormat: {
                 "Upgrades": {
