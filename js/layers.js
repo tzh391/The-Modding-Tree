@@ -5130,6 +5130,20 @@ addLayer("e", {
                                 return "Reward: Milestones^3 multiply Emerald gain per Tier past 38."
                         },
                 }, // hasMilestone("e", 84)
+                85: {
+                        requirementDescription(){
+                                return "1e55,500 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e55500")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Tired Tiers gives free Miner levels."
+                        },
+                }, // hasMilestone("e", 85)
         },
         tabFormat: {
                 "Upgrades": {
@@ -5596,9 +5610,8 @@ addLayer("E", {
                         "e": .02,
                 }[layer]
         },
-        getGainMultPre(){
-                let ret = new Decimal(.1)
-
+        getInitialGain(){
+                let ret = decimalOne
                 let layersCurrent = ["a", "b", "c", "d", "e",]
                 let calcLayerWeight = function(amt){
                         return amt.max(10).log10().pow(.1).min(Decimal.pow(2, 1024))
@@ -5607,6 +5620,12 @@ addLayer("E", {
                         i = layersCurrent[j]
                         ret = ret.times(calcLayerWeight(player[i].points).pow(layers.E.getGainWeights(i)))
                 }
+                return ret
+        },
+        getGainMultPre(){
+                let ret = new Decimal(.1)
+
+                ret = ret.times(tmp.E.getInitialGain)
 
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E11"])
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E21"])
@@ -5791,6 +5810,25 @@ addLayer("E", {
                                 return "Reward: Subtract .5 effective Tiers and each Tier tenths the goal of the milestone and E 33 base."
                         },
                 }, // hasMilestone("E", 3)
+                4: {
+                        requirementDescription(){
+                                return formatWhole(tmp.E.milestones[4].goal) + " Emeralds"
+                        },
+                        goal(){
+                                let ret = new Decimal(1e178).div(Decimal.pow(10, player.T.points.times(2.5).sub(22.5)))
+                                if (ret.lt(1)) return new Decimal(0)
+                                return ret.ceil()
+                        },
+                        done(){
+                                return player.E.points.gte(tmp.E.milestones[4].goal) && player.T.points.gte(45)
+                        },
+                        unlocked(){
+                                return player.T.points.gte(45)
+                        },
+                        effectDescription(){
+                                return "Reward: Each E 33 subtracts .005 from the Miner linear cost base (max 200 times)."
+                        },
+                }, // hasMilestone("E", 4)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){

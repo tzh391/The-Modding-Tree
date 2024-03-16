@@ -2460,8 +2460,11 @@ var MAIN_BUYABLE_DATA = {
                         let b1 = new Decimal(3)
                         let b2 = new Decimal(1.0001)
 
+                        if (hasMilestone("E", 4)) b1 = b1.sub(getBuyableAmount("e", 33).div(200).min(1))
+
                         return [b0.max(1), b1.max(1), b2]
                 },
+                E22: {active:() => hasMilestone("e", 85)},
         },
         E22: {
                 name: "Tired Tiers",
