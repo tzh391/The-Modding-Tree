@@ -5240,6 +5240,20 @@ addLayer("e", {
                                 return ret + br + "Currently: " + format(tmp.e.milestones[91].effect)
                         },
                 }, // hasMilestone("e", 91)
+                92: {
+                        requirementDescription(){
+                                return "1e158,100 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e158100")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Milestones^(Milestones<sup>2/3</sup>) multiply Emerald gain per Tier past 109."
+                        },
+                }, // hasMilestone("e", 92)
         },
         tabFormat: {
                 "Upgrades": {
@@ -5763,6 +5777,7 @@ addLayer("E", {
                 if (hasMilestone("e", 83))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(33).max(0).times(2)))
                 if (hasMilestone("e", 84))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(38).max(0).times(3)))
                 if (hasMilestone("e", 87))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(56).max(0).times(4)))
+                if (hasMilestone("e", 92))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(109).max(0).times(player.e.milestones.length ** (2/3))))
 
 
                 return ret
@@ -5977,6 +5992,25 @@ addLayer("E", {
                                 return "Reward: E 32 gives free E 23 levels but divide Eagle gain by 1e600. At 2e132 Emeralds Tiers past 65 add to Miner's base (max 27 times)."
                         },
                 }, // hasMilestone("E", 5)
+                6: {
+                        requirementDescription(){
+                                return formatWhole(tmp.E.milestones[6].goal) + " Emeralds"
+                        },
+                        goal(){
+                                let ret = new Decimal(1e217).div(Decimal.pow(1e10, player.T.points.sub(130).max(0))).div(player.T.points.sub(109).max(0).pow10())
+                                if (ret.lt(1)) return new Decimal(0)
+                                return ret.ceil()
+                        },
+                        done(){
+                                return player.E.points.gte(tmp.E.milestones[6].goal) && player.T.points.gte(109)
+                        },
+                        unlocked(){
+                                return player.T.points.gte(109)
+                        },
+                        effectDescription(){
+                                return "Reward: Tiers after 100 subtract .01 from the Filter base and add .0002 to E 32's base but increase Filter's quadratic base."
+                        },
+                }, // hasMilestone("E", 6)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){

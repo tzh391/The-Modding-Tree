@@ -2327,6 +2327,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "E 13 and E 21 base and base Eagle gain",
                 base: {
                         initial: new Decimal(.005),
+                        1: {
+                                active(){
+                                        return hasMilestone("E", 6)
+                                },
+                                type: "add",
+                                amount(){
+                                        return player.T.points.sub(100).max(0).div(5e3)
+                                }
+                        }
                 },
                 bases(){
                         let b0 = new Decimal("1e11728")
@@ -2555,6 +2564,10 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0001)
 
                         if (hasUpgrade("T", 21)) b0 = b0.div(Decimal.pow(player.E.points.gte(1e206) ? 1e18 : 1e15, player.T.points.sub(100).max(0)))
+                        if (hasMilestone("E", 6) || player.T.points.gte(120)) {
+                                b2 = b2.plus(.0001)
+                                b1 = b1.sub(player.T.points.sub(100).max(0).div(100))
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
