@@ -5742,7 +5742,7 @@ addLayer("E", {
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E11"])
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E21"])
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E23"].pow(player.E.milestones.length + player.T.milestones.length + player.e.milestones.length))
-                if (hasMilestone("T", 1)) ret = ret.times(Decimal.pow(2, player.T.points))
+                
                 if (hasMilestone("T", 2)) ret = ret.times(Decimal.pow(3, player.T.milestones.length))
                 if (hasMilestone("T", 3)) ret = ret.times(Decimal.pow(4, getBuyableAmount("e", 32).sub(player.T.points.gte(25) ? 0 : 21).max(0).min(1000)))
                 if (hasMilestone("T", 4) && !hasUpgrade("E", 21)) {
@@ -5756,29 +5756,41 @@ addLayer("E", {
                 if (hasMilestone("T", 10) && player.T.points.gte(29) && player.E.points.gte(player.T.points.gte(30) ? 0 : 1e57)) {
                                           ret = ret.times(getBuyableAmount("e", 11).max(1))
                 }
-                if (hasMilestone("T", 11)) ret = ret.times(Decimal.pow(player.d.points.max(10).log10().min(1e20).pow(player.T.points.sub(29).max(0))))
                 if (hasMilestone("T", 14)) {
-                        //let t = player.T.points.sub(104).max(0).min(80)
-                        // 80 + 79 + ... (t things in sum)
-                        //ret = ret.div(Decimal.pow(10, t.plus(80.5).sub(t.times(1.5)).times(t)))
-                        ret = ret.div(Decimal.pow(1e95, player.T.points.sub(104).max(0)))
+                        ret = ret.times(Decimal.pow(1e95, player.T.points.min(104)))
                         if (player.T.points.eq(105)) ret = ret.times(1e15)
                         if (player.T.points.eq(106)) ret = ret.times(1e30)
                 }
 
-                if (hasMilestone("E", 1)) ret = ret.times(Decimal.pow(player.T.points.gte(12) ? 5 : 2, player.T.points.sub(player.T.points.gte(13) ? 0 : 7).max(0)))
+                if (hasMilestone("E", 1))       ret = ret.div(Decimal.pow(player.T.points.gte(12) ? 5 : 2, player.T.points.min(player.T.points.gte(13) ? 0 : 7)))
 
-                if (hasUpgrade("E", 13))  ret = ret.times(Decimal.pow(7, player.E.upgrades.length - 2).max(1))
-                if (hasUpgrade("E", 15))  ret = ret.div(1e40)
+                if (hasUpgrade("E", 13))        ret = ret.times(Decimal.pow(7, player.E.upgrades.length - 2).max(1))
+                if (hasUpgrade("E", 15))        ret = ret.div(1e40)
 
                 if (hasMilestone("e", 80))      ret = ret.times(player.e.milestones.length)
-                if (hasMilestone("e", 81))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(30).max(0)))
-                if (hasMilestone("e", 82))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(33).max(0).times(3)))
-                if (hasMilestone("e", 83))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(33).max(0).times(2)))
-                if (hasMilestone("e", 84))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(38).max(0).times(3)))
-                if (hasMilestone("e", 87))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(56).max(0).times(4)))
-                if (hasMilestone("e", 92))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.T.points.sub(109).max(0).times(player.e.milestones.length ** (2/3))))
+                if (hasMilestone("e", 81))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(30)))
+                if (hasMilestone("e", 82))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(33).times(3)))
+                if (hasMilestone("e", 83))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(33).times(2)))
+                if (hasMilestone("e", 84))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(38).times(3)))
+                if (hasMilestone("e", 87))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(56).times(4)))
+                if (hasMilestone("e", 92))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(109).times(player.e.milestones.length ** (2/3))))
 
+                ret = ret.times(tmp.E.getPerTierMultiplier.pow(player.T.points))
+
+                return ret
+        },
+        getPerTierMultiplier(){
+                let ret = decimalOne
+
+                if (hasMilestone("T", 1))       ret = ret.times(2)
+                if (hasMilestone("E", 1))       ret = ret.times(player.T.points.gte(12) ? 5 : 2)
+                if (hasMilestone("T", 14))      ret = ret.div(1e95)
+                if (hasMilestone("e", 81))      ret = ret.times(player.e.milestones.length)
+                if (hasMilestone("e", 82))      ret = ret.times(player.e.milestones.length ** 3)
+                if (hasMilestone("e", 83))      ret = ret.times(player.e.milestones.length ** 2)
+                if (hasMilestone("e", 84))      ret = ret.times(player.e.milestones.length ** 3)
+                if (hasMilestone("e", 87))      ret = ret.times(player.e.milestones.length ** 4)
+                if (hasMilestone("e", 92))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.e.milestones.length ** (2/3)))
 
                 return ret
         },
@@ -6418,7 +6430,7 @@ addLayer("T", {
                                 return player.T.points.gte(29)
                         },
                         effectDescription(){
-                                return "Reward: Each Tier past 29 makes log10(Ducks) (max 1e20) multiply Emerald gain and adds 1 to the Miner effect base."
+                                return "Reward: Each Tier past 29 adds 1 to the Miner effect base."
                         },
                 }, // hasMilestone("T", 11)
                 12: {
