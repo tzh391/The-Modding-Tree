@@ -11,13 +11,20 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.T.points.gte("44")
+	return player.T.points.gte("145")
 }
 
-var CHANELOG_VERSION = "v0.044"
+var CHANELOG_VERSION = "v0.045"
 
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC0000'>v0.045</h3><br>
+		- Balanced until 145 Tiers.<br>
+		- Added thirteen Eagle milestones.<br>
+		- Added six Tier upgrades.<br>
+		- Added seven Tier milestones.<br>
+		- Added four Emerald milestones.<br>
+		- Added a custom saves.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.044</h3><br>
 		- Balanced until 16 Tiers.<br>
 		- Added two new layers (Emerald + Tiers).<br>
