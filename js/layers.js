@@ -2998,6 +2998,33 @@ addLayer("d", {
                                 return getBuyableAmount("e", 11).gte(7) || player.f.unlocked
                         }, 
                 }, // hasUpgrade("d", 45)
+                51: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D<sup>2</sup>-c-s"
+                        },
+                        description(){
+                                let a = "Exponentiate D 11 base by Tiers^2 and Tiers past 200 subtract .01 from the Faster Shifter base"
+                                return a
+                        },
+                        cost: new Decimal("e3.55e19"),
+                        unlocked(){
+                                return hasMilestone("f", 8) //|| player.g.unlocked
+                        }, 
+                }, // hasUpgrade("d", 51)
+                52: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D<sup>2</sup>u--s"
+                        },
+                        description(){
+                                let a = "Eagle Milestone 83 counts every Tier and Passive Gain completions also subtract from Finch Milestone 7"
+                                return a
+                        },
+                        cost: new Decimal("e2.18e22"),
+                        unlocked(){
+                                return hasUpgrade("d", 51) //|| player.g.unlocked
+                        }, 
+                }, // hasUpgrade("d", 52)
+                
         },
         buyables: getLayerGeneralizedBuyableData("d", [
                         function(){
@@ -3660,7 +3687,9 @@ addLayer("e", {
                 if (hasUpgrade("E", 11))        ret = ret.times(Decimal.pow(1.01, player.E.upgrades.length))
                 if (hasMilestone("T", 1))       ret = ret.times(Decimal.pow(1.02, player.T.points))
                 if (hasMilestone("T", 2))       ret = ret.times(Decimal.pow(1.02, player.T.milestones))
-
+                if (hasUpgrade("e", 31))        ret = ret.times(Decimal.pow(1.1, player.e.upgrades.length).pow(layerChallengeCompletions("f")))
+                                                ret = ret.times(tmp.f.challenges[12].rewardEffect)
+                if (hasUpgrade("E", 22))        ret = ret.times(player.T.points.max(1))
                 
                 return ret
         },
@@ -3738,7 +3767,7 @@ addLayer("e", {
                 if (hasMilestone("T", 8))       ret = ret.times(Decimal.pow10(hasMilestone("f", 8) ? 5000 : -2650))
                 if (hasUpgrade("T", 14))        ret = ret.div("1e3500")
                 if (hasMilestone("E", 5))       ret = ret.div("1e600")
-                if (hasMilestone("f", 7))       ret = ret.times(tmp.f.milestones[7].effectPer.pow(player.T.points.sub(170).max(0)))
+                if (hasMilestone("f", 7))       ret = ret.times(tmp.f.milestones[7].effectPer.pow(player.T.points.sub(tmp.f.milestones[7].start).max(0)))
 
                 return ret
         },
@@ -3937,6 +3966,32 @@ addLayer("e", {
                                 return player.e.best.gte("1e510") || player.f.unlocked
                         }, 
                 }, // hasUpgrade("e", 25)
+                31: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>E--l-"
+                        },
+                        description(){
+                                let a = "cbrt(Finches) divide E 32 base and per Finch challenge completion multiply Finch and Base Eagle gain by 1.1"
+                                return a
+                        },
+                        cost: new Decimal("e1450e3"),
+                        unlocked(){
+                                return player.f.challenges[11] > 0 // || player.g.unlocked
+                        }, 
+                }, // hasUpgrade("e", 31)
+                32: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Eag--"
+                        },
+                        description(){
+                                let a = "Finches (max 1e100) multiply Emerald gain and improve Finch milestone 7"
+                                return a
+                        },
+                        cost: new Decimal("e3381e3"),
+                        unlocked(){
+                                return player.f.challenges[12] > 0 // || player.g.unlocked
+                        }, 
+                }, // hasUpgrade("e", 32)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
                         function(){
@@ -5218,6 +5273,10 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
+                                if (hasUpgrade("d", 52)) {
+                                        if (player.shiftAlias) return "Improved by D<sup>2</sup>u--s."
+                                        return "Reward: Milestones^2 multiply Emerald gain per Tier."
+                                }
                                 return "Reward: Milestones^2 multiply Emerald gain per Tier past 33."
                         },
                 }, // hasMilestone("e", 83)
@@ -5371,6 +5430,34 @@ addLayer("e", {
                                 return "Reward: Add (Tiers - 120) * .001 to the Tired Tiers base (max +.05) add you only lose 20 of each Emerald buyable on Tier."
                         },
                 }, // hasMilestone("e", 93)
+                94: {
+                        requirementDescription(){
+                                return "1e740,000 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("1e740e3")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Remove all Eagle buyables' base costs."
+                        },
+                }, // hasMilestone("e", 94)
+                95: {
+                        requirementDescription(){
+                                return "2e2,222,222 Eagles"
+                        },
+                        done(){
+                                return player.e.points.gte("2e2222222")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Above 222 Tiers you always have exactly one second of Emerald production (disabled in Finch challenges). Permanently cap Filter 'per' amount to 123 outside of challenges."
+                        },
+                }, // hasMilestone("e", 95)
         },
         tabFormat: {
                 "Upgrades": {
@@ -5449,10 +5536,6 @@ addLayer("e", {
                         if (!false) {
                                 data.milestones = data.milestones.slice(0, keptMilestones)
                         }
-                        if (data.times >= 1 && !(1 in data.milestones)) data.milestones.push(1)
-                        if (data.times >= 2 && !(2 in data.milestones)) data.milestones.push(2)
-                        if (data.times >= 3 && !(3 in data.milestones)) data.milestones.push(3)
-                        if (data.times >=17 && !(5 in data.milestones)) data.milestones.push(5)
                 }
 
                 //resources
@@ -5511,7 +5594,8 @@ addLayer("f", {
         getGainMultPost(){
                 let ret = getGeneralizedInitialPostMult("f").div(400)
 
-                if (hasMilestone("f", 7))       ret = ret.times(Decimal.pow(1.05, player.T.points.sub(170).max(0)))
+                if (hasMilestone("f", 7))       ret = ret.times(Decimal.pow(1.05, player.T.points.sub(tmp.f.milestones[7].start).max(0)))
+                if (hasUpgrade("e", 31))        ret = ret.times(Decimal.pow(1.1, player.e.upgrades.length).pow(layerChallengeCompletions("f")))
 
                 return ret
         },
@@ -5522,7 +5606,7 @@ addLayer("f", {
 
                 let exp1 = amt.max(10).log10()
 
-                let exp = exp1.times(exp1.min(10).pow(2))
+                let exp = exp1.times(exp1.min(20).pow(2))
 
                 let ret = amt.plus(1).pow(exp)
 
@@ -5568,7 +5652,7 @@ addLayer("f", {
                                 let a = "idk yet"
                                 return a
                         },
-                        cost: new Decimal(1e10),
+                        cost: new Decimal(1e100),
                         unlocked(){
                                 return player.f.best.gte(1e5) //|| player.g.unlocked
                         }, 
@@ -5679,7 +5763,17 @@ addLayer("f", {
                                 if (e.gte(3025)) e = e.times(3025**3).root(4).min(1e5)
                                 return Decimal.pow(1.05, e)
                         },
+                        start(){
+                                let r = 170
+                                if (hasUpgrade("e", 32)) r -= player.f.challenges[11]
+                                if (hasUpgrade("d", 52)) r -= player.f.challenges[12]
+                                return r
+                        },
                         effectDescription(){
+                                if (hasUpgrade("e", 32)) {
+                                        if (player.shiftAlias) return "Improved by Eag--: starts one Tier earlier per Active Tiers completion."
+                                        return "Reward: Tiers past " + tmp.f.milestones[7].start + " increase Finch gain by 5% and Emerald and Eagle gain by 5% per E 33 level (softcap at 3000).<br>Currently: x" + format(tmp.f.milestones[7].effectPer) + " per Tier."
+                                }
                                 return "Reward: Tiers past 170 increase Finch gain by 5% and Emerald and Eagle gain by 5% per E 33 level (softcap at 3000).<br>Currently: x" + format(tmp.f.milestones[7].effectPer) + " per Tier."
                         },
                 }, // hasMilestone("f", 7)
@@ -5694,9 +5788,92 @@ addLayer("f", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Keep a Tier upgrade, Tier milestone, and Eagle milestone per reset. Improve more milestones."
+                                return "Reward: Keep a Tier upgrade, Tier milestone, and Eagle milestone per reset. Double Duck and Eagle bulk amount and speed. Improve more milestones."
                         },
                 }, // hasMilestone("f", 8)
+                9: {
+                        requirementDescription(){
+                                return "1024 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte(1024)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Remove the ability to Finch prestige, gain 100% of your Finch gained on reset per second, and gain one Finch reset per second."
+                        },
+                }, // hasMilestone("f", 9)
+        },
+        challenges: {
+                11: {
+                        name: "Active Tiers",
+                        goal(){
+                                let id = player.f.challenges[11]
+                                let x = [
+                                        200, 200, 200, 200, 200, 
+                                        200, 200, 200, 200, 200, 
+                                        200, 200, 200, 200, 200, 
+                                        200, 200, 200, 200, 200, 
+                                        200, 200, 200, 200, 200, 
+                                        ]
+                                return new Decimal(x[id])
+                        },
+                        canComplete: () => player.T.points.gte(tmp.f.challenges[11].goal),
+                        fullDisplay(){
+                                let a = "Add " + (player.f.challenges[11] + 1) + " effective Tiers" + br 
+                                a += "Goal: " + formatWhole(tmp.f.challenges[11].goal) + " Tiers" + br2
+                                a += "Reward: Add " + format(tmp.f.challenges[11].rewardEffect, 3) + br
+                                a += "to Tired Tier's base."+br
+                                return a + br2 + "Completions: " + player.f.challenges[11] + "/25"
+                        },
+                        rewardEffect(){
+                                return new Decimal(player.f.challenges[11] / 200)
+                        },
+                        onEnter(){
+                                player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14])
+                                player.T.upgrades = filter(player.T.upgrades, [11,12,13,14,15,21,22])
+                                player.E.milestones = filter(player.E.milestones, [1,2,3,4,5,6])
+                                player.E.upgrades = filter(player.E.upgrades, [11,12,13,14,15,21])
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        countsAs: [],
+                        completionLimit: 25,
+                }, // inChallenge("f", 11)
+                12: {
+                        name: "Passive Gain",
+                        goal(){
+                                let id = player.f.challenges[12]
+                                let x = [
+                                        225, 255, 251, 300, 300, ]
+                                return new Decimal(x[id])
+                        },
+                        canComplete: () => player.T.points.gte(tmp.f.challenges[12].goal),
+                        fullDisplay(){
+                                let a = "Root Emerald gain by " + (player.f.challenges[12]/100 + 1.01) + br 
+                                a += "Goal: " + formatWhole(tmp.f.challenges[12].goal) + " Tiers" + br2
+                                a += "Reward: Multiply base Eagle gain by " + formatWhole(tmp.f.challenges[12].rewardEffect, 3) + br
+                                a += "and subtract " + (player.f.challenges[12] * .36) + " from the<br>Lazy Tiers linear base"
+                                return a + br2 + "Completions: " + player.f.challenges[12] + "/25"
+                        },
+                        rewardEffect(){
+                                return Decimal.pow(10, player.f.challenges[12])
+                        },
+                        onEnter(){
+                                player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14])
+                                player.T.upgrades = filter(player.T.upgrades, [11,12,13,14,15,21,22])
+                                player.E.milestones = filter(player.E.milestones, [1,2,3,4,5,6])
+                                player.E.upgrades = filter(player.E.upgrades, [11,12,13,14,15,21])
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        countsAs: [],
+                        completionLimit: 25,
+                }, // inChallenge("f", 12)
         },
         tabFormat: {
                 "Upgrades": {
@@ -5749,12 +5926,29 @@ addLayer("f", {
                                 return player.f.times > 0 //|| player.g.unlocked
                         },
                 },
+                "Challenges": {
+                        content: [
+                                "main-display",
+                                ["display-text",
+                                        function() {
+                                                if (isPassiveGainActive("f")) return "You are gaining " + format(tmp.f.getResetGain) + " Finches per second"
+                                                return ""
+                                        },
+                                ],
+                                "challenges"
+                        ],
+                        unlocked(){
+                                return player.T.best.gte(218) || inChallenge("f", 11) || player.f.challenges[11] >= 1 //|| player.g.unlocked 
+                        },
+                },
                 "Info": {
                         content: [
                                 "main-display",
                                 ["display-text",
                                         function() {
-                                                return "Finch resests all prior resources including Tiers and Emeralds.<br><br>The Finch multiplier affects Emerald gain up to 1e100x. Check the Capybara info tab for updated boosts."
+                                                let a = "Finch resests all prior resources including Tiers and Emeralds.<br><br>The Finch multiplier affects Emerald gain up to 1e100x.<br>Check the Capybara info tab for updated boosts."
+                                                if (layerChallengeCompletions("f") < 5) return a
+                                                return a + br2 + "If above 5 completions of a challenge,<br>max out Emerald gain at 10 seconds of production."
                                         }
                                 ],
                         ],
@@ -6174,7 +6368,11 @@ addLayer("E", {
         getResetGain() {
                 if (player.e.best.lt("1e13500")) return decimalZero
 
-                return tmp.E.getGainMultPre.pow(tmp.E.getGainExp).times(tmp.E.getGainMultPost)
+                let ret = tmp.E.getGainMultPre.pow(tmp.E.getGainExp).times(tmp.E.getGainMultPost)
+
+                if (inChallenge("f", 12)) ret = ret.root(player.f.challenges[12]/100 + 1.01)
+
+                return ret
         },
         getNextAt(){
                 return decimalOne
@@ -6189,6 +6387,7 @@ addLayer("E", {
                         if (hasMilestone("E", 3))       tier = tier.sub(.5)
                         if (hasMilestone("e", 91))      tier = tier.sub(tmp.e.milestones[91].effect)
                 }
+                if (inChallenge("f", 11)) tier = tier.plus(1 + player.f.challenges[11])
 
                 tier = tier.max(0)
 
@@ -6229,7 +6428,12 @@ addLayer("E", {
 
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E11"])
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E21"])
-                ret = ret.times(CURRENT_BUYABLE_EFFECTS["E23"].pow(player.E.milestones.length + player.T.milestones.length + player.e.milestones.length + player.f.milestones.length))
+                let exp = player.E.milestones.length + player.T.milestones.length + player.e.milestones.length + player.f.milestones.length
+                if (exp > 123) {
+                        if (!player.f.activeChallenge) exp = 123
+                        else if (canCompleteChallenge("f", player.f.activeChallenge)) exp = 123
+                }
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["E23"].pow(exp))
                 
                 if (hasMilestone("T", 2)) ret = ret.times(Decimal.pow(3, player.T.milestones.length))
                 if (hasMilestone("T", 3)) ret = ret.times(Decimal.pow(4, getBuyableAmount("e", 32).sub(player.T.points.gte(25) ? 0 : 21).max(0).min(1500)))
@@ -6259,12 +6463,16 @@ addLayer("E", {
                 if (hasMilestone("e", 80))      ret = ret.times(Decimal.pow(player.e.milestones.length, 1 + player.f.milestones.length))
                 if (hasMilestone("e", 81))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(30)))
                 if (hasMilestone("e", 82))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(33).times(3)))
-                if (hasMilestone("e", 83))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(33).times(2)))
+                if (hasMilestone("e", 83) && !hasUpgrade("d", 52)) {
+                        ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(33).times(2)))
+                }
                 if (hasMilestone("e", 84))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(38).times(3)))
                 if (hasMilestone("e", 87))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(56).times(4)))
                 if (hasMilestone("e", 92))      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(109).times(player.e.milestones.length ** (2/3))))
 
-                if (hasMilestone("f", 7))       ret = ret.div(tmp.f.milestones[7].effectPer.pow(player.T.points.min(170)))
+                if (hasMilestone("f", 7))       ret = ret.div(tmp.f.milestones[7].effectPer.pow(player.T.points.min(tmp.f.milestones[7].start)))
+
+                if (hasUpgrade("e", 32))        ret = ret.times(player.f.points.max(1).pow(player.e.upgrades.length))
 
                 ret = ret.times(tmp.E.getPerTierMultiplier.pow(player.T.points))
 
@@ -6283,6 +6491,7 @@ addLayer("E", {
                 if (hasMilestone("e", 87))      ret = ret.times(player.e.milestones.length ** 4)
                 if (hasMilestone("e", 92))      ret = ret.times(Decimal.pow(player.e.milestones.length, player.e.milestones.length ** (2/3)))
                 if (hasMilestone("f", 7))       ret = ret.times(tmp.f.milestones[7].effectPer)
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["E31"])
 
                 return ret
         },
@@ -6299,7 +6508,17 @@ addLayer("E", {
                 if (player.e.best.gt("1e13500")) data.unlocked = true
                 if (!data.unlocked) return
                 
-                data.points = data.points.plus(tmp.E.getResetGain.times(diff)).min(tmp.T.nextAtDisp)
+                if (hasMilestone("e", 95) && !player.f.activeChallenge && player.T.points.gte(222)) {
+                        data.points = tmp.E.getResetGain
+                } else if (player.f.activeChallenge && player.f.challenges[player.f.activeChallenge] >= 5) {
+                        data.points = data.points.div(tmp.E.getResetGain).plus(diff).min(10).times(tmp.E.getResetGain)
+                } else {
+                        data.points = data.points.plus(tmp.E.getResetGain.times(diff))
+                }
+                if (data.points.gte(tmp.T.nextAtDisp)) {
+                        data.points = tmp.T.nextAtDisp
+                        if (hasMilestone("f", 4)) doReset("T")
+                }
 
                 data.best = data.best.max(data.points)
                 data.time += diff
@@ -6394,6 +6613,21 @@ addLayer("E", {
                                 return player.E.tier.gte(80) || hasUpgrade("E", 21)
                         }, 
                 }, // hasUpgrade("E", 21)
+                22: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>VII Emerald"
+                        },
+                        description(){
+                                let a = "Tiers multiply base Eagle gain"
+                                return a
+                        },
+                        cost(){
+                                return new Decimal("1e623")
+                        },
+                        unlocked(){
+                                return player.T.best.gte(254) || hasUpgrade("E", 22)
+                        }, 
+                }, // hasUpgrade("E", 22)
         },
         milestones: {
                 1: {
@@ -6516,7 +6750,7 @@ addLayer("E", {
                         },
                         effectDescription(){
                                 if (player.shiftAlias) return "Goal is reduced by 10 per Tier past 109 and by 1e20 per Tier past 130."
-                                return "Reward: Tiers after 100 subtract .01 from the Filter base and add .0002 to E 32's base but increase Filter's quadratic base."
+                                return "Reward: Tiers after 100 subtract .01 from the Filter base (halve after 150) and add .0002 to E 32's base but increase Filter's quadratic base."
                         },
                 }, // hasMilestone("E", 6)
         },
@@ -6539,6 +6773,9 @@ addLayer("E", {
                         function(){
                                 return hasUpgrade("E", 21) || player.E.tier.gte(100)
                         },
+                        function(){
+                                return hasUpgrade("E", 22)
+                        },
                 ]),
         tabFormat: {
                 "Upgrades": {
@@ -6550,7 +6787,7 @@ addLayer("E", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (player.shiftAlias) return "Pre-reduction Emeralds per second: " + format(tmp.E.getGainMultPre)
+                                                if (player.shiftAlias) return "Pre-reduction Emeralds gain: " + format(tmp.E.getGainMultPre)
                                                 return "You are gaining " + format(tmp.E.getResetGain) + " Emerald " + romanize(player.E.tier) + " per second."
                                         }
                                 ],
@@ -6569,7 +6806,7 @@ addLayer("E", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (player.shiftAlias) return "Pre-reduction Emeralds per second: " + format(tmp.E.getGainMultPre)
+                                                if (player.shiftAlias) return "Pre-reduction Emeralds gain: " + format(tmp.E.getGainMultPre)
                                                 return "You are gaining " + format(tmp.E.getResetGain) + " Emerald " + romanize(player.E.tier) + " per second."
                                         }
                                 ],
@@ -6588,7 +6825,7 @@ addLayer("E", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (player.shiftAlias) return "Pre-reduction Emeralds per second: " + format(tmp.E.getGainMultPre)
+                                                if (player.shiftAlias) return "Pre-reduction Emeralds gain: " + format(tmp.E.getGainMultPre)
                                                 return "You are gaining " + format(tmp.E.getResetGain) + " Emerald " + romanize(player.E.tier) + " per second."
                                         }
                                 ],
@@ -6619,15 +6856,16 @@ addLayer("E", {
                         },
                 },
         },
-        doReset(){
+        doReset(layer){
                 let data = player.E 
 
                 data.points = decimalZero
                 data.best = decimalZero
                 let toSub = hasMilestone("e", 93) ? 20 : 50
                 if (hasMilestone("T", 12)) toSub = Math.max(Math.min(toSub, 85-player.f.times),0)
+                let onlySubtract = hasMilestone("T", 12) && !getsReset("e", layer)
                 for (i in data.buyables) {
-                        data.buyables[i] = hasMilestone("T", 12) ? data.buyables[i].sub(toSub).max(0) : decimalZero
+                        data.buyables[i] = onlySubtract ? data.buyables[i].sub(toSub).max(0) : decimalZero
                 }
                 if (player.T.points.lt(100) && !hasMilestone("f", 4)) data.buyables[23] = decimalZero
 
@@ -6716,7 +6954,7 @@ addLayer("T", {
                 } else if (hasUpgrade("T", 11) && (player.T.points.lt(player.T.best) || player.f.unlocked)) {
                         handleGeneralizedBuyableAutobuy(diff, "E")
                 }
-                if (hasMilestone("f", 4) && canReset("T")) doReset("T")
+                
                 data.time += diff
         },
         layerShown(){return player.E.best.gte(1e5) || player.T.unlocked},
@@ -7075,7 +7313,7 @@ addLayer("T", {
                 let data = player.T
 
                 data.points = decimalZero
-                data.best = decimalZero
+                if (layer != "f" || !hasMilestone("f", 9)) data.best = decimalZero
 
                 data.upgrades = data.upgrades.slice(0, hasMilestone("f", 8) ? player.f.times : 0)
                 

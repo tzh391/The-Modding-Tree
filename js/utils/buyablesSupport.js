@@ -1393,7 +1393,16 @@ var MAIN_BUYABLE_DATA = {
                                 amount(){
                                         return Decimal.pow(7, player.E.upgrades.length - 2).max(1)
                                 }
-                        }
+                        },
+                        9: {
+                                active(){
+                                        return hasUpgrade("d", 51)
+                                },
+                                type: "exp",
+                                amount(){
+                                        return player.T.points.max(1).pow(2)
+                                }
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e33)
@@ -2191,6 +2200,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
 
                         if (hasMilestone("f", 2))       b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 33).plus(player.f.milestones.length)))
+                        if (hasMilestone("e", 94))      b0 = decimalOne
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2238,6 +2248,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 64))      b0 = b0.times(100)
                         if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
                         if (hasMilestone("f", 2))       b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 33).plus(player.f.milestones.length)))
+                        if (hasMilestone("e", 94))      b0 = decimalOne
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2309,6 +2320,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 64))      b0 = b0.times(1e20)
                         if (hasMilestone("e", 65) && player.e.points.gte("1e6503")) b0 = b0.div(Decimal.pow(2, getBuyableAmount("e", 31)))
                         if (hasMilestone("f", 2))       b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 33).plus(player.f.milestones.length)))
+                        if (hasMilestone("e", 94))      b0 = decimalOne
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2360,6 +2372,7 @@ var MAIN_BUYABLE_DATA = {
                         }
                         if (hasMilestone("e", 44)) b0 = getBuyableBases("e", 13)[0].pow(2).log10().floor().pow10()
                         if (hasMilestone("f", 2))       b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 33).plus(player.f.milestones.length)))
+                        if (hasMilestone("e", 94))      b0 = decimalOne
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2406,6 +2419,7 @@ var MAIN_BUYABLE_DATA = {
                                 b1 = b1.times(Decimal.pow(.998, getBuyableAmount("e", 31).sub(100).max(0)))
                         }
                         if (hasMilestone("f", 2))       b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 33).plus(player.f.milestones.length)))
+                        if (hasMilestone("e", 94))      b0 = decimalOne
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2456,6 +2470,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 78) && player.e.points.gte("1e11260")) b1 = b1.times(2)
                         if (hasMilestone("e", 79))      b0 = b0.times(1e100)
                         if (hasMilestone("f", 2))       b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 33).plus(player.f.milestones.length)))
+                        if (hasMilestone("e", 94))      b0 = decimalOne
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2480,6 +2495,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 78)) b1 = b1.times(Decimal.pow(.999, getBuyableAmount("e", 31)))
                         if (hasMilestone("e", 78) && player.e.points.gte("1e11260")) b0 = b0.div(1e300)
                         if (hasMilestone("f", 2))       b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 33).plus(player.f.milestones.length)))
+                        if (hasMilestone("e", 94))      b0 = decimalOne
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2521,6 +2537,10 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("T", 4)) b0 = b0.times(1e139)
                         if (hasMilestone("T", 7)) b1 = b1.div(Decimal.pow(4, player.T.points))
                         if (hasMilestone("f", 2))       b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 33).plus(player.f.milestones.length)))
+                        if (hasUpgrade("e", 31)) {
+                                b1 = b1.div(player.f.points.max(1).cbrt().pow(player.e.upgrades.length))
+                        }
+                        if (hasMilestone("e", 94))      b0 = decimalOne
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2552,6 +2572,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("f", 4)) {
                                 b0 = b0.div(player.f.points.times(player.f.times).pow10().pow(10))
                         }
+                        if (hasMilestone("e", 94))      b0 = decimalOne
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2622,6 +2643,9 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("T", 4)) b0 = b0.div(10)
                         if (hasMilestone("T", 7)) b1 = b1.sub(player.T.points.min(92))
                         if (hasMilestone("e", 88)) b0 = b0.div(Decimal.pow(2, player.T.points.sub(57).max(0)))
+                        if (hasUpgrade("d", 51)) {
+                                b1 = b1.sub(player.T.points.sub(200).max(0).div(100))
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2655,6 +2679,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("T", 12))        b1 = b1.sub(getBuyableAmount("e", 31).min(990))
                         if (hasMilestone("T", 10))      b2 = b2.sub(player.T.points.min(84).div(100))
                         if (hasUpgrade("T", 22))        b2 = b2.sub(player.T.points.sub(112).max(0).min(30).div(500))
+                                                        b1 = b1.sub(player.f.challenges[12] * .36)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2730,6 +2755,15 @@ var MAIN_BUYABLE_DATA = {
                                         return hasMilestone("f", 6) ? 1.5 : 1.01
                                 },
                         },
+                        4: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.f.challenges[11].rewardEffect
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e79)
@@ -2773,8 +2807,25 @@ var MAIN_BUYABLE_DATA = {
                         else if (hasUpgrade("T", 21)) b0 = b0.div(Decimal.pow(player.E.points.gte(1e206) ? 1e18 : 1e15, player.T.points.sub(100).max(0)))
                         if (hasMilestone("E", 6) || player.T.points.gte(140)) {
                                 b2 = b2.plus(.0001)
-                                b1 = b1.sub(player.T.points.sub(100).max(0).div(100))
+                                let t = player.T.points.sub(100).max(0).div(100)
+                                if (t.gte(1.5)) t = t.plus(1.5).div(2)
+                                b1 = b1.sub(t)
                         }
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        E31: {
+                name: "Sieve",
+                func: "exp",
+                effects: "Emerald per Tier",
+                base: {
+                        initial: new Decimal(1.2),
+                },
+                bases(){
+                        let b0 = new Decimal("1e620")
+                        let b1 = new Decimal(10)
+                        let b2 = new Decimal(1.0003)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3454,6 +3505,7 @@ function getABBulk(layer){
                 }
                 if (hasMilestone("e", 3))       amt = amt.times(1 + player.e.times)
                 if (false /*player.g.unlocked*/)amt = amt.times(10)
+                if (hasMilestone("f", 8))       amt = amt.times(2)
                 if (hasMilestone("f", 1))       amt = amt.times(2).pow(2)
         }
         if (layer == "e") {
@@ -3466,6 +3518,7 @@ function getABBulk(layer){
                 }
                 if (hasMilestone("f", 3))       amt = amt.times(2)
                 if (hasMilestone("f", 5))       amt = amt.times(1 + player.f.times)
+                if (hasMilestone("f", 8))       amt = amt.times(2)
                 if (false /*player.h.unlocked*/)amt = amt.times(10)
                 if (hasMilestone("f", 2))       amt = amt.pow(2)
         }
@@ -3498,12 +3551,14 @@ function getABSpeed(layer){
                         if (player.d.points.gte("1e13059")) diffmult *= 2
                 }
                 if (hasMilestone("e", 3)) diffmult *= 1 + player.e.times
+                if (hasMilestone("f", 8)) diffmult *= 2
         }
         if (layer == "e") {
                 if (hasUpgrade("E", 12))        diffmult *= player.T.tier.sqrt().div(2).min(1000).toNumber()
                 if (hasMilestone("e", 43) && player.f.unlocked) diffmult *= 2
                 if (hasMilestone("e", 55) && player.f.unlocked) diffmult *= 2
                 if (hasMilestone("f", 3))       diffmult *= 2
+                if (hasMilestone("f", 8))       diffmult *= 2
         }
         if (layer == "E") {
                 if (hasUpgrade("T", 12))        diffmult *= player.T.upgrades.length
