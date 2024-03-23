@@ -2715,7 +2715,8 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0001)
 
                         if (hasMilestone("T", 12))      b0 = b0.div(Decimal.pow(1e3, player.T.points.sub(53).max(0).min(5)))
-                        if (hasMilestone("E", 4)) b1 = b1.sub(getBuyableAmount("e", 33).div(200).min(1))
+                        if (hasMilestone("E", 4))       b1 = b1.sub(getBuyableAmount("e", 33).div(200).min(1))
+                        if (hasUpgrade("f", 11))        b1 = b1.sub(layerChallengeCompletions("f") / 50)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2814,6 +2815,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                E31: {active:() => hasMilestone("T", 15)},
         },
         E31: {
                 name: "Sieve",
@@ -2826,6 +2828,11 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e620")
                         let b1 = new Decimal(10)
                         let b2 = new Decimal(1.0003)
+
+                        if (hasMilestone("T", 15)) b1 = new Decimal(1e3)
+                        if (hasUpgrade("f", 12)) {
+                                b0 = b0.div(player.f.points.max(1).pow(Math.max(player.f.challenges[12] - 10, 0)))
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },

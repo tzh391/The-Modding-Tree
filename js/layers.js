@@ -5584,6 +5584,8 @@ addLayer("f", {
         getGainExp(){
                 let ret = new Decimal(2)
 
+                if (hasUpgrade("f", 12)) ret = ret.plus(Math.max(0, player.f.challenges[12]-10) * .2)
+
                 return ret
         },
         getGainMultPre(){
@@ -5606,7 +5608,7 @@ addLayer("f", {
 
                 let exp1 = amt.max(10).log10()
 
-                let exp = exp1.times(exp1.min(20).pow(2))
+                let exp = exp1.times(exp1.pow(2).min(400))
 
                 let ret = amt.plus(1).pow(exp)
 
@@ -5649,14 +5651,27 @@ addLayer("f", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>F-nch"
                         },
                         description(){
-                                let a = "idk yet"
+                                let a = "Finch challenges reduce Miner linear cost base by .02"
                                 return a
                         },
-                        cost: new Decimal(1e100),
+                        cost: new Decimal(1e13),
                         unlocked(){
-                                return player.f.best.gte(1e5) //|| player.g.unlocked
+                                return layerChallengeCompletions("f") >= 11 //|| player.g.unlocked
                         }, 
                 }, // hasUpgrade("f", 11)
+                12: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Fi-ch"
+                        },
+                        description(){
+                                let a = "Passive Gain completions past 10 divide Sieve base cost by Finches and add .2 to the Finch gain exponent"
+                                return a
+                        },
+                        cost: new Decimal(2.7e27),
+                        unlocked(){
+                                return layerChallengeCompletions("f") >= 36 //|| player.g.unlocked
+                        }, 
+                }, // hasUpgrade("f", 12)
         },/*
         buyables: getLayerGeneralizedBuyableData("e", [
                         function(){
@@ -5813,16 +5828,17 @@ addLayer("f", {
                                 let id = player.f.challenges[11]
                                 let x = [
                                         200, 200, 200, 200, 200, 
-                                        200, 200, 200, 200, 200, 
-                                        200, 200, 200, 200, 200, 
-                                        200, 200, 200, 200, 200, 
-                                        200, 200, 200, 200, 200, 
+                                        209, 200, 211, 207, 201, 
+                                        203, 200, 203, 200, 202, 
+                                        200, 200, 202, 200, 203, 
+                                        202, 201, 200, 202, 201, 
                                         ]
                                 return new Decimal(x[id])
                         },
                         canComplete: () => player.T.points.gte(tmp.f.challenges[11].goal),
                         fullDisplay(){
                                 let a = "Add " + (player.f.challenges[11] + 1) + " effective Tiers" + br 
+                                if (hasMilestone("T", 15)) a = "Increase effective Tiers by " + ((player.f.challenges[11] + 1)/2) + "%<br>"
                                 a += "Goal: " + formatWhole(tmp.f.challenges[11].goal) + " Tiers" + br2
                                 a += "Reward: Add " + format(tmp.f.challenges[11].rewardEffect, 3) + br
                                 a += "to Tired Tier's base."+br
@@ -5832,7 +5848,7 @@ addLayer("f", {
                                 return new Decimal(player.f.challenges[11] / 200)
                         },
                         onEnter(){
-                                player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14])
+                                player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
                                 player.T.upgrades = filter(player.T.upgrades, [11,12,13,14,15,21,22])
                                 player.E.milestones = filter(player.E.milestones, [1,2,3,4,5,6])
                                 player.E.upgrades = filter(player.E.upgrades, [11,12,13,14,15,21])
@@ -5843,27 +5859,30 @@ addLayer("f", {
                         countsAs: [],
                         completionLimit: 25,
                 }, // inChallenge("f", 11)
-                12: {
+                12: { // 17-7 to 17-8, 23-9 to 23-10
                         name: "Passive Gain",
                         goal(){
                                 let id = player.f.challenges[12]
                                 let x = [
-                                        225, 255, 251, 300, 300, ]
+                                        225, 255, 251, 257, 271, 
+                                        271, 272, 277, 278, 284, 
+                                        285, 500, 277, 555, 400, 
+                                        ]
                                 return new Decimal(x[id])
                         },
                         canComplete: () => player.T.points.gte(tmp.f.challenges[12].goal),
                         fullDisplay(){
-                                let a = "Root Emerald gain by " + (player.f.challenges[12]/100 + 1.01) + br 
+                                let a = "Root Emerald gain by " + format(player.f.challenges[12]/100 + 1.01) + br 
                                 a += "Goal: " + formatWhole(tmp.f.challenges[12].goal) + " Tiers" + br2
-                                a += "Reward: Multiply base Eagle gain by " + formatWhole(tmp.f.challenges[12].rewardEffect, 3) + br
-                                a += "and subtract " + (player.f.challenges[12] * .36) + " from the<br>Lazy Tiers linear base"
+                                a += "Reward: Multiply base Eagle gain by " + br + formatWhole(tmp.f.challenges[12].rewardEffect, 3)
+                                a += " and subtract " + format(player.f.challenges[12] * .36) + "<br>from the Lazy Tiers linear base"
                                 return a + br2 + "Completions: " + player.f.challenges[12] + "/25"
                         },
                         rewardEffect(){
                                 return Decimal.pow(10, player.f.challenges[12])
                         },
                         onEnter(){
-                                player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14])
+                                player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
                                 player.T.upgrades = filter(player.T.upgrades, [11,12,13,14,15,21,22])
                                 player.E.milestones = filter(player.E.milestones, [1,2,3,4,5,6])
                                 player.E.upgrades = filter(player.E.upgrades, [11,12,13,14,15,21])
@@ -6381,13 +6400,17 @@ addLayer("E", {
                 let div = new Decimal(1)
                 let tier = player.T.points //player.E.tier
 
+                if (inChallenge("f", 11)) {
+                        if (hasMilestone("T", 15)) tier = tier.times(1.005 + player.f.challenges[11]/200)
+                        else tier = tier.plus(1 + player.f.challenges[11])
+                }
+
                 tier = tier.sub(CURRENT_BUYABLE_EFFECTS["E13"])
                 tier = tier.sub(CURRENT_BUYABLE_EFFECTS["E22"])
                 if (!hasMilestone("f", 6)) {
                         if (hasMilestone("E", 3))       tier = tier.sub(.5)
                         if (hasMilestone("e", 91))      tier = tier.sub(tmp.e.milestones[91].effect)
                 }
-                if (inChallenge("f", 11)) tier = tier.plus(1 + player.f.challenges[11])
 
                 tier = tier.max(0)
 
@@ -7282,6 +7305,23 @@ addLayer("T", {
                                 return "Reward: Tiers past 104 add .01 to Filter base but divide Emerald gain by 1e80 (increased to 1e95 at Tier 107) and E 33 base is exponentiated by sqrt(Tier)."
                         },
                 }, // hasMilestone("T", 14)
+                15: {
+                        requirementDescription(){
+                                return "8e676 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("8e676")
+                        },
+                        unlocked(){
+                                return hasMilestone("T", 14)
+                        },
+                        onComplete(){
+                                player.E.buyables[31] = decimalZero
+                        },
+                        effectDescription(){
+                                return "Reward: Sieve gives free Filter levels but cube its linear cost base. Slightly weaken the Active Tiers nerf formula."
+                        },
+                }, // hasMilestone("T", 15)
         },
         tabFormat: {
                 "Upgrades": {
