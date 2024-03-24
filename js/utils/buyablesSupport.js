@@ -2577,7 +2577,6 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
         },
-
         E11: {
                 name: "Sifter",
                 func: "exp",
@@ -2823,6 +2822,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Emerald per Tier",
                 base: {
                         initial: new Decimal(1.2),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return player.T.points.times(player.f.challenges[21]/10000)
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e620")
@@ -2833,6 +2841,22 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("f", 12)) {
                                 b0 = b0.div(player.f.points.max(1).pow(Math.max(player.f.challenges[12] - 10, 0)))
                         }
+                        if (hasMilestone("E", 7)) b1 = b1.sub(player.T.points)
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        f11: {
+                name: "F 11",
+                func: "lin",
+                effects: "Finch gain exponent",
+                base: {
+                        initial: new Decimal(.1),
+                },
+                bases(){
+                        let b0 = new Decimal(1e34)
+                        let b1 = new Decimal(4)
+                        let b2 = new Decimal(1.0001) // catalan
 
                         return [b0.max(1), b1.max(1), b2]
                 },

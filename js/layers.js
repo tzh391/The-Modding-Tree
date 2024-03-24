@@ -3554,6 +3554,10 @@ addLayer("e", {
         baseAmount() {return player.d.points.floor()}, // Get the current amount of baseResource
         type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
         getResetGain() {
+                if (inChallenge("f", 21)) {
+                        if (player.f.challenges[21] > 3) return tmp.f.effect.pow(3).root(player.f.challenges[21])
+                        return tmp.f.effect
+                }
                 let ret = getGeneralizedPrestigeGain("e")
 
                 if (hasMilestone("e", 11) && !hasMilestone("e", 20)) {
@@ -3984,7 +3988,7 @@ addLayer("e", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>Eag--"
                         },
                         description(){
-                                let a = "Finches (max 1e100) multiply Emerald gain and improve Finch milestone 7"
+                                let a = "Finches (max 1e1000) multiply Emerald gain and improve Finch milestone 7"
                                 return a
                         },
                         cost: new Decimal("e3381e3"),
@@ -3992,6 +3996,19 @@ addLayer("e", {
                                 return player.f.challenges[12] > 0 // || player.g.unlocked
                         }, 
                 }, // hasUpgrade("e", 32)
+                33: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>E-g--"
+                        },
+                        description(){
+                                let a = "Per Tier past 350 double Emerald gain per Finch challenge"
+                                return a
+                        },
+                        cost: new Decimal("ee7"),
+                        unlocked(){
+                                return player.f.challenges[21] > 0 // || player.g.unlocked
+                        }, 
+                }, // hasUpgrade("e", 33)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
                         function(){
@@ -5584,12 +5601,15 @@ addLayer("f", {
         getGainExp(){
                 let ret = new Decimal(2)
 
-                if (hasUpgrade("f", 12)) ret = ret.plus(Math.max(0, player.f.challenges[12]-10) * .2)
+                if (hasUpgrade("f", 12))        ret = ret.plus(Math.max(0, player.f.challenges[12]-10) * .2)
+                                                ret = ret.plus(CURRENT_BUYABLE_EFFECTS["f11"])
 
                 return ret
         },
         getGainMultPre(){
                 let ret = new Decimal(.0001) // 10^-4
+
+                if (hasMilestone("E", 7)) ret = ret.times(Decimal.pow(1.01, player.T.points))
                 
                 return ret
         },
@@ -5672,12 +5692,12 @@ addLayer("f", {
                                 return layerChallengeCompletions("f") >= 36 //|| player.g.unlocked
                         }, 
                 }, // hasUpgrade("f", 12)
-        },/*
-        buyables: getLayerGeneralizedBuyableData("e", [
+        },
+        buyables: getLayerGeneralizedBuyableData("f", [
                         function(){
-                                return hasUpgrade("e", 22) //|| player.g.unlocked
+                                return player.f.challenges[12] >= 13 //|| player.g.unlocked
                         },
-                ]),*/
+                ]),
         milestones: {
                 1: {
                         requirementDescription(){
@@ -5866,7 +5886,9 @@ addLayer("f", {
                                 let x = [
                                         225, 255, 251, 257, 271, 
                                         271, 272, 277, 278, 284, 
-                                        285, 500, 277, 555, 400, 
+                                        285, 285, 286, 294, 307, 
+                                        685, 285, 286, 555, 400, 
+                                        285, 285, 286, 555, 400, 
                                         ]
                                 return new Decimal(x[id])
                         },
@@ -5888,11 +5910,43 @@ addLayer("f", {
                                 player.E.upgrades = filter(player.E.upgrades, [11,12,13,14,15,21])
                         },
                         unlocked(){
-                                return true
+                                return player.f.challenges[11] >= 1
                         },
                         countsAs: [],
                         completionLimit: 25,
                 }, // inChallenge("f", 12)
+                21: {
+                        name: "Only Finch",
+                        goal(){
+                                let id = player.f.challenges[21]
+                                let x = [
+                                        321, 350, 397, 419, 666, 
+                                        271, 272, 277, 278, 284, 
+                                        285, 285, 286, 555, 400, 
+                                        ]
+                                return new Decimal(x[id])
+                        },
+                        canComplete: () => player.T.points.gte(tmp.f.challenges[21].goal),
+                        fullDisplay(){
+                                let a = "Eagle gain is Finch effect"
+                                if (player.f.challenges[21] >= 4) a += "<sup>3/" + player.f.challenges[21] + "</sup>"
+                                a += br + "Goal: " + formatWhole(tmp.f.challenges[21].goal) + " Tiers" + br2
+                                a += "Reward: Tiers add " + formatWhole(player.f.challenges[21]) + "/10000 to the<br>Sieve base"
+                                a += " and keep all but " + formatWhole(100 - 2 * player.f.challenges[21]) + " Tiers (outside of challenges)"
+                                return a + br2 + "Completions: " + player.f.challenges[21] + "/25"
+                        },
+                        onEnter(){
+                                player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+                                player.T.upgrades = filter(player.T.upgrades, [11,12,13,14,15,21,22])
+                                player.E.milestones = filter(player.E.milestones, [1,2,3,4,5,6])
+                                player.E.upgrades = filter(player.E.upgrades, [11,12,13,14,15,21])
+                        },
+                        unlocked(){
+                                return player.f.challenges[12] >= 13
+                        },
+                        countsAs: [],
+                        completionLimit: 25,
+                }, // inChallenge("f", 21)
         },
         tabFormat: {
                 "Upgrades": {
@@ -5928,7 +5982,7 @@ addLayer("f", {
                                 ],
                                 "buyables"],
                         unlocked(){
-                                return false //|| player.g.unlocked
+                                return player.f.challenges[12] >= 13 //|| player.g.unlocked
                         },
                 },
                 "Milestones": {
@@ -6454,6 +6508,7 @@ addLayer("E", {
                 let exp = player.E.milestones.length + player.T.milestones.length + player.e.milestones.length + player.f.milestones.length
                 if (exp > 123) {
                         if (!player.f.activeChallenge) exp = 123
+                        else if (player.f.activeChallenge == 21) exp = 123
                         else if (canCompleteChallenge("f", player.f.activeChallenge)) exp = 123
                 }
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E23"].pow(exp))
@@ -6495,7 +6550,8 @@ addLayer("E", {
 
                 if (hasMilestone("f", 7))       ret = ret.div(tmp.f.milestones[7].effectPer.pow(player.T.points.min(tmp.f.milestones[7].start)))
 
-                if (hasUpgrade("e", 32))        ret = ret.times(player.f.points.max(1).pow(player.e.upgrades.length))
+                if (hasUpgrade("e", 32))        ret = ret.times(player.f.points.max(1).min("1e1000").pow(player.e.upgrades.length))
+                if (hasUpgrade("e", 33))        ret = ret.times(Decimal.pow(2, layerChallengeCompletions("f")).pow(player.T.points.sub(350).max(0)).pow(player.e.upgrades.length))
 
                 ret = ret.times(tmp.E.getPerTierMultiplier.pow(player.T.points))
 
@@ -6541,6 +6597,12 @@ addLayer("E", {
                 if (data.points.gte(tmp.T.nextAtDisp)) {
                         data.points = tmp.T.nextAtDisp
                         if (hasMilestone("f", 4)) doReset("T")
+                }
+
+                if (player.f.challenges[21] > 0 && !player.f.activeChallenge) {
+                        if (player.T.time > 1) {
+                                player.T.points = player.T.points.max(player.T.best.sub(100 - 2 * player.f.challenges[21]))
+                        }
                 }
 
                 data.best = data.best.max(data.points)
@@ -6776,6 +6838,20 @@ addLayer("E", {
                                 return "Reward: Tiers after 100 subtract .01 from the Filter base (halve after 150) and add .0002 to E 32's base but increase Filter's quadratic base."
                         },
                 }, // hasMilestone("E", 6)
+                7: {
+                        requirementDescription(){
+                                return "4e863 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("4e863")
+                        },
+                        unlocked(){
+                                return player.T.points.gte(340)
+                        },
+                        effectDescription(){
+                                return "Reward: Tiers increase base Finch gain by 1% and subtract from Sieve linear base."
+                        },
+                }, // hasMilestone("E", 7)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){

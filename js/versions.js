@@ -11,7 +11,7 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.f.challenges[12] >= 3
+	return player.f.points.gte("1e136")
 }
 
 var CHANELOG_VERSION = "v0.045"
