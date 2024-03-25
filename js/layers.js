@@ -3707,6 +3707,7 @@ addLayer("e", {
                 if (hasUpgrade("e", 31))        ret = ret.times(Decimal.pow(1.1, player.e.upgrades.length).pow(layerChallengeCompletions("f")))
                                                 ret = ret.times(tmp.f.challenges[12].rewardEffect)
                 if (hasUpgrade("E", 22))        ret = ret.times(player.T.points.max(1))
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["f12"])
                 
                 return ret
         },
@@ -4035,6 +4036,19 @@ addLayer("e", {
                                 return hasUpgrade("e", 33) // || player.g.unlocked
                         }, 
                 }, // hasUpgrade("e", 34)
+                35: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>E----"
+                        },
+                        description(){
+                                let a = "Double E 22 and E 32 bases"
+                                return a
+                        },
+                        cost: new Decimal("e123456789"),
+                        unlocked(){
+                                return hasUpgrade("e", 34) // || player.g.unlocked
+                        }, 
+                }, // hasUpgrade("e", 35)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
                         function(){
@@ -5642,6 +5656,8 @@ addLayer("f", {
         getGainMultPost(){
                 let ret = getGeneralizedInitialPostMult("f").div(400)
 
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["f12"])
+
                 if (hasMilestone("f", 7))       ret = ret.times(Decimal.pow(1.05, player.T.points.sub(tmp.f.milestones[7].start).max(0)))
                 if (hasUpgrade("e", 31))        ret = ret.times(Decimal.pow(1.1, player.e.upgrades.length).pow(layerChallengeCompletions("f")))
 
@@ -5740,6 +5756,9 @@ addLayer("f", {
         buyables: getLayerGeneralizedBuyableData("f", [
                         function(){
                                 return player.f.challenges[12] >= 13 //|| player.g.unlocked
+                        },
+                        function(){
+                                return player.f.challenges[12] >= 19 //|| player.g.unlocked
                         },
                 ]),
         milestones: {
@@ -5959,8 +5978,8 @@ addLayer("f", {
                                         225, 255, 251, 257, 271, 
                                         271, 272, 277, 278, 284, 
                                         285, 285, 286, 294, 307, 
-                                        373, 408, 666, 555, 400, 
-                                        285, 285, 286, 555, 400, 
+                                        373, 408, 410, 414, 415, 
+                                        414, 411, 700, 800, 900, 
                                         ]
                                 let ret = new Decimal(x[id])
                                 if (hasMilestone("f", 11)) ret = ret.sub(1)
@@ -5970,8 +5989,10 @@ addLayer("f", {
                         fullDisplay(){
                                 let a = "Root Emerald gain by " + format(player.f.challenges[12]/100 + 1.01) + br 
                                 a += "Goal: " + formatWhole(tmp.f.challenges[12].goal) + " Tiers" + br2
-                                a += "Reward: Multiply base Eagle gain by " + br + formatWhole(tmp.f.challenges[12].rewardEffect, 3)
-                                a += " and subtract " + format(player.f.challenges[12] * .36) + "<br>from the Lazy Tiers linear base"
+                                a += "Reward: Multiply base Eagle gain "
+                                if (player.f.challenges[12] >= 22) a += "and Duck buyable limit "
+                                a += "by " + formatWhole(tmp.f.challenges[12].rewardEffect, 3)
+                                a += " and subtract " + format(player.f.challenges[12] * .36) + " from the Lazy Tiers linear base"
                                 return a + br2 + "Completions: " + player.f.challenges[12] + "/25"
                         },
                         rewardEffect(){
@@ -5995,7 +6016,7 @@ addLayer("f", {
                                 let id = player.f.challenges[21]
                                 let x = [
                                         321, 350, 397, 419, 449, 
-                                        484, 517, 999, 278, 284, 
+                                        484, 517, 551, 999, 284, 
                                         285, 285, 286, 555, 400, 
                                         ]
                                 return new Decimal(x[id])
@@ -6926,6 +6947,20 @@ addLayer("E", {
                                 return "Reward: Tiers increase base Finch gain by 1% and subtract from Sieve linear base."
                         },
                 }, // hasMilestone("E", 7)
+                8: {
+                        requirementDescription(){
+                                return "3e1590 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("3e1590")
+                        },
+                        unlocked(){
+                                return player.T.points.gte(555)
+                        },
+                        effectDescription(){
+                                return "Reward: Tiers multiply Duck bulk amount and F 11 levels subtract .0001 to the F 12 base and subtract 1 from the linear cost base."
+                        },
+                }, // hasMilestone("E", 8)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){
@@ -7472,6 +7507,20 @@ addLayer("T", {
                                 return "Reward: Sieve gives free Filter levels but cube its linear cost base. Slightly weaken the Active Tiers nerf formula."
                         },
                 }, // hasMilestone("T", 15)
+                16: {
+                        requirementDescription(){
+                                return "561 Tiers"
+                        },
+                        done(){
+                                return player.T.points.gte("561")
+                        },
+                        unlocked(){
+                                return hasMilestone("T", 15)
+                        },
+                        effectDescription(){
+                                return "Reward: Tired Tiers does not give free levels and E 13 gives free E 12 levels."
+                        },
+                }, // hasMilestone("T", 16)
         },
         tabFormat: {
                 "Upgrades": {
