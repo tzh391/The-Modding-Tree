@@ -2939,6 +2939,21 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
         },
+        f13: {
+                name: "F 13",
+                func: "linp1",
+                effects: "base Finch per Finch challenge and Finch exponent",
+                base: {
+                        initial: new Decimal(.0001),
+                },
+                bases(){
+                        let b0 = new Decimal("1e2968")
+                        let b1 = new Decimal(1e20)
+                        let b2 = new Decimal(1.0005) // catalan
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

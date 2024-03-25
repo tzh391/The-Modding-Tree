@@ -5650,6 +5650,7 @@ addLayer("f", {
                 let ret = new Decimal(.0001) // 10^-4
 
                 if (hasMilestone("E", 7)) ret = ret.times(Decimal.pow(1.01, player.T.points))
+                                          ret = ret.times(CURRENT_BUYABLE_EFFECTS["f13"].pow(layerChallengeCompletions("f")))
                 
                 return ret
         },
@@ -5671,6 +5672,7 @@ addLayer("f", {
                 let exp1 = amt.max(10).log10()
 
                 let exp = exp1.times(exp1.pow(2).min(400)).min(7e4)
+                exp = exp.times(CURRENT_BUYABLE_EFFECTS["f13"])
 
                 let ret = amt.plus(1).pow(exp)
 
@@ -5759,6 +5761,9 @@ addLayer("f", {
                         },
                         function(){
                                 return player.f.challenges[12] >= 19 //|| player.g.unlocked
+                        },
+                        function(){
+                                return player.f.challenges[12] >= 23 //|| player.g.unlocked
                         },
                 ]),
         milestones: {
@@ -5979,7 +5984,7 @@ addLayer("f", {
                                         271, 272, 277, 278, 284, 
                                         285, 285, 286, 294, 307, 
                                         373, 408, 410, 414, 415, 
-                                        414, 411, 700, 800, 900, 
+                                        414, 411, 416, 420, 900, 
                                         ]
                                 let ret = new Decimal(x[id])
                                 if (hasMilestone("f", 11)) ret = ret.sub(1)
@@ -6016,8 +6021,8 @@ addLayer("f", {
                                 let id = player.f.challenges[21]
                                 let x = [
                                         321, 350, 397, 419, 449, 
-                                        484, 517, 551, 999, 284, 
-                                        285, 285, 286, 555, 400, 
+                                        484, 517, 551, 567, 575, 
+                                        999, 285, 286, 555, 400, 
                                         ]
                                 return new Decimal(x[id])
                         },
@@ -6628,6 +6633,8 @@ addLayer("E", {
                         if (player.T.points.eq(106)) ret = ret.times(1e30)
                 }
 
+                if (hasUpgrade("T", 23))        ret = ret.times(Decimal.pow(2, layerChallengeCompletions("f")**2).pow(player.T.points.sub(580).max(0)))
+
                 if (hasMilestone("E", 1))       ret = ret.div(Decimal.pow(player.T.points.gte(12) ? 5 : 2, player.T.points.min(player.T.points.gte(13) ? 0 : 7)))
 
                 if (hasUpgrade("E", 13))        ret = ret.times(Decimal.pow(7, player.E.upgrades.length - 2).max(1))
@@ -6682,7 +6689,7 @@ addLayer("E", {
                 if (player.e.best.gt("1e13500")) data.unlocked = true
                 if (!data.unlocked) return
                 
-                if (hasMilestone("e", 95) && !player.f.activeChallenge && player.T.points.gte(222)) {
+                if (hasMilestone("e", 95) && !player.f.activeChallenge && player.T.points.gte(222) && !(hasUpgrade("T", 23) && player.f.challenges[21] >= 10)) {
                         data.points = tmp.E.getResetGain
                 } else if (player.f.activeChallenge && player.f.challenges[player.f.activeChallenge] >= 5) {
                         data.points = data.points.div(tmp.E.getResetGain).plus(diff).min(10).times(tmp.E.getResetGain)
@@ -7261,7 +7268,7 @@ addLayer("T", {
                 }, // hasUpgrade("T", 21)
                 22: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>VI Tier"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>VII Tier"
                         },
                         description(){
                                 let a = "Tiers past 112 subtract .002 from Lazy Tier's quadratic base (max 30 times)"
@@ -7273,6 +7280,20 @@ addLayer("T", {
                                 return player.T.points.gte(114) && player.E.points.gte(1e232)
                         }, 
                 }, // hasUpgrade("T", 22)
+                23: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>VIII Tier"
+                        },
+                        description(){
+                                let a = "Tiers past 580 double Emerald gain per Finch Challenges<sup>2</sup> and at 10 Only Finch completions uncap Emerald gain"
+                                return a
+                        },
+                        cost: new Decimal(1),
+                        unlocked(){
+                                if (hasUpgrade("T", 23) || player.T.points.gte(582)) return true 
+                                return player.T.points.gte(581) && player.E.points.gte("8e1604")
+                        }, 
+                }, // hasUpgrade("T", 23)
         },
         milestones: {
                 1: {
