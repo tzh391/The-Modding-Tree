@@ -3024,6 +3024,19 @@ addLayer("d", {
                                 return hasUpgrade("d", 51) //|| player.g.unlocked
                         }, 
                 }, // hasUpgrade("d", 52)
+                53: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>D<sup>2</sup>---s"
+                        },
+                        description(){
+                                let a = "Tiers<sup>cbrt(F 11)</sup> multiplies E 31 base"
+                                return a
+                        },
+                        cost: new Decimal("e3.76e25"),
+                        unlocked(){
+                                return hasUpgrade("d", 52) //|| player.g.unlocked
+                        }, 
+                }, // hasUpgrade("d", 53)
                 
         },
         buyables: getLayerGeneralizedBuyableData("d", [
@@ -3988,7 +4001,7 @@ addLayer("e", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>Eag--"
                         },
                         description(){
-                                let a = "Finches (max 1e1000) multiply Emerald gain and improve Finch milestone 7"
+                                let a = "Finches (max 1e250) multiply Emerald gain and improve Finch milestone 7"
                                 return a
                         },
                         cost: new Decimal("e3381e3"),
@@ -4009,6 +4022,19 @@ addLayer("e", {
                                 return player.f.challenges[21] > 0 // || player.g.unlocked
                         }, 
                 }, // hasUpgrade("e", 33)
+                34: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Ea---"
+                        },
+                        description(){
+                                let a = "Increase F 11 linear cost base by .005 (disabled below 1e400 Finches)"
+                                return a
+                        },
+                        cost: new Decimal("e67676767"),
+                        unlocked(){
+                                return hasUpgrade("e", 33) // || player.g.unlocked
+                        }, 
+                }, // hasUpgrade("e", 34)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
                         function(){
@@ -5628,7 +5654,7 @@ addLayer("f", {
 
                 let exp1 = amt.max(10).log10()
 
-                let exp = exp1.times(exp1.pow(2).min(400))
+                let exp = exp1.times(exp1.pow(2).min(400)).min(7e4)
 
                 let ret = amt.plus(1).pow(exp)
 
@@ -5647,6 +5673,11 @@ addLayer("f", {
 
                 data.best = data.best.max(data.points)
                 doPassiveGain("f", diff)
+                if (hasMilestone("f", 11)) {
+                        if (player.f.points.div(tmp.f.getResetGain.max(1)).lte(20)) {
+                                player.f.points = player.f.points.max(tmp.f.getResetGain.max(1).times(20))
+                        }
+                }
                 
                 if (false) {
                         handleGeneralizedBuyableAutobuy(diff, "f")
@@ -5692,6 +5723,19 @@ addLayer("f", {
                                 return layerChallengeCompletions("f") >= 36 //|| player.g.unlocked
                         }, 
                 }, // hasUpgrade("f", 12)
+                13: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>F--ch"
+                        },
+                        description(){
+                                let a = "Above 456 Tiers Miner gives free Faster Sifter levels but Miner base is 1"
+                                return a
+                        },
+                        cost: new Decimal(1e243),
+                        unlocked(){
+                                return layerChallengeCompletions("f") >= 40 //|| player.g.unlocked
+                        }, 
+                }, // hasUpgrade("f", 13)
         },
         buyables: getLayerGeneralizedBuyableData("f", [
                         function(){
@@ -5840,6 +5884,34 @@ addLayer("f", {
                                 return "Reward: Remove the ability to Finch prestige, gain 100% of your Finch gained on reset per second, and gain one Finch reset per second."
                         },
                 }, // hasMilestone("f", 9)
+                10: {
+                        requirementDescription(){
+                                return "1.80e308 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte(Decimal.pow(2, 1024))
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Per Tier past 500 add .001 to Miner's base and make it apply per Finch challenge but increase F 11 linear cost base by .1 ."
+                        },
+                }, // hasMilestone("f", 10)
+                11: {
+                        requirementDescription(){
+                                return "1e512 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e512")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: You always have at least 20 seconds of Finch production and subtract 1 from the Passive Gain goal."
+                        },
+                }, // hasMilestone("f", 11)
         },
         challenges: {
                 11: {
@@ -5887,10 +5959,12 @@ addLayer("f", {
                                         225, 255, 251, 257, 271, 
                                         271, 272, 277, 278, 284, 
                                         285, 285, 286, 294, 307, 
-                                        685, 285, 286, 555, 400, 
+                                        373, 408, 666, 555, 400, 
                                         285, 285, 286, 555, 400, 
                                         ]
-                                return new Decimal(x[id])
+                                let ret = new Decimal(x[id])
+                                if (hasMilestone("f", 11)) ret = ret.sub(1)
+                                return ret
                         },
                         canComplete: () => player.T.points.gte(tmp.f.challenges[12].goal),
                         fullDisplay(){
@@ -5920,8 +5994,8 @@ addLayer("f", {
                         goal(){
                                 let id = player.f.challenges[21]
                                 let x = [
-                                        321, 350, 397, 419, 666, 
-                                        271, 272, 277, 278, 284, 
+                                        321, 350, 397, 419, 449, 
+                                        484, 517, 999, 278, 284, 
                                         285, 285, 286, 555, 400, 
                                         ]
                                 return new Decimal(x[id])
@@ -6504,7 +6578,7 @@ addLayer("E", {
                 ret = ret.times(tmp.f.effect.min(1e100))
 
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E11"])
-                ret = ret.times(CURRENT_BUYABLE_EFFECTS["E21"])
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["E21"].pow(hasMilestone("f", 10) ? layerChallengeCompletions("f") : 1))
                 let exp = player.E.milestones.length + player.T.milestones.length + player.e.milestones.length + player.f.milestones.length
                 if (exp > 123) {
                         if (!player.f.activeChallenge) exp = 123
@@ -6550,7 +6624,7 @@ addLayer("E", {
 
                 if (hasMilestone("f", 7))       ret = ret.div(tmp.f.milestones[7].effectPer.pow(player.T.points.min(tmp.f.milestones[7].start)))
 
-                if (hasUpgrade("e", 32))        ret = ret.times(player.f.points.max(1).min("1e1000").pow(player.e.upgrades.length))
+                if (hasUpgrade("e", 32))        ret = ret.times(player.f.points.max(1).min(1e250).pow(player.e.upgrades.length))
                 if (hasUpgrade("e", 33))        ret = ret.times(Decimal.pow(2, layerChallengeCompletions("f")).pow(player.T.points.sub(350).max(0)).pow(player.e.upgrades.length))
 
                 ret = ret.times(tmp.E.getPerTierMultiplier.pow(player.T.points))

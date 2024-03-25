@@ -11,7 +11,7 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.f.points.gte("1e136")
+	return player.f.points.gte("1e649")
 }
 
 var CHANELOG_VERSION = "v0.045"

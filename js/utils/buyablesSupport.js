@@ -2482,6 +2482,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "E 13 and D 22 base",
                 base: {
                         initial: new Decimal(.0001),
+                        1: {
+                                active(){
+                                        return hasUpgrade("d", 53)
+                                },
+                                type: "mult",
+                                amount(){
+                                        return player.T.points.max(1).pow(player.f.buyables[11].max(1).cbrt())
+                                }
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e6304")
@@ -2649,6 +2658,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
                 E13: {active:() => player.E.points.gte(tmp.E.milestones[3].goal.times(1e8)) && hasMilestone("E", 3) && player.T.points.gte(26)},
+                E21: {active:() => hasUpgrade("f", 13)},
         },
         E13: {
                 name: "Lazy Tiers",
@@ -2686,7 +2696,9 @@ var MAIN_BUYABLE_DATA = {
         E21: {
                 name: "Miner",
                 func: "exp",
-                effects: "Emerald gain",
+                effects(){
+                        return hasMilestone("f", 10) ? "Emerald gain per Finch Challenge" : "Emerald gain"
+                },
                 base: {
                         initial: new Decimal(2),
                         1: {
@@ -2705,6 +2717,24 @@ var MAIN_BUYABLE_DATA = {
                                 type: "add",
                                 amount(){
                                         return player.T.points.sub(65).max(0).min(27)
+                                }
+                        },
+                        3: {
+                                active(){
+                                        return hasUpgrade("f", 13)
+                                },
+                                type: "set",
+                                amount(){
+                                        return 1
+                                }
+                        },
+                        4: {
+                                active(){
+                                        return hasMilestone("f", 10)
+                                },
+                                type: "add",
+                                amount(){
+                                        return player.T.points.sub(500).max(0).div(1e3)
                                 }
                         }
                 },
@@ -2857,6 +2887,9 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal(1e34)
                         let b1 = new Decimal(4)
                         let b2 = new Decimal(1.0001) // catalan
+
+                        if (hasMilestone("f", 10)) b1 = b1.plus(.1)
+                        if (hasUpgrade("e", 34) && player.f.points.gte("1e400")) b1 = b1.plus(player.e.upgrades.length / 200)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
