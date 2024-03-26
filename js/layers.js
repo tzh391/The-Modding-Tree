@@ -5834,7 +5834,7 @@ addLayer("f", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Keep Emerald buyables on Tier reset and Finch resets + 1 multiply Emerald and Eagle bulk amount and keep their autobuyers. Improve many Eagle milestones."
+                                return "Reward: Keep Emerald milestones on Tier reset and Finch resets + 1 multiply Emerald and Eagle bulk amount and keep their autobuyers. Improve many Eagle milestones."
                         },
                 }, // hasMilestone("f", 5)
                 6: {
