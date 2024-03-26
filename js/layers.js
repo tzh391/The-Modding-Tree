@@ -7093,7 +7093,7 @@ addLayer("E", {
                         let keep = []
                         for (j in data.milestones){
                                 i = data.milestones[j]
-                                if (tmp.E.milestones[i].goal.lt(1)) {
+                                if (tmp.E.milestones[i].goal.lt(1) && layer == "T") {
                                         keep.push(i)
                                 }
                         }
