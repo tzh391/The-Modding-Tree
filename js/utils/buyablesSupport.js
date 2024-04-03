@@ -2518,6 +2518,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                e32: {active:() => hasMilestone("f", 12)},
         },
         e32: {
                 name: "E 32",
@@ -2620,6 +2621,15 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["E12"]
                                 },
                         },
+                        2: {
+                                active(){
+                                        return true 
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.T.buyables[11].effect
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(3)
@@ -2634,7 +2644,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
                 E12: {active:() => hasUpgrade("E", 15)},
-                E13: {active:() => hasMilestone("T", 5)},
+                E13: {active:() => hasMilestone("T", 5) && !hasUpgrade("T", 24)},
                 E22: {active:() => hasMilestone("e", 86) && !hasMilestone("T", 16)},
         },
         E12: {
@@ -2661,6 +2671,33 @@ var MAIN_BUYABLE_DATA = {
                                         return 1.01
                                 },
                         },
+                        3: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["E32"]
+                                }
+                        },
+                        4: {
+                                active(){
+                                        return hasUpgrade("f", 15)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .293
+                                }
+                        },
+                        5: {
+                                active(){
+                                        return true 
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.T.buyables[11].effect
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e6)
@@ -2676,7 +2713,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
-                E13: {active:() => player.E.points.gte(tmp.E.milestones[3].goal.times(1e8)) && hasMilestone("E", 3) && player.T.points.gte(26)},
+                E13: {active:() => player.E.points.gte(tmp.E.milestones[3].goal.times(1e8)) && hasMilestone("E", 3) && player.T.points.gte(26) && !hasUpgrade("T", 24)},
                 E21: {active:() => hasUpgrade("f", 13)},
         },
         E13: {
@@ -2696,7 +2733,34 @@ var MAIN_BUYABLE_DATA = {
                                 amount(){
                                         return player.E.milestones.length / 100
                                 }
-                        }
+                        },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["E32"].min(1)
+                                }
+                        },
+                        3: {
+                                active(){
+                                        return hasUpgrade("T", 24)
+                                },
+                                type: "add",
+                                amount(){
+                                        return -.03
+                                },
+                        },
+                        4: {
+                                active(){
+                                        return true 
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.T.buyables[11].effect
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e8)
@@ -2711,6 +2775,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                E32: {active:() => hasUpgrade("T", 24)},
         },
         E21: {
                 name: "Miner",
@@ -2755,7 +2820,34 @@ var MAIN_BUYABLE_DATA = {
                                 amount(){
                                         return player.T.points.sub(500).max(0).div(1e3)
                                 }
-                        }
+                        },
+                        5: {
+                                active(){
+                                        return hasUpgrade("f", 14)
+                                },
+                                type: "add",
+                                amount(){
+                                        return .4
+                                }
+                        },
+                        6: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["E32"]
+                                }
+                        },
+                        7: {
+                                active(){
+                                        return true 
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.T.buyables[11].effect
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e15)
@@ -2766,9 +2858,12 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("E", 4))       b1 = b1.sub(getBuyableAmount("e", 33).div(200).min(1))
                         if (hasUpgrade("f", 11))        b1 = b1.sub(layerChallengeCompletions("f") / 50)
 
+                        if (hasUpgrade("f", 14))        b2 = new Decimal(1.0005)
+
                         return [b0.max(1), b1.max(1), b2]
                 },
                 E22: {active:() => hasMilestone("e", 85) && !hasMilestone("T", 16)},
+                E31: {active:() => hasMilestone("f", 12)},
         },
         E22: {
                 name: "Tired Tiers",
@@ -2813,6 +2908,24 @@ var MAIN_BUYABLE_DATA = {
                                         return tmp.f.challenges[11].rewardEffect
                                 },
                         },
+                        5: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["E32"].min(1)
+                                }
+                        },
+                        6: {
+                                active(){
+                                        return true 
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.T.buyables[11].effect
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e79)
@@ -2823,7 +2936,10 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("e", 88)) b1 = b1.div(Decimal.pow(2, player.T.points.sub(57).max(0)))
                         if (hasMilestone("e", 90)) {
                                 b2 = b2.sub(getBuyableAmount("e", 33).min(1000).div(1000))
-                                b2 = b2.sub(player.T.points.min(900).div(1000))
+                                b2 = b2.sub(player.T.points.min(700).div(1000))
+                        }
+                        if (hasUpgrade("d", 55)) {
+                                b2 = b2.sub(player.f.buyables[13].div(10).floor().div(1e4).min(.1))
                         }
 
                         return [b0.max(1), b1.max(1), b2]
@@ -2844,6 +2960,24 @@ var MAIN_BUYABLE_DATA = {
                                 type: "add",
                                 amount(){
                                         return player.T.points.sub(104).max(0).times(.01)
+                                },
+                        },
+                        2: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["E32"]
+                                }
+                        },
+                        3: {
+                                active(){
+                                        return true 
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.T.buyables[11].effect
                                 },
                         },
                 },
@@ -2880,6 +3014,42 @@ var MAIN_BUYABLE_DATA = {
                                         return player.T.points.times(player.f.challenges[21]/10000)
                                 },
                         },
+                        2: {
+                                active(){
+                                        return hasMilestone("f", 12)
+                                },
+                                type: "add",
+                                amount(){
+                                        return -.1
+                                }
+                        },
+                        3: {
+                                active(){
+                                        return true
+                                },
+                                type: "add",
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["E32"]
+                                }
+                        },
+                        4: {
+                                active(){
+                                        return hasUpgrade("f", 15)
+                                },
+                                type: "add",
+                                amount(){
+                                        return player.T.points.sub(1500).div(1e4)
+                                }
+                        },
+                        5: {
+                                active(){
+                                        return true 
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.T.buyables[11].effect
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e620")
@@ -2890,7 +3060,50 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("f", 12)) {
                                 b0 = b0.div(player.f.points.max(1).pow(Math.max(player.f.challenges[12] - 10, 0)))
                         }
-                        if (hasMilestone("E", 7)) b1 = b1.sub(player.T.points)
+                        if (hasMilestone("E", 9)) b1 = b1.plus(10)
+                        if (hasMilestone("E", 7)) b1 = b1.sub(player.T.points.min(940))
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        E32: {
+                name: "Better Everything",
+                func: "lin",
+                effects: "all previous bases (max +1 for Tier reductions)",
+                base: {
+                        initial: new Decimal(.0001),
+                        1: {
+                                active(){
+                                        return hasMilestone("f", 13)
+                                },
+                                type: "times",
+                                amount(){
+                                        return Math.max(1, player.f.upgrades.length)
+                                }
+                        },
+                        2: {
+                                active(){
+                                        return true 
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.T.buyables[11].effect
+                                },
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e2080")
+                        let b1 = new Decimal(1e10)
+                        let b2 = new Decimal(3)
+
+                        if (hasMilestone("T", 17)) {
+                                b2 = b2.sub(player.T.points.div(1000).min(1.5))
+                                b0 = b0.div(player.T.points.sub(785).min(75).max(0).pow10().pow(15))
+                                b0 = b0.div(player.T.points.sub(860).max(0).pow10().pow(5))
+                        }
+                        if (hasMilestone("E", 9)) {
+                                b1 = b1.div(Decimal.pow(1.13, player.E.buyables[32]))
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2901,6 +3114,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Finch gain exponent",
                 base: {
                         initial: new Decimal(.1),
+                        1: {
+                                active(){
+                                        return true 
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.T.buyables[12].effect
+                                },
+                        },
                 },
                 bases(){
                         let b0 = new Decimal(1e34)
@@ -2909,6 +3131,11 @@ var MAIN_BUYABLE_DATA = {
 
                         if (hasMilestone("f", 10)) b1 = b1.plus(.1)
                         if (hasUpgrade("e", 34) && player.f.points.gte("1e400")) b1 = b1.plus(player.e.upgrades.length / 200)
+                        if (hasUpgrade("E", 23)) {
+                                b1 = b1.sub(getBuyableAmount("f", 13).div(10).floor().div(1000))
+                        }
+                        if (hasUpgrade("e", 41)) b0 = b0.times(Decimal.pow(1e4, player.e.upgrades.length))
+                        if (hasMilestone("f", 13)) b0 = b0.div(getBuyableAmount("E", 32).pow10())
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2935,6 +3162,8 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0002) // catalan
 
                         if (hasMilestone("E", 8)) b1 = b1.sub(player.f.buyables[11])
+                        if (hasUpgrade("T", 25)) b0 = b0.times("1e850")
+                        if (hasUpgrade("f", 14)) b0 = b0.div(getBuyableAmount("f", 13).pow10())
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -2942,7 +3171,9 @@ var MAIN_BUYABLE_DATA = {
         f13: {
                 name: "F 13",
                 func: "linp1",
-                effects: "base Finch per Finch challenge and Finch exponent",
+                effects(){
+                        return hasChallenge("f", 22) ? "base Finch (60 times)" : "base Finch per Finch challenge and Finch exponent"
+                },
                 base: {
                         initial: new Decimal(.0001),
                 },
@@ -3737,6 +3968,7 @@ function handleGeneralizedBuyableAutobuy(diff, layer){
                 let cbs = canBuySimultaniously(layer)
                 for (let i = 0; i < 9; i++) {
                         let id = ids[i]
+                        //if (id == 32 && layer == "E" && !false) continue
                         if (tlb[id] && tlb[id].unlocked) {
                                 hasBoughtYet = layers[layer].buyables[id].buyMax(amt) || hasBoughtYet
                         }

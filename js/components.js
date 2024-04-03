@@ -287,6 +287,13 @@ function loadVue() {
 		`
 	})
 
+	Vue.component('rank-display', {
+		props: ['layer', 'data'],
+		template: `
+		<div><span v-if="player.T.ranks.lt('1e1000')">You have </span><h2 v-bind:style="{'color': tmp[layer].color, 'text-shadow': '0px 0px 10px ' + tmp[layer].color}">{{formatCurrency(player.T.ranks)}}</h2> {{improveName(data)}}<br><br></div>
+		`
+	})
+
 	Vue.component('secondary-display3', {
 		props: ['layer', 'data'],
 		template: `
