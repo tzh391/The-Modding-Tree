@@ -3062,6 +3062,7 @@ var MAIN_BUYABLE_DATA = {
                         }
                         if (hasMilestone("E", 9)) b1 = b1.plus(10)
                         if (hasMilestone("E", 7)) b1 = b1.sub(player.T.points.min(940))
+                        if (hasMilestone("f", 14)) b1 = b1.sub(1)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3163,7 +3164,11 @@ var MAIN_BUYABLE_DATA = {
 
                         if (hasMilestone("E", 8)) b1 = b1.sub(player.f.buyables[11])
                         if (hasUpgrade("T", 25)) b0 = b0.times("1e850")
-                        if (hasUpgrade("f", 14)) b0 = b0.div(getBuyableAmount("f", 13).pow10())
+                        if (hasMilestone("E", 10)) b0 = b0.times("1e350")
+                        if (hasUpgrade("f", 14)) {
+                                b0 = b0.div(getBuyableAmount("f", 13).min(1500).pow10())
+                                b0 = b0.div(getBuyableAmount("f", 13).sub(1500).max(0).div(hasMilestone("f", 14) ? 1 : 3).floor().pow10())
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3181,6 +3186,14 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e2968")
                         let b1 = new Decimal(1e20)
                         let b2 = new Decimal(1.0005) // catalan
+                        
+                        if (getBuyableAmount("f", 13).gte(1500)) b1 = b1.times(1.25)
+                        if (getBuyableAmount("f", 13).gte(1800)) b1 = b1.times(1.08)
+                        if (getBuyableAmount("f", 13).gte(1825)) b1 = b1.times(28/27)
+                        if (getBuyableAmount("f", 13).gte(1875)) {
+                                b1 = b1.times(10)
+                                b0 = b0.div("1e1868")
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
