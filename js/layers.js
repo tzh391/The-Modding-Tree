@@ -4095,6 +4095,19 @@ addLayer("e", {
                                 return hasUpgrade("f", 15) // || player.g.unlocked
                         }, 
                 }, // hasUpgrade("e", 41)
+                42: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>E<sup>2</sup>-gle"
+                        },
+                        description(){
+                                let a = "Multiply F 12 cost base by 1e6"
+                                return a
+                        },
+                        cost: new Decimal("e3.23e10"),
+                        unlocked(){
+                                return hasUpgrade("e", 41) // || player.g.unlocked
+                        }, 
+                }, // hasUpgrade("e", 42)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
                         function(){
@@ -7192,7 +7205,7 @@ addLayer("E", {
                                 return player.E.points.gte("1e2685")
                         },
                         unlocked(){
-                                return player.T.points.gte(555)
+                                return hasMilestone("E", 8)
                         },
                         onComplete(){
                                 player.E.buyables[31] = decimalZero
@@ -7209,12 +7222,26 @@ addLayer("E", {
                                 return player.E.points.gte("1e2951")
                         },
                         unlocked(){
-                                return player.T.points.gte(555)
+                                return hasMilestone("E", 9)
                         },
                         effectDescription(){
                                 return "Reward: Increase F 12 base cost by 1e350 and unlock Rank II. At 4e44,444 and 1e48,000 Finches, decrease base Finch gain by 2% and 4.5%."
                         },
                 }, // hasMilestone("E", 10)
+                11: {
+                        requirementDescription(){
+                                return "1e3015 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("1e3015")
+                        },
+                        unlocked(){
+                                return hasMilestone("E", 10)
+                        },
+                        effectDescription(){
+                                return "Reward: Tiers past 1000 subtract .1 from the Sieve linear cost base but F 13 linear cost base is 15e20."
+                        },
+                }, // hasMilestone("E", 11)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){
