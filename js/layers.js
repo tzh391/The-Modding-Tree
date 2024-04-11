@@ -4087,7 +4087,7 @@ addLayer("e", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>E<sup>2</sup>agle"
                         },
                         description(){
-                                let a = "Multiply F 11 base by 10,000"
+                                let a = "Multiply F 11 base cost by 10,000"
                                 return a
                         },
                         cost: new Decimal("e4450600e3"),
@@ -5850,7 +5850,7 @@ addLayer("f", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>F-n-h"
                         },
                         description(){
-                                let a = "Add .293 to Faster Shift base and .0001 to the Sieve base per Tier - 1500"
+                                let a = "Add .293 to Faster Sifter base and .0001 to the Sieve base per Tier - 1500"
                                 return a
                         },
                         cost: new Decimal("1e13992"),
@@ -5884,6 +5884,22 @@ addLayer("f", {
                                 return hasUpgrade("f", 21) //|| player.g.unlocked
                         }, 
                 }, // hasUpgrade("f", 22)
+                23: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Finc-"
+                        },
+                        description(){
+                                let a = "E 23 gives free E 22 instead of E 12 levels but increase F 11 / Sieve linear cost base by .119 / 11"
+                                return a
+                        },
+                        onPurchase(){
+                                player.E.buyables[31] = decimalZero
+                        },
+                        cost: new Decimal("1e50886"),
+                        unlocked(){
+                                return hasUpgrade("f", 22) //|| player.g.unlocked
+                        }, 
+                }, // hasUpgrade("f", 23)
         },
         buyables: getLayerGeneralizedBuyableData("f", [
                         function(){
@@ -7886,7 +7902,7 @@ addLayer("T", {
                         display(){
                                 if (!player.shiftAlias) {
                                         let amt = "<b><h2>Amount</h2>: " + getBuyableAmountDisplay("T", 11) + "</b><br>"
-                                        let eff = "<b><h2>Effect</h2>: " + format(tmp.T.buyables[11].effect.times(1000), 4) + "/1000 to all Tier buyables bases</b>" + br
+                                        let eff = "<b><h2>Effect</h2>: " + format(tmp.T.buyables[11].effect.times(1000), 4) + "/1000 to all Emerald buyables bases</b>" + br
                                         let cost = "<b><h2>Cost</h2>: " + formatWhole(tmp.T.buyables[11].cost) + " ranks</b><br>"
         
                                         return br + amt + eff + cost + "Shift to see details"
