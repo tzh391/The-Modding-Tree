@@ -1,6 +1,6 @@
 // Set your version in num and name
 var VERSION = {
-	num: ".046.1",
+	num: ".047",
 	name: /*"Advil's Auspicious Acension"*/ "",
 }
 
@@ -11,13 +11,24 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.f.points.gte("1e3441")
+	return player.f.points.gte("1e50862")
 }
 
-var CHANELOG_VERSION = "v0.046"
+var CHANELOG_VERSION = "v0.047"
 
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC0000'>v0.047</h3><br>
+		- Balanced until 1e50862 Finches.<br>
+		- Added four Finch upgrades.<br>
+		- Added a Finch challenge.<br>
+		- Added three Finch milestones.<br>
+		- Added a Tier milestone.<br>
+		- Added six Tier buyables.<br>
+		- Added two Tier upgrades.<br>
+		- Added two Duck upgrades.<br>
+		- Added two Eagle upgrades.<br>
+		- Added a custom save.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.046</h3><br>
 		- Balanced until 1e3441 Finches.<br>
 		- Added a new layer, Finches!<br>

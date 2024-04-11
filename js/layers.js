@@ -6237,7 +6237,7 @@ addLayer("f", {
                                 a += br + "Goal: " + formatWhole(tmp.f.challenges[22].goal) + " Tiers" + br2
                                 a += "Reward: F 13's effect is nerfed and disable Eagle Milestones 81, 82, and 83."
                                 if (player.f.challenges[22] >= 2) a = a.replace("and 83", "83, 84, and 87")
-                                return a + br2 + "Completions: " + player.f.challenges[22] + "/10"
+                                return a + br2 + "Completions: " + player.f.challenges[22] + "/2"
                         },
                         onEnter(){
                                 player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
