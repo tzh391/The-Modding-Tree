@@ -2608,6 +2608,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                f11: {active:() => hasUpgrade("e", 43)},
         },
         E11: {
                 name: "Sifter",
@@ -3145,6 +3146,8 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("e", 41)) b0 = b0.times(Decimal.pow(1e4, player.e.upgrades.length))
                         if (hasMilestone("f", 13)) b0 = b0.div(getBuyableAmount("E", 32).pow10())
                         if (hasUpgrade("f", 23)) b1 = b1.plus(.119)
+                        if (hasMilestone("E", 13)) b0 = b0.times(1e88)
+                        if (hasUpgrade("f", 24)) b1 = b1.plus(.063)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3178,6 +3181,7 @@ var MAIN_BUYABLE_DATA = {
                                 b0 = b0.div(getBuyableAmount("f", 13).sub(1500).max(0).div(hasMilestone("f", 14) ? 1 : 3).floor().pow10())
                         }
                         if (hasUpgrade("e", 42)) b0 = b0.times(Decimal.pow(1e20, player.e.upgrades.length))
+                        if (hasMilestone("E", 13)) b0 = b0.times(1e88)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3223,6 +3227,20 @@ var MAIN_BUYABLE_DATA = {
                         if (getBuyableAmount("f", 13).gte(2550)) {
                                 b1 = new Decimal(2.11e21)
                         }
+                        if (getBuyableAmount("f", 13).gte(2650)) {
+                                b1 = new Decimal(2.18e21)
+                        }
+                        if (getBuyableAmount("f", 13).gte(2700)) {
+                                b1 = new Decimal(2.24e21)
+                        }
+                        if (getBuyableAmount("f", 13).gte(2760)) {
+                                b1 = new Decimal(2.35e21)
+                        }
+                        if (getBuyableAmount("f", 13).gte(2800)) {
+                                b1 = new Decimal(2.42e21)
+                        }
+
+                        if (hasMilestone("E", 13)) b0 = b0.times(1e88)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3240,6 +3258,10 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0014) // catalan
 
                         if (hasMilestone("f", 15)) b1 = b1.div(5e28)
+                        if (hasMilestone("E", 13)) {
+                                b0 = b0.times(1e88)
+                                b1 = Decimal.pow(2, 1024)
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
