@@ -5715,7 +5715,12 @@ addLayer("f", {
 
                 if (hasMilestone("E", 7)) {
                         ret = ret.times(Decimal.pow(1.01, player.T.points.min(777)))
-                        ret = ret.times(Decimal.pow(1.01, player.T.points.sub(777).max(0).div(2)))
+                        if (hasMilestone("f", 15) || player.T.points.gte(1200)) {
+                                ret = ret.times(Decimal.pow(1.01, player.T.points.min(1024).sub(777).max(0).div(2)))
+                                ret = ret.times(Decimal.pow(1.01, player.T.points.sub(1024).max(0).div(4)))
+                        } else {
+                                ret = ret.times(Decimal.pow(1.01, player.T.points.sub(777).max(0).div(2)))
+                        }
                 }
                 let exp = new Decimal(hasChallenge("f", 22) ? 60 : layerChallengeCompletions("f"))
                 exp = exp.plus(tmp.T.buyables[22].effect)
@@ -5724,6 +5729,7 @@ addLayer("f", {
                         if (player.f.points.gte("4e44444"))     ret = ret.times(.98)
                         if (player.f.points.gte("1e48000"))     ret = ret.times(.955)
                 }
+                if (hasMilestone("E", 12))      ret = ret.times(.923)
                 
                 return ret
         },
@@ -5731,6 +5737,7 @@ addLayer("f", {
                 let ret = getGeneralizedInitialPostMult("f").div(400)
 
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["f12"])
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["f21"])
 
                 if (hasMilestone("f", 7))       ret = ret.times(Decimal.pow(1.05, player.T.points.sub(tmp.f.milestones[7].start).max(0)))
                 if (hasUpgrade("e", 31))        ret = ret.times(Decimal.pow(1.1, player.e.upgrades.length).pow(layerChallengeCompletions("f")))
@@ -5910,6 +5917,9 @@ addLayer("f", {
                         },
                         function(){
                                 return player.f.challenges[12] >= 23 //|| player.g.unlocked
+                        },
+                        function(){
+                                return player.f.buyables[12] >= 9500 //|| player.g.unlocked
                         },
                 ]),
         milestones: {
@@ -6124,6 +6134,20 @@ addLayer("f", {
                                 return "Reward: Subtract 1 from Sieve's linear cost base and F 13 always divides F 12 base cost."
                         },
                 }, // hasMilestone("f", 14)
+                15: {
+                        requirementDescription(){
+                                return "1e57,052 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e57052")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Tiers past 1024's multiplier to base Finch gain is halved, reduce F 21 linear cost base by 5e28, and E 12 gives free E 11 levels."
+                        },
+                }, // hasMilestone("f", 15)
         },
         challenges: {
                 11: {
@@ -7258,6 +7282,20 @@ addLayer("E", {
                                 return "Reward: Tiers past 1000 subtract .1 from the Sieve linear cost base but F 13 linear cost base is 15e20."
                         },
                 }, // hasMilestone("E", 11)
+                12: {
+                        requirementDescription(){
+                                return "3e3065 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("3e3065")
+                        },
+                        unlocked(){
+                                return hasMilestone("E", 11)
+                        },
+                        effectDescription(){
+                                return "Reward: E 12 gives free E 11 levels but decrease base Finch gain by 7.7%."
+                        },
+                }, // hasMilestone("E", 12)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){

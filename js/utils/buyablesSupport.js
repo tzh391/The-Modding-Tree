@@ -2204,6 +2204,8 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                e12: {active:() => hasMilestone("E", 12)},
+                e13: {active:() => hasMilestone("f", 15)},
                 e21: {active:() => hasMilestone("T", 8)},
                 e22: {active:() => hasMilestone("e", 53)},
                 e23: {active:() => hasMilestone("e", 63) && !hasMilestone("e", 71)},
@@ -3131,7 +3133,7 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal(1e34)
+                        let b0 = new Decimal(1e34).div(CURRENT_BUYABLE_EFFECTS["f21"])
                         let b1 = new Decimal(4)
                         let b2 = new Decimal(1.0001) // catalan
 
@@ -3164,7 +3166,7 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1038")
+                        let b0 = new Decimal("1e1038").div(CURRENT_BUYABLE_EFFECTS["f21"])
                         let b1 = new Decimal(1e5)
                         let b2 = new Decimal(1.0002) // catalan
 
@@ -3190,7 +3192,7 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.0001),
                 },
                 bases(){
-                        let b0 = new Decimal("1e2968")
+                        let b0 = new Decimal("1e2968").div(CURRENT_BUYABLE_EFFECTS["f21"])
                         let b1 = new Decimal(1e20)
                         let b2 = new Decimal(1.0005) // catalan
                         
@@ -3202,6 +3204,42 @@ var MAIN_BUYABLE_DATA = {
                                 b0 = b0.div("1e1868")
                         }
                         if (hasMilestone("E", 11))      b1 = new Decimal(1.5e21)
+                        if (getBuyableAmount("f", 13).gte(2400)) {
+                                b0 = b0.times(1e11)
+                                b1 = new Decimal(1.51e21)
+                        }
+                        if (getBuyableAmount("f", 13).gte(2410)) {
+                                b1 = new Decimal(1.55e21)
+                        }
+                        if (getBuyableAmount("f", 13).gte(2410)) {
+                                b1 = new Decimal(1.6e21)
+                        }
+                        if (getBuyableAmount("f", 13).gte(2450)) {
+                                b1 = new Decimal(1.95e21)
+                        }
+                        if (getBuyableAmount("f", 13).gte(2500)) {
+                                b1 = new Decimal(2e21)
+                        }
+                        if (getBuyableAmount("f", 13).gte(2550)) {
+                                b1 = new Decimal(2.11e21)
+                        }
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        f21: {
+                name: "F 21",
+                func: "exp",
+                effects: "Finches and divides F buyable base costs",
+                base: {
+                        initial: new Decimal(10),
+                },
+                bases(){
+                        let b0 = new Decimal("1e54639").div(CURRENT_BUYABLE_EFFECTS["f21"])
+                        let b1 = new Decimal("5e1125")
+                        let b2 = new Decimal(1.0014) // catalan
+
+                        if (hasMilestone("f", 15)) b1 = b1.div(5e28)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
