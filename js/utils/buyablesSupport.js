@@ -2634,6 +2634,15 @@ var MAIN_BUYABLE_DATA = {
                                         return tmp.T.buyables[11].effect
                                 },
                         },
+                        3: {
+                                active(){
+                                        return hasMilestone("E", 14)
+                                },
+                                type: "mult",
+                                amount(){
+                                        return player.T.points.max(1000).div(1000).pow(player.T.points.sub(1063).max(0).min(500))
+                                }
+                        }
                 },
                 bases(){
                         let b0 = new Decimal(3)
@@ -2852,6 +2861,15 @@ var MAIN_BUYABLE_DATA = {
                                         return tmp.T.buyables[11].effect
                                 },
                         },
+                        8: {
+                                active(){
+                                        return hasMilestone("E", 15)
+                                },
+                                type: "mult",
+                                amount(){
+                                        return Decimal.pow(1.005, player.T.points.sub(1095).min(50).max(0))
+                                }
+                        }
                 },
                 bases(){
                         let b0 = new Decimal(1e15)
@@ -3113,6 +3131,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("E", 9)) {
                                 b1 = b1.div(Decimal.pow(1.13, player.E.buyables[32]))
                         }
+                        if (hasMilestone("E", 15)) b0 = b0.times("1e600")
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3142,12 +3161,14 @@ var MAIN_BUYABLE_DATA = {
                         if (hasUpgrade("e", 34) && player.f.points.gte("1e400")) b1 = b1.plus(player.e.upgrades.length / 200)
                         if (hasUpgrade("E", 23)) {
                                 b1 = b1.sub(getBuyableAmount("f", 13).div(10).floor().div(1000))
+                                //b1 = b1.sub(getBuyableAmount("f", 13).sub(2810).max(0).div(14).floor().div(1000))
                         }
                         if (hasUpgrade("e", 41)) b0 = b0.times(Decimal.pow(1e4, player.e.upgrades.length))
                         if (hasMilestone("f", 13)) b0 = b0.div(getBuyableAmount("E", 32).pow10())
                         if (hasUpgrade("f", 23)) b1 = b1.plus(.119)
                         if (hasMilestone("E", 13)) b0 = b0.times(1e88)
                         if (hasUpgrade("f", 24)) b1 = b1.plus(.063)
+                        if (hasUpgrade("e", 44)) b1 = b1.plus(player.e.upgrades.length / 1000)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3155,7 +3176,7 @@ var MAIN_BUYABLE_DATA = {
         f12: {
                 name: "F 12",
                 func: "exp",
-                effects: "Finch and base Eagle gain",
+                effects: "Finch and base Eagle gain<sup>*</sup>",
                 base: {
                         initial: new Decimal(2),
                         1: {
@@ -3181,7 +3202,10 @@ var MAIN_BUYABLE_DATA = {
                                 b0 = b0.div(getBuyableAmount("f", 13).sub(1500).max(0).div(hasMilestone("f", 14) ? 1 : 3).floor().pow10())
                         }
                         if (hasUpgrade("e", 42)) b0 = b0.times(Decimal.pow(1e20, player.e.upgrades.length))
+                        if (hasUpgrade("e", 44)) b0 = b0.times(Decimal.pow(1e9, player.e.upgrades.length))
                         if (hasMilestone("E", 13)) b0 = b0.times(1e88)
+                        if (hasMilestone("E", 14)) b0 = b0.times("1e414")
+                        if (hasMilestone("E", 15)) b0 = b0.times("1e120")
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3212,35 +3236,24 @@ var MAIN_BUYABLE_DATA = {
                                 b0 = b0.times(1e11)
                                 b1 = new Decimal(1.51e21)
                         }
-                        if (getBuyableAmount("f", 13).gte(2410)) {
-                                b1 = new Decimal(1.55e21)
-                        }
-                        if (getBuyableAmount("f", 13).gte(2410)) {
-                                b1 = new Decimal(1.6e21)
-                        }
-                        if (getBuyableAmount("f", 13).gte(2450)) {
-                                b1 = new Decimal(1.95e21)
-                        }
-                        if (getBuyableAmount("f", 13).gte(2500)) {
-                                b1 = new Decimal(2e21)
-                        }
-                        if (getBuyableAmount("f", 13).gte(2550)) {
-                                b1 = new Decimal(2.11e21)
-                        }
-                        if (getBuyableAmount("f", 13).gte(2650)) {
-                                b1 = new Decimal(2.18e21)
-                        }
-                        if (getBuyableAmount("f", 13).gte(2700)) {
-                                b1 = new Decimal(2.24e21)
-                        }
-                        if (getBuyableAmount("f", 13).gte(2760)) {
-                                b1 = new Decimal(2.35e21)
-                        }
-                        if (getBuyableAmount("f", 13).gte(2800)) {
-                                b1 = new Decimal(2.42e21)
-                        }
+                        if (getBuyableAmount("f", 13).gte(2410)) b1 = new Decimal(1.55e21)
+                        if (getBuyableAmount("f", 13).gte(2410)) b1 = new Decimal(1.6e21)
+                        if (getBuyableAmount("f", 13).gte(2450)) b1 = new Decimal(1.95e21)
+                        if (getBuyableAmount("f", 13).gte(2500)) b1 = new Decimal(2e21)
+                        if (getBuyableAmount("f", 13).gte(2550)) b1 = new Decimal(2.11e21)
+                        if (getBuyableAmount("f", 13).gte(2650)) b1 = new Decimal(2.18e21)
+                        if (getBuyableAmount("f", 13).gte(2700)) b1 = new Decimal(2.24e21)
+                        if (getBuyableAmount("f", 13).gte(2760)) b1 = new Decimal(2.35e21)
+                        if (getBuyableAmount("f", 13).gte(2800)) b1 = new Decimal(2.41e21)
+                        if (getBuyableAmount("f", 13).gte(3060)) b1 = new Decimal(2.44e21)
+                        if (player.f.challenges[31] >= 1)        b1 = new Decimal(2.74e21)
+                        if (getBuyableAmount("f", 13).gte(3200)) b1 = new Decimal(2.82e21)
+                        if (player.f.challenges[31] >= 1)        b1 = new Decimal(3.25e21)
+                        if (getBuyableAmount("f", 13).gte(3300)) b1 = new Decimal(3.44e21)
+                        if (getBuyableAmount("f", 13).gte(3340)) b1 = new Decimal(3.76e21)
+                        if (getBuyableAmount("f", 13).gte(3350)) b1 = new Decimal(4.5e21)
 
-                        if (hasMilestone("E", 13)) b0 = b0.times(1e88)
+                        if (hasMilestone("E", 13) || player.T.best.gte(1037)) b0 = b0.times(1e88)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3261,6 +3274,9 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("E", 13)) {
                                 b0 = b0.times(1e88)
                                 b1 = Decimal.pow(2, 1024)
+                        }
+                        if (hasMilestone("E", 14) && player.E.points.gte("1e3233")) {
+                                b1 = b1.div(Decimal.pow(2, player.f.buyables[21].min(200)))
                         }
 
                         return [b0.max(1), b1.max(1), b2]

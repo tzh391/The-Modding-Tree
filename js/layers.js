@@ -2501,6 +2501,7 @@ addLayer("c", {
                                 ],
                                 ["display-text", makeRed("4") + " above it keep all upgrades."],
                                 ["display-text", function(){return player.d.unlocked ? makeRed("5") + " above it keep all challenges." : ""}],
+                                ["display-text", function(){return player.f.buyables[12].gte(100) ? "Effect to base Eagle gain is softcapped at 1e7800" : ""}]
                         ],
                         unlocked(){
                                 return true
@@ -3740,7 +3741,15 @@ addLayer("e", {
                 if (hasUpgrade("e", 31))        ret = ret.times(Decimal.pow(1.1, player.e.upgrades.length).pow(layerChallengeCompletions("f")))
                                                 ret = ret.times(tmp.f.challenges[12].rewardEffect)
                 if (hasUpgrade("E", 22))        ret = ret.times(player.T.points.max(1))
-                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["f12"])
+                                                
+                let t = CURRENT_BUYABLE_EFFECTS["f12"]
+                if (t.gte("1e9432")) t = t.max("1e9436")
+                if (t.gte("1e9400")) t = t.max("1e9407")
+                if (t.gte("1e8100")) t = t.log10().sqrt().times(123).sub(2970).pow10()
+                if (t.gte("1e7777")) t = t.log10().times(1.7*7777).sub(7777*7777*.7).sqrt().pow10()
+                if (t.gte("1e7979")) t = t.div(1e18).max("1e7979")
+                
+                                                ret = ret.times(t)
                 
                 return ret
         },
@@ -4100,7 +4109,7 @@ addLayer("e", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>E<sup>2</sup>-gle"
                         },
                         description(){
-                                let a = "Multiply F 12 cost base by 1e6"
+                                let a = "Multiply F 12 cost base by 1e20"
                                 return a
                         },
                         cost: new Decimal("e3.23e10"),
@@ -4121,6 +4130,19 @@ addLayer("e", {
                                 return hasUpgrade("e", 42) && player.f.points.gte("1e59434") // || player.g.unlocked
                         }, 
                 }, // hasUpgrade("e", 43)
+                44: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>E<sup>2</sup>--le"
+                        },
+                        description(){
+                                let a = "Add .001 to the F 11 linear cost base and reduce Rank II linear coefficient by 1"
+                                return a
+                        },
+                        cost: new Decimal("e6.85e10"),
+                        unlocked(){
+                                return hasUpgrade("e", 43) // || player.g.unlocked
+                        }, 
+                }, // hasUpgrade("e", 44)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
                         function(){
@@ -5757,6 +5779,7 @@ addLayer("f", {
                 if (hasUpgrade("e", 31))        ret = ret.times(Decimal.pow(1.1, player.e.upgrades.length).pow(layerChallengeCompletions("f")))
                 if (hasUpgrade("f", 22))        ret = ret.div(1e84)
                 if (hasUpgrade("e", 43))        ret = ret.times(Decimal.pow(3, player.e.upgrades.length))
+                if (hasMilestone("f", 16))      ret = ret.times(10)
 
                 return ret
         },
@@ -5787,13 +5810,15 @@ addLayer("f", {
 
                 data.best = data.best.max(data.points)
                 doPassiveGain("f", diff)
-                if (hasMilestone("f", 11)) {
+                if (hasMilestone("f", 11) && !player.f.mileAB) {
                         if (player.f.points.div(tmp.f.getResetGain.max(1)).lte(20)) {
                                 player.f.points = player.f.points.max(tmp.f.getResetGain.max(1).times(20))
                         }
                 }
                 
                 if (false) {
+                        handleGeneralizedBuyableAutobuy(diff, "f")
+                } else if (hasMilestone("f", 16) && player.f.mileAB && (canAffordBuyable("f", 11) || canAffordBuyable("f", 12) || canAffordBuyable("f", 13))) {
                         handleGeneralizedBuyableAutobuy(diff, "f")
                 } else {
                         data.abtime = 0
@@ -6179,6 +6204,23 @@ addLayer("f", {
                                 return "Reward: Tiers past 1024's multiplier to base Finch gain is halved, reduce F 21 linear cost base by 5e28, and E 12 gives free E 11 levels."
                         },
                 }, // hasMilestone("f", 15)
+                16: {
+                        requirementDescription(){
+                                return "1e62,901 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e62901")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        toggles(){
+                                return [["f", "mileAB"]]
+                        },
+                        effectDescription(){
+                                return "Reward: Gain 10x Finches and when the following is toggled on you can autobuy Finch buyables (if you can afford a F 1X) but you don't automatically gain 20 seconds of production."
+                        },
+                }, // hasMilestone("f", 16)
         },
         challenges: {
                 11: {
@@ -6322,6 +6364,36 @@ addLayer("f", {
                         countsAs: [11,12,21],
                         completionLimit: 2,
                 }, // inChallenge("f", 22)
+                31: {
+                        name: "Tireless",
+                        goal(){
+                                let id = player.f.challenges[31]
+                                let x = [
+                                        111, 377, 999, 999, 999 
+                                        //999, 285, 286, 555, 400, 
+                                        ]
+                                return new Decimal(x[id])
+                        },
+                        canComplete: () => player.T.points.gte(tmp.f.challenges[31].goal),
+                        fullDisplay(){
+                                let a = "Effective Tiers is multiplied by log10(Tiers + 10)"
+                                if (player.f.challenges[31] >= 1) a += "<sup>.5</sup>"
+                                a += br + "Goal: " + formatWhole(tmp.f.challenges[31].goal) + " Tiers" + br2
+                                a += "Reward: Increase F 13 linear cost base."
+                                return a + br2 + "Completions: " + player.f.challenges[31] + "/2"
+                        },
+                        onEnter(){
+                                player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+                                player.T.upgrades = filter(player.T.upgrades, [11,12,13,14,15,21,22,25])
+                                player.E.milestones = filter(player.E.milestones, [1,2,3,4,5,6])
+                                player.E.upgrades = filter(player.E.upgrades, [11,12,13,14,15,21])
+                        },
+                        unlocked(){
+                                return hasUpgrade("e", 44) && player.T.best.gte(1079)
+                        },
+                        countsAs: [],
+                        completionLimit: 2,
+                }, // inChallenge("f", 31)
         },
         tabFormat: {
                 "Upgrades": {
@@ -6837,6 +6909,9 @@ addLayer("E", {
                         if (hasMilestone("T", 15)) tier = tier.times(1.005 + player.f.challenges[11]/200)
                         else tier = tier.plus(1 + player.f.challenges[11])
                 }
+                if (inChallenge("f", 31)) {
+                        tier = tier.times(tier.plus(10).log10().pow(player.f.challenges[31] >= 1 ? .25 : 1))
+                }
 
                 tier = tier.sub(CURRENT_BUYABLE_EFFECTS["E13"])
                 tier = tier.sub(CURRENT_BUYABLE_EFFECTS["E22"])
@@ -7341,6 +7416,37 @@ addLayer("E", {
                                 return "Reward: Rank II exponent is ^2, Tier buyables cost is x<sup>2</sup>, increase Finch buyable base costs by 1e80, and reduce F 21 linear cost base to 1.8e308."
                         },
                 }, // hasMilestone("E", 13)
+                14: {
+                        requirementDescription(){
+                                return "1e3215 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("1e3215")
+                        },
+                        unlocked(){
+                                return hasMilestone("E", 13)
+                        },
+                        effectDescription(){
+                                return "Reward: Tiers past 1063 (max 500) multiply Sifter's base by Tiers/1000 but increase F 12 base cost by 1e414. At 1e3233 Emeralds, the first 200 F 21 levels halve its linear cost base."
+                        },
+                }, // hasMilestone("E", 14)
+                15: {
+                        requirementDescription(){
+                                return "1e3390 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("1e3390")
+                        },
+                        unlocked(){
+                                return hasMilestone("E", 13)
+                        },
+                        onComplete(){
+                                player.E.buyables[32] = decimalZero
+                        },
+                        effectDescription(){
+                                return "Reward: Increase Better Everything / F 12 base cost by 1e600 / 1e120 and Tiers past 1095 increase Miner base by .5% (max 50 times)."
+                        },
+                }, // hasMilestone("E", 15)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){
@@ -8092,7 +8198,7 @@ addLayer("T", {
                                 player.T.buyables[21] = player.T.buyables[21].plus(1)
                         },
                         unlocked(){
-                                return player.T.points.gte(917)
+                                return player.T.best.gte(917) 
                         },
                 },
                 22: {
@@ -8197,7 +8303,8 @@ addLayer("T", {
                                         return br + amt + cost + "Shift to see details"
                                 }
                                 let costForm = "<b><h2>Cost formula</h2>:<br> x<sup>3</sup> + 25x</b>" + br
-                                if (hasMilestone("E", 13)) costForm = costForm.replace("3", "2")
+                                if (hasMilestone("E", 13)) costForm = costForm.replace(">3", ">2")
+                                if (hasUpgrade("e", 44)) costForm = costForm.replace("25", formatWhole(25 - player.e.upgrades.length)).replace(" + 0x", "").replace("+ 1", "+ ")
                                 return br + costForm
                         },
                         canAfford(){
@@ -8205,8 +8312,9 @@ addLayer("T", {
                         },
                         requires(){
                                 let l = player.T.buyables[42]
-                                if (hasMilestone("E", 13)) return l.plus(25).times(l)
-                                return l.times(l).plus(25).times(l)
+                                let lin = hasUpgrade("e", 44) ? (25 - player.e.upgrades.length) : 25
+                                if (hasMilestone("E", 13)) return l.plus(lin).times(l)
+                                return l.times(l).plus(lin).times(l)
                         },
                         buy(){
                                 if (!layers.T.buyables[42].canAfford()) return 
