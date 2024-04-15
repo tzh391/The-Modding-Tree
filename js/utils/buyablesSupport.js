@@ -3262,6 +3262,9 @@ var MAIN_BUYABLE_DATA = {
                         if (getBuyableAmount("f", 13).gte(3630)) b1 = new Decimal(6.656e21)
                         if (getBuyableAmount("f", 13).gte(3740)) b1 = new Decimal(7.78e21)
                         if (getBuyableAmount("f", 13).gte(3800)) b1 = new Decimal(7.87e21)
+                        if (getBuyableAmount("f", 13).gte(3880)) b1 = new Decimal(7.97e21)
+                        if (getBuyableAmount("f", 13).gte(3930)) b1 = new Decimal(8.09e21)
+                        if (getBuyableAmount("f", 13).gte(4015)) b1 = new Decimal(8.229e21)
 
                         if (hasMilestone("E", 13) || player.T.best.gte(1037)) b0 = b0.times(1e88)
 
