@@ -5977,6 +5977,9 @@ addLayer("f", {
                         function(){
                                 return player.f.buyables[12] >= 9500 //|| player.g.unlocked
                         },
+                        function(){
+                                return player.f.buyables[12] >= 13000 //|| player.g.unlocked
+                        },
                 ]),
         milestones: {
                 1: {
@@ -6369,7 +6372,7 @@ addLayer("f", {
                         goal(){
                                 let id = player.f.challenges[31]
                                 let x = [
-                                        111, 377, 999, 999, 999 
+                                        111, 377, 433, 999, 999 
                                         //999, 285, 286, 555, 400, 
                                         ]
                                 return new Decimal(x[id])
@@ -6377,7 +6380,8 @@ addLayer("f", {
                         canComplete: () => player.T.points.gte(tmp.f.challenges[31].goal),
                         fullDisplay(){
                                 let a = "Effective Tiers is multiplied by log10(Tiers + 10)"
-                                if (player.f.challenges[31] >= 1) a += "<sup>.5</sup>"
+                                if (player.f.challenges[31] >= 1) a += "<sup>.25</sup>"
+                                if (player.f.challenges[31] >= 2) a = a.replace(".25", ".2")
                                 a += br + "Goal: " + formatWhole(tmp.f.challenges[31].goal) + " Tiers" + br2
                                 a += "Reward: Increase F 13 linear cost base."
                                 return a + br2 + "Completions: " + player.f.challenges[31] + "/2"
@@ -6392,7 +6396,7 @@ addLayer("f", {
                                 return hasUpgrade("e", 44) && player.T.best.gte(1079)
                         },
                         countsAs: [],
-                        completionLimit: 2,
+                        completionLimit: 3,
                 }, // inChallenge("f", 31)
         },
         tabFormat: {
@@ -6910,7 +6914,9 @@ addLayer("E", {
                         else tier = tier.plus(1 + player.f.challenges[11])
                 }
                 if (inChallenge("f", 31)) {
-                        tier = tier.times(tier.plus(10).log10().pow(player.f.challenges[31] >= 1 ? .25 : 1))
+                        let exp = player.f.challenges[31] >= 1 ? .25 : 1
+                        if (player.f.challenges[31] >= 2) exp = .2
+                        tier = tier.times(tier.plus(10).log10().pow(exp))
                 }
 
                 tier = tier.sub(CURRENT_BUYABLE_EFFECTS["E13"])
@@ -7427,7 +7433,7 @@ addLayer("E", {
                                 return hasMilestone("E", 13)
                         },
                         effectDescription(){
-                                return "Reward: Tiers past 1063 (max 500) multiply Sifter's base by Tiers/1000 but increase F 12 base cost by 1e414. At 1e3233 Emeralds, the first 200 F 21 levels halve its linear cost base."
+                                return "Reward: Tiers past 1063 (max 100) multiply Sifter's base by Tiers/1000 but increase F 12 base cost by 1e414. At 1e3233 Emeralds, the first 200 F 21 levels halve its linear cost base."
                         },
                 }, // hasMilestone("E", 14)
                 15: {
@@ -8179,7 +8185,7 @@ addLayer("T", {
                                 return br + effForm + costForm
                         },
                         base(){
-                                let ret = new Decimal(.5)
+                                let ret = new Decimal(.5).times(CURRENT_BUYABLE_EFFECTS["f22"].min(2))
                                 if (hasUpgrade("f", 24)) ret = ret.times(player.T.buyables[22].div(20).plus(1))
                                 return ret
                         },
