@@ -543,7 +543,7 @@ addLayer("a", {
         milestones: {
                 1: {
                         requirementDescription(){
-                                return "4 A22"
+                                return "4 A 22"
                         },
                         done(){
                                 return player.a.buyables[22].gte(4)
@@ -1876,6 +1876,7 @@ addLayer("c", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>C-py--ra"
                         },
                         description(){
+                                if (player.f.unlocked) return "Disabled by Finch unlock!"
                                 let a = "D 1X base cost is 1e140x higher"
                                 return a
                         },
@@ -3004,7 +3005,7 @@ addLayer("d", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>D<sup>2</sup>-c-s"
                         },
                         description(){
-                                let a = "Exponentiate D 11 base by Tiers^2 and Tiers past 200 subtract .01 from the Faster Shifter base"
+                                let a = "Exponentiate D 11 base by Tiers^2 and Tiers past 200 subtract .01 from the Faster Sifter base"
                                 return a
                         },
                         cost: new Decimal("e3.55e19"),
@@ -4835,7 +4836,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: E 21 base cost is E 13 base cost squared, rounded down to the nearest OoM, divide E 33 base cost by 1e50,000, and divide Eagle gain by 1e103 but multiply base Eagle gain by 103."
+                                return "Reward: E 21 base cost is E 13 base cost squared, rounded down to the nearest OoM, divide D 33 base cost by 1e50,000, and divide Eagle gain by 1e103 but multiply base Eagle gain by 103."
                         },
                 }, // hasMilestone("e", 44)
                 45: {
@@ -5024,7 +5025,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: E 23 gives free E 13 levels, divide Eagle gain by 1e85, multiply base Eagle gain by 10, and multiply E 23 linear cost base by 10. At 1e3342 Eagles, each E 23 adds .0001 to its base (doubled at 1e3442)."
+                                return "Reward: E 23 gives free E 12 levels, divide Eagle gain by 1e85, multiply base Eagle gain by 10, and multiply E 23 linear cost base by 10. At 1e3342 Eagles, each E 23 adds .0001 to its base (doubled at 1e3442)."
                         },
                 }, // hasMilestone("e", 56)
                 57: {
@@ -5732,6 +5733,8 @@ addLayer("f", {
         getResetGain() {
                 let ret = getGeneralizedPrestigeGain("f")
 
+                if (!hasUpgrade("f", 25)) return ret.min("1e90000")
+
                 return ret
         },
         getBaseDiv(){
@@ -5741,7 +5744,7 @@ addLayer("f", {
                 let ret = new Decimal(2)
 
                 if (hasUpgrade("f", 12))        ret = ret.plus(Math.max(0, player.f.challenges[12]-10) * .2)
-                                                ret = ret.plus(CURRENT_BUYABLE_EFFECTS["f11"])
+                if (!player.f.everU25)          ret = ret.plus(CURRENT_BUYABLE_EFFECTS["f11"])
 
                 return ret
         },
@@ -5780,6 +5783,8 @@ addLayer("f", {
                 if (hasUpgrade("f", 22))        ret = ret.div(1e84)
                 if (hasUpgrade("e", 43))        ret = ret.times(Decimal.pow(3, player.e.upgrades.length))
                 if (hasMilestone("f", 16))      ret = ret.times(10)
+                if (player.f.everU25)           ret = ret.times(CURRENT_BUYABLE_EFFECTS["f11"])
+                if (hasMilestone("T", 19))      ret = ret.div("1e8000")
 
                 return ret
         },
@@ -5963,6 +5968,23 @@ addLayer("f", {
                                 return hasUpgrade("f", 23) //|| player.g.unlocked
                         }, 
                 }, // hasUpgrade("f", 24)
+                25: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>Fi-c-"
+                        },
+                        description(){
+                                if (player.shiftAlias) return "It is necessary to have this upgrade to make more than 1e90000 Finches/s"
+                                let a = "Permanently multiply F11 base and base Emerald gain by 989x, but its effect becomes multiply Finches<sup>*</sup>"
+                                return a
+                        },
+                        onPurchase(){
+                                player.f.everU25 = true
+                        },
+                        cost: new Decimal("1e90000"),
+                        unlocked(){
+                                return hasUpgrade("f", 24) //|| player.g.unlocked
+                        }, 
+                }, // hasUpgrade("f", 25)
         },
         buyables: getLayerGeneralizedBuyableData("f", [
                         function(){
@@ -6035,7 +6057,7 @@ addLayer("f", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Autobuy Tiers, gain 1e10x Duck, and Filter base cost is 1. Per reset keep an Emerald and Ealge upgrade and divide E 33 base cost by 10^Finches."
+                                return "Reward: Autobuy Tiers, gain 1e10x Duck, and Filter base cost is 1. Per reset keep an Emerald and Eagle upgrade and divide E 33 base cost by 10^Finches."
                         },
                 }, // hasMilestone("f", 4)
                 5: {
@@ -6224,6 +6246,34 @@ addLayer("f", {
                                 return "Reward: Gain 10x Finches and when the following is toggled on you can autobuy Finch buyables (if you can afford a F 1X) but you don't automatically gain 20 seconds of production."
                         },
                 }, // hasMilestone("f", 16)
+                17: {
+                        requirementDescription(){
+                                return "1e90,042 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e90042")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Mutliply F 11 base cost by 1e1000 but decrease its linear cost base by .1."
+                        },
+                }, // hasMilestone("f", 17)
+                18: {
+                        requirementDescription(){
+                                return "1e91,169 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e91169")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Decrease F 21 linear cost base by 1e100 and F 22 linear cost base by 4e34 but increase its base cost by 4e14,141."
+                        },
+                }, // hasMilestone("f", 18)
         },
         challenges: {
                 11: {
@@ -6372,7 +6422,7 @@ addLayer("f", {
                         goal(){
                                 let id = player.f.challenges[31]
                                 let x = [
-                                        111, 377, 433, 999, 999 
+                                        111, 377, 433, 446, 999 
                                         //999, 285, 286, 555, 400, 
                                         ]
                                 return new Decimal(x[id])
@@ -6384,7 +6434,7 @@ addLayer("f", {
                                 if (player.f.challenges[31] >= 2) a = a.replace(".25", ".2")
                                 a += br + "Goal: " + formatWhole(tmp.f.challenges[31].goal) + " Tiers" + br2
                                 a += "Reward: Increase F 13 linear cost base."
-                                return a + br2 + "Completions: " + player.f.challenges[31] + "/2"
+                                return a + br2 + "Completions: " + player.f.challenges[31] + "/4"
                         },
                         onEnter(){
                                 player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
@@ -6396,7 +6446,7 @@ addLayer("f", {
                                 return hasUpgrade("e", 44) && player.T.best.gte(1079)
                         },
                         countsAs: [],
-                        completionLimit: 3,
+                        completionLimit: 4,
                 }, // inChallenge("f", 31)
         },
         tabFormat: {
@@ -6475,6 +6525,12 @@ addLayer("f", {
                                                 return a + br2 + "If above 5 completions of a challenge,<br>max out Emerald gain at 10 seconds of production."
                                         }
                                 ],
+                                ["display-text",
+                                        function() {
+                                                if (hasUpgrade("f", 24) || player.f.everU25) return "<sup>*</sup>Fast now affects F 13"
+                                        }
+                                ],
+                                
                         ],
                         unlocked(){
                                 return true
@@ -7046,6 +7102,7 @@ addLayer("E", {
                 let ret = decimalOne
 
                 if (hasMilestone("T", 13) && player.E.points.gte(1e147)) ret = ret.times(tmp.E.getInitialGain)
+                if (player.f.everU25)           ret = ret.times(989)
 
                 return ret
         },
@@ -7674,7 +7731,7 @@ addLayer("T", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>I Tier"
                         },
                         description(){
-                                if (player.shiftAlias && player.f.unlocked) return "Restriction is removed upon finch unlock!" + (hasMilestone("f", 3) ? " Cost is reduced to one from Finch Milestone 3." : "")
+                                if (player.shiftAlias && player.f.unlocked) return "Restriction is removed upon Finch unlock!" + (hasMilestone("f", 3) ? " Cost is reduced to one from Finch Milestone 3." : "")
                                 let a = "Autobuy Emerald buyables if you have less Tiers than your best, Emerald buyables are free, and add .02 to the Faster Sifter base"
                                 if (player.f.unlocked) a = a.replace(" if you have less Tiers than your best", "")
                                 return a
@@ -7690,7 +7747,7 @@ addLayer("T", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>II Tier"
                         },
                         description(){
-                                if (player.shiftAlias && player.f.unlocked) return "Cost is reduced to one upon finch unlock!"
+                                if (player.shiftAlias && player.f.unlocked) return "Cost is reduced to one upon Finch unlock!"
                                 let a = "E 31 levels subtract from Lazy Tiers linear cost base (max 990), the Emerald buyable bulks and increases speed by [upgrades]"
                                 return a
                         },
@@ -7719,7 +7776,7 @@ addLayer("T", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>IV Tier"
                         },
                         description(){
-                                let a = "E 31 gives free E 22 levels and divide Tier goal by 10,000 but divide Ealge gain by 1e3500"
+                                let a = "E 31 gives free E 22 levels and divide Tier goal by 10,000 but divide Eagle gain by 1e3500"
                                 return a
                         },
                         cost: new Decimal(1),
@@ -8073,6 +8130,34 @@ addLayer("T", {
                                 return "Reward: Tiers subtract .0001 from the Better Everything quadratic cost base and ones past 785 divide base cost by 1e15."
                         },
                 }, // hasMilestone("T", 17)
+                18: {
+                        requirementDescription(){
+                                return "1206 Tiers"
+                        },
+                        done(){
+                                return player.T.points.gte("1206")
+                        },
+                        unlocked(){
+                                return hasMilestone("T", 17)
+                        },
+                        effectDescription(){
+                                return "Reward: Divide F 21 linear base by 1e100 but increase its base cost by 1e13,000. Multiply Agile and Speedy effects by 5."
+                        },
+                }, // hasMilestone("T", 18)
+                19: {
+                        requirementDescription(){
+                                return "1234 Tiers"
+                        },
+                        done(){
+                                return player.T.points.gte("1234")
+                        },
+                        unlocked(){
+                                return hasMilestone("T", 18)
+                        },
+                        effectDescription(){
+                                return "Reward: F 13 gives free F 11 levels, but divide Finch gain by 1e8000 and multiply F 12 base cost by 1e1111. Tiers past 1000 decrease Lazy Tiers quadratic base by .0001 (max 900 times)."
+                        },
+                }, // hasMilestone("T", 19)
         },
         buyables: {
                 rows: 3,
@@ -8138,6 +8223,7 @@ addLayer("T", {
                                 if (!player.shiftAlias) {
                                         let amt = "<b><h2>Amount</h2>: " + getBuyableAmountDisplay("T", 12) + "</b><br>"
                                         let eff = "<b><h2>Effect</h2>: " + format(tmp.T.buyables[12].effect.times(1000), 4) + "/1000 to F 11 base</b>" + br
+                                        if (player.f.everU25) eff = eff.replace("F 11 base", "F 11 and F 13 bases")
                                         let cost = "<b><h2>Cost</h2>: " + formatWhole(tmp.T.buyables[12].cost) + " ranks</b><br>"
         
                                         return br + amt + eff + cost + "Shift to see details"
@@ -8186,7 +8272,8 @@ addLayer("T", {
                         },
                         base(){
                                 let ret = new Decimal(.5).times(CURRENT_BUYABLE_EFFECTS["f22"].min(2))
-                                if (hasUpgrade("f", 24)) ret = ret.times(player.T.buyables[22].div(20).plus(1))
+                                if (hasUpgrade("f", 24))        ret = ret.times(player.T.buyables[22].div(20).plus(1))
+                                if (hasMilestone("T", 18))      ret = ret.times(5)
                                 return ret
                         },
                         effect(){
@@ -8224,6 +8311,7 @@ addLayer("T", {
                         base(){
                                 let ret = new Decimal(.5)
                                 if (hasUpgrade("f", 24)) ret = ret.times(player.T.buyables[21].div(20).plus(1))
+                                if (hasMilestone("T", 18)) ret = ret.times(5)
                                 return ret
                         },
                         effect(){

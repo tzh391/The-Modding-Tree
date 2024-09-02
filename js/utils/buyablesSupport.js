@@ -1411,7 +1411,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("d", 18))      b0 = b0.times(1e18)
                         if (hasMilestone("d", 11))      b0 = b0.div(Decimal.pow(player.f.unlocked ? 1.04 : 1.03, getBuyableAmount("d", 13)))
                         if (hasUpgrade("e", 14))        b0 = b0.times(Decimal.pow(1e7, player.e.upgrades.length))
-                        if (hasUpgrade("c", 55))        b0 = b0.times(1e140)
+                        if (hasUpgrade("c", 55) && !player.f.unlocked)        b0 = b0.times(1e140)
                         
                         let b1 = new Decimal(1.25)
                         b1 = b1.sub(CURRENT_BUYABLE_EFFECTS["d13"]).max(1)
@@ -1453,7 +1453,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("d", 18))      b0 = b0.times(1e18)
                         if (hasMilestone("d", 11))      b0 = b0.div(Decimal.pow(player.f.unlocked ? 1.04 : 1.03, getBuyableAmount("d", 13)))
                         if (hasUpgrade("e", 14))        b0 = b0.times(Decimal.pow(1e7, player.e.upgrades.length))
-                        if (hasUpgrade("c", 55))        b0 = b0.times(1e140)
+                        if (hasUpgrade("c", 55) && !player.f.unlocked)        b0 = b0.times(1e140)
 
                         let b1 = new Decimal(1)
                         let b2 = new Decimal(1.0003) // 3**x
@@ -1509,7 +1509,7 @@ var MAIN_BUYABLE_DATA = {
                                 b0 = b0.div(Decimal.pow(player.f.unlocked ? 1.04 : 1.03, getBuyableAmount("d", 13)))
                         }
                         if (hasUpgrade("e", 14))        b0 = b0.times(Decimal.pow(1e7, player.e.upgrades.length))
-                        if (hasUpgrade("c", 55))        b0 = b0.times(1e140)
+                        if (hasUpgrade("c", 55) && !player.f.unlocked)        b0 = b0.times(1e140)
                         if (hasMilestone("f", 2))       b1 = b1.times(Decimal.pow(.99, getBuyableAmount("e", 33).plus(player.f.milestones.length)))
 
                         return [b0.max(1), b1.max(1), b2]
@@ -2785,6 +2785,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("T", 10))      b2 = b2.sub(player.T.points.min(84).div(100))
                         if (hasUpgrade("T", 22))        b2 = b2.sub(player.T.points.sub(112).max(0).min(30).div(500))
                                                         b1 = b1.sub(player.f.challenges[12] * .36)
+                        if (hasMilestone("T", 19))      b2 = b2.sub(player.T.points.sub(1000).max(0).div(10000))
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3138,8 +3139,12 @@ var MAIN_BUYABLE_DATA = {
         },
         f11: {
                 name: "F 11",
-                func: "lin",
-                effects: "Finch gain exponent",
+                func(a,b){
+                        return player.f.everU25 ? BUYABLE_EFFECT_EXPONENTIAL(a,b) : BUYABLES_EFFECT_LINEAR(a,b)
+                },
+                effectSymbol:() => player.f.everU25 ? "*" : "+",
+                effectString:() => player.f.everU25 ? "^x" : "*x",
+                effects:() =>  player.f.everU25 ? "Finch gain" : "Finch gain exponent",
                 base: {
                         initial: new Decimal(.1),
                         1: {
@@ -3150,6 +3155,15 @@ var MAIN_BUYABLE_DATA = {
                                 amount(){
                                         return tmp.T.buyables[12].effect
                                 },
+                        },
+                        2: {
+                                active(){
+                                        return player.f.everU25
+                                },
+                                type: "times",
+                                amount(){
+                                        return 989
+                                }
                         },
                 },
                 bases(){
@@ -3163,17 +3177,22 @@ var MAIN_BUYABLE_DATA = {
                                 b1 = b1.sub(getBuyableAmount("f", 13).div(10).floor().div(1000))
                                 //b1 = b1.sub(getBuyableAmount("f", 13).sub(2810).max(0).div(14).floor().div(1000))
                         }
-                        if (hasUpgrade("e", 41)) b0 = b0.times(Decimal.pow(1e4, player.e.upgrades.length))
-                        if (hasMilestone("f", 13)) b0 = b0.div(getBuyableAmount("E", 32).pow10())
-                        if (hasUpgrade("f", 23)) b1 = b1.plus(.119)
-                        if (hasMilestone("E", 13)) b0 = b0.times(1e88)
-                        if (hasUpgrade("f", 24)) b1 = b1.plus(.063)
-                        if (hasUpgrade("e", 44)) b1 = b1.plus(player.e.upgrades.length / 1000)
+                        if (hasUpgrade("e", 41))        b0 = b0.times(Decimal.pow(1e4, player.e.upgrades.length))
+                        if (hasMilestone("f", 13))      b0 = b0.div(getBuyableAmount("E", 32).pow10())
+                        if (hasUpgrade("f", 23))        b1 = b1.plus(.119)
+                        if (hasMilestone("E", 13))      b0 = b0.times(1e88)
+                        if (hasUpgrade("f", 24))        b1 = b1.plus(.063)
+                        if (hasUpgrade("e", 44))        b1 = b1.plus(player.e.upgrades.length / 1000)
+                        if (hasMilestone("f", 17)) {
+                                                        b0 = b0.times("1e2000")
+                                                        b1 = b1.sub(.5)
+                        }     
 
                         b1 = b1.div(CURRENT_BUYABLE_EFFECTS["f22"])
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                f13: {active:() => hasMilestone("T", 19)},
         },
         f12: {
                 name: "F 12",
@@ -3208,6 +3227,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("E", 13)) b0 = b0.times(1e88)
                         if (hasMilestone("E", 14)) b0 = b0.times("1e414")
                         if (hasMilestone("E", 15)) b0 = b0.times("1e120")
+                        if (hasMilestone("T", 19)) b0 = b0.times("1e1111")
 
                         b1 = b1.div(CURRENT_BUYABLE_EFFECTS["f22"])
 
@@ -3222,6 +3242,15 @@ var MAIN_BUYABLE_DATA = {
                 },
                 base: {
                         initial: new Decimal(.0001),
+                        1: {
+                                active(){
+                                        return player.f.everU25
+                                },
+                                type: "add",
+                                amount(){
+                                        return tmp.T.buyables[12].effect
+                                }
+                        }
                 },
                 bases(){
                         let b0 = new Decimal("1e2968").div(CURRENT_BUYABLE_EFFECTS["f21"])
@@ -3263,8 +3292,9 @@ var MAIN_BUYABLE_DATA = {
                         if (getBuyableAmount("f", 13).gte(3740)) b1 = new Decimal(7.78e21)
                         if (getBuyableAmount("f", 13).gte(3800)) b1 = new Decimal(7.87e21)
                         if (getBuyableAmount("f", 13).gte(3880)) b1 = new Decimal(7.97e21)
-                        if (getBuyableAmount("f", 13).gte(3930)) b1 = new Decimal(8.09e21)
-                        if (getBuyableAmount("f", 13).gte(4015)) b1 = new Decimal(8.229e21)
+                        if (player.f.challenges[31] >= 4)        b1 = new Decimal(1.5e21)
+                        //if (getBuyableAmount("f", 13).gte(3930)) b1 = new Decimal(8.09e21)
+                        //if (getBuyableAmount("f", 13).gte(4015)) b1 = new Decimal(8.229e21)
 
                         if (hasMilestone("E", 13) || player.T.best.gte(1037)) b0 = b0.times(1e88)
 
@@ -3295,6 +3325,14 @@ var MAIN_BUYABLE_DATA = {
                         }
 
                         b1 = b1.div(CURRENT_BUYABLE_EFFECTS["f22"])
+                        if (hasMilestone("T", 18)) {
+                                b1 = b1.div(1e100)
+                                b0 = b0.times("1e13000")
+                        }
+                        if (hasMilestone("f", 18)) {
+                                b1 = b1.div(1e100)
+                                b0 = b0.times("4e14141")
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3312,6 +3350,7 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0042) // catalan
 
                         b1 = b1.div(CURRENT_BUYABLE_EFFECTS["f22"])
+                        if (hasMilestone("f", 18)) b1 = b1.div("4e34")
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3645,6 +3684,7 @@ function getBuyableEffectSymbol(layer, id){
         // Fully general
         if (!isValidBuyableCode(layer + id)) return "bug"
         let data = MAIN_BUYABLE_DATA[layer+id]
+        if (typeof data["effectSymbol"] == "function") return data["effectSymbol"]()
         
         return data["effectSymbol"] || BUYABLES_FUNCTION_NAMES[data["func"]]["eff"] || "bug"
 }
@@ -3653,7 +3693,11 @@ function getBuyableEffectString(layer, id){
         // Fully general
         if (!isValidBuyableCode(layer + id)) return "bug"
         let func = MAIN_BUYABLE_DATA[layer+id]["func"]
-        if (typeof func == "function") return MAIN_BUYABLE_DATA[layer+id]["effectSymbol"]
+        if (typeof func == "function") {
+                let ef = MAIN_BUYABLE_DATA[layer+id]["effectSymbol"]
+                if (typeof ef == "function") return MAIN_BUYABLE_DATA[layer+id]["effectString"]()
+                return ef
+        }
         return BUYABLES_FUNCTION_NAMES[func]["string"] || "bug"
 }
 
@@ -3948,6 +3992,7 @@ function isBuyableActive(layer, id){
 
 function getABBulk(layer){
         let amt = decimalOne
+        if (player.dev.forceBulk) amt = amt.times(100) 
         if (layer == "a"){
                 if (hasUpgrade("b", 12))        amt = amt.times(Math.max(1, player.b.upgrades.length))
                 if (hasUpgrade("c", 11))        amt = amt.times(10)
@@ -4055,6 +4100,8 @@ function getABSpeed(layer){
 }
 
 function canBuySimultaniously(layer){
+        if (player.dev.forceBulk)       return true 
+
         if (layer == "E")               return hasMilestone("f", 3)
         if (layer == "e")               return hasUpgrade("E", 12) || (hasMilestone("e", 57) && player.f.unlocked) //||player.h.unlocked
         if (layer == "d")               return hasMilestone("d", player.f.unlocked ? 11 : 14) // || player.g.unlocked
@@ -4087,6 +4134,7 @@ function getMaxBuyablesAmount(layer){
 }
 
 function handleGeneralizedBuyableAutobuy(diff, layer){
+        if (player.dev.autoSpeed) diff *= player.dev.autoSpeed
         player[layer].abtime += diff * getABSpeed(layer)
 
         if (player[layer].abtime > 10) player[layer].abtime = 10
