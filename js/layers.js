@@ -5758,8 +5758,11 @@ addLayer("f", {
 
                 if (hasUpgrade("f", 12))        ret = ret.plus(Math.max(0, player.f.challenges[12]-10) * .2)
                 if (!player.f.everU25)          ret = ret.plus(CURRENT_BUYABLE_EFFECTS["f11"])
+                                                ret = ret.plus(CURRENT_BUYABLE_EFFECTS["f23"])
                 if (hasUpgrade("e", 45))        ret = ret.plus(player.T.points.sub(1000).max(0).div(100).div(20).times(player.e.upgrades.length))
                 if (hasMilestone("f", 20))      ret = ret.plus(5)
+                if (hasMilestone("f", 22))      ret = ret.plus(5)
+                if (hasMilestone("E", 18))      ret = ret.plus(player.T.points.max(1500).sub(1562).div(100))
 
                 return ret
         },
@@ -5803,6 +5806,7 @@ addLayer("f", {
                 if (hasUpgrade("e", 45))        ret = ret.div(Decimal.pow(5e163, player.e.upgrades.length))
                 if (hasMilestone("f", 19))      ret = ret.div("2e543")
                 if (hasMilestone("f", 20))      ret = ret.div("1e916")
+                if (hasUpgrade("T", 31))        ret = ret.div("1e200")
 
                 return ret
         },
@@ -5835,13 +5839,13 @@ addLayer("f", {
 
                 data.best = data.best.max(data.points)
                 doPassiveGain("f", diff)
-                if (hasMilestone("f", 11) && !player.f.mileAB) {
+                if (hasMilestone("f", 11) && !player.f.mileAB && !hasMilestone("E", 17)) {
                         if (player.f.points.div(tmp.f.getResetGain.max(1)).lte(20)) {
                                 player.f.points = player.f.points.max(tmp.f.getResetGain.max(1).times(20))
                         }
                 }
                 
-                if (false) {
+                if (hasMilestone("f", 21)) {
                         handleGeneralizedBuyableAutobuy(diff, "f")
                 } else if (hasMilestone("f", 16) && player.f.mileAB && (canAffordBuyable("f", 11) || canAffordBuyable("f", 12) || canAffordBuyable("f", 13))) {
                         handleGeneralizedBuyableAutobuy(diff, "f")
@@ -6017,10 +6021,13 @@ addLayer("f", {
                                 return player.f.challenges[12] >= 23 //|| player.g.unlocked
                         },
                         function(){
-                                return player.f.buyables[12] >= 9500 //|| player.g.unlocked
+                                return player.f.buyables[12].gte(9500) //|| player.g.unlocked
                         },
                         function(){
-                                return player.f.buyables[12] >= 13000 //|| player.g.unlocked
+                                return player.f.buyables[12].gte(13000) //|| player.g.unlocked
+                        },
+                        function(){
+                                return player.f.buyables[12].gte(15750) //|| player.g.unlocked
                         },
                 ]),
         milestones: {
@@ -6319,9 +6326,40 @@ addLayer("f", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: F 21 gives free F 11 levels, add 5 to the Finch exponent, and divide Finch gain by 1e916."
+                                return "Reward: F 21 gives free F 11 levels, add 5 to the Finch exponent, double Finch autobuyer speed, and divide Finch gain by 1e916."
                         },
                 }, // hasMilestone("f", 20)
+                21: {
+                        requirementDescription(){
+                                return "1e96,389 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e96389")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: The Finch autobuyer is always active, F 21 base becomes [levels]/100 but divide its linear cost base by 1e5. At 1e96,605 Finches permamnently double Agile effect but multiply F 12 base cost by 1e600."
+                        },
+                }, // hasMilestone("f", 21)
+                22: {
+                        requirementDescription(){
+                                return "1e104,308 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e104308")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        onComplete(){
+                                player.f.buyables[12] = player.f.buyables[12].min(16400)
+                        },
+                        effectDescription(){
+                                return "Reward: Bulk 2x Finch buyables, ncrease F 12 base cost by 1e3030, set its levels to 16,400, and add 5 to the Finch gain exponent."
+                        },
+                }, // hasMilestone("f", 22)
         },
         challenges: {
                 11: {
@@ -6471,10 +6509,10 @@ addLayer("f", {
                                 let id = player.f.challenges[31]
                                 let x = [
                                         111, 377, 433, 446, 460,
-                                        489, 999, 999, 999, 999, 
+                                        489, 524, 999, 999, 999, 
                                         ]
                                 if (id == 4 && player.T.best.lt(1252)) x += 100
-                                if (id == 4 && player.f.best.lt("3e95033")) x += 100
+                                if (id == 5 && player.f.best.lt("3e95033")) x += 100
                                 return new Decimal(x[id])
                         },
                         canComplete: () => player.T.points.gte(tmp.f.challenges[31].goal),
@@ -6484,8 +6522,9 @@ addLayer("f", {
                                 if (player.f.challenges[31] >= 2) a = a.replace(".25", ".2")
                                 a += br + "Goal: " + formatWhole(tmp.f.challenges[31].goal) + " Tiers" + br2
                                 a += "Reward: Increase F 13 linear cost base"
-                                if (player.f.challenges[31] >= 5) a += " and raise effective Tiers ^EXP"
-                                return a.replace("EXP", format(tmp.f.challenges[31].tiersExp, 3)) + "." + br2 + "Completions: " + player.f.challenges[31] + "/6"
+                                if (player.f.challenges[31] >= 5) a += " and raise effective Tiers ^" + format(tmp.f.challenges[31].tiersExp, 3)
+
+                                return a + "." + br2 + "Completions: " + player.f.challenges[31] + "/7"
                         },
                         tiersExp(){
                                 let times = player.f.challenges[31]
@@ -6502,7 +6541,7 @@ addLayer("f", {
                                 return hasUpgrade("e", 44) && player.T.best.gte(1079)
                         },
                         countsAs: [],
-                        completionLimit: 6,
+                        completionLimit: 7,
                 }, // inChallenge("f", 31)
         },
         tabFormat: {
@@ -7172,7 +7211,7 @@ addLayer("E", {
                 
                 if (hasMilestone("e", 95) && !player.f.activeChallenge && player.T.points.gte(222) && !(hasUpgrade("T", 23) && player.f.challenges[21] >= 10)) {
                         data.points = tmp.E.getResetGain
-                } else if (player.f.activeChallenge && player.f.challenges[player.f.activeChallenge] >= 5) {
+                } else if (player.f.activeChallenge && player.f.challenges[player.f.activeChallenge] >= 5 && player.f.activeChallenge < 30) {
                         data.points = data.points.div(tmp.E.getResetGain).plus(diff).min(10).times(tmp.E.getResetGain)
                 } else {
                         data.points = data.points.plus(tmp.E.getResetGain.times(diff))
@@ -7585,6 +7624,55 @@ addLayer("E", {
                                 return "Reward: At 1e92,933 Finches, decrease F 22 linear cost base by 2.3e56."
                         },
                 }, // hasMilestone("E", 16)
+                17: {
+                        requirementDescription(){
+                                return "1e4683 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("1e4683")
+                        },
+                        unlocked(){
+                                return hasMilestone("E", 16)
+                        },
+                        exp(){
+                                if (!hasMilestone("E", 17)) return 1
+                                if (player.f.points.gte("1e109252")) return 10
+                                if (player.f.points.gte("1e108786")) return 9
+                                if (player.f.points.gte("1e108350")) return 8
+                                if (player.f.points.gte("1e108251")) return 7
+                                if (player.f.points.gte("1e108193")) return 6
+                                if (player.f.points.gte("1e108168")) return 5
+                                if (player.f.points.gte("1e107666")) return 4
+                                if (player.f.points.gte("1e107450")) return 3
+                                if (player.f.points.gte("1e107392")) return 2
+                                return 1
+                        },
+                        effectDescription(){
+                                let f = function(a){
+                                        if (player.f.points.gte(a)) return "<b>" + format(a) + "</b>"
+                                        return format(a)
+                                }
+                                return "Reward: You no longer gain free Finches. Double the Finch autobuyer speed. At " 
+                                        + f(new Decimal("1e107,392")) + ", " + f(new Decimal("1e107,450")) + ", " + f(new Decimal("1e107,666")) 
+                                        + ", " + f(new Decimal("1e108168")) + ", " + f(new Decimal("1e108193")) + ", " + f(new Decimal("1e108251")) 
+                                        + ", " + f(new Decimal("1e108350")) + ", " + f(new Decimal("1e108786")) + ", and " + f(new Decimal("1e109252"))
+                                        + " Finches, F 22 affects F 2X buyables again. (Note: At most 4 times for F 22.)"
+                        },
+                }, // hasMilestone("E", 17)
+                18: {
+                        requirementDescription(){
+                                return "1e4793 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("1e4793")
+                        },
+                        unlocked(){
+                                return hasMilestone("E", 17)
+                        },
+                        effectDescription(){
+                                return "Reward: F 23 affects E 11 and add (Tiers-1562)/100 to the Finch gain exponent (assuming Tiers > 1500)."
+                        },
+                }, // hasMilestone("E", 18)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){
@@ -7943,6 +8031,19 @@ addLayer("T", {
                                 return hasUpgrade("T", 24) || hasUpgrade("T", 25)
                         }, 
                 }, // hasUpgrade("T", 25)
+                31: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>XI Tier"
+                        },
+                        description(){
+                                let a = "F 23 gives free F 21 levels but divide Finch gain by 1e1000 and at 1532 Tiers E 31 gives free E 23 levels"
+                                return a
+                        },
+                        cost: new Decimal(1531),
+                        unlocked(){
+                                return (hasUpgrade("T", 25) && player.f.best.gte("e110570")) || hasUpgrade("T", 31)
+                        }, 
+                }, // hasUpgrade("T", 31)
         },
         milestones: {
                 1: {
@@ -8401,6 +8502,7 @@ addLayer("T", {
                                 let ret = new Decimal(.5)
                                 if (hasUpgrade("f", 24)) ret = ret.times(player.T.buyables[21].div(20).plus(1))
                                 if (hasMilestone("T", 18)) ret = ret.times(5)
+                                if (/*player.g.unlocked || */ (hasMilestone("f", 21) && player.f.best.gte("1e96605")) ) ret = ret.times(2)
                                 return ret
                         },
                         effect(){

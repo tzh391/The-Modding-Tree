@@ -11,13 +11,16 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.f.points.gte("1e91313")
+	return player.f.points.gte("1e114027")
 }
 
 var CHANELOG_VERSION = "v0.048"
 
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC0000'>v0.049</h3><br>
+		- Balanced until 1e114,027 Finches.<br>
+		- Various changes and additions, unenumerated.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.048</h3><br>
 		- Balanced until 1e91313 Finches.<br>
 		- Various changes and additions, unenumerated.<br>
