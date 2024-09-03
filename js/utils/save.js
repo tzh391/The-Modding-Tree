@@ -253,6 +253,7 @@ function importSave(imported = undefined, forced = false, fromCustomSaves = fals
 			
 		player = tempPlr;
 		player.versionType = modInfo.id;
+		player.dev = undefined; // in case there are some dev stuff being played with
 		fixSave();
 		versionCheck();
 		let notbugged = NaNcheck(player)

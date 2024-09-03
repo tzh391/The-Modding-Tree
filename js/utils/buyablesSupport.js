@@ -2785,7 +2785,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("T", 10))      b2 = b2.sub(player.T.points.min(84).div(100))
                         if (hasUpgrade("T", 22))        b2 = b2.sub(player.T.points.sub(112).max(0).min(30).div(500))
                                                         b1 = b1.sub(player.f.challenges[12] * .36)
-                        if (hasMilestone("T", 19))      b2 = b2.sub(player.T.points.sub(1000).max(0).div(10000))
+                        if (hasMilestone("T", 19))      b2 = b2.sub(player.T.points.sub(1000).max(0).div(10000).min(.09))
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3133,6 +3133,7 @@ var MAIN_BUYABLE_DATA = {
                                 b1 = b1.div(Decimal.pow(1.13, player.E.buyables[32]))
                         }
                         if (hasMilestone("E", 15)) b0 = b0.times("1e600")
+                        if (player.f.points.gte("2e91313")) b1 = b1.div(2)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3193,6 +3194,7 @@ var MAIN_BUYABLE_DATA = {
                         return [b0.max(1), b1.max(1), b2]
                 },
                 f13: {active:() => hasMilestone("T", 19)},
+                f21: {active:() => hasMilestone("f", 20)},
         },
         f12: {
                 name: "F 12",
@@ -3233,6 +3235,7 @@ var MAIN_BUYABLE_DATA = {
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                f13: {active:() => hasUpgrade("e", 45)},
         },
         f13: {
                 name: "F 13",
@@ -3297,11 +3300,13 @@ var MAIN_BUYABLE_DATA = {
                         //if (getBuyableAmount("f", 13).gte(4015)) b1 = new Decimal(8.229e21)
 
                         if (hasMilestone("E", 13) || player.T.best.gte(1037)) b0 = b0.times(1e88)
+                        if (hasMilestone("T", 20)) b1 = b1.div(Decimal.pow(1.001, player.f.buyables[13].sub(4150).max(0)))
 
                         b1 = b1.div(CURRENT_BUYABLE_EFFECTS["f22"])
 
                         return [b0.max(1), b1.max(1), b2]
                 },
+                f21: {active:() => hasMilestone("f", 19)},
         },
         f21: {
                 name: "F 21",
@@ -3321,7 +3326,10 @@ var MAIN_BUYABLE_DATA = {
                                 b1 = Decimal.pow(2, 1024)
                         }
                         if (hasMilestone("E", 14) && player.E.points.gte("1e3233")) {
-                                b1 = b1.div(Decimal.pow(2, player.f.buyables[21].min(200)))
+                                b1 = b1.div(Decimal.pow(2, player.f.buyables[21].min(175)))
+                                b1 = b1.div(Decimal.pow(2, player.f.buyables[21].sub(175).max(0).div(2).min(12.5)))
+                                b1 = b1.div(Decimal.pow(2, player.f.buyables[21].sub(200).max(0).div(4).min(25)))
+                                b1 = b1.div(Decimal.pow(2, player.f.buyables[21].sub(300).max(0).div(8).min(5)))
                         }
 
                         b1 = b1.div(CURRENT_BUYABLE_EFFECTS["f22"])
@@ -3350,7 +3358,22 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0042) // catalan
 
                         b1 = b1.div(CURRENT_BUYABLE_EFFECTS["f22"])
-                        if (hasMilestone("f", 18)) b1 = b1.div("4e34")
+                        if (hasMilestone("f", 18)) {
+                                b1 = b1.div("4e34")
+                                if (player.f.points.gte("2e91313")) b1 = b1.div(5e144)
+                        }
+                        if (hasMilestone("f", 19))  {
+                                if (player.T.points.gte(1309))          b1 = b1.div(7e77)
+                                if (player.f.points.gte("1e92322"))     b1 = b1.div(7e77)
+                        }
+                        if (hasMilestone("T", 20)) b1 = b1.div(2.5e5)
+                        if (hasMilestone("E", 16)) {
+                                if (player.f.points.gte("1e92933")) b1 = b1.div(2.3e56)
+                                if (player.f.points.gte("1e93279")) b1 = b1.div(4e54)
+                                if (player.f.points.gte("1e93687")) b1 = b1.div(6.6e43)
+                                if (player.f.points.gte("1e94153")) b1 = b1.div(1.2e23)
+                        }
+                
 
                         return [b0.max(1), b1.max(1), b2]
                 },

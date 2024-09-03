@@ -4144,6 +4144,19 @@ addLayer("e", {
                                 return hasUpgrade("e", 43) // || player.g.unlocked
                         }, 
                 }, // hasUpgrade("e", 44)
+                45: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>E<sup>2</sup>ag-e"
+                        },
+                        description(){
+                                let a = "F 13 gives free F 12 levels, Tiers past 1000 add .0005 to the Finch gain exponent, and divide Finch gain by 5e163"
+                                return a
+                        },
+                        cost: new Decimal("e9.45e10"),
+                        unlocked(){
+                                return hasMilestone("f", 18) // || player.g.unlocked
+                        }, 
+                }, // hasUpgrade("e", 45)
         },
         buyables: getLayerGeneralizedBuyableData("e", [
                         function(){
@@ -5745,6 +5758,8 @@ addLayer("f", {
 
                 if (hasUpgrade("f", 12))        ret = ret.plus(Math.max(0, player.f.challenges[12]-10) * .2)
                 if (!player.f.everU25)          ret = ret.plus(CURRENT_BUYABLE_EFFECTS["f11"])
+                if (hasUpgrade("e", 45))        ret = ret.plus(player.T.points.sub(1000).max(0).div(100).div(20).times(player.e.upgrades.length))
+                if (hasMilestone("f", 20))      ret = ret.plus(5)
 
                 return ret
         },
@@ -5785,6 +5800,9 @@ addLayer("f", {
                 if (hasMilestone("f", 16))      ret = ret.times(10)
                 if (player.f.everU25)           ret = ret.times(CURRENT_BUYABLE_EFFECTS["f11"])
                 if (hasMilestone("T", 19))      ret = ret.div("1e8000")
+                if (hasUpgrade("e", 45))        ret = ret.div(Decimal.pow(5e163, player.e.upgrades.length))
+                if (hasMilestone("f", 19))      ret = ret.div("2e543")
+                if (hasMilestone("f", 20))      ret = ret.div("1e916")
 
                 return ret
         },
@@ -5797,6 +5815,8 @@ addLayer("f", {
 
                 let exp = exp1.times(exp1.pow(2).min(400)).min(7e4)
                 if (player.f.challenges[22] == 0) exp = exp.times(CURRENT_BUYABLE_EFFECTS["f13"])
+                if (hasMilestone("f", 19))      exp = exp.times(3)
+                if (hasMilestone("T", 20))      exp = exp.times(player.f.points.gte("1e92536") ? 9 : 3)
 
                 let ret = amt.plus(1).pow(exp)
 
@@ -6271,9 +6291,37 @@ addLayer("f", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Decrease F 21 linear cost base by 1e100 and F 22 linear cost base by 4e34 but increase its base cost by 4e14,141."
+                                return "Reward: Divide F 21 linear cost base by 1e100 and F 22 linear cost base by 4e34 but increase its base cost by 4e14,141. At 2e91,313 Finches divide F 22 linear cost base by 5e144 and Better Everything base by 2."
                         },
                 }, // hasMilestone("f", 18)
+                19: {
+                        requirementDescription(){
+                                return "9.1e91,919 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("9.1e91919")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: F 21 gives free F 13 levels and triple Finch's effect exponent but divide Finch gain by 2e543. At 1309 Tiers and 1e92,322 Finches, divide F 22 linear cost base by 7e77."
+                        },
+                }, // hasMilestone("f", 19)
+                20: {
+                        requirementDescription(){
+                                return "1e95,689 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e95689")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: F 21 gives free F 11 levels, add 5 to the Finch exponent, and divide Finch gain by 1e916."
+                        },
+                }, // hasMilestone("f", 20)
         },
         challenges: {
                 11: {
@@ -6422,9 +6470,11 @@ addLayer("f", {
                         goal(){
                                 let id = player.f.challenges[31]
                                 let x = [
-                                        111, 377, 433, 446, 999 
-                                        //999, 285, 286, 555, 400, 
+                                        111, 377, 433, 446, 460,
+                                        489, 999, 999, 999, 999, 
                                         ]
+                                if (id == 4 && player.T.best.lt(1252)) x += 100
+                                if (id == 4 && player.f.best.lt("3e95033")) x += 100
                                 return new Decimal(x[id])
                         },
                         canComplete: () => player.T.points.gte(tmp.f.challenges[31].goal),
@@ -6433,8 +6483,14 @@ addLayer("f", {
                                 if (player.f.challenges[31] >= 1) a += "<sup>.25</sup>"
                                 if (player.f.challenges[31] >= 2) a = a.replace(".25", ".2")
                                 a += br + "Goal: " + formatWhole(tmp.f.challenges[31].goal) + " Tiers" + br2
-                                a += "Reward: Increase F 13 linear cost base."
-                                return a + br2 + "Completions: " + player.f.challenges[31] + "/4"
+                                a += "Reward: Increase F 13 linear cost base"
+                                if (player.f.challenges[31] >= 5) a += " and raise effective Tiers ^EXP"
+                                return a.replace("EXP", format(tmp.f.challenges[31].tiersExp, 3)) + "." + br2 + "Completions: " + player.f.challenges[31] + "/6"
+                        },
+                        tiersExp(){
+                                let times = player.f.challenges[31]
+                                if (times < 5) return 1
+                                return 1.004-.001 * times
                         },
                         onEnter(){
                                 player.T.milestones = filter(player.T.milestones, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
@@ -6446,7 +6502,7 @@ addLayer("f", {
                                 return hasUpgrade("e", 44) && player.T.best.gte(1079)
                         },
                         countsAs: [],
-                        completionLimit: 4,
+                        completionLimit: 6,
                 }, // inChallenge("f", 31)
         },
         tabFormat: {
@@ -6985,6 +7041,8 @@ addLayer("E", {
 
                 tier = tier.max(0)
 
+                tier = tier.pow(tmp.f.challenges[31].tiersExp)
+
                 if (!hasMilestone("T", 6) || tier.lte(16)) {
                         div = div.plus(tier.div(10).pow(2))
                 }
@@ -7490,7 +7548,7 @@ addLayer("E", {
                                 return hasMilestone("E", 13)
                         },
                         effectDescription(){
-                                return "Reward: Tiers past 1063 (max 100) multiply Sifter's base by Tiers/1000 but increase F 12 base cost by 1e414. At 1e3233 Emeralds, the first 200 F 21 levels halve its linear cost base."
+                                return "Reward: Tiers past 1063 (max 100) multiply Sifter's base by Tiers/1000 but increase F 12 base cost by 1e414. At 1e3233 Emeralds, the first 340 F 21 levels halve its linear cost base (half as effective after 175, 200, and 300)."
                         },
                 }, // hasMilestone("E", 14)
                 15: {
@@ -7501,7 +7559,7 @@ addLayer("E", {
                                 return player.E.points.gte("1e3390")
                         },
                         unlocked(){
-                                return hasMilestone("E", 13)
+                                return hasMilestone("E", 14)
                         },
                         onComplete(){
                                 player.E.buyables[32] = decimalZero
@@ -7510,6 +7568,23 @@ addLayer("E", {
                                 return "Reward: Increase Better Everything / F 12 base cost by 1e600 / 1e120 and Tiers past 1095 increase Miner base by .5% (max 50 times)."
                         },
                 }, // hasMilestone("E", 15)
+                16: {
+                        requirementDescription(){
+                                return "1e4182 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("1e4182")
+                        },
+                        unlocked(){
+                                return hasMilestone("E", 15)
+                        },
+                        effectDescription(){
+                                if (player.f.points.gte("1e93687")) return "Reward: At <b>1e92,933</b> / <b>1e93,279</b> / <b>1e93,687</b> / 1e94,153 Finches, decrease F 22 linear cost base by <b>2.3e56</b> / <b>4e54</b> / <b>6.6e43</b> / 1.2e23."
+                                if (player.f.points.gte("1e93279")) return "Reward: At <b>1e92,933</b> / <b>1e93,279</b> / 1e93,687 Finches, decrease F 22 linear cost base by <b>2.3e56</b> / <b>4e54</b> / 6.6e43."
+                                if (player.f.points.gte("1e92933")) return "Reward: At <b>1e92,933</b> / 1e93,279 Finches, decrease F 22 linear cost base by <b>2.3e56</b> / 4e54."
+                                return "Reward: At 1e92,933 Finches, decrease F 22 linear cost base by 2.3e56."
+                        },
+                }, // hasMilestone("E", 16)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){
@@ -8158,6 +8233,20 @@ addLayer("T", {
                                 return "Reward: F 13 gives free F 11 levels, but divide Finch gain by 1e8000 and multiply F 12 base cost by 1e1111. Tiers past 1000 decrease Lazy Tiers quadratic base by .0001 (max 900 times)."
                         },
                 }, // hasMilestone("T", 19)
+                20: {
+                        requirementDescription(){
+                                return "1310 Tiers"
+                        },
+                        done(){
+                                return player.T.points.gte("1310")
+                        },
+                        unlocked(){
+                                return hasMilestone("T", 19)
+                        },
+                        effectDescription(){
+                                return "Reward: Each F 13 past 4150 divides its linear cost base by 1.001 and triple Finch effect exponent (and again at 1e92,536 Finches). Divide F 22 linear cost base by 2.5e5."
+                        },
+                }, // hasMilestone("T", 20)
         },
         buyables: {
                 rows: 3,
