@@ -5763,6 +5763,12 @@ addLayer("f", {
                 if (hasMilestone("f", 20))      ret = ret.plus(5)
                 if (hasMilestone("f", 22))      ret = ret.plus(5)
                 if (hasMilestone("E", 18))      ret = ret.plus(player.T.points.max(1500).sub(1562).div(100))
+                if (hasMilestone("E", 19)) {
+                        if (player.E.points.gte("1e5147"))      ret = ret.plus(player.T.points.sub(1600).max(0).div(100))
+                        if (player.E.points.gte("1e5164"))      ret = ret.plus(player.T.points.sub(1607).max(0).div(100))
+                        if (player.E.points.gte("1e5186"))      ret = ret.plus(player.T.points.sub(1615).max(0).div(100))
+                }
+                if (hasMilestone("f", 24))      ret = ret.plus(1)
 
                 return ret
         },
@@ -6357,9 +6363,37 @@ addLayer("f", {
                                 player.f.buyables[12] = player.f.buyables[12].min(16400)
                         },
                         effectDescription(){
-                                return "Reward: Bulk 2x Finch buyables, ncrease F 12 base cost by 1e3030, set its levels to 16,400, and add 5 to the Finch gain exponent."
+                                return "Reward: Bulk 2x Finch buyables, increase F 12 base cost by 1e3030, set its levels to 16,400, and add 5 to the Finch gain exponent."
                         },
                 }, // hasMilestone("f", 22)
+                23: {
+                        requirementDescription(){
+                                return "1e142,630 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e142630")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Bulk 2x Finch buyables, F 23 affects Faster Sifter and gives free F 12 levels, and increase F 12 base cost by 1e1190."
+                        },
+                }, // hasMilestone("f", 23)
+                24: {
+                        requirementDescription(){
+                                return "1e150,727 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e150727")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Add .0001 to F 22 base and add 1 to the Finch gain exponent but increase F1X base costs by 1e400."
+                        },
+                }, // hasMilestone("f", 24)
         },
         challenges: {
                 11: {
@@ -7545,7 +7579,7 @@ addLayer("E", {
                                 return hasMilestone("E", 10)
                         },
                         effectDescription(){
-                                return "Reward: Tiers past 1000 subtract .1 from the Sieve linear cost base but F 13 linear cost base is 15e20."
+                                return "Reward: Tiers past 1000 subtract .1 from the Sieve linear cost base (fifth after 640) but F 13 linear cost base is 15e20."
                         },
                 }, // hasMilestone("E", 11)
                 12: {
@@ -7670,9 +7704,37 @@ addLayer("E", {
                                 return hasMilestone("E", 17)
                         },
                         effectDescription(){
-                                return "Reward: F 23 affects E 11 and add (Tiers-1562)/100 to the Finch gain exponent (assuming Tiers > 1500)."
+                                return "Reward: F 23 affects E 11 and add (Tiers-1562)/100 to the Finch gain exponent (assuming Tiers > 1500). At 1e114,029 Finches divide F 22 linear cost base by 11111, increased to 15432 at 3.894e4983."
                         },
                 }, // hasMilestone("E", 18)
+                19: {
+                        requirementDescription(){
+                                return "1e5083 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("1e5083")
+                        },
+                        unlocked(){
+                                return hasMilestone("E", 18)
+                        },
+                        effectDescription(){
+                                return "Reward: Divide F 22 linear cost base by 2 per F 23 - 70 and divide F 23 linear cost base by 2 per F 22 - 70 (max 100 each). At 1e5147 / 1e5164 / 1e5186 Emeralds, Tiers past 1600 / 1607 / 1615 add .01 to the Finch gain exponent."
+                        },
+                }, // hasMilestone("E", 19)
+                20: {
+                        requirementDescription(){
+                                return "1e5591 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("1e5591")
+                        },
+                        unlocked(){
+                                return hasMilestone("E", 19)
+                        },
+                        effectDescription(){
+                                return "Reward: Multiply F 1X base costs by 1e2850 and square root them and F 22 gives free F 21 levels."
+                        },
+                }, // hasMilestone("E", 20)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){
@@ -8044,6 +8106,48 @@ addLayer("T", {
                                 return (hasUpgrade("T", 25) && player.f.best.gte("e110570")) || hasUpgrade("T", 31)
                         }, 
                 }, // hasUpgrade("T", 31)
+                32: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>XII Tier"
+                        },
+                        description(){
+                                let a = "Multiply F 13 base cost by 1e791 and add the golden ratio (about 1.618) to the Faster Sifter base"
+                                return a
+                        },
+                        onPurchase(){
+                                player.f.buyables[13] = player.f.buyables[13].sub(50).max(0)
+                        },
+                        cost: new Decimal(1618),
+                        unlocked(){
+                                return (hasUpgrade("T", 31) && player.E.best.gte("3e5190")) || hasUpgrade("T", 32)
+                        }, 
+                }, // hasUpgrade("T", 32)
+                33: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>XIII Tier"
+                        },
+                        description(){
+                                let a = "Double Finch autobuyer speed. Rank II exponent is 1.8 and per F 23 level - 77 add .01 to F 11 base"
+                                return a
+                        },
+                        cost: new Decimal(1647),
+                        unlocked(){
+                                return hasUpgrade("T", 32) || hasUpgrade("T", 33)
+                        }, 
+                }, // hasUpgrade("T", 33)
+                34: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>XIV Tier"
+                        },
+                        description(){
+                                let a = "F 23 gives free F 13 levels but multiply F 1X base costs by 1e380"
+                                return a
+                        },
+                        cost: new Decimal(1671),
+                        unlocked(){
+                                return hasUpgrade("T", 33) || hasUpgrade("T", 34)
+                        }, 
+                }, // hasUpgrade("T", 34)
         },
         milestones: {
                 1: {
@@ -8589,6 +8693,7 @@ addLayer("T", {
                                 }
                                 let costForm = "<b><h2>Cost formula</h2>:<br> x<sup>3</sup> + 25x</b>" + br
                                 if (hasMilestone("E", 13)) costForm = costForm.replace(">3", ">2")
+                                if (hasUpgrade("T", 33)) costForm = costForm.replace(">2", ">1.8")
                                 if (hasUpgrade("e", 44)) costForm = costForm.replace("25", formatWhole(25 - player.e.upgrades.length)).replace(" + 0x", "").replace("+ 1", "+ ")
                                 return br + costForm
                         },
@@ -8597,9 +8702,9 @@ addLayer("T", {
                         },
                         requires(){
                                 let l = player.T.buyables[42]
-                                let lin = hasUpgrade("e", 44) ? (25 - player.e.upgrades.length) : 25
-                                if (hasMilestone("E", 13)) return l.plus(lin).times(l)
-                                return l.times(l).plus(lin).times(l)
+                                let exp = hasUpgrade("T", 33) ? 1.8 : hasMilestone("E", 13) ? 2 : 3
+                                let lin = new Decimal(hasUpgrade("e", 44) ? (25 - player.e.upgrades.length) : 25).times(l)
+                                return l.pow(exp).plus(lin)
                         },
                         buy(){
                                 if (!layers.T.buyables[42].canAfford()) return 
