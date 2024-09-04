@@ -11,16 +11,17 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.f.points.gte("1e163427")
+	return player.T.points.gte(2187)
 }
 
-var CHANELOG_VERSION = "v0.048"
+var CHANELOG_VERSION = "v0.049"
 
 
 var CHANGELOGS = [
 	`<br><h3 style='color: #CC0000'>v0.049</h3><br>
-		- Balanced until 1e114,027 Finches.<br>
-		- Various changes and additions, unenumerated.<br>`,
+		- Balanced until 2187 Tiers.<br>
+		- Various changes and additions, unenumerated.<br>
+		- Next patch will contain a prestige layer!<br>`,
 	`<br><h3 style='color: #CC0000'>v0.048</h3><br>
 		- Balanced until 1e91313 Finches.<br>
 		- Various changes and additions, unenumerated.<br>
