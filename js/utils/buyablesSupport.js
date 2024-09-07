@@ -3178,7 +3178,8 @@ var MAIN_BUYABLE_DATA = {
                                 b1 = b1.sub(player.T.points.sub(1000).max(0).div(10).min(64))
                                 b1 = b1.sub(player.T.points.sub(1640).max(0).div(50).min(10.2))
                                 b1 = b1.sub(player.T.points.sub(2150).max(0).div(100).min(2.5))
-                                b1 = b1.sub(player.T.points.sub(2400).max(0).div(200).min(30.2))
+                                b1 = b1.sub(player.T.points.sub(2400).max(0).div(200).min(1.375))
+                                b1 = b1.sub(player.T.points.sub(2675).max(0).div(1000).min(1.4))
                         }
                         if (hasUpgrade("f", 23)) b1 = b1.plus(11)
 
@@ -3306,6 +3307,15 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["f31"]
                                 }
                         },
+                        5: {
+                                active(){
+                                        return hasMilestone("G", 5)
+                                },
+                                type: "add",
+                                amount(){
+                                        return player.f.buyables[22].sub(635).max(0).div(20)
+                                }
+                        }
                 },
                 bases(){
                         let b0 = new Decimal(1e34).div(CURRENT_BUYABLE_EFFECTS["f21"])
@@ -3466,7 +3476,8 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("E", 13) || player.T.best.gte(1037)) b0 = b0.times(player.G.unlocked ? 1e80 : 1e88)
                         if (hasMilestone("T", 20)) {
                                 b1 = b1.div(Decimal.pow(1.001, player.f.buyables[13].sub(4150).max(0).min(13594)))
-                                b1 = b1.div(Decimal.pow(1.001, player.f.buyables[13].sub(17744).max(0).div(2).floor()))
+                                b1 = b1.div(Decimal.pow(1.001, player.f.buyables[13].sub(17744).max(0).div(2).floor().min(2053)))
+                                b1 = b1.div(Decimal.pow(1.001, player.f.buyables[13].sub(21850).max(0).div(4).floor()))
                         }
                         if (hasUpgrade("T", 32)) b0 = b0.times("1e791")
                         if (hasUpgrade("T", 34)) b0 = b0.times("1e380")
@@ -3536,6 +3547,7 @@ var MAIN_BUYABLE_DATA = {
                         if (hasMilestone("f", 21)) b1 = b1.div(1e5)
                         if (player.f.buyables[21].gte(675)) b1 = b1.times(1.4)
                         if (player.f.buyables[21].gte(850)) b1 = b1.times(1.65)
+                        if (hasUpgrade("E", 31)) b0 = b0.div("4e302")
 
                         b1 = b1.div(CURRENT_BUYABLE_EFFECTS["f22"].pow(tmp.E.milestones[17].exp))
 
@@ -3581,7 +3593,7 @@ var MAIN_BUYABLE_DATA = {
                                 if (player.f.points.gte("1e94153")) b1 = b1.div(1.2e23)
                         }
                         if (hasMilestone("E", 18) && player.f.points.gte("1e114029")) b1 = b1.div(player.E.points.gte("3.984e4893") ? 15432 : 11111)
-                        if (hasMilestone("E", 19))      b1 = b1.div(Decimal.pow(2, player.f.buyables[23].max(56).sub(70).min(1000)))
+                        if (hasMilestone("E", 19))      b1 = b1.div(Decimal.pow(2, player.f.buyables[23].max(56).sub(70).min(811)))
                         if (hasMilestone("E", 20)) {
                                 if (player.E.points.gte("1e5653")) b1 = b1.div(2)
                                 if (player.E.points.gte("1e5718")) b1 = b1.div(3)

@@ -5816,12 +5816,17 @@ addLayer("f", {
                 if (hasMilestone("T", 19) && player.f.buyables[13].gte(3000)) {
                                                 ret = ret.div("1e8000")
                 }
-                if (hasUpgrade("e", 45))        ret = ret.div(Decimal.pow(5e163, player.e.upgrades.length))
-                if (hasMilestone("f", 19))      ret = ret.div("2e543")
-                if (hasMilestone("f", 20))      ret = ret.div("1e916")
+                if (hasUpgrade("e", 45) && player.e.points.gte("ee10")) {
+                        ret = ret.div(Decimal.pow(5e163, player.e.upgrades.length))
+                }
+                if (player.f.points.gte("e90000")) {
+                        if (hasMilestone("f", 19))      ret = ret.div("2e543")
+                        if (hasMilestone("f", 20))      ret = ret.div("1e916")
+                }
                 if (hasUpgrade("T", 31) && player.T.points.gte(1000)) {
                         ret = ret.div("1e200")
                 }
+                if (hasMilestone("G", 5))       ret = ret.times(10)
 
                 return ret
         },
@@ -7485,6 +7490,20 @@ addLayer("E", {
                                 return hasUpgrade("E", 24)
                         }, 
                 }, // hasUpgrade("E", 25)
+                31: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>XI Emerald"
+                        },
+                        description(){
+                                return "Divide F 21 base cost by 4e1303"
+                        },
+                        cost(){
+                                return new Decimal("1e9597")
+                        },
+                        unlocked(){
+                                return player.G.points.gte(23)
+                        }, 
+                }, // hasUpgrade("E", 31)
         },
         milestones: {
                 1: {
@@ -7680,7 +7699,7 @@ addLayer("E", {
                                 return hasMilestone("E", 10)
                         },
                         effectDescription(){
-                                return "Reward: Tiers past 1000 subtract .1 from the Sieve linear cost base (fifth after 640, halve after 1150, fifth after 1400) but F 13 linear cost base is 15e20."
+                                return "Reward: Tiers past 1000 subtract .1 from the Sieve linear cost base (fifth after 640, halve after 1150, halve after 1400, fifth after 1675) but F 13 linear cost base is 15e20."
                         },
                 }, // hasMilestone("E", 11)
                 12: {
@@ -7820,7 +7839,7 @@ addLayer("E", {
                                 return hasMilestone("E", 18)
                         },
                         effectDescription(){
-                                return "Reward: Divide F 22 linear cost base by 2 per F 23 - 70 and divide F 23 linear cost base by 2 per F 22 - 70 (max 1000 and 140). At 1e5147 / 1e5164 / 1e5186 Emeralds, Tiers past 1600 / 1607 / 1615 add .01 to the Finch gain exponent."
+                                return "Reward: Divide F 22 linear cost base by 2 per F 23 - 70 and divide F 23 linear cost base by 2 per F 22 - 70 (max 811 and 140). At 1e5147 / 1e5164 / 1e5186 Emeralds, Tiers past 1600 / 1607 / 1615 add .01 to the Finch gain exponent."
                         },
                 }, // hasMilestone("E", 19)
                 20: {
@@ -8306,7 +8325,7 @@ addLayer("T", {
                         },
                         cost: new Decimal(2635),
                         unlocked(){
-                                return hasUpgrade("T", 34)
+                                return hasUpgrade("T", 35)
                         }, 
                 }, // hasUpgrade("T", 41)
         },
@@ -8612,7 +8631,7 @@ addLayer("T", {
                                 return hasMilestone("T", 19)
                         },
                         effectDescription(){
-                                return "Reward: Each F 13 past 4150 divides its linear cost base by 1.001 (every other after 13594 times) and triple Finch effect exponent (and again at 1e92,536 Finches). Divide F 22 linear cost base by 2.5e5."
+                                return "Reward: Each F 13 past 4150 divides its linear cost base by 1.001 (every other/fourth after 13594/17700 times) and triple Finch effect exponent (and again at 1e92,536 Finches). Divide F 22 linear cost base by 2.5e5."
                         },
                 }, // hasMilestone("T", 20)
         },
@@ -8856,11 +8875,14 @@ addLayer("T", {
         
                                         return br + amt + cost + "Shift to see details"
                                 }
-                                let costForm = "<b><h2>Cost formula</h2>:<br> x<sup>3</sup> + 25x</b>" + br
-                                if (hasMilestone("E", 13)) costForm = costForm.replace(">3", ">2")
-                                if (hasUpgrade("T", 33)) costForm = costForm.replace(">2", ">1.8")
+                                let costForm = "<b><h2>Cost formula</h2>:<br> x<sup>EXP</sup> + 25x</b>" + br
+                                let exp = hasUpgrade("T", 33) ? 1.8 : hasMilestone("E", 13) ? 2 : 3
+                                if (hasMilestone("G", 5)) {
+                                        if (player.E.points.gte("1e9149")) exp -= .07
+                                        if (player.E.points.gte("1e9283")) exp -= .07
+                                }
                                 if (hasUpgrade("e", 44)) costForm = costForm.replace("25", formatWhole(25 - player.e.upgrades.length)).replace(" + 0x", "").replace("+ 1", "+ ")
-                                return br + costForm
+                                return br + costForm.replace("EXP", formatWhole(exp))
                         },
                         canAfford(){
                                 return player.E.buyables[32].gte(tmp.T.buyables[42].requires)
@@ -8868,6 +8890,10 @@ addLayer("T", {
                         requires(){
                                 let l = player.T.buyables[42]
                                 let exp = hasUpgrade("T", 33) ? 1.8 : hasMilestone("E", 13) ? 2 : 3
+                                if (hasMilestone("G", 5)) {
+                                        if (player.E.points.gte("1e9149")) exp -= .07
+                                        if (player.E.points.gte("1e9283")) exp -= .07
+                                }
                                 let lin = new Decimal(hasUpgrade("e", 44) ? (25 - player.e.upgrades.length) : 25).times(l)
                                 return l.pow(exp).plus(lin).ceil()
                         },
@@ -8897,7 +8923,7 @@ addLayer("T", {
                                 return player.f.buyables[31].gte(tmp.T.buyables[43].requires)
                         },
                         base(){
-                                if (hasMilestone("G", 4)) return new Decimal(10).sub(player.G.points.sub(12).max(0).min(7))
+                                if (hasMilestone("G", 4)) return new Decimal(10).sub(player.G.points.sub(12).max(0).min(8))
                                 return new Decimal(10)
                         },
                         requires(){
@@ -9121,9 +9147,23 @@ addLayer("G", {
                                 return true
                         },
                         effectDescription(){
-                                return "Reward: Every other Grade makes Grades divide Dlareme linear cost base. Grades past 12 (max 7) subtract from the Rank III base."
+                                return "Reward: Every other Grade makes Grades divide Dlareme linear cost base. Grades past 12 (max 8) subtract from the Rank III base."
                         },
                 }, // hasMilestone("G", 4)
+                5: {
+                        requirementDescription(){
+                                return "Grade 18"
+                        },
+                        done(){
+                                return player.G.points.gte(18)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: F 22 levels after 630 add .05 to the F 11 base. At 1e9149 and 1e9283 Emeralds subtract .07 from the exponent of Rank II's cost formula. Gain 10x Finches."
+                        },
+                }, // hasMilestone("G", 5)
         },
         tabFormat: {
                 "Upgrades": {
