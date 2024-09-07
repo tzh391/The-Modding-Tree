@@ -6,6 +6,7 @@ function getsReset(layer, layerPrestiging) {
                 "d": 4,
                 "e": 5,
                 "f": 6,
+                "G": 6.5,
                 "g": 7,
                 "h": 8,
                 "i": 9,
@@ -112,6 +113,7 @@ function getGeneralizedInitialPostMult(layer){
         let yet = false
         for (let i = 0; i < LAYERS.length; i++){
                 if (layers[LAYERS[i]].row == "side") continue
+                if (LAYERS[i] == "G") continue
                 if (yet) x = x.times(tmp[LAYERS[i]].effect || decimalOne)
                 if (LAYERS[i] == layer) yet = true
         }

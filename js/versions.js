@@ -11,13 +11,17 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.T.points.gte(2187)
+	return player.T.points.gte(2661)
 }
 
-var CHANELOG_VERSION = "v0.049"
+var CHANELOG_VERSION = "v0.050"
 
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC0000'>v0.050</h3><br>
+		- Balanced until 2661 Tiers.<br>
+		- Various changes and additions, unenumerated.<br>
+		- A new prestige layer!<br>`,
 	`<br><h3 style='color: #CC0000'>v0.049</h3><br>
 		- Balanced until 2187 Tiers.<br>
 		- Various changes and additions, unenumerated.<br>
