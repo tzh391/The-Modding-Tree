@@ -1,6 +1,6 @@
 // Set your version in num and name
 var VERSION = {
-	num: ".050",
+	num: ".050.1",
 	name: /*"Advil's Auspicious Acension"*/ "",
 }
 
@@ -11,13 +11,16 @@ function isEndgame() {
 }
 
 function isEndgameRaw(){
-	return player.T.points.gte(2661)
+	return player.T.points.gte(3048)
 }
 
 var CHANELOG_VERSION = "v0" + VERSION["num"]
 
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC0000'>v0.050.1</h3><br>
+		- Balanced until 3048 Tiers.<br>
+		- Bugfix with Grades boosting point gain.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.050</h3><br>
 		- Balanced until 2848 Tiers.<br>
 		- Various changes and additions, unenumerated.<br>

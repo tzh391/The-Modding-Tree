@@ -18,6 +18,7 @@ function getPointMultiplier(){
 
         for (let i = 0; i < LAYERS.length; i++){
                 if (layers[LAYERS[i]].row == "side") continue
+                if (LAYERS[i] == "G") continue
                                         ret = ret.times(tmp[LAYERS[i]].effect || decimalOne)
         }
 
@@ -5827,6 +5828,7 @@ addLayer("f", {
                         ret = ret.div("1e200")
                 }
                 if (hasMilestone("G", 5))       ret = ret.times(10)
+                                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["f32"].pow(player.T.points).pow(player.G.points))
 
                 return ret
         },
@@ -6055,6 +6057,9 @@ addLayer("f", {
                         },
                         function(){
                                 return player.f.buyables[12].gte(31700) //|| player.g.unlocked
+                        },
+                        function(){
+                                return player.f.buyables[12].gte(52000) //|| player.g.unlocked
                         },
                 ]),
         milestones: {
@@ -8992,7 +8997,8 @@ addLayer("T", {
                 let data = player.T
 
                 data.points = decimalZero
-                if (layer != "f" || !hasMilestone("f", 9)) data.best = decimalZero
+                if (hasMilestone("G", 6) && layer == "G") data.best = tmp.G.nextAt.times(.9).floor()
+                else if (layer != "f" || !hasMilestone("f", 9)) data.best = decimalZero
 
                 data.upgrades = data.upgrades.slice(0, hasMilestone("f", 8) ? player.f.times : 0)
                 
@@ -9164,6 +9170,20 @@ addLayer("G", {
                                 return "Reward: F 22 levels after 630 add .05 to the F 11 base. At 1e9149 and 1e9283 Emeralds subtract .07 from the exponent of Rank II's cost formula. Gain 10x Finches."
                         },
                 }, // hasMilestone("G", 5)
+                6: {
+                        requirementDescription(){
+                                return "Grade 26"
+                        },
+                        done(){
+                                return player.G.points.gte(26)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Multiply F 32 linear cost base by 1e80 per Grade past 23 and 8e59 once you have 11 levels, reduced to 4.8e51 at 36 levels. Multiply F 23 base cost by 5e69. Start with 90% of the Tiers you need to Grade up."
+                        },
+                }, // hasMilestone("G", 6)
         },
         tabFormat: {
                 "Upgrades": {

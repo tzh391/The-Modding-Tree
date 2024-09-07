@@ -3627,7 +3627,7 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal(1.0132) // catalan
 
                         if (hasMilestone("E", 19))      b1 = b1.div(Decimal.pow(2, player.f.buyables[22].max(69).sub(70).min(140)))
-                
+                        if (hasMilestone("G", 6))       b0 = b0.times(5e69)
 
                         return [b0.max(1), b1.max(1), b2]
                 },
@@ -3651,6 +3651,28 @@ var MAIN_BUYABLE_DATA = {
                                 if (player.E.points.gte("1e7161")) b1 = b1.div("1e480")
                         }
                         if (hasMilestone("f", 25))      b1 = b1.div(1e188)
+
+                        return [b0.max(1), b1.max(1), b2]
+                },
+        },
+        f32: {
+                name: "F 32",
+                func: "exp",
+                effects: "Finches per Grade per Tier",
+                base: {
+                        initial: new Decimal(1.005),
+                },
+                bases(){
+                        let b0 = new Decimal("1e467924").div(CURRENT_BUYABLE_EFFECTS["f21"])
+                        let b1 = new Decimal("2e1963").div(CURRENT_BUYABLE_EFFECTS["f22"])
+                        let b2 = new Decimal(1.1430) // catalan
+
+                        if (hasMilestone("G", 6)) {
+                                b1 = b1.times(Decimal.pow(1e80, player.G.points.sub(25).max(0)))
+                                if (player.f.buyables[32].gte(11)) b1 = b1.times(8e59)
+                                if (player.f.buyables[32].gte(36)) b1 = b1.div(8e8/4.8)
+                                //b1 = b1.times(Decimal.pow(10, player.f.buyables[32].sub(10).max(0)))
+                        }
 
                         return [b0.max(1), b1.max(1), b2]
                 },
