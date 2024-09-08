@@ -5774,6 +5774,7 @@ addLayer("f", {
                 }
                 if (hasMilestone("f", 24))      ret = ret.plus(1)
                 if (hasMilestone("E", 21) && player.f.points.gte("1e191769"))      ret = ret.plus(2)
+                if (hasMilestone("G", 7))       ret = ret.plus(player.T.totalranks.sub(92).max(0))
 
                 return ret
         },
@@ -6166,10 +6167,11 @@ addLayer("f", {
                         },
                         start(){
                                 let r = 170
-                                if (hasUpgrade("e", 32)) r -= player.f.challenges[11]
-                                if (hasUpgrade("d", 52)) r -= player.f.challenges[12]
-                                if (hasMilestone("G", 3))r -= player.G.points.times(2).min(120).floor().toNumber()
-                                return r
+                                if (hasUpgrade("e", 32))        r -= player.f.challenges[11]
+                                if (hasUpgrade("d", 52))        r -= player.f.challenges[12]
+                                if (hasMilestone("G", 3))       r -= player.G.points.times(2).min(1e7).floor().toNumber()
+                                if (hasMilestone("E", 22))      r += 400
+                                return Math.max(0, r)
                         },
                         effectDescription(){
                                 if (hasUpgrade("e", 32)) {
@@ -6453,6 +6455,20 @@ addLayer("f", {
                                 return "Reward: F 31 levels subtract .0001 from Tired Tiers quadrtic base (max 1000)."
                         },
                 }, // hasMilestone("f", 26)
+                27: {
+                        requirementDescription(){
+                                return "1e598,690 Finches"
+                        },
+                        done(){
+                                return player.f.points.gte("1e598690")
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Divide Grade Milestone 6 per by 10. Reapply this at 1e602,907, 1e623,648, 1e630,327, 1e833,329, 3e837,524, 1e851,865, 1e857,997, 1e864,355, 1e890,441, 1e901,228, 1e986,934 and 1e1,145,677 Finches."
+                        },
+                }, // hasMilestone("f", 27)
         },
         challenges: {
                 11: {
@@ -6766,6 +6782,7 @@ addLayer("f", {
                 let resetChallenges = [11, 12, 21, 22, 31]
                 if (hasMilestone("G", 3)) resetChallenges = [22, 31]
                 for (let j = 0; j < resetChallenges.length; j++) {
+                        if (hasMilestone("G", 7)) break
                         data.challenges[resetChallenges[j]] = 0
                 }
         },
@@ -7306,7 +7323,8 @@ addLayer("E", {
                 let ret = decimalOne
 
                 if (hasMilestone("T", 13) && player.E.points.gte(1e147)) ret = ret.times(tmp.E.getInitialGain)
-                if (hasUpgrade("f", 25))           ret = ret.times(989)
+                if (hasUpgrade("f", 25))        ret = ret.times(989)
+                if (hasUpgrade("E", 32))        ret = ret.times(10)
 
                 return ret
         },
@@ -7509,6 +7527,34 @@ addLayer("E", {
                                 return player.G.points.gte(23)
                         }, 
                 }, // hasUpgrade("E", 31)
+                32: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>XII Emerald"
+                        },
+                        description(){
+                                return "Gain 10x Emeralds post reduction and the first 500 Better Everything levels subtract .001 from the Rank III base"
+                        },
+                        cost(){
+                                return new Decimal("1e12237")
+                        },
+                        unlocked(){
+                                return player.T.points.gte(3460)
+                        }, 
+                }, // hasUpgrade("E", 32)
+                33: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>XIII Emerald"
+                        },
+                        description(){
+                                return "Remove the +x from Rank I's cost formula"
+                        },
+                        cost(){
+                                return new Decimal("1e12976")
+                        },
+                        unlocked(){
+                                return player.T.points.gte(3645)
+                        }, 
+                }, // hasUpgrade("E", 33)
         },
         milestones: {
                 1: {
@@ -7704,7 +7750,7 @@ addLayer("E", {
                                 return hasMilestone("E", 10)
                         },
                         effectDescription(){
-                                return "Reward: Tiers past 1000 subtract .1 from the Sieve linear cost base (fifth after 640, halve after 1150, halve after 1400, fifth after 1675) but F 13 linear cost base is 15e20."
+                                return "Reward: Tiers past 1000 subtract .1 from the Sieve linear cost base (fifth after 640, halve after 1150, halve after 1400, fifth after 1675, fifth at 2300) but F 13 linear cost base is 15e20."
                         },
                 }, // hasMilestone("E", 11)
                 12: {
@@ -7888,6 +7934,20 @@ addLayer("E", {
                                 return "Reward: Multiply Better Everything linear cost base by 7. At 1e191,769 Finches add 2 to the Finch gain exponent but multiply F 12 base cost by 1e2480." 
                         },
                 }, // hasMilestone("E", 21)
+                22: {
+                        requirementDescription(){
+                                return "1e13,146 Emeralds"
+                        },
+                        done(){
+                                return player.E.points.gte("1e13146")
+                        },
+                        unlocked(){
+                                return hasMilestone("E", 21)
+                        },
+                        effectDescription(){
+                                return "Reward: F 22 affects F 3X buyables per Grade but multiply F 21 and F 22 base costs by 1e15,001 and Finch Milestone 7 starts 400 later." 
+                        },
+                }, // hasMilestone("E", 22)
         },
         buyables: getLayerGeneralizedBuyableData("E", [
                         function(){
@@ -8082,7 +8142,7 @@ addLayer("T", {
                         if (player.T.points.gte(101)) return init + "Tiers<sup>Tiers</sup>"
                         return init + "100<sup>Tiers</sup>"
                 }
-                return "Reset for a Tier<br>Req: " + format(player.E.points) + "/" + format(tmp.T.nextAtDisp)
+                return "Reset for a Tier<br>Req: " + format(player.E.points) + " / " + format(tmp.T.nextAtDisp)
         },
         update(diff){
                 let data = player.T
@@ -8636,7 +8696,7 @@ addLayer("T", {
                                 return hasMilestone("T", 19)
                         },
                         effectDescription(){
-                                return "Reward: Each F 13 past 4150 divides its linear cost base by 1.001 (every other/fourth after 13594/17700 times) and triple Finch effect exponent (and again at 1e92,536 Finches). Divide F 22 linear cost base by 2.5e5."
+                                return "Reward: Each F 13 past 4150 divides its linear cost base by 1.001 (every other/fourth/eigth after 13594/17700/34000 times) and triple Finch effect exponent (and again at 1e92,536 Finches). Divide F 22 linear cost base by 2.5e5."
                         },
                 }, // hasMilestone("T", 20)
         },
@@ -8849,6 +8909,7 @@ addLayer("T", {
                                         return br + amt + cost + "Shift to see details"
                                 }
                                 let costForm = "<b><h2>Cost formula</h2>:<br> x<sup>2</sup> + x + 899END</b>" + br
+                                if (hasUpgrade("E", 33)) costForm = costForm.replace("+ x ", "")
                                 if (hasUpgrade("f", 22)) costForm = costForm.replace("899", formatWhole(player.T.points.sub(950).max(0).times(-1).plus(899).max(0)))
                                 costForm = costForm.replace(" + 0END", "").replace("END", "")
                                 return br + costForm
@@ -8859,7 +8920,8 @@ addLayer("T", {
                         requires(){
                                 let l = player.T.buyables[41]
                                 let add = hasUpgrade("f", 22) ? player.T.points.sub(950).max(0).times(-1).plus(899).max(0) : 899
-                                return l.plus(1).times(l).plus(add)
+                                if (hasUpgrade("E", 33)) return l.pow(2).plus(add).round()
+                                return l.plus(1).times(l).plus(add).round()
                         },
                         buy(){
                                 if (!layers.T.buyables[41].canAfford()) return 
@@ -8886,6 +8948,8 @@ addLayer("T", {
                                         if (player.E.points.gte("1e9149")) exp -= .07
                                         if (player.E.points.gte("1e9283")) exp -= .07
                                 }
+                                if (hasMilestone("G", 7) && player.T.points.gte(3570)) exp -= .03
+                                if (hasMilestone("G", 7) && player.T.points.gte(3580)) exp -= .03
                                 if (hasUpgrade("e", 44)) costForm = costForm.replace("25", formatWhole(25 - player.e.upgrades.length)).replace(" + 0x", "").replace("+ 1", "+ ")
                                 return br + costForm.replace("EXP", formatWhole(exp))
                         },
@@ -8899,6 +8963,8 @@ addLayer("T", {
                                         if (player.E.points.gte("1e9149")) exp -= .07
                                         if (player.E.points.gte("1e9283")) exp -= .07
                                 }
+                                if (hasMilestone("G", 7) && player.T.points.gte(3570)) exp -= .03
+                                if (hasMilestone("G", 7) && player.T.points.gte(3580)) exp -= .03
                                 let lin = new Decimal(hasUpgrade("e", 44) ? (25 - player.e.upgrades.length) : 25).times(l)
                                 return l.pow(exp).plus(lin).ceil()
                         },
@@ -8921,13 +8987,15 @@ addLayer("T", {
         
                                         return br + amt + cost + "Shift to see details"
                                 }
-                                let costForm = "<b><h2>Cost formula</h2>:<br> " + formatWhole(tmp.T.buyables[43].base) +  "<sup>x</sup></b>" + br
+                                let str = tmp.T.buyables[43].base.eq(tmp.T.buyables[43].base.floor()) ? formatWhole(tmp.T.buyables[43].base) : format(tmp.T.buyables[43].base, 3)
+                                let costForm = "<b><h2>Cost formula</h2>:<br> " + str +  "<sup>x</sup></b>" + br
                                 return br + costForm
                         },
                         canAfford(){
                                 return player.f.buyables[31].gte(tmp.T.buyables[43].requires)
                         },
                         base(){
+                                if (hasUpgrade("E", 32))  return player.E.buyables[32].div(1000).min(.5).times(-1).plus(2)
                                 if (hasMilestone("G", 4)) return new Decimal(10).sub(player.G.points.sub(12).max(0).min(8))
                                 return new Decimal(10)
                         },
@@ -9180,10 +9248,45 @@ addLayer("G", {
                         unlocked(){
                                 return true
                         },
+                        per(){
+                                let base = new Decimal(1e80)
+                                if (player.T.points.gte(3069)) base = base.div(Decimal.pow(10, player.G.points.sub(30).min(18).max(0)))
+                                if (hasMilestone("f", 27)) {
+                                        base = base.div(10)
+                                        if (player.f.points.gte("1e602907")) base = base.div(10)
+                                        if (player.f.points.gte("1e623648")) base = base.div(10)
+                                        if (player.f.points.gte("1e630327")) base = base.div(10)
+                                        if (player.f.points.gte("1e833329")) base = base.div(10)
+                                        if (player.f.points.gte("3e837524")) base = base.div(10)
+                                        if (player.f.points.gte("1e851865")) base = base.div(10)
+                                        if (player.f.points.gte("1e857997")) base = base.div(10)
+                                        if (player.f.points.gte("1e864355")) base = base.div(10)
+                                        if (player.f.points.gte("1e890441")) base = base.div(10)
+                                        if (player.f.points.gte("1e901228")) base = base.div(10)
+                                        if (player.f.points.gte("1e986934")) base = base.div(10)
+                                        if (player.f.points.gte("1e1145677"))base = base.div(10)
+                                }
+                                return base.max(1)
+                        },
                         effectDescription(){
-                                return "Reward: Multiply F 32 linear cost base by 1e80 per Grade past 23 and 8e59 once you have 11 levels, reduced to 4.8e51 at 36 levels. Multiply F 23 base cost by 5e69. Start with 90% of the Tiers you need to Grade up."
+                                let r = "Reward: Multiply F 32 linear cost base by 1e80 per Grade past 23 (reduced to divide by 10 per Grade past 30 at Tier 3069, max 18 times) also multiply it by 8e59 once you have 11 levels, reduced to 4.8e51/1e45 at 36/55 levels. Multiply F 23 base cost by 5e69. Start with 90% of the Tiers you need to Grade up."
+                                return r + br + "Current per: " + format(tmp.G.milestones[6].per)
                         },
                 }, // hasMilestone("G", 6)
+                7: {
+                        requirementDescription(){
+                                return "Grade 44"
+                        },
+                        done(){
+                                return player.G.points.gte(44)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Keep all Finch challenges. Grades past 40 divide Dlareme base cost by Finches<sup>.0001</sup>. Ranks past 92 add to the Finch gain exponent and at 3570 and 3580 Tiers subtract .03 from the Rank II exponent."
+                        },
+                }, // hasMilestone("G", 7)
         },
         tabFormat: {
                 "Upgrades": {
