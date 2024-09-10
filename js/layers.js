@@ -6654,7 +6654,7 @@ addLayer("f", {
                                 player.E.upgrades = filter(player.E.upgrades, [11,12,13,14,15,21])
                         },
                         unlocked(){
-                                return (hasUpgrade("e", 44) && player.T.best.gte(1079)) || hasMilestone("G", 2)
+                                return (hasUpgrade("e", 44) && player.T.best.gte(1079)) || player.G.unlocked
                         },
                         countsAs: [],
                         completionLimit: 7,
