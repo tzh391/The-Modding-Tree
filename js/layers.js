@@ -2632,7 +2632,7 @@ addLayer("d", {
                 if (hasMilestone("d", 24))      ret = ret.div(2)
                 if (hasMilestone("d", 25))      ret = ret.div(24)
                 if (hasUpgrade("c", 54))        ret = ret.div(1e5)
-                if (hasUpgrade("d", 42))        ret = ret.div(65432)
+                if (hasUpgrade("d", 42) && player.d.points.gte("1e10000"))        ret = ret.div(65432)
                 if (hasMilestone("e", 14) && getBuyableAmount("e", 11).gte(200) && !hasMilestone("f", 5)) {
                                                 ret = ret.div(700)
                 }
@@ -9097,7 +9097,7 @@ addLayer("T", {
                                 ["buyables", [1,2,3,7]]
                         ],
                         unlocked(){
-                                return player.f.challenges[22] >= 2
+                                return player.f.challenges[22] >= 2 || player.G.unlocked
                         },
                 },
                 "Milestones": {
@@ -9116,7 +9116,7 @@ addLayer("T", {
                                 ["buyables", [4,5,6]]
                         ],
                         unlocked(){
-                                return player.f.challenges[22] >= 2
+                                return player.f.challenges[22] >= 2 || player.G.unlocked
                         },
                 },
         },
