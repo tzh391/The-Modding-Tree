@@ -1,6 +1,6 @@
 // Set your version in num and name
 var VERSION = {
-	num: ".052",
+	num: ".052.1",
 	name: /*"Advil's Auspicious Acension"*/ "",
 }
 
@@ -14,10 +14,13 @@ function isEndgameRaw(){
 	return player.G.points.gte(70)
 }
 
-var CHANELOG_VERSION = "v0" + VERSION["num"]
+var CHANELOG_VERSION = "v0.052"
 
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC0000'>v0.052.1</h3><br>
+		- Balanced until Grade 100.<br>
+		- Small bugfix with each Grades.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.052</h3><br>
 		- Balanced until Grade 70.<br>
 		- Various changes and additions, unenumerated.<br>

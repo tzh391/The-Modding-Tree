@@ -5831,10 +5831,10 @@ addLayer("f", {
                 if (hasMilestone("G", 5))       ret = ret.times(10)
                 let exp1 = player.T.points
                 let exp2 = player.G.points
-                if (exp1.gte(5500))     exp1 = exp1.div(5500).pow(.7).times(5500)
-                if (exp1.gte(5412))     exp1 = exp1.sub(4412).log10().times(1804)
-                if (exp2.gte(87))       exp2 = exp2.times(87).sqrt()
-                if (exp2.gte(82))       exp2 = exp2.times(82).sqrt()
+                if (exp1.gte(5500) && !hasMilestone("G", 10))   exp1 = exp1.div(5500).pow(.7).times(5500)
+                if (exp1.gte(5412))                             exp1 = exp1.sub(4412).log10().times(1804)
+                if (exp2.gte(87) && !hasMilestone("G", 10))     exp2 = exp2.times(87).sqrt()
+                if (exp2.gte(82))                               exp2 = exp2.times(82).sqrt()
                                                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["f32"].pow(exp1).pow(exp2))
 
                 return ret
@@ -6625,7 +6625,7 @@ addLayer("f", {
                                 let id = player.f.challenges[31]
                                 let x = [
                                         111, 377, 433, 446, 460,
-                                        489, 524, 0, 0, 0, 
+                                        489, 524, 3900, 0, 0, 
                                         ]
                                 if (id == 4 && player.T.best.lt(1252)) x[4] += 100
                                 if (id == 5 && player.f.best.lt("3e95033") && !player.G.unlocked) x[5] += 100
@@ -6640,7 +6640,7 @@ addLayer("f", {
                                 a += "Reward: Increase F 13 linear cost base"
                                 if (player.f.challenges[31] >= 5) a += " and raise effective Tiers ^" + format(tmp.f.challenges[31].tiersExp, 3)
 
-                                return a + "." + br2 + "Completions: " + player.f.challenges[31] + "/7"
+                                return a + "." + br2 + "Completions: " + player.f.challenges[31] + " / " + formatWhole(tmp.f.challenges[31].completionLimit)
                         },
                         tiersExp(){
                                 let times = player.f.challenges[31]
@@ -6652,12 +6652,22 @@ addLayer("f", {
                                 player.T.upgrades = filter(player.T.upgrades, [11,12,13,14,15,21,22,25])
                                 player.E.milestones = filter(player.E.milestones, [1,2,3,4,5,6])
                                 player.E.upgrades = filter(player.E.upgrades, [11,12,13,14,15,21])
+
+                                if (player.G.points.gte(50)) {
+                                        player.T.best = new Decimal(3800)
+                                        player.T.points = new Decimal(3800)
+                                }
+                        },
+                        onComplete(){
+                                if (player.f.challenges[31] >= 8) player.T.best = new Decimal(5700)
                         },
                         unlocked(){
                                 return (hasUpgrade("e", 44) && player.T.best.gte(1079)) || player.G.unlocked
                         },
                         countsAs: [],
-                        completionLimit: 7,
+                        completionLimit(){
+                                return player.G.points.gte(88) ? 8 : 7
+                        },
                 }, // inChallenge("f", 31)
         },
         tabFormat: {
@@ -7282,7 +7292,7 @@ addLayer("E", {
                 if (hasMilestone("E", 1))       ret = ret.div(Decimal.pow(player.T.points.gte(12) ? 5 : 2, player.T.points.min(player.T.points.gte(13) ? 0 : 7)))
 
                 if (hasUpgrade("E", 13))        ret = ret.times(Decimal.pow(7, player.E.upgrades.length - 2).max(1))
-                if (hasUpgrade("E", 15))        ret = ret.div(hasUpgrade("E", 12) ? 1e10 : 1e40)
+                if (hasUpgrade("E", 15))        ret = ret.div(player.f.unlocked ? 1e10 : 1e40)
 
                 if (hasMilestone("e", 80))      ret = ret.times(Decimal.pow(player.e.milestones.length, 1 + player.f.milestones.length))
                 if (hasMilestone("e", 81) && player.f.challenges[22] < 1)      ret = ret.div(Decimal.pow(player.e.milestones.length, player.T.points.min(30)))
@@ -7438,7 +7448,7 @@ addLayer("E", {
                         },
                         description(){
                                 let a = "Faster Sifter gives free Sifter levels but divide Emerald gain by 1e40"
-                                if (hasUpgrade("E", 12)) a = a.replace("40", "10")
+                                if (player.f.unlocked) a = a.replace("40", "10")
                                 return a
                         },
                         cost(){
@@ -9174,10 +9184,14 @@ addLayer("G", {
         exponent(){
                 let ret = new Decimal(1000)//.max(player.T.points)
 
+                if (player.G.points.gte(90)) ret = ret.plus(hasMilestone("G", 10) ? 27.4 : 46.98)
+
                 return ret.div(1000)
         },
         prestigeButtonText(){
                 if (player.shiftAlias) {
+                        if (hasMilestone("G", 10)) return "3<sup>7+Grades<sup>1.0274</sup>/100</sup>"
+                        if (player.G.points.gte(90)) return "3<sup>7+Grades<sup>1.04698</sup>/100</sup>"
                         return "3<sup>7+Grades/100</sup>"
                 }
                 return "Reset for a Grade<br>Req: " + formatWhole(player.T.points) + "/" + formatWhole(tmp.G.nextAtDisp)
@@ -9380,6 +9394,20 @@ addLayer("G", {
                                 return "Reward: Keep Tiers and Rank content, add .0017 to the F 23 base per Grade past 70, and divide F 22 linear cost base by 5e4 per Grade past 72 (max 10 times), reduced to 1500 / 250 / 175 / 130 / 45 / 11 at Grade 75 / 78 / 79 / 80 / 81 / 82. Tenth F 21 base and F21 gives free F 12 levels instead of F 23. "
                         },
                 }, // hasMilestone("G", 9)
+                10: {
+                        requirementDescription(){
+                                return "Grade 91"
+                        },
+                        done(){
+                                return player.G.points.gte(91)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        effectDescription(){
+                                return "Reward: Remove the second softcaps for F 32's effect and reduce the exponent for next Grade to 1.0274."
+                        },
+                }, // hasMilestone("G", 10)
         },
         tabFormat: {
                 "Upgrades": {
