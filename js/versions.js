@@ -1,6 +1,6 @@
 // Set your version in num and name
 var VERSION = {
-	num: ".052.2",
+	num: ".052.3",
 	name: /*"Advil's Auspicious Acension"*/ "",
 }
 
@@ -18,6 +18,8 @@ var CHANELOG_VERSION = "v0.052"
 
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC0000'>v0.052.3</h3><br>
+		- Added 16 rows of achievements.<br>`,
 	`<br><h3 style='color: #CC0000'>v0.052.1</h3><br>
 		- Balanced until Grade 100.<br>
 		- Small bugfix with each Grades.<br>`,
