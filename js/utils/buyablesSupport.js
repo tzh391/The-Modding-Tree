@@ -1835,7 +1835,7 @@ var MAIN_BUYABLE_DATA = {
                         }
                         if (hasMilestone("d", 23) && hasMilestone("d", 24)) b1 = b1.times(8e12)
                         if (hasMilestone("e", 11)) {
-                                b0 = b0.times("1e1000")
+                                b0 = b0.times(player.G.unlocked ? 1000 : "1e1000")
                                 b1 = b1.div(1e5)
                         }
                         if (hasMilestone("e", 12)) {

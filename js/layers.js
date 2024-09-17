@@ -2622,7 +2622,7 @@ addLayer("d", {
                         if (!hasMilestone("f", 4))      ret = ret.div(Decimal.pow(16, player.e.upgrades.length))
                 }
 
-                if (hasMilestone("e", 13) && getBuyableAmount("e", 11).gte(150) && !hasMilestone("e", 33)) {
+                if (hasMilestone("e", 13) && (getBuyableAmount("e", 11).gte(150)) && !hasMilestone("e", 33)) {
                                                 ret = ret.times(player.e.points.max(10).log10().ceil().pow(eaglesexp))
                 } else {
                                                 ret = ret.times(player.e.points.max(10).log10().pow(eaglesexp))
@@ -3857,7 +3857,7 @@ addLayer("e", {
                 }
                 else {
                         if (hasMilestone("e", 12))      exp = exp.div(2)
-                        if (hasMilestone("e", 13))      exp = exp.div(2)
+                        if (hasMilestone("e", 13) && player.e.best.gte("1e38"))      exp = exp.div(2)
                         if (hasMilestone("e", 16))      exp = exp.sub(1)
                         if (hasMilestone("e", 17))      exp = exp.sub(1)
                         if (hasMilestone("e", 24))      exp = exp.plus(1.5)
@@ -3984,7 +3984,7 @@ addLayer("e", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>E---e"
                         },
                         description(){
-                                let a = "Each D 23 multiplies its linear base by .9998 but multiply D 2X base cost by 1e22"
+                                let a = "Each D 23 multiplies its linear base by .9998 but multiply D 2X base cost by 1e25"
                                 return a
                         },
                         cost: new Decimal(1e36),
@@ -4343,6 +4343,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
+                                if (player.G.unlocked) return "Reward: Divide Eagle gain by 250, each order of magnitude (up to 100) of Eagles halves Eagle, add 2 to the Eagle gain exponent, and divide D 23 linear base by 1e5 but multiply its base cost by " + makeBlue("1000") + "."
                                 return "Reward: Divide Eagle gain by 250, each order of magnitude (up to 100) of Eagles halves Eagle, add 2 to the Eagle gain exponent, and divide D 23 linear base by 1e5 but multiply its base cost by 1e1000."
                         },
                 }, // hasMilestone("e", 11)
@@ -4371,6 +4372,7 @@ addLayer("e", {
                                 return true
                         },
                         effectDescription(){
+                                //if (player.G.unlocked) return "Reward: Halve Eagle effect exponent and sixth D 22 base. At 150 E 11 levels " + makeBlue(" or having unlocked Grades") + ", unlock a new buyable and log10(Eagles) that multiply base Duck gain is ceilinged."
                                 return "Reward: Halve Eagle effect exponent and sixth D 22 base. At 150 E 11 levels, unlock a new buyable and log10(Eagles) that multiply base Duck gain is ceilinged."
                         },
                 }, // hasMilestone("e", 13)
