@@ -2857,7 +2857,7 @@ var MAIN_BUYABLE_DATA = {
                 name: "Miner",
                 func: "exp",
                 effects(){
-                        return hasMilestone("f", 10) ? "Emerald gain per Finch Challenge" : "Emerald gain"
+                        return hasMilestone("f", 10) && player.f.points.gte(1e100) ? "Emerald gain per Finch Challenge" : "Emerald gain"
                 },
                 base: {
                         initial: new Decimal(2),
@@ -2890,7 +2890,7 @@ var MAIN_BUYABLE_DATA = {
                         },
                         4: {
                                 active(){
-                                        return hasMilestone("f", 10)
+                                        return hasMilestone("f", 10) && player.f.points.gte(1e100)
                                 },
                                 type: "add",
                                 amount(){

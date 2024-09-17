@@ -6226,6 +6226,7 @@ addLayer("f", {
                                 return true
                         },
                         effectDescription(){
+                                if (player.f.points.lte("1e100") && hasMilestone("f", 10) && !player.shiftAlias) return "Disabled until 1e100 Finches. Shift to see effect."
                                 return "Reward: Per Tier past 500 add .001 to Miner's base and make it apply per Finch challenge but increase F 11 linear cost base by .1 ."
                         },
                 }, // hasMilestone("f", 10)
@@ -7258,7 +7259,7 @@ addLayer("E", {
                 ret = ret.times(tmp.f.effect.min(1e100))
 
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["E11"])
-                ret = ret.times(CURRENT_BUYABLE_EFFECTS["E21"].pow(hasMilestone("f", 10) ? layerChallengeCompletions("f") : 1))
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["E21"].pow(hasMilestone("f", 10) && player.f.points.gte("1e100") ? layerChallengeCompletions("f") : 1))
                 let exp = player.E.milestones.length + player.T.milestones.length + player.e.milestones.length + player.f.milestones.length
                 if (exp > 123) {
                         if (!player.f.activeChallenge) exp = 123
