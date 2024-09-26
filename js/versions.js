@@ -1,6 +1,6 @@
 // Set your version in num and name
 var VERSION = {
-	num: ".052.5",
+	num: ".052.7",
 	name: /*"Advil's Auspicious Acension"*/ "",
 }
 

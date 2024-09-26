@@ -3192,7 +3192,7 @@ addLayer("d", {
                 }, // hasMilestone("d", 6)
                 7: {
                         requirementDescription(){
-                                return "200,000 Ducks times Duck resets (+1)"
+                                return "200,000/(Duck resets + 1) Ducks"
                         },
                         done(){
                                 return player.d.points.times(player.d.times + 1).gte(2e5)
