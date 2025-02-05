@@ -13728,7 +13728,7 @@ addLayer("mu", {
                         },
                         cost:() => new Decimal(player.extremeMode ? 3e30 : 4e31),
                         unlocked(){
-                                return player.l.challenges[11] >= (player.extremeMode ? 55 : 51) || player.a.unlocked
+                                return player.l.challenges[11] >= (player.extremeMode ? 55 : 50) || player.a.unlocked
                         }, // hasUpgrade("mu", 43)
                 },
                 44: {
