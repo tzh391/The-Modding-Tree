@@ -16789,7 +16789,7 @@ addLayer("l", {
                 31: {
                         title: "𝛾 → ∂α",
                         cost(){
-                                let init = new Decimal(player.extremeMode ? 2e80 : 7e84)
+                                let init = new Decimal(player.extremeMode ? 2e80 : 6e84)
                                 let base = new Decimal(player.extremeMode ? 987 : 158)
                                 if (hasMilestone("cells", 34)) base = decimalTwo
                                 if (hasMilestone("l", 38) && player.extremeMode) init = decimalOne
@@ -16806,7 +16806,7 @@ addLayer("l", {
                         getMaxAfford(){
                                 if (!hasMilestone("d", 19)) return
                                 let pts = player.l.points
-                                let init = player.extremeMode ? 2e80 : 7e84
+                                let init = player.extremeMode ? 2e80 : 6e84
                                 let base = player.extremeMode ? 987 : 158
                                 if (hasMilestone("cells", 34)) base = 2
                                 if (hasMilestone("l", 38) && player.extremeMode) init = 1
@@ -16870,8 +16870,8 @@ addLayer("l", {
                                 let allEff = "<b><h2>Effect formula</h2>:<br>" + eformula + "</b><br>"
 
                                 let cost1 = "<b><h2>Cost formula</h2>:<br>"
-                                let cost2 = "7e84*158^(x<sup>1+x/" + formatWhole(tmp.l.buyables[31].expDiv) + "</sup>)"
-                                if (player.extremeMode)         cost2 = cost2.replace("7e84*158", "2e80*987")
+                                let cost2 = "6e84*158^(x<sup>1+x/" + formatWhole(tmp.l.buyables[31].expDiv) + "</sup>)"
+                                if (player.extremeMode)         cost2 = cost2.replace("6e84*158", "2e80*987")
                                 if (hasMilestone("l", 38) && player.extremeMode) {
                                                                 cost2 = cost2.slice(5,)
                                 }
