@@ -17732,7 +17732,7 @@ addLayer("l", {
                 }, // inChallenge("l", 81) hasChallenge("l", 81)
                 82: {
                         name: "Anti-Rho", 
-                        goal: () => Decimal.pow(10, Decimal.pow(10, player.extremeMode ? 1981e3 : 1989e3)),
+                        goal: () => Decimal.pow(10, Decimal.pow(10, player.extremeMode ? 1981e3 : 1988900)),
                         canComplete(){ 
                                 if (player.l.challenges[11] < 110) return false
                                 return player.points.gt(tmp.l.challenges[82].goal)
@@ -17741,8 +17741,8 @@ addLayer("l", {
                         fullDisplay(){
                                 if (hasMilestone("or", 15)) return makeRed("<h3>Ineffective</h3>")
                                 let a = "Dilation at 110 completions and subtract .26 from the Dilation exponent"
-                                let b = "Goal: e1e1,989,000 Points"
-                                if (player.extremeMode) b = b.replace("989", "981")
+                                let b = "Goal: e1e1,988,900 Points"
+                                if (player.extremeMode) b = b.replace("1,988,900", "1,981,000")
                                 let c = "Reward: Add .0001 to tRNA base"
 
                                 return a + br + b + br + c
