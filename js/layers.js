@@ -17660,7 +17660,7 @@ addLayer("l", {
 
                                 return base.pow(comps)
                         },
-                        goal: () => Decimal.pow(10, Decimal.pow(10, player.extremeMode ? 675900 : 579200)),
+                        goal: () => Decimal.pow(10, Decimal.pow(10, player.extremeMode ? 675900 : 579195)),
                         canComplete(){ 
                                 if (player.l.challenges[11] < 110) return false
                                 return player.points.gt(tmp.l.challenges[71].goal)
@@ -17669,8 +17669,8 @@ addLayer("l", {
                         fullDisplay(){
                                 if (hasMilestone("or", 14)) return makeRed("<h3>Ineffective</h3>")
                                 let a = "Dilation at 110 completions, subtract .2 from the Dilation exponent, and nullify µ effect"
-                                let b = "Goal: e1e579,200 Points"
-                                if (player.extremeMode) b = b.replace("579,200", "675,900")
+                                let b = "Goal: e1e579,195 Points"
+                                if (player.extremeMode) b = b.replace("579,195", "675,900")
                                 let c = "Reward: Per Anti- challenge exponentiate Phosphorus gain ^ log10(miRNA) but nullify µ effect"
                                 let d = "Currently: " + format(tmp.l.challenges[71].reward)
 
