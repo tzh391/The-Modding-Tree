@@ -38161,7 +38161,7 @@ addLayer("ch", {
                         },
                         cost:() => new Decimal(player.extremeMode ? 45 : 50),
                         effect(){
-                                let ret = player.or.points.plus(player.extremeMode ? 1e650 : 0).div("1e900").plus(player.extremeMode ? 0 : 1).pow(.08)
+                                let ret = player.or.points.div("1e900").plus(player.extremeMode ? 0 : 1).pow(.08)
                                 if (ret.gt(1e10)) ret = ret.log10().pow(10)
                                 return ret
                         },
