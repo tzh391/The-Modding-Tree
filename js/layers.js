@@ -38161,7 +38161,7 @@ addLayer("ch", {
                         },
                         cost:() => new Decimal(player.extremeMode ? 45 : 50),
                         effect(){
-                                let ret = player.or.points.div("1e900").plus(player.extremeMode ? 0 : 1).pow(.08)
+                                let ret = player.or.points.plus("1e650").div("1e900").plus(player.extremeMode ? 0 : 1).pow(.08)
                                 if (ret.gt(1e10)) ret = ret.log10().pow(10)
                                 return ret
                         },
@@ -39005,8 +39005,11 @@ addLayer("ch", {
                                         let a = "Chromosomes only resets Gene amounts."
                                         let b = "Chromosome effect is 2+x/100."
                                         if (hasMilestone("ch", 10))             b = b.replace("2+x/100", "1.004<sup>x</sup>*2")
-                                        if (player.extremeMode) if (player.ch.points.gte(95) && !hasMilestone("an", 32)) b += br + "Effect after 80 is softcapped, x ⭢ (141*x-4860)<sup>.5</sup>"
-                                        else if (player.ch.points.gte(95) && !hasMilestone("an", 32)) b += br + "Effect after 95 is softcapped, x ⭢ (190*x-9025)<sup>.5</sup>"
+                                        if (player.extremeMode && player.ch.points.gte(95) && !hasMilestone("an", 32)) {
+    b += br + "Effect after 80 is softcapped, x ⭢ (141*x-4860)<sup>.5</sup>";
+} else if (!player.extremeMode && player.ch.points.gte(95) && !hasMilestone("an", 32)) {
+    b += br + "Effect after 95 is softcapped, x ⭢ (190*x-9025)<sup>.5</sup>";
+}
                                         if (hasMilestone("an", 32))             b = b.replace("1.004<sup>x</sup>*2", "1.002<sup>x</sup>*2.66")
                                         if (player.extremeMode)                 b = b.replace("2.66", "3.43")
                                         if (hasMilestone("ch", 20))             b = b.replace(".66", ".605")
