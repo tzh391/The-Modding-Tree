@@ -29511,7 +29511,7 @@ addLayer("or", {
                         }
                         if (hasUpgrade("sp", 151))      ret = ret.times(player.an.grid[107].extras.plus(1).pow(player.nu.points.times(2)))
                         if (hasUpgrade("sci", 652))     ret = ret.times(tmp.sci.upgrades[652].effect)
-                        if (hasUpgrade("or", 154)) {
+                        if (player.extremeMode && hasUpgrade("or", 154)) {
                                 let exp = player.or.buyables[402].sqrt()
                                                         ret = ret.times(player.or.energy.points.max(10).log10().pow(exp))
                         }
