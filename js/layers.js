@@ -38036,8 +38036,11 @@ addLayer("ch", {
                 }
                 let pts = tmp.ch.effectPoints
 
-                if (player.extremeMode) if (pts.gte(81) && !hasMilestone("an", 32)) pts = pts.times(141).sub(4860).sqrt()
-                else if (pts.gte(95) && !hasMilestone("an", 32)) pts = pts.times(190).sub(9025).sqrt()
+                if (player.extremeMode && pts.gte(81) && !hasMilestone("an", 32)) {
+    pts = pts.times(141).sub(4860).sqrt();
+} else if (!player.extremeMode && pts.gte(95) && !hasMilestone("an", 32)) {
+    pts = pts.times(190).sub(9025).sqrt();
+}
                 
 
                 let ret = pts.div(player.extremeMode ? 60 : 100).plus(2)
