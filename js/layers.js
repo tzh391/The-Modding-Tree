@@ -5479,7 +5479,21 @@ addLayer("sci", {
                                 return hasUpgrade("sci", 565)
                         }, // hasUpgrade("sci", 571)
                 },
-                
+                572: {
+                        title(){
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>DNA Sci XXXVII"
+                        },
+                        description(){
+                                return "Remove DNA buyables' base costs and each Secondary Completion after 75 adds .02 to Primase's base" 
+                        },
+                        cost:() => new Decimal("1e335600"),
+                        currencyLocation:() => player.sci.dna_science,
+                        currencyInternalName:() => "points",
+                        currencyDisplayName:() => "DNA Science",
+                        unlocked(){
+                                return hasUpgrade("sci", 571) && player.tokens.tokens2.total.gte(7)
+                        }, // hasUpgrade("sci", 572)
+                },
                 573: {
                         title(){
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>DNA Sci XXXVIII"
@@ -7913,7 +7927,10 @@ addLayer("sci", {
                                 let ret = decimalOne
 
                                 if (hasMilestone("cells", 13)) ret = ret.plus(.1)
-                                
+                                if (hasUpgrade("sci", 572)) {
+                                        let c = new Decimal(player.cells.challenges[12]).max(75)
+                                        ret = ret.plus(c.sub(75).div(50))
+                                }
                                 if (hasUpgrade("sci", 581)) {
                                         let u = player.sci.upgrades.filter(x => x > 580 && x < 590).length
                                         ret = ret.plus(player.tokens.tokens2.total.times(.03).times(u))
