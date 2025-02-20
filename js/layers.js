@@ -41706,7 +41706,7 @@ addLayer("sp", {
                         reward(){
                                 return new Decimal(player.sp.challenges[12] * .2).times(1 + hasUpgrade("sp", 101))
                         },
-                        goal: () => Decimal.pow(10, [145553.7, 158027, 172950, 201412, 256811, 1e6][player.sp.challenges[12]]),
+                        goal: () => Decimal.pow(10, [145525, 158027, 172950, 201412, 256811, 1e6][player.sp.challenges[12]]),
                         canComplete(){ 
                                 return player.an.genes.points.gte(tmp.sp.challenges[12].goal)
                         },
