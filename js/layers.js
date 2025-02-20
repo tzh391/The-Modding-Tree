@@ -41679,7 +41679,7 @@ addLayer("sp", {
                                 if (player.e.challenges[11] > 0) return tmp.e.challenges[11].chromosomelessBase
                                 return new Decimal(player.sp.challenges[11]).pow(1 + hasMilestone("sp", 17)).times(50).max(1)
                         },
-                        goal: () => Decimal.pow(10, [54045, 61320, 67327, 74132, 77414, 1e6][player.sp.challenges[11]]),
+                        goal: () => Decimal.pow(10, [54045, 61320, 67210, 74132, 77414, 1e6][player.sp.challenges[11]]),
                         canComplete(){ 
                                 return player.an.genes.points.gte(tmp.sp.challenges[11].goal)
                         },
