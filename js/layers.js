@@ -10619,7 +10619,7 @@ addLayer("o", {
                         description(){
                                 return "Add .08 to color gain exponent and apply the prior upgrade again"
                         },
-                        cost:() => Decimal.pow(10, player.extremeMode ? 372e3 : 314e3),
+                        cost:() => Decimal.pow(10, player.extremeMode ? 377e3 : 314e3),
                         unlocked(){
                                 return (hasMilestone("n", 10) && player.p.unlocked) || hasUpgrade("o", 31)
                         }, // hasUpgrade("o", 32)
