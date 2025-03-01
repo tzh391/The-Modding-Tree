@@ -10118,7 +10118,7 @@ addLayer("c", {
                                 return "Square base Nitrogen gain"
                         },
                         cost(){
-                                return Decimal.pow(10, player.extremeMode ? 54500 : 69000)
+                                return Decimal.pow(10, player.extremeMode ? 54900 : 69000)
                         },
                         unlocked(){
                                 return (hasMilestone("n", 10) && player.p.unlocked) || hasUpgrade("o", 32)
