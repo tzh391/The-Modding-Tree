@@ -11679,11 +11679,11 @@ addLayer("n", {
                         name: "Sixteen",
                         challengeDescription: "Fourteen and you can't gain A Points",
                         goalDescription(){
-                                if (player.extremeMode) return "e332,560,000 Points"
+                                if (player.extremeMode) return "e332,120,000 Points"
                                 return "e253,800,000 Points"
                         },
                         goal(){
-                                if (player.extremeMode) return Decimal.pow(10, 332560e3)
+                                if (player.extremeMode) return Decimal.pow(10, 332120e3)
                                 return Decimal.pow(10, 2538e5)
                         },
                         canComplete: () => player.points.gte(tmp.n.challenges[41].goal),
