@@ -7518,7 +7518,7 @@ addLayer("sci", {
                                 if (amt.lte(5)) return new Decimal("3.74e166")
                                 if (amt.lte(6)) return new Decimal("1.86e173")
                                 if (amt.lte(7)) return new Decimal("1.95e180")
-                                if (amt.lte(7)) return new Decimal("4.48e187")
+                                if (amt.lte(8)) return new Decimal("4.48e187")
                                 return Decimal.tetrate(10, amt.div(300).plus(2.33))
                         },
                         unlocked(){
