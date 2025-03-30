@@ -7558,6 +7558,7 @@ addLayer("sci", {
                                 if (amt.lte(1)) return new Decimal("1.01e105")
                                 if (amt.lte(2)) return new Decimal("3.71e106")
                                 if (amt.lte(3)) return new Decimal("6.25e106")
+                                if (amt.lte(4)) return new Decimal("1.44e143")
                                 return Decimal.tetrate(9, amt.pow(2).times(3).div(1e4).plus(2.3704))
                         },
                         unlocked(){
@@ -10118,7 +10119,7 @@ addLayer("c", {
                                 return "Square base Nitrogen gain"
                         },
                         cost(){
-                                return Decimal.pow(10, player.extremeMode ? 54500 : 69000)
+                                return Decimal.pow(10, player.extremeMode ? 54900 : 69000)
                         },
                         unlocked(){
                                 return (hasMilestone("n", 10) && player.p.unlocked) || hasUpgrade("o", 32)
@@ -10619,7 +10620,7 @@ addLayer("o", {
                         description(){
                                 return "Add .08 to color gain exponent and apply the prior upgrade again"
                         },
-                        cost:() => Decimal.pow(10, player.extremeMode ? 372e3 : 314e3),
+                        cost:() => Decimal.pow(10, player.extremeMode ? 377e3 : 314e3),
                         unlocked(){
                                 return (hasMilestone("n", 10) && player.p.unlocked) || hasUpgrade("o", 31)
                         }, // hasUpgrade("o", 32)
@@ -11679,11 +11680,11 @@ addLayer("n", {
                         name: "Sixteen",
                         challengeDescription: "Fourteen and you can't gain A Points",
                         goalDescription(){
-                                if (player.extremeMode) return "e332,560,000 Points"
+                                if (player.extremeMode) return "e332,120,000 Points"
                                 return "e253,800,000 Points"
                         },
                         goal(){
-                                if (player.extremeMode) return Decimal.pow(10, 332560e3)
+                                if (player.extremeMode) return Decimal.pow(10, 332120e3)
                                 return Decimal.pow(10, 2538e5)
                         },
                         canComplete: () => player.points.gte(tmp.n.challenges[41].goal),
@@ -38628,10 +38629,10 @@ addLayer("ch", {
                 }, // hasMilestone("ch", 14)
                 15: {
                         requirementDescription(){
-                                return "242 Chromosomes"
+                                return "241 Chromosomes"
                         },
                         done(){
-                                return player.ch.points.gte(242)
+                                return player.ch.points.gte(241)
                         },
                         unlocked(){
                                 return true
@@ -41679,7 +41680,7 @@ addLayer("sp", {
                                 if (player.e.challenges[11] > 0) return tmp.e.challenges[11].chromosomelessBase
                                 return new Decimal(player.sp.challenges[11]).pow(1 + hasMilestone("sp", 17)).times(50).max(1)
                         },
-                        goal: () => Decimal.pow(10, [54153.7, 62138.7, 67327, 74132, 77414, 1e6][player.sp.challenges[11]]),
+                        goal: () => Decimal.pow(10, [54045, 61320, 67210, 74040, 77287, 1e6][player.sp.challenges[11]]),
                         canComplete(){ 
                                 return player.an.genes.points.gte(tmp.sp.challenges[11].goal)
                         },
@@ -41706,7 +41707,7 @@ addLayer("sp", {
                         reward(){
                                 return new Decimal(player.sp.challenges[12] * .2).times(1 + hasUpgrade("sp", 101))
                         },
-                        goal: () => Decimal.pow(10, [145553.7, 158027, 172950, 201412, 256811, 1e6][player.sp.challenges[12]]),
+                        goal: () => Decimal.pow(10, [145525, 158027, 175900, 201410, 256811, 1e6][player.sp.challenges[12]]),
                         canComplete(){ 
                                 return player.an.genes.points.gte(tmp.sp.challenges[12].goal)
                         },
@@ -41735,7 +41736,7 @@ addLayer("sp", {
                         reward(){
                                 return Decimal.pow(1e6, player.sp.challenges[21])
                         },
-                        goal: () => Decimal.pow(10, [86220, 89696.3, 94620, 133140.5, 137630.3, 1e6][player.sp.challenges[21]]),
+                        goal: () => Decimal.pow(10, [86220, 89696.3, 94617, 133140.5, 137630.3, 1e6][player.sp.challenges[21]]),
                         canComplete(){ 
                                 return player.an.genes.points.gte(tmp.sp.challenges[21].goal)
                         },
@@ -41766,7 +41767,7 @@ addLayer("sp", {
                         reward(){
                                 return Decimal.times(.0005, player.sp.challenges[22] + (player.sp.challenges[22] > 0))
                         },
-                        goal: () => Decimal.pow(10, [223586, 253135, 425120, 452350, 532868, 1e6][player.sp.challenges[22]]),
+                        goal: () => Decimal.pow(10, [223586, 253135, 425120, 456900, 532850, 1e6][player.sp.challenges[22]]),
                         canComplete(){ 
                                 return player.an.genes.points.gte(tmp.sp.challenges[22].goal)
                         },
@@ -41792,7 +41793,7 @@ addLayer("sp", {
                         reward(){
                                 return new Decimal(player.sp.challenges[31] * 20)
                         },
-                        goal: () => Decimal.pow(10, [181097, 188988.3, 221500, 239860, 281e3, 91e6][player.sp.challenges[31]]),
+                        goal: () => Decimal.pow(10, [180925, 188845, 221350, 239825, 280835, 91e6][player.sp.challenges[31]]),
                         canComplete(){ 
                                 return player.an.genes.points.gte(tmp.sp.challenges[31].goal)
                         },
