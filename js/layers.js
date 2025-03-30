@@ -7519,7 +7519,9 @@ addLayer("sci", {
                                 if (amt.lte(6)) return new Decimal("1.86e173")
                                 if (amt.lte(7)) return new Decimal("1.95e180")
                                 if (amt.lte(8)) return new Decimal("4.48e187")
+                                if (amt.lte(8.5)) return new Decimal("2.93e191")
                                 if (amt.lte(9)) return new Decimal("2.37e195")
+                                if (amt.lte(9.5)) return new Decimal("2.37e199")
                                 if (amt.lte(10)) return new Decimal("3.01e203")
                                 if (amt.lte(11)) return new Decimal("9.66e211")
                                 if (amt.lte(12)) return new Decimal("8.26e220")
@@ -13535,7 +13537,7 @@ addLayer("mu", {
                                 return "You can buy max µ, you have one less effective token for prestige purposes and µ III becomes log6"
                         },
                         cost(){
-                                if (player.extremeMode) return new Decimal("4e525")
+                                if (player.extremeMode) return new Decimal("1e554")
                                 return new Decimal(player.hardMode ? "1e491" : "1e490")
                         },
                         currencyLocation:() => player.p,
