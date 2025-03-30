@@ -7525,6 +7525,8 @@ addLayer("sci", {
                                 if (amt.lte(12)) return new Decimal("8.26e220")
                                 if (amt.lte(13)) return new Decimal("1.99e230")
                                 if (amt.lte(14)) return new Decimal("1.43e240")
+                                if (amt.lte(15)) return new Decimal("3.27e250")
+                                if (amt.lte(16)) return new Decimal("1.43e660")
                                 return Decimal.tetrate(10, amt.div(300).plus(2.33))
                         },
                         unlocked(){
@@ -7580,6 +7582,8 @@ addLayer("sci", {
                                 if (amt.lte(11)) return new Decimal("1.02e205")
                                 if (amt.lte(12)) return new Decimal("3.42e222")
                                 if (amt.lte(13)) return new Decimal("4.30e243")
+                                if (amt.lte(14)) return new Decimal("1.36e269")
+                                if (amt.lte(15)) return new Decimal("1.36e299")
                                 return Decimal.tetrate(9, amt.pow(2).times(3).div(1e4).plus(2.3704))
                         },
                         unlocked(){
