@@ -13535,7 +13535,7 @@ addLayer("mu", {
                                 return "You can buy max µ, you have one less effective token for prestige purposes and µ III becomes log6"
                         },
                         cost(){
-                                if (player.extremeMode) return new Decimal("1e554")
+                                if (player.extremeMode) return new Decimal("4e525")
                                 return new Decimal(player.hardMode ? "1e491" : "1e490")
                         },
                         currencyLocation:() => player.p,
