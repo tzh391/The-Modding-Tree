@@ -21573,7 +21573,7 @@ addLayer("d", {
                                 if (player.extremeMode) a = a.replace("er upgrade p", "")
                                 return a
                         },
-                        cost:() => new Decimal(player.extremeMode ? 1e13 : 1e12),
+                        cost:() => new Decimal(player.extremeMode ? 1e11 : 1e12),
                         unlocked(){
                                 if (hasMilestone("an", 28)) return false
                                 return hasChallenge("l", 32) || player.cells.unlocked
