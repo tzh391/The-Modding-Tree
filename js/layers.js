@@ -4591,11 +4591,11 @@ addLayer("sci", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>Protein Sci XV"
                         },
                         description(){
-                                if (!hasUpgrade("sci", 425) && !player.shiftAlias) return "Requires: 1.00e73037 Protein<br>Shift for effect"
+                                if (!hasUpgrade("sci", 425) && !player.shiftAlias) return "Requires: 1.00e71017 Protein<br>Shift for effect"
                                 return "Remove siRNA's base cost and Lives multiply Nitrogen Science gain"
                         },
                         canAfford(){
-                                return player.a.protein.points.gte("1e73037") || false
+                                return player.a.protein.points.gte("1e71017") || false
                         },
                         cost:() => new Decimal(2.25e23),
                         currencyLocation:() => player.sci.protein_science,
