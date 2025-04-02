@@ -7717,7 +7717,7 @@ addLayer("sci", {
                         title: "DNA polymerase",
                         cost(){
                                 let amt = getBuyableAmount("sci", 503)
-                                let init = hasUpgrade("sci", 572) ? 1 : 1e9
+                                let init = hasUpgrade("sci", 572) ? 1 : 1e8
                                 let base = 4
                                 return Decimal.times(init, Decimal.pow(base, amt.pow(2)))
                         },
