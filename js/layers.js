@@ -19869,9 +19869,11 @@ addLayer("a", {
                 }, // hasMilestone("a", 28)
                 29: {
                         requirementDescription(){
+                                if (player.extremeMode) return "1e77,777 Protein"
                                 return "1e80,000 Protein"
                         },
                         done(){
+                                if (player.extremeMode) return player.a.protein.points.gte("1e77777")
                                 return player.a.protein.points.gte("1e80000")
                         },
                         unlocked(){
