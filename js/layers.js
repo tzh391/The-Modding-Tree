@@ -4557,7 +4557,7 @@ addLayer("sci", {
                         canAfford(){
                                 return player.a.protein.points.gte("1e63036") || false
                         },
-                        cost:() => new Decimal(1.78e21),
+                        cost:() => new Decimal(1.08e21),
                         currencyLocation:() => player.sci.protein_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "Protein Science",
