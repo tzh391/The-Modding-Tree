@@ -4571,11 +4571,11 @@ addLayer("sci", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>Protein Sci XIV"
                         },
                         description(){
-                                if (!hasUpgrade("sci", 424) && !player.shiftAlias) return "Requires: 1.00e70607 Protein<br>Shift for effect"
+                                if (!hasUpgrade("sci", 424) && !player.shiftAlias) return "Requires: 1.00e70307 Protein<br>Shift for effect"
                                 return "Double Gem gain"
                         },
                         canAfford(){
-                                return player.a.protein.points.gte("1e70607") || false
+                                return player.a.protein.points.gte("1e70307") || false
                         },
                         cost:() => new Decimal(4.93e22),
                         currencyLocation:() => player.sci.protein_science,
