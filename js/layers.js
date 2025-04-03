@@ -5175,7 +5175,7 @@ addLayer("sci", {
                         description(){
                                 return "Each Secondary completion (up to 5) adds .04 to S-S DNA-binding protein and " + makePurple("G") + " multiplies Stem Cell gain"
                         },
-                        cost:() => new Decimal("3e1020"),
+                        cost:() => new Decimal("5e1017"),
                         currencyLocation:() => player.sci.dna_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "DNA Science",
