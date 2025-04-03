@@ -5160,7 +5160,7 @@ addLayer("sci", {
 
                                 return ret
                         },
-                        cost:() => new Decimal("1e904"),
+                        cost:() => new Decimal("4e901"),
                         currencyLocation:() => player.sci.dna_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "DNA Science",
