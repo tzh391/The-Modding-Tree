@@ -5122,7 +5122,7 @@ addLayer("sci", {
                         description(){
                                 return "Raise Stem Cell gain ^1.01 and " + makePurple("B") + " multiplies Stem Cell gain"
                         },
-                        cost:() => new Decimal("5e799"),
+                        cost:() => new Decimal("5e779"),
                         currencyLocation:() => player.sci.dna_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "DNA Science",
