@@ -5137,7 +5137,7 @@ addLayer("sci", {
                         description(){
                                 return "Per upgrade add .01 to Omnipotent base and " + makePurple("D") + " multiplies Stem Cell gain"
                         },
-                        cost:() => new Decimal("2e864"),
+                        cost:() => new Decimal("4e861"),
                         currencyLocation:() => player.sci.dna_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "DNA Science",
