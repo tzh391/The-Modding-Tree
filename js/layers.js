@@ -24732,11 +24732,11 @@ addLayer("cells", {
                 }, // hasMilestone("cells", 32)
                 33: {
                         requirementDescription(){
-                                if (player.extremeMode) return "1e1295 Stem Cells"
+                                if (player.extremeMode) return "1e1283 Stem Cells"
                                 return "1e1249 Stem Cells"
                         },
                         done(){
-                                return player.cells.stem_cells.points.gte(player.extremeMode ? "1e1295" : "1e1249")
+                                return player.cells.stem_cells.points.gte(player.extremeMode ? "1e1283" : "1e1249")
                         },
                         unlocked(){
                                 return true
