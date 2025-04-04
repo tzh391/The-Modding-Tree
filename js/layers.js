@@ -23552,7 +23552,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Unlock two new Token II buyables and per upgrade you have two less token for prestige purposes"
                                 return "Unlock two new Token II buyables and per upgrade you have one less token for prestige purposes"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e15713" : "3e13236"),
+                        cost:() => new Decimal(player.extremeMode ? "1e15680" : "3e13236"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 44) || player.or.unlocked
