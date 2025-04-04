@@ -23538,7 +23538,7 @@ addLayer("cells", {
                         description(){
                                 return "Tissues effect base is Tissues but Token II multiplies Tissue gain"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e15509" : "1e12973"),
+                        cost:() => new Decimal(player.extremeMode ? "2e15523" : "1e12973"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 43) || player.or.unlocked
