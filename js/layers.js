@@ -6347,7 +6347,7 @@ addLayer("sci", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>Organ Sci XXXII"
                         },
                         description(){
-                                return "At 55 Sapien levels, its levels add .01 to Conditioning base and autobuy TO BE NAMED"
+                                return "At 55 Sapien levels, its levels add .01 to Conditioning base and autobuy Pathology"
                         },
                         cost:() => new Decimal("1e81818"),
                         currencyLocation:() => player.sci.organ_science,
@@ -9197,7 +9197,7 @@ addLayer("sci", {
                         },
                 },
                 653: {
-                        title: "TO BE NAMED",
+                        title: "Pathology",
                         cost(){
                                 let amt = getBuyableAmount("sci", 653)
                                 let base = 28
@@ -38244,7 +38244,7 @@ addLayer("ch", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>Chromosomes IX"
                         },
                         description(){
-                                if (player.extremeMode) return "<bdi style='font-size: 90%'>Oligopotent cost base is 1e70, remove TO BE NAMED base cost, and per upgrade add .01 to the Animal gain exponent</bdi>"
+                                if (player.extremeMode) return "<bdi style='font-size: 90%'>Oligopotent cost base is 1e70, remove Pathology base cost, and per upgrade add .01 to the Animal gain exponent</bdi>"
                                 return "Oligopotent cost base is 1e70 and per upgrade add .01 to the Animal gain exponent"
                         },
                         cost:() => new Decimal(player.extremeMode ? 171 : 178),
