@@ -6397,7 +6397,7 @@ addLayer("sci", {
                         description(){
                                 return "At 8 Primates levels Canis levels add .02 to Filtering<sup>2</sup> base and Carnivora levels add .1 (max 80) to Purification<sup>2</sup> base"
                         },
-                        cost:() => new Decimal("1e90988"),
+                        cost:() => new Decimal("1e91076"),
                         currencyLocation:() => player.sci.organ_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "Organ Science",
@@ -6413,7 +6413,7 @@ addLayer("sci", {
                         description(){
                                 return "At 502,400 Animals, this row upgrades multiply Organ Science XXXI by 1.01"
                         },
-                        cost:() => new Decimal("1e93182"),
+                        cost:() => new Decimal("1e93200"),
                         currencyLocation:() => player.sci.organ_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "Organ Science",
