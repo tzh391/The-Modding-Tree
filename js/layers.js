@@ -30403,7 +30403,7 @@ addLayer("or", {
                                 }
                                 return a
                         },
-                        cost:() => new Decimal(player.extremeMode ? 7.65e225 : 2.4e235),
+                        cost:() => new Decimal(player.extremeMode ? 7.00e231 : 2.4e235),
                         onPurchase(){
                                 player.tokens.bestBottom = decimalOne
                         },
