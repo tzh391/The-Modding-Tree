@@ -6515,7 +6515,7 @@ addLayer("sci", {
                         currencyDisplayName:() => "Organ Science",
                         unlocked(){
                                 if (player.nu.unlocked) return true
-                                return player.an.grid[707].buyables.gte(220)
+                                return player.an.grid[707].buyables.gte(240)
                         }, // hasUpgrade("sci", 682)
                 },
                 683: {
