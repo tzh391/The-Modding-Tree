@@ -1,6 +1,6 @@
 // Set your version in num and name
 var VERSION = {
-	num: "2.068",
+	num: "2.069",
 	name: "Advil's Auspicious Acension",
 }
 
@@ -15,9 +15,11 @@ function isEndgameRaw(){
 	return player.r.points.gte(1e20)
 }
 
-var CHANELOG_VERSION = "v2.068"
+var CHANELOG_VERSION = "v2.069"
 
 var CHANGELOGS = [
+	`<br><h3 style='color: #CC6600'>v2.069</h3><br>
+		- Fixed a lot of bugs(by tzh391).<br>`,
 	`<br><h3 style='color: #CC6600'>v2.068</h3><br>
 		- Balanced Extreme Mode until 298 Chromosomes.<br>
 		- Added RNA research and a RNA Science upgrade.<br>
