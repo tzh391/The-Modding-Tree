@@ -6541,13 +6541,13 @@ addLayer("sci", {
                         description(){
                                 return "Each 100th Aves level (up to 1000) adds .01 to Conditioning<sup>2</sup> base"
                         },
-                        cost:() => new Decimal("1e328165"),
+                        cost:() => new Decimal("1e324676"),
                         currencyLocation:() => player.sci.organ_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "Organ Science",
                         unlocked(){
                                 if (player.nu.unlocked) return true
-                                return player.an.grid[404].buyables.gte(507)
+                                return player.an.grid[404].buyables.gte(500)
                         }, // hasUpgrade("sci", 684)
                 },
                 685: {
