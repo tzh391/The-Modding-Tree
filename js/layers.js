@@ -6621,7 +6621,7 @@ addLayer("sci", {
                         description(){
                                 return "Totipotent cost base is 1e9 and at per chromosome from 246 to 268 add 1 to Conditioning base"
                         },
-                        cost:() => new Decimal("1e629755"),
+                        cost:() => new Decimal("1e629748"),
                         currencyLocation:() => player.sci.organ_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "Organ Science",
