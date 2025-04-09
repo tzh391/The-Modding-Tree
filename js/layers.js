@@ -37248,7 +37248,7 @@ addLayer("an", {
                                         for (i in TAXONOMY_KEYS) {
                                                 let v = player.an.grid[TAXONOMY_KEYS[i]].buyables.round().toNumber()
                                                 if (v == 10) a ++ 
-                                                else if (v == 9) b ++ 
+                                                else if (v == 8) b ++ 
                                                 else if (v > 0) return false
                                         }
                                         return a == 14 && b == 1
@@ -37262,7 +37262,7 @@ addLayer("an", {
                                 return a >= 13
                         },
                         tooltip(){
-                                if (player.extremeMode) return "Have 14 Taxonomy buyables on 10, 1 on 9, and the rest on zero<br>Reward: Autobuy Taxonomy buyables which have 100 or more levels"
+                                if (player.extremeMode) return "Have 14 Taxonomy buyables on 10, 1 on 8, and the rest on zero<br>Reward: Autobuy Taxonomy buyables which have 100 or more levels"
                                 return "Have 13 Taxonomy buyables on 1 level and the rest on zero<br>Reward: Autobuy Taxonomy buyables which have 100 or more levels"
                         }, // hasAchievement("an", 14)
                 },
