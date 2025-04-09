@@ -6654,7 +6654,7 @@ addLayer("sci", {
                         description(){
                                 return "Each RNA Sci upgrade adds 1 to I'm base and I'm extreme effect is now ^.83"
                         },
-                        cost:() => new Decimal("1"),
+                        cost:() => new Decimal("0.05"),
                         currencyLocation:() => player.sci.nucleus_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "Nucleus Science",
