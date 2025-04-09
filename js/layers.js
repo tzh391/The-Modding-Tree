@@ -38123,7 +38123,7 @@ addLayer("ch", {
                         },
                         unlocked(){
                                 if (player.sp.unlocked) return true
-                                if (player.extremeMode) return hasUpgrade("ch", 11) || player.an.genes.best.gte("3e1695")
+                                if (player.extremeMode) return hasUpgrade("ch", 11) || player.an.genes.best.gte("3e1695") || player.nu.best.gte(1)
                                 return hasMilestone("ch", 8) || player.nu.best.gte(1)
                         }, // hasUpgrade("ch", 11)
                 },
@@ -38137,7 +38137,7 @@ addLayer("ch", {
                         cost:() => new Decimal(35),
                         unlocked(){
                                 if (player.sp.unlocked) return true
-                                if (player.extremeMode) return hasUpgrade("ch", 12) || player.an.genes.best.gte("2e1781")
+                                if (player.extremeMode) return hasUpgrade("ch", 12) || player.an.genes.best.gte("2e1781") || player.nu.best.gte(1)
                                 return hasUpgrade("ch", 11) || player.nu.best.gte(1)
                         }, // hasUpgrade("ch", 12)
                 },
