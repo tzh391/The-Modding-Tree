@@ -35782,7 +35782,7 @@ addLayer("an", {
                                 if (player.extremeMode) return "Add .02 to Conditioning<sup>2</sup> base and per Token II - 7200 gain 1.01x more Animals and 1.05x Genes"
                                 return "Per Token II - 7200 gain 1.01x more Animals and 1.05x Genes"
                         },
-                        cost:() => new Decimal(player.extremeMode ? 1 : 8.25e32),
+                        cost:() => new Decimal(player.extremeMode ? 3.15e38 : 8.25e32),
                         unlocked(){
                                 if (player.sp.unlocked) return true
                                 if (player.extremeMode) return player.ch.best.gte(242) || player.an.genes.points.gte("1e14487")
