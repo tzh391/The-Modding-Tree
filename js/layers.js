@@ -6675,7 +6675,7 @@ addLayer("sci", {
                                 tmp.sci.upgrades.rnaUpgradesLength = layers.sci.upgrades.rnaUpgradesLength()
                                 tmp.sci.nucleus_science.getGainMult = layers.sci.nucleus_science.getGainMult()
                         },
-                        cost:() => new Decimal("1000"),
+                        cost:() => new Decimal("200"),
                         currencyLocation:() => player.sci.nucleus_science,
                         currencyInternalName:() => "points",
                         currencyDisplayName:() => "Nucleus Science",
