@@ -10018,7 +10018,7 @@ addLayer("c", {
                         },
                         cost(){
                                 if (player.extremeMode) return new Decimal(5e44)
-                                return player.hardMode ? new Decimal(6e20) : new Decimal(3e20)
+                                return player.hardMode ? new Decimal(6e20) : new Decimal(3e24)
                         },
                         unlocked(){
                                 return hasMilestone("n", 6) || hasUpgrade("o", 21)
