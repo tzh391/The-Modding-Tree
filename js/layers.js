@@ -10103,7 +10103,7 @@ addLayer("c", {
                         },
                         cost(){
                                 if (player.extremeMode) return new Decimal(2e229)
-                                return player.hardMode ? new Decimal(9e222) : new Decimal(8.5e222)
+                                return player.hardMode ? new Decimal(9e222) : new Decimal(2.5e228)
                         },
                         unlocked(){
                                 if (player.extremeMode && player.tokens.total.gte(32)) return true 
