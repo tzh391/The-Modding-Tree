@@ -55182,7 +55182,7 @@ addLayer("mini", {
                                 return pts.div(div).log(base).root(exp).floor().plus(1)
                         },
                         unlocked(){
-                                return getBuyableAmount("mini", 73).gt(64)
+                                return getBuyableAmount("mini", 73).gt(63)
                         },
                         base(){
                                 let ret = player.o.points.max(10).log10()
