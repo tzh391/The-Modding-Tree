@@ -13920,10 +13920,10 @@ addLayer("mu", {
                 7: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1.00e259 Phosphorus"
-                                return "1.00e243 Phosphorus"
+                                return "1.00e343 Phosphorus"
                         },
                         done(){
-                                return player.p.points.gte(player.extremeMode ? 1e259 : 1e243)
+                                return player.p.points.gte(player.extremeMode ? 1e259 : 1e343)
                         },
                         unlocked(){
                                 return true
