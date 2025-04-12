@@ -13530,7 +13530,7 @@ addLayer("mu", {
                         },
                         cost(){
                                 if (player.extremeMode) return new Decimal("2e594")
-                                return new Decimal(player.hardMode ? "1e529" : "1e528")
+                                return new Decimal(player.hardMode ? "1e529" : "1e1119")
                         },
                         currencyLocation:() => player.p,
                         currencyInternalName:() => "points",
@@ -14000,10 +14000,10 @@ addLayer("mu", {
                 12: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1.00e993 Phosphorus"
-                                return "1.00e1283 Phosphorus"
+                                return "1.00e12830 Phosphorus"
                         },
                         done(){
-                                return player.p.points.gte(player.extremeMode ? "1e993" : "1e1283")
+                                return player.p.points.gte(player.extremeMode ? "1e993" : "1e12830")
                         },
                         unlocked(){
                                 return true
@@ -14016,10 +14016,10 @@ addLayer("mu", {
                 13: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1.00e1248 Phosphorus"
-                                return "1.00e1456 Phosphorus"
+                                return "1.00e14560 Phosphorus"
                         },
                         done(){
-                                return player.p.points.gte(player.extremeMode ? "1e1248" : "1e1456")
+                                return player.p.points.gte(player.extremeMode ? "1e1248" : "1e14560")
                         },
                         unlocked(){
                                 return true
