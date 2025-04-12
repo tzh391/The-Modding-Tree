@@ -13552,7 +13552,7 @@ addLayer("mu", {
                         },
                         cost(){
                                 if (player.extremeMode) return new Decimal("1e637")
-                                return new Decimal(player.hardMode ? "2e775" : "1e1400")
+                                return new Decimal(player.hardMode ? "2e775" : "1e1399")
                         },
                         currencyLocation:() => player.p,
                         currencyInternalName:() => "points",
@@ -13574,7 +13574,7 @@ addLayer("mu", {
                         },
                         cost(){
                                 if (player.extremeMode) return new Decimal("1e988")
-                                return new Decimal(player.hardMode ? "1e963" : "5e9601")
+                                return new Decimal(player.hardMode ? "1e963" : "1e1402")
                         },
                         currencyLocation:() => player.p,
                         currencyInternalName:() => "points",
@@ -13598,7 +13598,7 @@ addLayer("mu", {
                         },
                         cost(){
                                 if (player.extremeMode) return new Decimal("1e1143")
-                                return new Decimal(player.hardMode ? "1e1167" : "1e1166")
+                                return new Decimal(player.hardMode ? "1e1167" : "1e1466")
                         },
                         currencyLocation:() => player.p,
                         currencyInternalName:() => "points",
@@ -13622,7 +13622,7 @@ addLayer("mu", {
                         },
                         cost(){
                                 if (player.extremeMode) return new Decimal("1e1199")
-                                return new Decimal(player.hardMode ? "1e1402" : "1e1401")
+                                return new Decimal(player.hardMode ? "1e1402" : "1e1501")
                         },
                         currencyLocation:() => player.p,
                         currencyInternalName:() => "points",
