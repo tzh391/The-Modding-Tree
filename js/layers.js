@@ -13598,7 +13598,7 @@ addLayer("mu", {
                         },
                         cost(){
                                 if (player.extremeMode) return new Decimal("1e1143")
-                                return new Decimal(player.hardMode ? "1e1167" : "1e1466")
+                                return new Decimal(player.hardMode ? "1e1167" : "1e1714")
                         },
                         currencyLocation:() => player.p,
                         currencyInternalName:() => "points",
