@@ -12442,7 +12442,7 @@ addLayer("p", {
                         },
                         cost(){
                                 if (player.extremeMode) return new Decimal("1e1099")
-                                return new Decimal(player.hardMode ? "1e1065" : "1e1064")
+                                return new Decimal(player.hardMode ? "1e1065" : "1e1169")
                         },
                         unlocked(){
                                 return player.a.unlocked || hasUpgrade("p", 34) || hasMilestone("l", 6)
