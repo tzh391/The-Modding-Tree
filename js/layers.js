@@ -13936,10 +13936,10 @@ addLayer("mu", {
                 }, // hasMilestone("mu", 7)
                 8: {
                         requirementDescription(){
-                                return "39 µ"
+                                return "21 µ"
                         },
                         done(){
-                                return player.mu.points.gte(39)
+                                return player.mu.points.gte(21)
                         },
                         unlocked(){
                                 return true
@@ -13951,10 +13951,10 @@ addLayer("mu", {
                 9: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1.00e417 Phosphorus"
-                                return "1.00e345 Phosphorus"
+                                return "1.00e445 Phosphorus"
                         },
                         done(){
-                                return player.p.points.gte(player.extremeMode ? "1e417" : "1e345")
+                                return player.p.points.gte(player.extremeMode ? "1e417" : "1e445")
                         },
                         unlocked(){
                                 return true
@@ -13968,10 +13968,10 @@ addLayer("mu", {
                 10: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1.00e459 Phosphorus"
-                                return "1.00e370 Phosphorus"
+                                return "1.00e470 Phosphorus"
                         },
                         done(){
-                                return player.p.points.gte(player.extremeMode ? "1e459" : "1e370")
+                                return player.p.points.gte(player.extremeMode ? "1e459" : "1e470")
                         },
                         unlocked(){
                                 return true
@@ -13983,10 +13983,10 @@ addLayer("mu", {
                 11: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1.00e465 Phosphorus"
-                                return "1.00e398 Phosphorus"
+                                return "1.00e498 Phosphorus"
                         },
                         done(){
-                                return player.p.points.gte(player.extremeMode ? "1e465" : "1e398")
+                                return player.p.points.gte(player.extremeMode ? "1e465" : "1e498")
                         },
                         unlocked(){
                                 return true
