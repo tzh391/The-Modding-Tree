@@ -13936,10 +13936,10 @@ addLayer("mu", {
                 }, // hasMilestone("mu", 7)
                 8: {
                         requirementDescription(){
-                                return "21 µ"
+                                return "20 µ"
                         },
                         done(){
-                                return player.mu.points.gte(21)
+                                return player.mu.points.gte(20)
                         },
                         unlocked(){
                                 return true
