@@ -15707,10 +15707,10 @@ addLayer("l", {
                 17: {
                         requirementDescription(){
                                 if (player.extremeMode) return "4.50e12 Lives"
-                                return "2.70e12 Lives"
+                                return "2.68e12 Lives"
                         },
                         done(){
-                                return player.l.points.gte(player.extremeMode ? 4.5e12 : 2.7e12)
+                                return player.l.points.gte(player.extremeMode ? 4.5e12 : 2.68e12)
                         },
                         unlocked(){
                                 return true
