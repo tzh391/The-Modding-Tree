@@ -12472,7 +12472,7 @@ addLayer("p", {
                         },
                         cost:() => new Decimal(player.extremeMode ? "e6e45" : "e2e45"),
                         unlocked(){
-                                return player.a.unlocked || player.l.challenges[11] >= (player.extremeMode ? 79 : 81)
+                                return player.a.unlocked || player.l.challenges[11] >= (player.extremeMode ? 79 : 80)
                         }, // hasUpgrade("p", 42)
                 },
                 43: {
