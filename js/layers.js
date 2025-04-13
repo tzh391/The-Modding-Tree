@@ -12523,7 +12523,7 @@ addLayer("p", {
                         cost:() => new Decimal(player.extremeMode ? "e1.4e46" : "e3.5e45"),
                         unlocked(){
                                 if (player.extremeMode) return player.a.unlocked || player.l.challenges[11] >= 89
-                                return player.a.unlocked || player.l.challenges[11] >= 93 && player.l.best.gte(5e105)
+                                return player.a.unlocked || player.l.challenges[11] >= 93 && player.l.best.gte(1.5e102)
                         }, // hasUpgrade("p", 51)
                 },
                 52: {
