@@ -38630,10 +38630,10 @@ addLayer("ch", {
                 }, // hasMilestone("ch", 14)
                 15: {
                         requirementDescription(){
-                                return "241 Chromosomes"
+                                return "242 Chromosomes"
                         },
                         done(){
-                                return player.ch.points.gte(241)
+                                return player.ch.points.gte(242)
                         },
                         unlocked(){
                                 return true
