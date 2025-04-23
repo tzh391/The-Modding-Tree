@@ -45192,7 +45192,7 @@ addLayer("hu", {
                         },
                         cost:() => new Decimal(1e44),
                         unlocked(){
-                                return hasUpgrade("hu", 32) || player.pl.best.gte(1555)
+                                return hasUpgrade("hu", 31)
                         }, // hasUpgrade("hu", 32)
                 },
                 33: {
