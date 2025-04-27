@@ -45435,7 +45435,7 @@ addLayer("hu", {
                         },
                         cost:() => new Decimal("1e11034"),
                         unlocked(){
-                                return hasUpgrade("hu", 65)
+                                return hasMilestone("hu", 63)
                         }, // hasUpgrade("hu", 71)
                 },
                 72: {
