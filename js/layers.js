@@ -45446,7 +45446,7 @@ addLayer("hu", {
                                 if (hasMilestone("r", 6) && !player.shiftAlias) return "Add .01 to the <i>Siok</i> base"
                                 return "<bdi style='font-size: 80%'>At 1e11,566 / 1e11,599 / 3e11,627 / 1e11,668 / 1e11,688 add .001 to the <i>Siok</i> base and at 1e11,724 Humans double these effects</bdi>"
                         },
-                        cost:() => new Decimal("1e11448"),
+                        cost:() => new Decimal("3e11507"),
                         unlocked(){
                                 return hasUpgrade("hu", 71)
                         }, // hasUpgrade("hu", 72)
