@@ -45444,7 +45444,7 @@ addLayer("hu", {
                         },
                         description(){
                                 if (hasMilestone("r", 6) && !player.shiftAlias) return "Add .01 to the <i>Siok</i> base"
-                                return "<bdi style='font-size: 80%'>At 1e11,566 / 1e11,599 / 3e11,627 / 1e11,668 / 1e11,688 add .001 to the <i>Siok</i> base and at 1e11,724 Humans double these effects</bdi>"
+                                return "<bdi style='font-size: 80%'>At 4e11,624 / 1e11,599 / 3e11,627 / 1e11,668 / 1e11,688 add .001 to the <i>Siok</i> base and at 1e11,724 Humans double these effects</bdi>"
                         },
                         cost:() => new Decimal("3e11507"),
                         unlocked(){
@@ -47059,7 +47059,7 @@ addLayer("hu", {
                                 if (hasUpgrade("hu", 72)) {
                                         if (hasMilestone("r", 6))               ret = ret.plus(.01) 
                                         else {
-                                                if (player.hu.points.gte("1e911566"))    ret = ret.plus(.001)
+                                                if (player.hu.points.gte("4e11624"))    ret = ret.plus(.001)
                                                 if (player.hu.points.gte("1e911599"))    ret = ret.plus(.001)
                                                 if (player.hu.points.gte("3e911627"))    ret = ret.plus(.001)
                                                 if (player.hu.points.gte("1e911668"))    ret = ret.plus(.001)
