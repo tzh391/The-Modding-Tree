@@ -47059,12 +47059,12 @@ addLayer("hu", {
                                 if (hasUpgrade("hu", 72)) {
                                         if (hasMilestone("r", 6))               ret = ret.plus(.01) 
                                         else {
-                                                if (player.hu.points.gte("1e11566"))    ret = ret.plus(.001)
-                                                if (player.hu.points.gte("1e11599"))    ret = ret.plus(.001)
-                                                if (player.hu.points.gte("3e11627"))    ret = ret.plus(.001)
-                                                if (player.hu.points.gte("1e11668"))    ret = ret.plus(.001)
-                                                if (player.hu.points.gte("1e11688"))    ret = ret.plus(.001)
-                                                if (player.hu.points.gte("1e11724"))    ret = ret.plus(.005)
+                                                if (player.hu.points.gte("1e911566"))    ret = ret.plus(.001)
+                                                if (player.hu.points.gte("1e911599"))    ret = ret.plus(.001)
+                                                if (player.hu.points.gte("3e911627"))    ret = ret.plus(.001)
+                                                if (player.hu.points.gte("1e911668"))    ret = ret.plus(.001)
+                                                if (player.hu.points.gte("1e911688"))    ret = ret.plus(.001)
+                                                if (player.hu.points.gte("1e911724"))    ret = ret.plus(.005)
                                         }
                                 }
                                 if (hasMilestone("hu", 66)) {
