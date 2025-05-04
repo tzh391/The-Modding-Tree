@@ -46492,7 +46492,7 @@ addLayer("hu", {
                                 if (player.hu.challenges[51] > 1 && player.hu.points.gte("1e64026")) {
                                         return player.hu.buyables[21].sqrt().div(2)
                                 }
-                                if (hasMilestone("hu", 100) && player.hu.points.gte("1e54170")) {
+                                if (hasMilestone("hu", 100) && player.hu.points.gte("1e53778")) {
                                         return player.hu.buyables[21].sqrt().div(5)
                                 }
                                 return tmp.hu.buyables[21].base.times(player.hu.buyables[21]).plus(1).ln()
@@ -46509,7 +46509,7 @@ addLayer("hu", {
                                 }
 
                                 let eformula = "ln(1+" + format(tmp.hu.buyables[21].base) + "*x)"
-                                if (hasMilestone("hu", 100) && player.hu.points.gte("1e54170")) {
+                                if (hasMilestone("hu", 100) && player.hu.points.gte("1e53778")) {
                                         eformula = "sqrt(x)/5"
                                         if (player.hu.challenges[51] > 1) {
                                                 if (player.hu.points.gte("1e64026")) eformula = "sqrt(x)/2"
@@ -48909,7 +48909,7 @@ addLayer("hu", {
                                 return hasMilestone("hu", 6)
                         },
                         effectDescription(){
-                                return "Reward: Increase <i>Siok</i>'s base cost by 1e5,555 but halve its cost base and at 1e54,170 Humans <i>Tulinwl</i> effect is sqrt(x) / 5."
+                                return "Reward: Increase <i>Siok</i>'s base cost by 1e5,555 but halve its cost base, at 1e53,778 Humans <i>Tulinwl</i> effect is sqrt(x) / 5 and at 1e55,555 Humans unlock challenges."
                         },
                 }, // hasMilestone("hu", 100)
         },
@@ -49283,7 +49283,7 @@ addLayer("hu", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return hasMilestone("hu", 100) || (player.hu.activeChallenge > 10)
+                                return (hasMilestone("hu", 100) && player.hu.points.gte("1e55555")) || (player.hu.activeChallenge > 10)
                         },
                 },
                 "Info": {
