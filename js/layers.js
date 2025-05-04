@@ -48970,12 +48970,12 @@ addLayer("hu", {
                 21: {
                         name: "Incorrect",
                         canComplete(){ 
-                                return player.pl.points.gte("400178e3")
+                                return player.pl.points.gte("401123e3")
                         },
                         completionLimit: 1,
                         fullDisplay(){
                                 let a = "Add .1 to the Plant cost exponent"
-                                let b = "Goal: 400,178,000 Plants"
+                                let b = "Goal: 401,123,000 Plants"
                                 let c = "Reward: Plants no longer affect <i>Hiawd</i> base and <i>Tgwitlcwl</i> coefficient is .757"
                                 c += " and the Mastery III coefficient is .0001 less"
                                 if (player.r.unlocked) c += makeRed(" per challenge keep .25% of time since last buyable")
