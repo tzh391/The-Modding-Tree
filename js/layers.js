@@ -49283,7 +49283,7 @@ addLayer("hu", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return hasMilestone("hu", 100) && player.hu.points.gte("5e53780") || (player.hu.activeChallenge > 10)
+                                return (hasMilestone("hu", 100) && player.hu.points.gte("5e53780")) || (player.hu.activeChallenge > 10)
                         },
                 },
                 "Info": {
