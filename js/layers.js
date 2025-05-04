@@ -48909,7 +48909,7 @@ addLayer("hu", {
                                 return hasMilestone("hu", 6)
                         },
                         effectDescription(){
-                                return "Reward: Increase <i>Siok</i>'s base cost by 1e5,555 but halve its cost base and at 1e54,170 Humans <i>Tulinwl</i> effect is sqrt(x) / 5."
+                                return "Reward: Increase <i>Siok</i>'s base cost by 1e5,555 but halve its cost base, at 5e53,780 Humans unlock challenges and at 1e54,170 Humans <i>Tulinwl</i> effect is sqrt(x) / 5."
                         },
                 }, // hasMilestone("hu", 100)
         },
@@ -49283,7 +49283,7 @@ addLayer("hu", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return hasMilestone("hu", 100) || (player.hu.activeChallenge > 10)
+                                return hasMilestone("hu", 100) && player.hu.points.gte("5e53780") || (player.hu.activeChallenge > 10)
                         },
                 },
                 "Info": {
