@@ -48909,7 +48909,7 @@ addLayer("hu", {
                                 return hasMilestone("hu", 6)
                         },
                         effectDescription(){
-                                return "Reward: Increase <i>Siok</i>'s base cost by 1e5,555 but halve its cost base, at 5e53,780 Humans unlock challenges and at 1e54,170 Humans <i>Tulinwl</i> effect is sqrt(x) / 5."
+                                return "Reward: Increase <i>Siok</i>'s base cost by 1e5,555 but halve its cost base and at 1e54,170 Humans <i>Tulinwl</i> effect is sqrt(x) / 5."
                         },
                 }, // hasMilestone("hu", 100)
         },
@@ -48917,7 +48917,7 @@ addLayer("hu", {
                 11: {
                         name: "Left", 
                         canComplete(){ 
-                                return player.pl.points.gte([13639e3, 15446e3, 16150e3, 17875e3, 17904e3, 0][player.hu.challenges[11]])
+                                return player.pl.points.gte([13675e3, 15505e3, 16150e3, 17875e3, 17904e3, 0][player.hu.challenges[11]])
                         },
                         onEnter(){
                                 player.pl.points = decimalZero
@@ -48933,7 +48933,7 @@ addLayer("hu", {
                         },
                         fullDisplay(){
                                 let a = "You can't get more than 500 Nucleuses"
-                                let b = "Goal: REQ Plants".replace("REQ", formatWhole([13639e3, 15446e3, 16150e3, 17875e3, 17904e3, 0][player.hu.challenges[11]]))
+                                let b = "Goal: REQ Plants".replace("REQ", formatWhole([13675e3, 15505e3, 16150e3, 17875e3, 17904e3, 0][player.hu.challenges[11]]))
                                 if (player.hu.challenges[11] == 5) b = ""
                                 let c = "Reward: Bulk unlimited Plant buyables, Plant buyables cost nothing, point gain becomes Humans,"
                                 c += " and subtract 3 from the Token tetration exponent"
@@ -48949,7 +48949,7 @@ addLayer("hu", {
                 12: {
                         name: "Right", 
                         canComplete(){ 
-                                return player.e.points.gte("e126340e3")
+                                return player.e.points.gte("e127546e3")
                         },
                         completionLimit: 1,
                         onComplete(){
@@ -48957,7 +48957,7 @@ addLayer("hu", {
                         },
                         fullDisplay(){
                                 let a = "Disable Ecosystems III"
-                                let b = "Goal: 1e126,340,000 Ecosystems"
+                                let b = "Goal: 1e127,546,000 Ecosystems"
                                 let c = "Reward: Stem's cost base is 1e1000, its base is Humans"
                                 c += " and per challenge completion after the first two halve the <i>Hual</i> cost base"
 
@@ -49283,7 +49283,7 @@ addLayer("hu", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return (hasMilestone("hu", 100) && player.hu.points.gte("5e53780")) || (player.hu.activeChallenge > 10)
+                                return hasMilestone("hu", 100) || (player.hu.activeChallenge > 10)
                         },
                 },
                 "Info": {
