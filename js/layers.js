@@ -48917,7 +48917,7 @@ addLayer("hu", {
                 11: {
                         name: "Left", 
                         canComplete(){ 
-                                return player.pl.points.gte([13675e3, 15505e3, 16150e3, 17875e3, 17904e3, 0][player.hu.challenges[11]])
+                                return player.pl.points.gte([13702e3, 15505e3, 16150e3, 17875e3, 17904e3, 0][player.hu.challenges[11]])
                         },
                         onEnter(){
                                 player.pl.points = decimalZero
@@ -48933,7 +48933,7 @@ addLayer("hu", {
                         },
                         fullDisplay(){
                                 let a = "You can't get more than 500 Nucleuses"
-                                let b = "Goal: REQ Plants".replace("REQ", formatWhole([13675e3, 15505e3, 16150e3, 17875e3, 17904e3, 0][player.hu.challenges[11]]))
+                                let b = "Goal: REQ Plants".replace("REQ", formatWhole([13702e3, 15505e3, 16150e3, 17875e3, 17904e3, 0][player.hu.challenges[11]]))
                                 if (player.hu.challenges[11] == 5) b = ""
                                 let c = "Reward: Bulk unlimited Plant buyables, Plant buyables cost nothing, point gain becomes Humans,"
                                 c += " and subtract 3 from the Token tetration exponent"
