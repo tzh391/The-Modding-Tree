@@ -48949,7 +48949,7 @@ addLayer("hu", {
                 12: {
                         name: "Right", 
                         canComplete(){ 
-                                return player.e.points.gte("e127546e3")
+                                return player.e.points.gte("e126565e3")
                         },
                         completionLimit: 1,
                         onComplete(){
@@ -48957,7 +48957,7 @@ addLayer("hu", {
                         },
                         fullDisplay(){
                                 let a = "Disable Ecosystems III"
-                                let b = "Goal: 1e127,546,000 Ecosystems"
+                                let b = "Goal: 1e126,565,000 Ecosystems"
                                 let c = "Reward: Stem's cost base is 1e1000, its base is Humans"
                                 c += " and per challenge completion after the first two halve the <i>Hual</i> cost base"
 
