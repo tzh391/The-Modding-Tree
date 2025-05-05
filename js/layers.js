@@ -49034,13 +49034,13 @@ addLayer("hu", {
                 32: {
                         name: "Moral",  // immoral
                         canComplete(){ 
-                                return player.pl.points.gte(hasChallenge("hu", 32) ? "345550e3" : "330393e3")
+                                return player.pl.points.gte(hasChallenge("hu", 32) ? "345550e3" : "330392e3")
                         },
                         completionLimit: 2,
                         fullDisplay(){
                                 let a = "<b>Left</b> and <b>Right</b>"
-                                let b = "Goal: 330,393,000 Plants"
-                                if (hasChallenge("hu", 32)) b = b.replace("330,393", "345,550")
+                                let b = "Goal: 330,392,000 Plants"
+                                if (hasChallenge("hu", 32)) b = b.replace("330,392", "345,550")
                                 let c = "Reward: <i>Siok</i> base cost is 1e5950 more but halve its cost base"
                                 if (hasChallenge("hu", 32)) {
                                         c = "Reward: <i>Siok</i> base cost is 1e2000 more but divide its cost base by 1.25"
