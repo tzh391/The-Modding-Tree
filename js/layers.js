@@ -49057,14 +49057,14 @@ addLayer("hu", {
                 41: {
                         name: "Immoral",  // Good
                         canComplete(){ 
-                                let ids = [360450, 367865, 377966, 389050, 403090, 468894, 495533, 524765, 569657]
+                                let ids = [360449, 367865, 377966, 389050, 403090, 468894, 495533, 524765, 569657]
                                 if (player.hu.challenges[41] >= 9) return false
                                 return player.pl.points.div(1e3).gte(ids[player.hu.challenges[41]])
                         },
                         completionLimit: 9,
                         fullDisplay(){
                                 let a = "Add 1 to the Chromosome cost exponent"
-                                let ids = [360450, 367865, 377966, 389050, 403090, 468894, 495533, 524765, 569657, 1e9]
+                                let ids = [360449, 367865, 377966, 389050, 403090, 468894, 495533, 524765, 569657, 1e9]
                                 let b = "Goal: XXX Plants".replace("XXX", format(1e3*ids[player.hu.challenges[41]]))
                                 b = b.replace("Goal: 1.00e12 Plants", "")
                                 let c = "Reward: Double time since last buyable gain and divide the Stem cost base by 1e50 per completion"
