@@ -49014,12 +49014,12 @@ addLayer("hu", {
                 31: {
                         name: "Wrong",  // moral
                         canComplete(){ 
-                                return player.pl.points.gte("328e6")
+                                return player.pl.points.gte("330784e3")
                         },
                         completionLimit: 1,
                         fullDisplay(){
                                 let a = "<b>Right</b> and <b>Incorrect</b>"
-                                let b = "Goal: 328,000,000 Plants"
+                                let b = "Goal: 330,784,000 Plants"
                                 let c = "Reward: Stem cost base is 1e500,"
                                 if (!player.r.unlocked) c += " buy 10x Token II buyables,"
                                 c += " and upon 1e55,352 / 1e55,460 Humans every 5th / 4th <i>Hual</i> level after 550 halves it base (max 50)"
