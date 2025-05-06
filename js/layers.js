@@ -49095,7 +49095,7 @@ addLayer("hu", {
                                         if (hasMilestone("r", 8)) {
                                                 c += ", the Top Quark exponent is 5/6, and subtract .002 from Mastery VI base"
                                         } else {
-                                                c += ", upon 1e59,285 Humans the Top Quark exponent is 5/6"
+                                                c += ", 1e59,285 Humans the Top Quark exponent is 5/6"
                                                 c += ", and upon 1e59,435 and 1e59,732 Humans subtract .001 from Mastery VI base"
                                         }
                                 }
