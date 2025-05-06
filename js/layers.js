@@ -49119,7 +49119,7 @@ addLayer("hu", {
                                 let c = "Reward: Unlock Mastery VII, autobuy it, double <i>Hual</i> base"
                                 c += " and at 1e61,159 / 1e61,217 / 1e61,349 Humans Mastery VII base is 7 / 5 / 4"
                                 if (hasMilestone("r", 5)) c = "Reward: Unlock Mastery VII, autobuy it, its base is 4, and double <i>Hual</i> base"
-                                if (hasChallenge("hu", 52) && (!player.shiftAlias || player.hu.challenges[51] == 2)) {
+                                if (hasChallenge("hu", 51) && (!player.shiftAlias || player.hu.challenges[51] == 2)) {
                                         b = "Goal: 295,210,000 Plants"
                                         c = "Reward: <i>Siok</i>'s base cost is 1e200 more but every other <i>Hual</i> level past 1000 makes it cost 10x less"
                                         c += ", at 1e63,855 / 1e64,412 Humans raise Chromosome effect ^(10/7) / ^1.3, and at 1e64,026 / 1e64,160 Humans <i>Tulinwl</i> divider is 2 / 1"
