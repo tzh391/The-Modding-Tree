@@ -49149,7 +49149,7 @@ addLayer("hu", {
                                 let a = "<b>Moral</b>, <b>Immoral</b>, and <b>Good</b> and add .2 to the Plant cost exponent"
                                 let b = "Goal: 49,506,000 Plants"
                                 let c = "Reward: At 954 <i>Hual</i> levels and each 8th after halve its base (max 25)"
-                                c += " and at 1e62,263 / 1e62,353 / 1e62,491 / 1e62,664 / 1e62,882 / 1e63,050 / 1e63,450 Humans Mastery VII base is 3 / 2.5 / <br>2.2 / 2 / 1.9 / 1.8 / 1.7"
+                                c += " and at 1e62,263 / 1e62,353 / 1e62,491 / 1e62,664 / 1e62,882 / 1e63,050 / 1e63,450 Humans Mastery VII base is 3 / 2.5 / 2.2 / 2 / 1.9 / 1.8 / 1.7"
                                 if (hasMilestone("r", 4)) c = "Reward: Divide the <i>Hual</i> base cost by 2<sup>25</sup> and Mastery VII's base is 1.7"
                                 
                                 return a + br2 + b + br2 + c + br2
