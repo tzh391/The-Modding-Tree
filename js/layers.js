@@ -49091,12 +49091,12 @@ addLayer("hu", {
                                 if (hasMilestone("r", 8)) c += "and the Mastery VI cost base is 1.01"
                                 else c += "and at 1e58,925 Humans the Mastery VI cost base is 1.01"
                                 if (hasChallenge("hu", 42) && (!player.shiftAlias || player.hu.challenges[42] == 2)) {
-                                        c = "Reward: Each fifth <i>Hual</i> level past 750 halves its cost base"
+                                        c = "Reward: Each 5th <i>Hual</i> level past 750 halves its cost base (max 38)"
                                         if (hasMilestone("r", 8)) {
-                                                c += ", the Top Quark exponent is 5/6, and subtract .002 from the Mastery VI base"
+                                                c += ", the Top Quark exponent is 5/6, and subtract .002 from Mastery VI base"
                                         } else {
                                                 c += ", upon 1e59,285 Humans the Top Quark exponent is 5/6"
-                                                c += ", and upon 1e59,435 and 1e59,732 Humans subtract .001 from the Mastery VI base"
+                                                c += ", and upon 1e59,435 and 1e59,732 Humans subtract .001 from Mastery VI base"
                                         }
                                 }
                                 let d = "Completions: " + player.hu.challenges[42] + "/2"
