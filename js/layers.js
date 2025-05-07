@@ -45613,7 +45613,7 @@ addLayer("hu", {
                                 if (player.r.unlocked) return "Halve <i>Hual</i> base and multiply its base cost by 1e1111"
                                 return "Bulk unlimited Up Quarks and 10x Token II buyables, halve <i>Hual</i> base and multiply its base cost by 1e1111"
                         },
-                        cost:() => new Decimal("1e89450"),
+                        cost:() => new Decimal("1e89485"),
                         unlocked(){
                                 return hasUpgrade("hu", 94)
                         }, // hasUpgrade("hu", 95)
