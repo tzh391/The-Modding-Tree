@@ -62150,7 +62150,7 @@ addLayer("tokens", {
                                 if (hasUpgrade("hu", 143)) {
                                         if (hasMilestone("r", 14))              return 1.015
                                         if (hasMilestone("r", 11))              return 1.030 - Math.min(Math.max(0, player.r.times - 20), 10) / 1000
-                                                                                return 1.030
+                                        if (player.hu.points.gte("1e114514"))   return 1.030
                                 }
                                 if (hasUpgrade("hu", 111))                      return 1.001
                                 if (hasUpgrade("hu", 94))                       return 1.002
