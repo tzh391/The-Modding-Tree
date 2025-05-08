@@ -45897,7 +45897,7 @@ addLayer("hu", {
                                 return "<bdi style='color: #" + getUndulatingColor() + "'>Humans LXVIII"
                         },
                         description(){
-                                return "The Token II buyables' exponent is 1.035 and at 1e113,837 Humans Mastery VI becomes 1.03<sup>x<sup>.2</sup></sup>"
+                                return "The Token II buyables' exponent is 1.035 and Mastery VI becomes 1.03<sup>x<sup>.2</sup></sup>"
                         },
                         cost:() => new Decimal("1e113813"),
                         unlocked(){
@@ -62150,7 +62150,7 @@ addLayer("tokens", {
                                 if (hasUpgrade("hu", 143)) {
                                         if (hasMilestone("r", 14))              return 1.015
                                         if (hasMilestone("r", 11))              return 1.030 - Math.min(Math.max(0, player.r.times - 20), 10) / 1000
-                                        if (player.hu.points.gte("1e114514"))   return 1.030
+                                                                                return 1.030
                                 }
                                 if (hasUpgrade("hu", 111))                      return 1.001
                                 if (hasUpgrade("hu", 94))                       return 1.002
