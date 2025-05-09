@@ -49895,12 +49895,12 @@ addLayer("r", {
                         if (hasMilestone("r", 16)) ret = ret.plus(player.r.milestones.length / 100)
                         if (hasMilestone("r", 17)) {
                                 let l = player.r.buyables[11]
-                                if (l.gte(20)) ret = ret.plus(.1)
-                                if (l.gte(22)) ret = ret.plus(.1)
-                                if (l.gte(24)) ret = ret.plus(.1)
-                                if (l.gte(26)) ret = ret.plus(.1)
-                                if (l.gte(28)) ret = ret.plus(.1)
-                                if (l.gte(30)) ret = ret.plus(.1)
+                                if (l.gte(200)) ret = ret.plus(.1)
+                                if (l.gte(202)) ret = ret.plus(.1)
+                                if (l.gte(204)) ret = ret.plus(.1)
+                                if (l.gte(206)) ret = ret.plus(.1)
+                                if (l.gte(208)) ret = ret.plus(.1)
+                                if (l.gte(2200)) ret = ret.plus(.1)
                         }
                         if (hasMilestone("r", 18)) ret = ret.plus(player.r.buyables[23].min(10).times(.04))
 
