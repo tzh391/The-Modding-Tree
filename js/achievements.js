@@ -435,7 +435,7 @@ PROGRESSION_MILESTONES_TEXT = {
         121: "1e1,000,000 Eagles",
         122: "1e10,000,000 Eagles",
         123: "1e100,000,000 Eagles",
-        124: "1e1,000,000,000 Eagles",
+        124: "e1e9 Eagles",
         125: "e1e10 Eagles",
         126: "e1e70 Eagles",
         127: "1e343 Emeralds",
