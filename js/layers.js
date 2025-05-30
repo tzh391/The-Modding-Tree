@@ -674,7 +674,7 @@ addLayer("h", {
                 cols: 5,
                 11: {
                         title(){
-                                return "<bdi style='color: #" + getUndulatingColor() + "'>Hydrogen I"
+                                return "<bdi style='color: #" + getUndulatingColor() + "'>氢1"
                         },
                         description(){
                                 if (!player.shiftAlias) {
