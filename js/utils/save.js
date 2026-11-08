@@ -156,7 +156,7 @@ function load() {
 	fixSave()
 	loadOptions()
 
-	if (options.offlineProd) {
+	if (options.offlineProd && !player.paused) {
 		if (player.offTime === undefined) player.offTime = { remain: 0 }
 		player.offTime.remain += (Date.now() - player.time) / 1000
 	}
@@ -223,17 +223,22 @@ function NaNcheck(data) {
 }
 
 function exportSave() {
-	//if (NaNalert) return
-	let str = btoa(JSON.stringify(player))
-
-	const el = document.createElement("textarea")
-	el.value = str
-	document.body.appendChild(el)
-	el.select()
-	el.setSelectionRange(0, 99999)
-	document.execCommand("copy")
-	document.body.removeChild(el)
-	doPopup("export", "", "Save Exported!", 1, "#25B9E3");
+	let str = btoa(unescape(encodeURIComponent(JSON.stringify(player))))
+	let success = () => doPopup("export", "", "Save Exported!", 1, "#25B9E3")
+	let fallback = () => {
+		const el = document.createElement("textarea")
+		el.value = str
+		document.body.appendChild(el)
+		el.select()
+		el.setSelectionRange(0, 9999999)
+		let copied = document.execCommand("copy")
+		document.body.removeChild(el)
+		if (copied) success()
+		else prompt("Copy your TMT save:", str)
+	}
+	if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
+		navigator.clipboard.writeText(str).then(success).catch(fallback)
+	} else fallback()
 }
 
 function importSave(imported = undefined, forced = false, fromCustomSaves = false) {
@@ -247,7 +252,7 @@ function importSave(imported = undefined, forced = false, fromCustomSaves = fals
 		}
 		let x = atob(imported)
 		console.log(x)
-		tempPlr = Object.assign(getStartPlayer(), JSON.parse(atob(imported)));
+		tempPlr = Object.assign(getStartPlayer(), JSON.parse(decodeURIComponent(escape(atob(imported)))));
 		if (tempPlr.versionType != modInfo.id && !forced && !confirm(confirmString)) {
 			// Wrong save (use "Forced" to force it to accept.)
 			return ;
@@ -294,7 +299,7 @@ var saveInterval = setInterval(function () {
 }, 5000);
 
 window.onbeforeunload = () => {
-	if (player.autosave) {
+	if (options.autosave) {
 		save();
 	}
 };

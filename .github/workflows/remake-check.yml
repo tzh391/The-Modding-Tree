@@ -1,4 +1,4 @@
-name: Hydrogen remake checks
+name: Native TMT hydrogen checks
 on:
   push:
     branches: [remake-zh, remake-en]
@@ -8,7 +8,7 @@ on:
 permissions:
   contents: read
 jobs:
-  simulation:
+  native-tmt:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,15 +16,12 @@ jobs:
         with:
           node-version: '22'
       - run: npm test
-      - run: node --check js/remake/app.js
-      - name: Package standalone playable prototype
+      - name: Check mod syntax
         run: |
-          mkdir -p preview/css preview/js/remake
-          cp index.html preview/
-          cp css/remake.css preview/css/
-          cp js/remake/*.js preview/js/remake/
-          cp LICENSE Prestige-tree-license preview/
+          for file in js/remake/*.js; do node --check "$file"; done
+      - name: Package native TMT game
+        run: python3 scripts/package-preview.py preview
       - uses: actions/upload-artifact@v4
         with:
-          name: hydrogen-${{ github.ref_name }}
+          name: native-tmt-hydrogen-${{ github.ref_name }}
           path: preview/

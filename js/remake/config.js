@@ -1,2 +1,2 @@
-// The only gameplay-file difference between the language branches.
-export const DEFAULT_LOCALE = 'en';
+// Default locale for this language branch.
+var REMAKE_DEFAULT_LOCALE = "en";

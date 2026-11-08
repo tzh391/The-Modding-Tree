@@ -398,17 +398,18 @@ function runInterval(){
 	let diff = (now - player.time) / 1e3
 	let trueDiff = diff
 
-	if (player.offTime !== undefined) {
+	if (player.offTime !== undefined && !options.offlineProd) player.offTime = undefined
+	if (player.offTime !== undefined && !paused && !player.paused) {
 		if (player.offTime.remain > modInfo.offlineLimit * 3600) player.offTime.remain = modInfo.offlineLimit * 3600
 		if (player.offTime.remain > 0) {
 			let offlineDiff = Math.max(player.offTime.remain / 10, diff)
 			player.offTime.remain -= offlineDiff
 			diff += offlineDiff
 		}
-		if (!player.offlineProd || player.offTime.remain <= 0) player.offTime = undefined
+		if (!options.offlineProd || player.offTime.remain <= 0) player.offTime = undefined
 	}
 	if (paused || player.paused) diff = 0
-	if (player.cells.slowTime > 0) {
+	if (player.cells && player.cells.slowTime > 0) {
 		player.cells.slowTime -= diff 
 		if (player.cells.slowTime < 0) player.cells.slowTime = 0
 		diff *= .01
