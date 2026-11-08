@@ -1,0 +1,30 @@
+name: Hydrogen remake checks
+on:
+  push:
+    branches: [remake-zh, remake-en]
+  pull_request:
+    branches: [remake-zh, remake-en]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  simulation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: node --check js/remake/app.js
+      - name: Package standalone playable prototype
+        run: |
+          mkdir -p preview/css preview/js/remake
+          cp index.html preview/
+          cp css/remake.css preview/css/
+          cp js/remake/*.js preview/js/remake/
+          cp LICENSE Prestige-tree-license preview/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hydrogen-${{ github.ref_name }}
+          path: preview/
