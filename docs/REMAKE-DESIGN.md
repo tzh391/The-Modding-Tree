@@ -1,45 +1,50 @@
-# Tree of Life remake · 0.1 / 生命树重制版
+# 原生 TMT 重制版 / Native TMT remake · 0.2
 
-## 本次可玩范围
+## 框架
 
-只实现第一层“氢”。未来章节在侧栏标注为未开放，不能进入。
+以本仓库原有 The Modding Tree 2.6.6.2 为基础。入口保留原版 HTML 布局、Vue、Decimal、引擎时钟、层级树、CSS、设置与存档系统。没有独立应用壳或第二套游戏时钟。
 
-核心循环：自动采集 H → 分配采集/成键功率 → 调节温度与反应效率 → 生成 H₂ → 封存 32 H₂ 为分子云。
+氢层是标准 `addLayer("h", ...)`：
 
-- 捕获脉冲：获得 4 H，温度增加 8，冷却 4 秒。脉冲是可选加速操作。
-- 功率比例：采集占比为 a，成键占比为 1-a，范围 0–100%。
-- 氢流入：0.2 + 2.2a / 秒。基础流入保证全成键配置也能缓慢前进。
+- `startData()` 初始化 `player.h`；原子、分子、累计量与最高量为 TMT Decimal。
+- `update(diff)` 由原生 `gameLoop` 调用，计算采集、成键和热平衡。
+- `tabFormat` 创建“反应舱 / 观测 / 说明”标签页。
+- `clickables` 实现捕获脉冲、三种配置、形成分子云、暂停与语言切换。
+- 原生 `slider` 分配功率，原生 `bars` 显示温度和分子云目标。
+- `tree.js` 只开放 H 节点；后续层尚未实现。
+- 完成后触发 TMT 原生结束画面，允许继续观测。
+
+## 玩法与公式
+
+自动采集 H → 分配采集/成键功率 → 控制温度 → 生成 H₂ → 消耗 32 H₂ 形成分子云。
+
+采集占比 a 在 0–1 之间；成键占比为 1-a。
+
+- 采集速率：0.2 + 2.2a / 秒。
 - 成键容量：1.4(1-a) × 效率 / 秒；每个 H₂ 消耗两个 H。
 - 效率：clamp(1 - max(0, 温度 - 28) / 85, 0.12, 1)。
-- 温度按 12 秒时间常数趋近 12 + 88a + 5 × 实际成键速率。
-- 0.1 秒以下步长进行确定性积分；后台离线收益最多 4 小时，暂停时不结算。
-- 以默认 60% 配置，不点击也能在 180 秒内达到本章目标。玩家可通过两阶段采集/成键调度加快过程。
-- 观察手记只记录发现，不附加倍率，不要求重复刷取。
-- 完成本章消费 32 H₂ 并保留“已形成分子云”状态；不会自动重置。
+- 温度以 12 秒时间常数趋近 12 + 88a + 5 × 实际成键速率。
+- 捕获脉冲：+4 H、温度 +8、冷却 4 秒；无需持续点击也可完成。
+- 默认 60% 配置约 93 秒可达到目标；50% 配置约 64 秒。
+- 方程用不超过 0.1 秒的步长积分。TMT 负责传入时间和离线结算。
+- 观察记录没有额外倍率；本章不要求购买升级或重复重置。
 
-这是生命演化题材的抽象资源游戏。H₂ 配比保留原子守恒，温度、反应速度、分子云规模、电子轨道均为玩法示意，不用于模拟真实宇宙或化学实验。
+资源、温度、反应环境、分子云规模均为玩法抽象。H₂ 的配比保持氢原子守恒；未来版本再根据后续层的需求调整数值。
 
-## 后续设计边界
+## 存档与双语
 
-规划方向：氢 → 元素与分子网络 → 原始生命 → 细胞 → 组织 → 器官 → 人类。
+统一采用原生 TMT 多存档和 Base64 导入导出。独立存储键 `tree_of_life_remake_tmt`，与原版、0.1 独立原型的存档分开。中英文共用格式；标签名在换语言后由 TMT 的 `fixSave()` 归一化。
 
-进入生命前需要交代其他元素的来源，并引入碳、氮、氧、磷、硫等原料。界面里的后续章节只是方向；本版没有实现其他元素、生命、细胞或人类。
+`remake-zh` 默认中文，`remake-en` 默认英文。两分支共用引擎、玩法、原生组件扩展和测试，仅配置与初始 HTML 语言/标题不同。
 
-每章围绕一种新的系统决策展开。例如分子网络关注反应配比，细胞关注膜内外交换，组织关注分工。旧章节在完成后逐渐成为可自动管理的底层供应；避免所有章节都重复升级商店、里程碑列表和重置挑战。
+原 fork 的少量兼容修复：可选细胞减速字段增加存在性检查，离线时间尊重设置和暂停，离开页面时遵守自动保存设置，UTF-8 导入导出支持中文标签，动态模组脚本按顺序加载。
 
-## 语言与代码维护
+## 后续方向
 
-- `remake-zh`：默认中文；`remake-en`：默认英文。
-- 两分支的模拟、界面、双语字典和测试共享；仅默认语言配置与初始 HTML 语言/标题不同。
-- 切换语言不重置进度。`?lang=zh` 和 `?lang=en` 可显式指定语言。
-- 两种语言使用同一存档格式。同一网站来源共享本地存档，不同网站来源通过导出/导入迁移。
-- 重制版使用独立存储键 `tree-of-life-remake-v1`，不会读取或覆盖原版存档。
-- 原版入口保留为 `legacy.html`，历史资源及 MIT 授权保留。
+氢 → 其他元素与分子网络 → 原始生命 → 细胞 → 组织 → 器官 → 人类。
 
-## English design brief
+进入生命前先交代碳、氮、氧、磷、硫等元素来源。后续每层围绕一个新系统决策展开，同时利用 TMT 原生层级和组件扩展。当前只实现氢层。
 
-Version 0.1 implements hydrogen only. Adjust the balance between collection and bonding; greater collection power raises heat and reduces bonding efficiency. An optional four-second capture pulse accelerates supply at a thermal cost. Two H form one H₂. Preserve 32 H₂ to complete the chapter without a prestige reset.
+## English brief
 
-The next chapters are a roadmap, not playable content. They will introduce other elements before prebiotic chemistry and life. Each chapter should add a distinct system decision rather than another sequence of multiplier purchases.
-
-The simulation is deterministic and conserves hydrogen. The physics, quantities, temperatures and orbit illustration are abstractions. Both language branches share gameplay and save format. Offline progress is capped at four hours and stops while paused. The original game and its saves are retained separately.
+Version 0.2 is an actual TMT mod, not a separate frontend. It uses this repository's engine and registers hydrogen with `addLayer`. The engine owns time, resources, native controls, tree navigation, completion and saves. The first chapter retains the collection/bonding/heat allocation loop. Additional evolution layers are planned. The original evolution game is retained at `legacy.html`.

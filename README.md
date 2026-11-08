@@ -1,67 +1,71 @@
-# Tree of Life · Remake / 生命树重制版
+# Tree of Life Remake / 生命树重制版
 
-A playable hydrogen prototype, rebuilt from the `evolution` branch of The Tree of Life.
+A **native The Modding Tree mod** built on this repository's existing TMT 2.6.6.2 engine. The root page uses the original Vue runtime, engine loop, layer tree, components, CSS and save manager.
 
-从 `evolution` 分支重新开始的生命树游戏。本版只开放第一层：氢。
+这是使用原仓库 **The Modding Tree 模组框架** 的生命树重制版。首页保留原生层级树、黑色界面、标签页、按钮、滑块、进度条、设置与多存档系统。
 
 - 中文分支：[remake-zh](https://github.com/tzh391/The-Modding-Tree/tree/remake-zh)
 - English branch: [remake-en](https://github.com/tzh391/The-Modding-Tree/tree/remake-en)
 
-## Play / 运行
+## Run / 运行
 
-No npm dependencies or build step are required. With Python 3 installed, run this command from the repository root:
+No dependency installation or build is required. With Python 3 installed, run from the repository root:
 
-无需安装依赖或构建。在仓库目录中执行：
+无需安装依赖或构建；在仓库目录执行：
 
 ```sh
 python3 -m http.server 4173 --bind 127.0.0.1
 ```
 
-Open [http://127.0.0.1:4173](http://127.0.0.1:4173). With Node.js installed, `npm start` runs the same server.
+Then open [http://127.0.0.1:4173](http://127.0.0.1:4173). `npm start` runs the same server.
 
-- Chinese / 中文：[http://127.0.0.1:4173/?lang=zh](http://127.0.0.1:4173/?lang=zh)
-- English：[http://127.0.0.1:4173/?lang=en](http://127.0.0.1:4173/?lang=en)
-- Original game / 原版入口：[http://127.0.0.1:4173/legacy.html](http://127.0.0.1:4173/legacy.html)
+- 中文：[http://127.0.0.1:4173/?lang=zh](http://127.0.0.1:4173/?lang=zh)
+- English: [http://127.0.0.1:4173/?lang=en](http://127.0.0.1:4173/?lang=en)
+- Original evolution mod / 原版游戏：[legacy.html](legacy.html)
 
-Serve the files over HTTP; opening `index.html` directly as a `file:` URL will not load JavaScript modules reliably.
+Serve the game over HTTP. Do not open `index.html` as a `file:` URL.
 
-请通过本地服务器运行，避免双击 HTML 导致浏览器阻止模块加载。
+## Hydrogen layer / 氢层
 
-## First chapter / 第一章
+The first layer is registered using `addLayer("h", ...)`. Collect hydrogen, allocate collection/bonding power, manage heat, form H₂ and spend 32 H₂ to create the first molecular cloud. Completion uses TMT's native endgame screen and Keep Going control. Later evolution layers are planned, not implemented.
 
-Collect hydrogen atoms, balance collection and bonding power, and manage heat. Combine two H into H₂ and preserve 32 H₂ to form your first molecular cloud. Capture pulses are optional; passive play can complete the chapter.
+第一层通过 `addLayer("h", ...)` 注册。玩法：自动采集氢 → 分配采集/成键功率 → 控制温度 → 合成 H₂ → 用 32 H₂ 形成分子云。章节完成使用 TMT 原生结束画面，可继续观测。后续生命、细胞、组织、器官、人类层仍在规划中。
 
-自动聚集氢原子，调节采集与成键的功率分配，控制舱温，最终用 32 个 H₂ 形成分子云。捕获脉冲可加速，但无需持续点击也能完成。
+This is an abstract resource game, not a physical simulation. [Design / 设计](docs/REMAKE-DESIGN.md).
 
-This is a game abstraction, not an accurate physical simulation. Only hydrogen is playable; future chapters are explicitly marked. See [design and formulas / 设计与公式](docs/REMAKE-DESIGN.md).
+## Native saves / 原生存档
 
-## Saves / 存档
+TMT owns the game clock, `player.h` state, Decimal resource quantities, offline production, auto-save, multiple saves and import/export. Click the original settings gear to use these features.
 
-Auto-save runs every five seconds and on key actions. Offline production is capped at four hours. Pause stops production and cooldowns, including while away. Use Export/Import to back up and transfer saves between language versions. The original game's save format is separate and incompatible.
+使用原生设置齿轮保存、导入导出、管理多存档、切换主题。自动保存每五秒执行；离线收益最多四小时。暂停会停止生产、冷却及离线时间消耗。
 
-每五秒及关键操作后自动保存；最多结算四小时离线收益。暂停会停止生产、冷却及离线推进。中英文可共用导出存档；与原版存档独立。
+The remake's storage key is `tree_of_life_remake_tmt`, shared by Chinese and English. Original evolution saves (`tree_of_life`) and the previous standalone prototype saves remain separate. Do not import those incompatible formats into this mod.
 
-## Checks / 测试
+重制版的中英文共用独立 TMT 存档；与原版及上一版独立页面原型的存档分开。
 
-With Node.js 20 or newer:
+## Development / 开发
+
+With Node.js 22 or newer:
 
 ```sh
 npm test
 ```
 
-Tests cover chapter completion, atom conservation, power endpoints, temperature, cooldowns, pause, time-step consistency, offline limits, save validation, and translation coverage.
+Tests boot the actual TMT scripts and verify layer registration, Decimal resources, engine-driven progression, native clickable completion, pause, offline limits, multilingual save round trips and hydrogen conservation.
 
-GitHub Actions runs these checks and uploads a standalone static preview artifact for both remake branches. It does not deploy over the existing GitHub Pages site. To host a remake, publish this branch's root directory on a separately selected Pages deployment.
+- `js/remake/mod.js`: TMT mod metadata and global mod hooks.
+- `js/remake/hydrogen.js`: native hydrogen layer and TMT components.
+- `js/remake/tree.js`: original framework's tree layout.
+- `js/remake/simulation.js`: pure equations, called from the TMT layer update hook.
+- `js/remake/native-ui.js`: translated native system tabs.
+- `js/remake/config.js`: branch's default language.
 
-GitHub Actions 会测试并打包可运行的静态原型；本次不会替换原有 GitHub Pages 网站。
+Small compatibility fixes guard the original fork's optional cell slowdown, preserve UTF-8 saves, honor offline/auto-save settings, and order dynamically loaded mod scripts. The original evolution entry still works through `legacy.html`.
 
-## Source layout / 代码结构
+GitHub Actions tests both branches and uploads a runnable native TMT artifact. It does not replace the existing Pages deployment. To build the same package locally:
 
-- `js/remake/simulation.js`: deterministic simulation and save validation.
-- `js/remake/app.js`: interaction, persistence, accessible HTML and canvas.
-- `js/remake/i18n.js`: shared Chinese and English text.
-- `js/remake/config.js`: branch default language.
-- `css/remake.css`: responsive interface and reduced-motion support.
-- `tests/simulation.test.mjs`: dependency-free regression tests.
+```sh
+python3 scripts/package-preview.py preview
+```
 
-The original TMT resources remain available through `legacy.html`. MIT notices in `LICENSE` and `Prestige-tree-license` are preserved. Based on The Tree of Life by pg132 and the TMT engine by Acamaeda.
+MIT notices in `LICENSE` and `Prestige-tree-license` are preserved. Credits: The Tree of Life by pg132, TMT by Acamaeda, The Prestige Tree by Jacorb and Aarex.
