@@ -109,7 +109,7 @@
 				</ul>
 			</div>
 			<overlay-head v-if="!(tmp.gameEnded && !player.keepGoing)"></overlay-head>
-			<div class="sideLayers">
+			<div class="sideLayers" v-if="!player.hu2.arc.active || player.hu2.showLifeTree">
 				<div v-for="(node, index) in OTHER_LAYERS['side']">
 					<tree-node :layer='node' :abb='tmp[node].symbol' :size="'small'" :key="'side' + index"></tree-node>
 				</div>
