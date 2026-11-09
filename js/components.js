@@ -29,7 +29,7 @@ function loadVue() {
                 <div v-for="role in ['workers', 'scientists']" :key="role" class="chem-assignment-row">
                     <label :for="'chem-assign-' + role">{{role === 'workers' ? 'Workers' : 'Scientists'}} in {{element}}: {{amount(role)}}</label><br>
                     <input type="range" :id="'chem-assign-' + role" :aria-label="(role === 'workers' ? 'Workers' : 'Scientists') + ' in ' + element"
-                        min="0" :max="maximum(role)" step="1" :value="position(role)" :disabled="empty(role)" @input="move(role, $event)">
+                        min="0" :max="maximum(role)" step="1" :value="position(role)" :disabled="empty(role)" @keydown.stop @input="move(role, $event)">
                 </div>
             </div>
         </div>`,
