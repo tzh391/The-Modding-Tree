@@ -52,6 +52,7 @@ function installChemistryContinuation() {
         1: { requirementDescription: () => "20 best Potassium levels", done: () => level("K", true).gte(20), unlocked: () => hasUpgrade("chem", 11), effectDescription: () => "Reward: Double worker speed." },
         2: { requirementDescription: () => "20 best Calcium levels", done: () => level("Ca", true).gte(20), unlocked: () => hasUpgrade("chem", 11), effectDescription: () => "Reward: Double scientist speed." },
         3: { requirementDescription: () => "40 best Potassium and Calcium levels", done: () => level("K", true).gte(40) && level("Ca", true).gte(40), unlocked: () => hasMilestone("chem", 1) && hasMilestone("chem", 2), effectDescription: () => "Reward: Halve element decay after Sulfur's effect." },
+        4: { requirementDescription: () => "20 total Chemists (QoL)", done: () => player.chem.total.gte(20), unlocked: () => player.chem.unlocked, effectDescription: () => "Reward: Unlock worker and scientist assignment sliders. The existing +1/-1 controls remain available." },
     };
     const oldWorker = chem.buildings.getWorkerMultiplier;
     const oldScientist = chem.buildings.getScientistMultiplier;
@@ -86,9 +87,10 @@ function installChemistryContinuation() {
     const oldUpdate = chem.update;
     chem.update = function (diff) { oldUpdate(diff); if (hasUpgrade("chem", 11)) player.chem.chemUnlocks.period4 = true; };
     chem.tabFormat.Upgrades.unlocked = () => hasMilestone("r", 15) || hasUpgrade("chem", 11);
-    chem.tabFormat.Milestones.unlocked = () => hasUpgrade("chem", 11);
+    chem.tabFormat.Milestones.unlocked = () => player.chem.unlocked;
     const contents = chem.tabFormat["Chemistry 1"].content;
     contents.splice(3, 0, "chem-period4");
+    contents.splice(contents.indexOf("chem-details") + 1, 0, "blank", "chem-assignment-sliders");
     contents.push(["display-text", function () {
         if (!hasUpgrade("chem", 11)) return '<small class="unlock-hint">Next elements: Potassium and Calcium — unlock with Chemistry I at 1e20 Researchers, after Researcher milestone 18.</small>';
         return "";
@@ -104,10 +106,26 @@ function installChemistryContinuation() {
         if (player.extremeMode) return oldEndgame();
         return hasUpgrade("chem", 15) && hasMilestone("chem", 3) && player.r.points.gte(1e24);
     };
-    VERSION.num = "2.070";
-    VERSION.name = "Chemistry Continued";
+    const factories = layers.r.tabFormat.Factories.content;
+    factories.splice(2, 0, ["display-text", function () {
+        return "Widget gain: +" + format(ChemistryQoL.widgetRate()) + " Widgets/sec";
+    }]);
+    // Match Researcher milestone 17's existing text; the base code used
+    // 200/202/204/206/208/2200 instead of 20/22/24/26/28/30.
+    layers.r.buyables.getBaseMult = function () {
+        let ret = new Decimal(2);
+        if (hasMilestone("r", 16)) ret = ret.plus(player.r.milestones.length / 100);
+        if (hasMilestone("r", 17)) {
+            for (const threshold of [20, 22, 24, 26, 28, 30]) if (player.r.buyables[11].gte(threshold)) ret = ret.plus(.1);
+        }
+        if (hasMilestone("r", 18)) ret = ret.plus(player.r.buyables[23].min(10).times(.04));
+        return ret;
+    };
+    VERSION.num = "2.070.1";
+    VERSION.name = "Chemistry Quality of Life";
     VERSION.withoutName = "v" + VERSION.num;
     VERSION.withName = VERSION.withoutName + ": " + VERSION.name;
-    CHANELOG_VERSION = "v2.070";
-    CHANGELOGS.unshift("<br><h3>v2.070</h3><br>- Continued Chemistry with Potassium, Calcium, five upgrades, and three milestones.<br>- Added next-unlock notes for upgrades and buyables.<br>- Preserved the original Human and Researcher layers.<br>");
+    CHANELOG_VERSION = "v2.070.1";
+    CHANGELOGS.unshift("<div style='color: #CC6600'><br><h3 style='color: #CC6600'>v2.070</h3><br>- Continued Chemistry with Potassium, Calcium, five upgrades, and three milestones.<br>- Added next-unlock notes for upgrades and buyables.<br>- Preserved the original Human and Researcher layers.<br></div>");
+    CHANGELOGS.unshift("<div style='color: #CC6600'><br><h3 style='color: #CC6600'>v2.070.1</h3><br>- Added the Widget gain per second display.<br>- Unlock worker and scientist assignment sliders at 20 total Chemists.<br>- Fixed Researcher milestone 17's Factory I thresholds to match its description.<br>- Normal Mode update notes are orange.<br>- Added a release pacing check for meaningful progression within 100 seconds.<br></div>");
 }

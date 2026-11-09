@@ -8,3 +8,7 @@
     color: var(--color);
     opacity: .72;
 }
+.chem-assignment-qol { max-width: 640px; }
+.chem-assignment-row { padding: 8px 12px; }
+.chem-assignment-row label { font-size: 13px; font-weight: normal; }
+.chem-assignment-row input[type="range"] { width: 300px; max-width: 90%; accent-color: #AA0456; transition: none; }

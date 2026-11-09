@@ -9,6 +9,31 @@ function loadVue() {
     Vue.component('chem-period4', {
         template: `<div class="upgTable" v-if="player.chem.chemUnlocks.period4"><div class="upgRow"><div class="upgAlign"><chemClickable :name="'K'"></chemClickable></div><div class="upgAlign"><chemClickable :name="'Ca'"></chemClickable></div></div></div>`,
     });
+    Vue.component('chem-assignment-sliders', {
+        computed: {
+            available() { return ChemistryQoL.unlocked(); },
+            element() { return player.chem.focus; },
+            free() { return formatWhole(player.chem.points); },
+        },
+        methods: {
+            amount(role) { return formatWhole(player.chem[role][this.element]); },
+            maximum(role) { return ChemistryQoL.sliderMax(role, this.element); },
+            position(role) { return ChemistryQoL.sliderValue(role, this.element); },
+            empty(role) { return ChemistryQoL.limit(role, this.element).eq(0); },
+            move(role, event) { ChemistryQoL.slide(role, this.element, event.target.value); },
+        },
+        template: `<div class="chem-assignment-qol">
+            <small v-if="!available" class="unlock-hint">QoL: assignment sliders unlock at 20 total Chemists.</small>
+            <div v-else>
+                <small class="unlock-hint">Available Chemists: {{free}}. Drag to assign staff to the selected element; other assignments stay unchanged.</small>
+                <div v-for="role in ['workers', 'scientists']" :key="role" class="chem-assignment-row">
+                    <label :for="'chem-assign-' + role">{{role === 'workers' ? 'Workers' : 'Scientists'}} in {{element}}: {{amount(role)}}</label><br>
+                    <input type="range" :id="'chem-assign-' + role" :aria-label="(role === 'workers' ? 'Workers' : 'Scientists') + ' in ' + element"
+                        min="0" :max="maximum(role)" step="1" :value="position(role)" :disabled="empty(role)" @input="move(role, $event)">
+                </div>
+            </div>
+        </div>`,
+    });
 
 	// data = a function returning the content (actually HTML)
 	Vue.component('display-text', {
