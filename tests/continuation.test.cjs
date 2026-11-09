@@ -13,20 +13,25 @@ function late() {
 test('starts in English at the original beginning with the original layer set', () => {
     const e = loaded();
     assert.equal(e.run('modInfo.id'), 'tree_of_life_continuation');
-    assert.equal(e.run('VERSION.withoutName'), 'v2.070');
+    assert.equal(e.run('VERSION.withoutName'), 'v2.070.1');
     assert.equal(e.run('player.tab'), 'none');
     assert(!e.run('player.hu.unlocked')); assert(!e.run('player.chem.unlocked'));
     assert(!e.run('layers.hu2 || layers.r2 || layers.lab2'));
     assert(e.run('modInfo.offlineLimit === 0'));
     assert(e.run('NaNcheck(player)'));
 });
-test('Human and Researcher definitions stay byte-for-byte equivalent to the base', () => {
+test('Human and other Researcher mechanics stay equivalent outside the documented milestone-17 fix', () => {
     const e = engine();
     const serialize = layer => JSON.stringify(layer, (_, value) => typeof value === 'function' ? value.toString() : value);
-    const humans = serialize(e.ctx.layers.hu), researchers = serialize(e.ctx.layers.r);
+    const mechanics = layer => {
+        const copy=Object.fromEntries(Object.entries(layer).filter(([key]) => key !== 'tabFormat'));
+        copy.buyables=Object.fromEntries(Object.entries(layer.buyables).filter(([key])=>key!=='getBaseMult'));
+        return copy;
+    };
+    const humans = serialize(e.ctx.layers.hu), researchers = serialize(mechanics(e.ctx.layers.r));
     e.run('installChemistryContinuation()');
     assert.equal(serialize(e.ctx.layers.hu), humans);
-    assert.equal(serialize(e.ctx.layers.r), researchers);
+    assert.equal(serialize(mechanics(e.ctx.layers.r)), researchers);
     assert.equal(e.run('Object.keys(layers.hu.upgrades).filter(x => /^\\d+$/.test(x)).length'), 75);
     assert.equal(e.run('Object.keys(layers.hu.milestones).length'), 100);
 });
@@ -90,7 +95,7 @@ test('new upgrades, milestones, and endgame follow their displayed requirements'
 test('cold and cached loading orders both install only after the engine is ready', () => {
     const e = loaded('', [], true);
     e.run('gameLoop(1); updateTemp()');
-    assert.equal(e.run('VERSION.withoutName'), 'v2.070');
+    assert.equal(e.run('VERSION.withoutName'), 'v2.070.1');
     assert(e.run('NaNcheck(player)'));
 });
 test('zero decay keeps its linear limit', () => {
