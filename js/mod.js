@@ -3,7 +3,7 @@ let modInfo = {
 	id: "tree_of_life_next_human",
 	author: "pg132",
 	pointsName: "Life Points",
-	modFiles: ["layers.js", "tree.js", "next/native.js"],
+	modFiles: ["layers.js", "tree.js", "next/native.js?v=0.1.2"],
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (1), // Used for hard resets and new players

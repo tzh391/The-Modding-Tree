@@ -1,4 +1,5 @@
 function loadNext() {
+    installNextLayers();
     // A separate key for each starting route; never read/write tree_of_life.
     const life = new URLSearchParams(location.search).get("start") === "life";
     modInfo.id = life ? "tree_of_life_next_life" : "tree_of_life_next_human";

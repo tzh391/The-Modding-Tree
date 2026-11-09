@@ -1,6 +1,7 @@
 /* Native The Modding Tree adapter. Legacy layers remain intact for the life prologue. */
-(function () {
+function installNextLayers() {
     "use strict";
+    if (layers.hu2) return;
     const state = () => player.hu2.arc;
     const number = x => format(x);
     const panel = text => '<div class="next-panel">' + text + '</div>';
@@ -263,4 +264,4 @@
     // Completion remains an in-game milestone so a player can keep experimenting.
     isEndgame = function () { return false; };
     displayThings = [() => '<span class="next-badge">EVOLUTION NEXT · 0.1</span>'];
-})();
+}
