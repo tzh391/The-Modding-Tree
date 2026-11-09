@@ -4,11 +4,16 @@ const { engine } = require('../tests/helpers/engine.cjs');
 const e = engine('?start=chemistry'); e.run('loadContinuation(); Math=Object.create(Math); let auditRng=391; Math.random=()=>{auditRng=(1664525*auditRng+1013904223)>>>0;return auditRng/4294967296;}');
 e.ctx.auditProgress = x => process.stdout.write(JSON.stringify(x) + '\n');
 const report = e.run(`(function () {
-    const events = [], transitions = [];
+    const events = [], transitions = [], factoryCurve = [];
+    const curveLevels = [19,20,22,24,26,28,30,40,51,60,100];
+    const maxAuditSeconds = 7200;
     let time = 0;
     function record(action) { events.push({ time, action }); }
     function step() {
         gameLoop(1); updateTemp(); time++;
+        while (curveLevels.length && player.r.buyables[11].gte(curveLevels[0])) {
+            factoryCurve.push({targetLevel:curveLevels.shift(),time,base:tmp.r.buyables.getBaseMult.toString(),widgetsPerSecond:ChemistryQoL.widgetRate().toString(),factoryLevels:[11,12,13,21,22,23].map(id=>player.r.buyables[id].toString())});
+        }
         if (time % 100 === 0) auditProgress({time, researchers:player.r.points.toString(), factories:player.r.buyables[11].toString(), chemistry:player.chem.upgrades.slice(), totalChemists:player.chem.total.toString()});
     }
     const old = ['H','He','Li','Be','B','C','N','O','F','Ne','Na','Mg','Al','Si','P','S','Cl','Ar'];
@@ -39,7 +44,7 @@ const report = e.run(`(function () {
             ChemistryQoL.assign('workers',id,player.chem.workers[id].plus(1)); record('Assign a new Chemist to '+id);
         }
     }
-    while(time<3600) {
+    while(time<maxAuditSeconds) {
         allocateNewStaff();
         // Original Human Bulk is an important part of the Researcher/Widget loop.
         // A cooldown click alone is not recorded; actual buyable levels must improve.
@@ -66,7 +71,7 @@ const report = e.run(`(function () {
     for(let i=1;i<events.length;i++) { const wait=events[i].time-events[i-1].time; if(wait>longestWait){longestWait=wait;worst={from:events[i-1],to:events[i]};} }
     const tail=time-events[events.length-1].time;
     if(tail>longestWait){longestWait=tail;worst={from:events[events.length-1],to:{time,action:'Audit ended without another action'}};}
-    return {scenario:'Original Group 3 unlock save through Chemistry continuation',maxWaitSeconds:100,timeStepSeconds:1,simulatedSeconds:time,completed:isEndgameRaw(),longestWaitSeconds:longestWait,worstGap:worst,meaningfulEvents:events.length,transitions,final:{researchers:player.r.points.toString(),chemistry:player.chem.upgrades.slice(),milestones:player.r.milestones.slice(),chemistryMilestones:player.chem.milestones.slice(),K:player.chem.best_amount.K.toString(),Ca:player.chem.best_amount.Ca.toString()}};
+    return {version:VERSION.withoutName,maxAuditSeconds,factoryCurve,scenario:'Original Group 3 unlock save through Chemistry continuation',maxWaitSeconds:100,timeStepSeconds:1,simulatedSeconds:time,completed:isEndgameRaw(),longestWaitSeconds:longestWait,worstGap:worst,meaningfulEvents:events.length,transitions,final:{researchers:player.r.points.toString(),chemistry:player.chem.upgrades.slice(),milestones:player.r.milestones.slice(),chemistryMilestones:player.chem.milestones.slice(),K:player.chem.best_amount.K.toString(),Ca:player.chem.best_amount.Ca.toString()}};
 })()`);
 fs.mkdirSync('work',{recursive:true});
 fs.writeFileSync('work/pacing-report.json', JSON.stringify(report,null,2)+'\n');

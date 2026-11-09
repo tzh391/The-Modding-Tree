@@ -1,0 +1,238 @@
+{
+  "version": "v2.070.2",
+  "maxAuditSeconds": 7200,
+  "factoryCurve": [
+    {
+      "targetLevel": 19,
+      "time": 2048,
+      "base": "2.17",
+      "widgetsPerSecond": "6.955084176226264e22",
+      "factoryLevels": [
+        "19",
+        "9",
+        "5",
+        "2",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 20,
+      "time": 2050,
+      "base": "2.2399999999999998",
+      "widgetsPerSecond": "1.6795985092002503e23",
+      "factoryLevels": [
+        "20",
+        "10",
+        "6",
+        "2",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 22,
+      "time": 2055,
+      "base": "2.3099999999999996",
+      "widgetsPerSecond": "1.8597449684213543e24",
+      "factoryLevels": [
+        "22",
+        "11",
+        "6",
+        "3",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 24,
+      "time": 2075,
+      "base": "2.3799999999999994",
+      "widgetsPerSecond": "7.031696393615494e25",
+      "factoryLevels": [
+        "24",
+        "12",
+        "7",
+        "3",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 26,
+      "time": 2118,
+      "base": "2.4499999999999993",
+      "widgetsPerSecond": "1.428480822005155e28",
+      "factoryLevels": [
+        "26",
+        "13",
+        "8",
+        "4",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 28,
+      "time": 2162,
+      "base": "2.519999999999999",
+      "widgetsPerSecond": "3.518617075103799e30",
+      "factoryLevels": [
+        "28",
+        "14",
+        "9",
+        "4",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 30,
+      "time": 2210,
+      "base": "2.589999999999999",
+      "widgetsPerSecond": "1.251053483770981e33",
+      "factoryLevels": [
+        "30",
+        "15",
+        "10",
+        "5",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 40,
+      "time": 2651,
+      "base": "2.589999999999999",
+      "widgetsPerSecond": "5.0887908607619945e45",
+      "factoryLevels": [
+        "40",
+        "21",
+        "14",
+        "8",
+        "2",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 51,
+      "time": 3707,
+      "base": "2.589999999999999",
+      "widgetsPerSecond": "3.782153598327779e60",
+      "factoryLevels": [
+        "51",
+        "28",
+        "19",
+        "12",
+        "5",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 60,
+      "time": 4847,
+      "base": "2.7199999999999993",
+      "widgetsPerSecond": "4.226345259577462e74",
+      "factoryLevels": [
+        "60",
+        "34",
+        "23",
+        "15",
+        "7",
+        "3"
+      ]
+    }
+  ],
+  "scenario": "Original Group 3 unlock save through Chemistry continuation",
+  "maxWaitSeconds": 100,
+  "timeStepSeconds": 1,
+  "simulatedSeconds": 5152,
+  "completed": true,
+  "longestWaitSeconds": 81,
+  "worstGap": {
+    "from": {
+      "time": 4429,
+      "action": "Improve Human buyables with Bulk"
+    },
+    "to": {
+      "time": 4510,
+      "action": "Improve Human buyables with Bulk"
+    }
+  },
+  "meaningfulEvents": 1411,
+  "transitions": [
+    {
+      "time": 730,
+      "action": "Buy r upgrade 14",
+      "researchers": "311292724.2607002"
+    },
+    {
+      "time": 2973,
+      "action": "Buy r upgrade 15",
+      "researchers": "2.5512172370233532e17"
+    },
+    {
+      "time": 4581,
+      "action": "Buy chem upgrade 11",
+      "researchers": "1.72148865219296e20"
+    },
+    {
+      "time": 4949,
+      "action": "Buy chem upgrade 12",
+      "researchers": "8.571833624439085e20"
+    },
+    {
+      "time": 5087,
+      "action": "Buy chem upgrade 13",
+      "researchers": "6.616587662344432e20"
+    },
+    {
+      "time": 5116,
+      "action": "Buy chem upgrade 14",
+      "researchers": "2.1480958532450174e22"
+    },
+    {
+      "time": 5142,
+      "action": "Buy chem upgrade 15",
+      "researchers": "1.0947309379103187e23"
+    }
+  ],
+  "final": {
+    "researchers": "1.0100507166065409e24",
+    "chemistry": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "milestones": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "chemistryMilestones": [
+      4,
+      1,
+      2,
+      3
+    ],
+    "K": "826756734212833.8",
+    "Ca": "702761505853111.9"
+  }
+}

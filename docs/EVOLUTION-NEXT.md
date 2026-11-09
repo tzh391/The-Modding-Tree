@@ -1,6 +1,6 @@
-# The Tree of Life — Chemistry Continued (v2.070.1)
+# The Tree of Life — Chemistry Continued (v2.070.2)
 
-This branch continues the original `evolution` game. Human and earlier layers remain intact. Researcher mechanics are preserved except for the documented milestone-17 threshold typo fix in 2.070.1. The separate cognition/legacy/reaction experiment has been removed from the playable version.
+This branch continues the original `evolution` game. Human and earlier layers remain intact. Researcher mechanics are preserved except for the documented milestone-17 threshold fix and 2.070.2 balance adjustment. The separate cognition/legacy/reaction experiment has been removed from the playable version.
 
 ## Play and saves
 
@@ -29,6 +29,15 @@ Three milestones use best element amounts: 20 K levels doubles worker speed, 20 
 
 These are additions to existing mechanics. No new Human currency, replacement Researcher system, or chemical reaction system is introduced. Late-game pacing still needs feedback from original endgame saves.
 
+## 2.070.2 factory balance and update colors
+
+- Milestone 17 retains its six Factory I thresholds at 20/22/24/26/28/30, but each adds **.07** to the shared factory base instead of .1. The total bonus is capped at **+.42**, down from +.6.
+- Factory effects raise this shared base to purchased levels. With 17 Researcher milestones and no milestone-18 bonus, the six threshold rewards alone multiply the Factory I level-30 effect by about **201.93x**, down from **1,515.66x** in 2.070.1. This comparison holds all other factors fixed; it is not a claim about whole-chain output.
+- The milestone reward text matches the new values. Milestones 16/18 and other milestone-17 rewards retain their formulas.
+- Normal Mode notes for 2.070, 2.070.1, and 2.070.2 explicitly color both headings and all body descendants orange (`#CC6600`).
+- Existing Widgets, factory amounts, purchased levels, and Chemistry progress are retained on load. Production rates use the balanced formula immediately.
+- See [the pacing report](PACING-CHECK.md) for the active-play route and boundary checks. The endgame requirements are unchanged.
+
 ## 2.070.1 quality of life
 
 - The Factories tab shows the actual Widget gain per second.
@@ -48,11 +57,11 @@ The read-only parser covers the original unlock predicates, including difficulty
 ## Technical scope
 
 - `js/layers.js` is identical to the original evolution version.
-- `js/chemistryContinuation.js` extends Chemistry, adds the Widget rate display, and fixes the documented Researcher milestone-17 typo.
+- `js/chemistryContinuation.js` extends Chemistry, adds the Widget rate display, and applies the documented Researcher milestone-17 threshold fix and balance adjustment.
 - `js/chemistryQoL.js` provides read-only rate and conservative staff-assignment helpers.
 - `js/unlockHints.js` describes the existing unlock rules.
 - `js/components.js` adds the notes and the next two periodic-table entries using the original components.
-- The original stylesheet remains in use; the added CSS only styles small unlock notes.
+- The original stylesheet remains in use; the added CSS styles unlock notes, assignment controls, and Normal Mode update colors.
 - Script loading is ordered after engine dependencies. Save text supports UTF-8. A zero-decay guard prevents the existing Sulfur endpoint from producing NaN.
 
 Run `npm test` for original-layer regression, Chemistry progression/payment, save migration, assignment/production, parser agreement, and unlock-note tests. The original game is preserved at the site root; publication only replaces the `next/` preview directory.

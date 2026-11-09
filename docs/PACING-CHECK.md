@@ -1,10 +1,16 @@
-# Pacing check — 2.070.1
+# Pacing check — 2.070.2
 
 ## Release rule
 
-A reasonably informed active player should normally have a meaningful next progression opportunity within 100 simulated seconds. This is a limit on forced inactivity, not a claim that every large upgrade must be purchased within 100 seconds of the previous large upgrade. Factory levels and other productive purchases can bridge those upgrades.
+A reasonably informed active player should normally have a meaningful next progression opportunity within 100 simulated seconds. This limits forced inactivity, rather than requiring every major upgrade within 100 seconds of the previous one. Useful factory levels and Human buyable improvements can bridge those upgrades.
 
-Every future release must run the functional suite and the pacing audit, investigate failures, and record the tested route and limitations. Cosmetic clicks and repeated staff shuffling do not count.
+Every release runs functional tests and this native-engine audit. Cosmetic clicks, repeatedly swapping the same staff, and Bulk clicks without actual buyable-level improvements do not count.
+
+## Factory balance
+
+The six Factory I gates remain 20/22/24/26/28/30. Each adds **.07** to the shared factory base, with a combined maximum **+.42**, instead of +.1 per gate / +.6 total. The reward text uses the same values. Other milestone-17 rewards and milestones 16/18 retain their formulas.
+
+Factory effects exponentiate this base by purchased levels, and the production chain compounds it further. With 17 milestones and no milestone-18 bonus, all six rewards alone multiply the Factory I level-30 effect by **201.93x**, instead of **1,515.66x**. This is an approximately **86.7%** reduction in this isolated reward multiplier; it is not a whole-economy percentage. Existing resources, factory amounts, and purchased levels are retained.
 
 ## Audited route and method
 
@@ -17,37 +23,55 @@ Every future release must run the functional suite and the pacing audit, investi
 - Purchase available Research/Chemistry upgrades and useful factories. All native costs and prerequisites apply.
 - Continue through the 2.070 Chemistry endpoint.
 
-## Result
+- The audit window is 7,200 simulated seconds to cover the deliberately slower route. The allowed gap remains 100 seconds; extending total playtime does not relax that limit.
+- Record Factory I boundary snapshots at levels 19, 20, 22, 24, 26, 28, 30, 40, 51, 60, and 100 if reached.
 
-**PASS: longest recorded gap between meaningful progression operations was 54 seconds.**
+## Current result
 
-The route reached the endpoint after **3,489 simulated seconds**, with 1,381 progression events, all five Chemistry upgrades, the three K/Ca progression milestones, and approximately 1.37e24 current Researchers. The longest gap was between actual Human buyable improvements through Bulk at seconds 1,987 and 2,041.
+**PASS: longest recorded gap was 81 seconds**, between actual Human buyable improvements through Bulk at seconds 4,429 and 4,510.
 
-| Event | Simulated second |
+The unchanged Chemistry endpoint was reached after **5,152 simulated seconds** (85 minutes 52 seconds), with **1,411 meaningful events**, all five Chemistry upgrades, the three K/Ca progression milestones, and about 1.01e24 current Researchers. The same route in 2.070.1 took 3,489 seconds with a 54-second maximum gap. The new route is slower overall while remaining within the interaction limit.
+
+| Major event | Simulated second |
 | --- | ---: |
 | Research IV | 730 |
-| Research V | 2,471 |
-| Chemistry I | 2,917 |
-| Chemistry II | 3,342 |
-| Chemistry III | 3,442 |
-| Chemistry IV | 3,465 |
-| Chemistry V | 3,484 |
-| Patch endpoint | 3,489 |
+| Research V | 2973 |
+| Chemistry I | 4581 |
+| Chemistry II | 4949 |
+| Chemistry III | 5087 |
+| Chemistry IV | 5116 |
+| Chemistry V | 5142 |
+| Patch endpoint | 5152 |
 
-These are major-event timestamps. Factory purchases, productive staff assignments, and Human buyable improvements continue between them; the Chemistry I-to-II interval is not a forced idle interval.
+Factory purchases, productive allocation of newly recruited staff, and actual Human buyable improvements continue between these major events. See [the machine-readable result](pacing-2.070.2.json) for factory boundary snapshots and the full summary.
 
-## Findings corrected during the check
+## Rejected candidates
 
-1. The initial audit policy omitted the original Human Bulk operation and recorded a 351-second gap. That incomplete policy was corrected rather than treated as evidence to add arbitrary speed multipliers.
-2. Researcher milestone 17's text specifies Factory I levels 20/22/24/26/28/30, but its implementation used 200/202/204/206/208/2200. Version 2.070.1 fixes the implementation to match the existing description. The earlier policy with Bulk had short interaction gaps but did not reach the endpoint within the one-hour audit window; the corrected milestone implementation does.
-3. The new sliders are free QoL at 20 total Chemists and add no mandatory production wait. Assignment conservation, zero/max endpoints, large Decimal populations, and save reloads are tested separately.
-4. The displayed Widget rate is checked against the actual Widget increment over one simulated second, before and after factory changes.
+The same one-second native-engine policy was run before publication. No weaker candidate was labeled balanced merely because it reduced large numbers.
+
+| Bonus per gate | Maximum gap | Endpoint within 7,200 seconds | Decision |
+| --- | ---: | --- | --- |
+| .01 | 191 s | No | Reject |
+| .03 | 144 s | No | Reject |
+| .05 | 141 s | No | Reject |
+| .06 | 102 s | Yes, at 6,568 s | Reject; exceeds 100 s |
+| **.07** | **81 s** | **Yes, at 5,152 s** | **Release** |
+
+## Functional and boundary checks
+
+- All 26 functional tests pass.
+- Test each of the six gates and the levels immediately below/between them, plus the cap at level 200.
+- Test settled native Factory I effects across each boundary; each purchase remains below 6x at these gates, and the isolated level-30 bonus stays below 205x.
+- Confirm milestones 16/18 retain their original contributions.
+- Load a 2.070.1 save with large Widget balances and purchased factory levels; retain resources, amounts, and levels without NaN.
+- Keep the Widget-rate, staff conservation, save reload, original-layer regression, Chemistry payment/endpoint, and unlock-note checks.
+- Check Normal Mode note markup and descendant styles. Before completing deployment, also inspect computed browser colors for the headings and body text of 2.070/2.070.1/2.070.2.
 
 ## Scope and limitations
 
-This is one active-play route and one random seed, beginning at an existing Chemistry checkpoint. It does not prove that every allocation strategy, every earlier layer, every save, or Extreme Mode has the same maximum wait. The production model is sampled at one-second ticks; real browser updates are finer. Runtime and playtime are different: the 3,489 seconds above are simulated game time.
+This is one active-play route and one random seed, beginning at an original Chemistry checkpoint. It does not prove the same maximum wait for every allocation strategy, earlier layer, imported save, or Extreme Mode. The audit samples the game at one-second ticks; browser updates are finer. All durations above are simulated game time, rather than test runtime.
 
-For the next approved medium update, add relevant boundary checkpoints and audit any newly introduced progression gates. Do not claim the whole game is fully balanced from this report alone.
+The 2.070.1 baseline fixed the historical evolution commit's 200/202/204/206/208/2200 implementation to the existing 20/22/24/26/28/30 description. This release rebalances the size of that reward in response to play feedback.
 
 ## Reproduce
 
@@ -56,4 +80,4 @@ npm test
 npm run check:pacing
 ```
 
-The script exits with failure if the route does not reach its endpoint within the audit window or if a recorded forced gap exceeds 100 seconds. Its machine-readable report is written to the ignored `work/pacing-report.json`. GitHub Actions runs both checks before release.
+The script fails if the endpoint is not reached within its window or if an event gap exceeds 100 seconds. It writes `work/pacing-report.json`; GitHub Actions runs both checks. For each future approved update, add affected checkpoints and investigate failures before publication.
