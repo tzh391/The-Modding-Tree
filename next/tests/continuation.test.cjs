@@ -13,19 +13,20 @@ function late() {
 test('starts in English at the original beginning with the original layer set', () => {
     const e = loaded();
     assert.equal(e.run('modInfo.id'), 'tree_of_life_continuation');
-    assert.equal(e.run('VERSION.withoutName'), 'v2.070.1');
+    assert.equal(e.run('VERSION.withoutName'), 'v2.070.2');
     assert.equal(e.run('player.tab'), 'none');
     assert(!e.run('player.hu.unlocked')); assert(!e.run('player.chem.unlocked'));
     assert(!e.run('layers.hu2 || layers.r2 || layers.lab2'));
     assert(e.run('modInfo.offlineLimit === 0'));
     assert(e.run('NaNcheck(player)'));
 });
-test('Human and other Researcher mechanics stay equivalent outside the documented milestone-17 fix', () => {
+test('Human and other Researcher mechanics stay equivalent outside the documented milestone-17 balance', () => {
     const e = engine();
     const serialize = layer => JSON.stringify(layer, (_, value) => typeof value === 'function' ? value.toString() : value);
     const mechanics = layer => {
         const copy=Object.fromEntries(Object.entries(layer).filter(([key]) => key !== 'tabFormat'));
         copy.buyables=Object.fromEntries(Object.entries(layer.buyables).filter(([key])=>key!=='getBaseMult'));
+        copy.milestones={...layer.milestones,17:Object.fromEntries(Object.entries(layer.milestones[17]).filter(([key])=>key!=='effectDescription'))};
         return copy;
     };
     const humans = serialize(e.ctx.layers.hu), researchers = serialize(mechanics(e.ctx.layers.r));
@@ -95,7 +96,7 @@ test('new upgrades, milestones, and endgame follow their displayed requirements'
 test('cold and cached loading orders both install only after the engine is ready', () => {
     const e = loaded('', [], true);
     e.run('gameLoop(1); updateTemp()');
-    assert.equal(e.run('VERSION.withoutName'), 'v2.070.1');
+    assert.equal(e.run('VERSION.withoutName'), 'v2.070.2');
     assert(e.run('NaNcheck(player)'));
 });
 test('zero decay keeps its linear limit', () => {

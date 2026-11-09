@@ -64,18 +64,42 @@ test('assignment changes survive saving and reloading', () => {
     assert(restored.run('player.chem.workers.H.eq(9) && player.chem.scientists.O.eq(11) && player.chem.points.eq(0)'));
     assert(restored.run('NaNcheck(player)'));
 });
-test('Researcher milestone 17 applies at the six thresholds stated in its original description', () => {
+test('Researcher milestone 17 keeps all six thresholds with a smaller capped base bonus', () => {
     const e=load();e.run('player.r.milestones=Array.from({length:17},(_,i)=>i+1)');
-    for(const [level,bonus] of [[19,0],[20,.1],[22,.2],[24,.3],[26,.4],[28,.5],[30,.6],[200,.6]]) {
+    for(const [level,bonus] of [[19,0],[20,.07],[21,.07],[22,.14],[23,.14],[24,.21],[25,.21],[26,.28],[27,.28],[28,.35],[29,.35],[30,.42],[200,.42]]) {
         e.run('player.r.buyables[11]=new Decimal('+level+')');
         assert(e.run('layers.r.buyables.getBaseMult().sub('+ (2.17+bonus) +').abs().lt(1e-12)'));
     }
+    assert.match(e.run('layers.r.milestones[17].effectDescription()'),/add \.07 .*max \+\.42/);
+    e.run('player.r.milestones.push(18);player.r.buyables[23]=new Decimal(7)');
+    assert(e.run('layers.r.buyables.getBaseMult().sub(2.88).abs().lt(1e-12)'),'milestones 16 and 18 retain their original contributions');
 });
-test('2.070.1 and 2.070 are recorded as orange Normal Mode updates', () => {
-    const e=load();assert.equal(e.run('VERSION.withoutName'),'v2.070.1');
-    for(const i of [0,1]) {
-        assert.match(e.run('CHANGELOGS['+i+']'),/color: #CC6600/);
+test('each factory threshold avoids a large exponent jump and the six bonuses are bounded at level 30', () => {
+    const e=load();e.run('player.r.milestones=Array.from({length:17},(_,i)=>i+1)');
+    for(const level of [20,22,24,26,28,30]) {
+        e.run('player.r.buyables[11]=new Decimal('+ (level-1) +');updateTemp();updateTemp();var previousEffect=tmp.r.buyables[11].effect');
+        e.run('player.r.buyables[11]=new Decimal('+level+');updateTemp();updateTemp()');
+        assert(e.run('tmp.r.buyables[11].effect.div(previousEffect).lt(6.0)'),'Factory I '+level+' level jump');
+    }
+    assert(e.run('tmp.r.buyables[11].effect.div(Decimal.pow(2.17,30)).lt(205)'));
+});
+test('rebalancing an existing save retains Widgets and all purchased factory levels', () => {
+    const e=load();
+    e.run('player.r.milestones=Array.from({length:18},(_,i)=>i+1);player.r.widgets.points=new Decimal("1e90");player.version="2.070.1";for(const id of [11,12,13,21,22,23]){player.r.buyables[id]=new Decimal(30);player.r.amounts[id]=new Decimal("1e40");}updateTemp();save()');
+    const before=e.run('JSON.stringify({widgets:player.r.widgets.points,buyables:player.r.buyables,amounts:player.r.amounts})');
+    const restored=engine('?start=chemistry',[...e.storage]);restored.run('loadContinuation()');
+    assert.equal(restored.run('JSON.stringify({widgets:player.r.widgets.points,buyables:player.r.buyables,amounts:player.r.amounts})'),before);
+    assert(restored.run('NaNcheck(player)'));
+});
+test('2.070.2, 2.070.1 and 2.070 have explicit orange styles for headings and body descendants', () => {
+    const e=load();assert.equal(e.run('VERSION.withoutName'),'v2.070.2');
+    for(const i of [0,1,2]) {
+        assert.match(e.run('CHANGELOGS['+i+']'),/class='normal-update'/);
+        assert.match(e.run('CHANGELOGS['+i+']'),/<h3>.*<span>/);
         assert(!/[一-鿿]/.test(e.run('CHANGELOGS['+i+']')));
     }
-    assert.match(e.run('CHANGELOGS[0]'),/v2\.070\.1/);
+    assert.match(e.run('CHANGELOGS[0]'),/v2\.070\.2/);
+    const css=require('node:fs').readFileSync(require('node:path').join(__dirname,'../css/unlockHints.css'),'utf8');
+    assert.match(css,/\.normal-update\s*\{[^}]*color:\s*#CC6600/);
+    assert.match(css,/\.normal-update\s+\*\s*\{[^}]*color:\s*#CC6600/);
 });

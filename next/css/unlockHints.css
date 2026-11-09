@@ -12,3 +12,7 @@
 .chem-assignment-row { padding: 8px 12px; }
 .chem-assignment-row label { font-size: 13px; font-weight: normal; }
 .chem-assignment-row input[type="range"] { width: 300px; max-width: 90%; accent-color: #AA0456; transition: none; }
+
+/* Explicit descendants also cover elements with their own default text color. */
+.normal-update { --color: #CC6600; color: #CC6600; }
+.normal-update * { color: #CC6600; }

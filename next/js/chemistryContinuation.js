@@ -110,22 +110,42 @@ function installChemistryContinuation() {
     factories.splice(2, 0, ["display-text", function () {
         return "Widget gain: +" + format(ChemistryQoL.widgetRate()) + " Widgets/sec";
     }]);
-    // Match Researcher milestone 17's existing text; the base code used
-    // 200/202/204/206/208/2200 instead of 20/22/24/26/28/30.
+    // This shared base is exponentiated by purchased levels across the factory chain.
+    // Keep all six thresholds, but reduce their combined base bonus from .6 to .42.
+    layers.r.milestones[17].effectDescription = function () {
+        return "Reward: <i>Hiawd</i> levels past 14,000 multiply Widget gain by 1.001, Mastery VI double exponent is .1, and at 20 / 22 / 24 / 26 / 28 / 30 Factory<sup>1</sup> levels, add .07 to the multiplier per factory (max +.42).";
+    };
     layers.r.buyables.getBaseMult = function () {
         let ret = new Decimal(2);
         if (hasMilestone("r", 16)) ret = ret.plus(player.r.milestones.length / 100);
         if (hasMilestone("r", 17)) {
-            for (const threshold of [20, 22, 24, 26, 28, 30]) if (player.r.buyables[11].gte(threshold)) ret = ret.plus(.1);
+            for (const threshold of [20, 22, 24, 26, 28, 30]) if (player.r.buyables[11].gte(threshold)) ret = ret.plus(.07);
         }
         if (hasMilestone("r", 18)) ret = ret.plus(player.r.buyables[23].min(10).times(.04));
         return ret;
     };
-    VERSION.num = "2.070.1";
-    VERSION.name = "Chemistry Quality of Life";
+    VERSION.num = "2.070.2";
+    VERSION.name = "Factory Balance";
     VERSION.withoutName = "v" + VERSION.num;
     VERSION.withName = VERSION.withoutName + ": " + VERSION.name;
-    CHANELOG_VERSION = "v2.070.1";
-    CHANGELOGS.unshift("<div style='color: #CC6600'><br><h3 style='color: #CC6600'>v2.070</h3><br>- Continued Chemistry with Potassium, Calcium, five upgrades, and three milestones.<br>- Added next-unlock notes for upgrades and buyables.<br>- Preserved the original Human and Researcher layers.<br></div>");
-    CHANGELOGS.unshift("<div style='color: #CC6600'><br><h3 style='color: #CC6600'>v2.070.1</h3><br>- Added the Widget gain per second display.<br>- Unlock worker and scientist assignment sliders at 20 total Chemists.<br>- Fixed Researcher milestone 17's Factory I thresholds to match its description.<br>- Normal Mode update notes are orange.<br>- Added a release pacing check for meaningful progression within 100 seconds.<br></div>");
+    CHANELOG_VERSION = "v2.070.2";
+    const normalUpdate = (version, lines) => "<div class='normal-update'><br><h3>v" + version + "</h3><br>" + lines.map(line => "<span>- " + line + "</span><br>").join("") + "</div>";
+    CHANGELOGS.unshift(normalUpdate("2.070", [
+        "Continued Chemistry with Potassium, Calcium, five upgrades, and three milestones.",
+        "Added next-unlock notes for upgrades and buyables.",
+        "Preserved the original Human and Researcher layers.",
+    ]));
+    CHANGELOGS.unshift(normalUpdate("2.070.1", [
+        "Added the Widget gain per second display.",
+        "Unlock worker and scientist assignment sliders at 20 total Chemists.",
+        "Fixed Researcher milestone 17's Factory I thresholds to match its description.",
+        "Normal Mode update notes are orange.",
+        "Added a release pacing check for meaningful progression within 100 seconds.",
+    ]));
+    CHANGELOGS.unshift(normalUpdate("2.070.2", [
+        "Reduced each Researcher milestone 17 factory-base bonus from +.1 to +.07 (max +.42). The 20 / 22 / 24 / 26 / 28 / 30 level requirements are unchanged.",
+        "Updated the milestone reward text to match the new bonus.",
+        "Fixed the heading and body colors of Normal Mode update notes.",
+        "Rechecked the active-play route and factory threshold boundaries. Existing resources and purchased levels are retained.",
+    ]));
 }
