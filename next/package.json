@@ -1,6 +1,6 @@
 {
   "name": "tree-of-life-chemistry-continuation",
-  "version": "2.70.2",
+  "version": "2.70.3",
   "private": true,
   "scripts": {
     "test": "node --test tests/*.test.cjs",

@@ -2,7 +2,7 @@
 
 - Keep game-facing text in English. Reply to this user in Chinese.
 - Preserve the original Human, Researcher, and earlier progression unless the user specifically requests a mechanic change. Extend the existing Chemistry format and systems.
-- Normal Mode changelog entries, including their headings and body text, use orange (`#CC6600`).
+- Normal Mode changelog headings use orange (`#CC6600`); their body text uses white (`#FFFFFF`), per the 2.070.3 user correction.
 - Before every release, run the functional tests and `npm run check:pacing`.
 - Audit representative checkpoints and bottlenecks affected by the change. A reasonably informed player should normally have a meaningful progression opportunity within 100 simulated seconds: an upgrade, a useful buyable level, a milestone/challenge completion, a productive allocation target, or the patch endpoint.
 - A cosmetic click, repeatedly swapping the same staff, or buying an irrelevant item does not count as progression. Do not claim a full-game pacing guarantee from a few synthetic checkpoints.

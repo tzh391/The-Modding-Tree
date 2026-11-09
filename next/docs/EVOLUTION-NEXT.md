@@ -1,6 +1,6 @@
-# The Tree of Life — Chemistry Continued (v2.070.2)
+# The Tree of Life — Chemistry Continued (v2.070.3)
 
-This branch continues the original `evolution` game. Human and earlier layers remain intact. Researcher mechanics are preserved except for the documented milestone-17 threshold fix and 2.070.2 balance adjustment. The separate cognition/legacy/reaction experiment has been removed from the playable version.
+This branch continues the original `evolution` game. Human and earlier layers remain intact. Researcher mechanics are preserved except for the documented milestone-17 threshold fix, factory-base balance, and gradual Widget reward. The separate cognition/legacy/reaction experiment has been removed from the playable version.
 
 ## Play and saves
 
@@ -29,12 +29,23 @@ Three milestones use best element amounts: 20 K levels doubles worker speed, 20 
 
 These are additions to existing mechanics. No new Human currency, replacement Researcher system, or chemical reaction system is introduced. Late-game pacing still needs feedback from original endgame saves.
 
+## 2.070.3 gradual Factory I milestone reward
+
+- Normal Mode changelog headings are orange (`#CC6600`) and body text is white (`#FFFFFF`), including the 2.070/2.070.1/2.070.2 entries.
+- The milestone at 19 purchased Factory I levels no longer applies the whole existing Hiawd stockpile to Widget production immediately.
+- Only Hiawd levels above 14,000 are eligible, as before. Count at most **750 eligible Hiawd levels per purchased Factory I level above 18**:
+  `counted = min(max(Hiawd - 14000, 0), 750 * max(floor(Factory I levels) - 18, 0))`.
+- The Widget bonus remains `1.001 ^ counted`. At Factory I level 19 it is at most about **2.12x**; further purchased levels gradually increase the cap. Produced Factory I amounts do not increase this cap.
+- The existing six factory-base rewards remain at 20/22/24/26/28/30, each +.07 (max +.42). Mastery VI and all other milestone rewards retain their formulas.
+- No new save fields or timers are needed. Existing resources and purchased levels are retained. Actual Widget production and its per-second display use the same formula.
+- The pacing audit now checks both the 100-second maximum interaction gap and the opening factory burst. See [the current report](PACING-CHECK.md) and [the previous release report](PACING-2.070.2.md).
+
 ## 2.070.2 factory balance and update colors
 
 - Milestone 17 retains its six Factory I thresholds at 20/22/24/26/28/30, but each adds **.07** to the shared factory base instead of .1. The total bonus is capped at **+.42**, down from +.6.
 - Factory effects raise this shared base to purchased levels. With 17 Researcher milestones and no milestone-18 bonus, the six threshold rewards alone multiply the Factory I level-30 effect by about **201.93x**, down from **1,515.66x** in 2.070.1. This comparison holds all other factors fixed; it is not a claim about whole-chain output.
 - The milestone reward text matches the new values. Milestones 16/18 and other milestone-17 rewards retain their formulas.
-- Normal Mode notes for 2.070, 2.070.1, and 2.070.2 explicitly color both headings and all body descendants orange (`#CC6600`).
+- 2.070.2 introduced shared update-note styling. The current 2.070.3 styling uses orange headings and white body text.
 - Existing Widgets, factory amounts, purchased levels, and Chemistry progress are retained on load. Production rates use the balanced formula immediately.
 - See [the pacing report](PACING-CHECK.md) for the active-play route and boundary checks. The endgame requirements are unchanged.
 
@@ -44,7 +55,7 @@ These are additions to existing mechanics. No new Human currency, replacement Re
 - Assignment sliders unlock at 20 total Chemists, without a purchase or a late-game requirement. They operate on the currently selected element, preserve other assignments, and retain the original +/-1 controls for precise adjustments.
 - Up to 1,000 available staff, slider positions correspond to exact staff counts. Larger pools use proportional steps while keeping Decimal-safe integer allocations and exact zero/max endpoints.
 - Slider arrow keys adjust staff without triggering the original layer/tab navigation hotkeys.
-- Normal Mode entries for 2.070 and 2.070.1 are orange (`#CC6600`).
+- Normal Mode entries share the update-note styling described above.
 - Researcher milestone 17 now uses its existing described Factory I thresholds: 20/22/24/26/28/30. The base implementation incorrectly used 200/202/204/206/208/2200.
 - The progression endpoint is unchanged from 2.070: Chemistry V, best K/Ca level 40, and 1e24 current Researchers.
 
@@ -57,7 +68,7 @@ The read-only parser covers the original unlock predicates, including difficulty
 ## Technical scope
 
 - `js/layers.js` is identical to the original evolution version.
-- `js/chemistryContinuation.js` extends Chemistry, adds the Widget rate display, and applies the documented Researcher milestone-17 threshold fix and balance adjustment.
+- `js/chemistryContinuation.js` extends Chemistry, adds the Widget rate display, and applies the documented Researcher milestone-17 balance and gradual Hiawd bonus.
 - `js/chemistryQoL.js` provides read-only rate and conservative staff-assignment helpers.
 - `js/unlockHints.js` describes the existing unlock rules.
 - `js/components.js` adds the notes and the next two periodic-table entries using the original components.
