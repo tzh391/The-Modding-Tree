@@ -5,6 +5,10 @@ function getLogisticTimeConstant(current, gain, loss){
 }
 
 function logisticTimeUntil(goal, current, gain, loss){
+        if (loss === 0 || (loss instanceof Decimal && loss.eq(0))) {
+                if (current.gte(goal)) return formatTime(0)
+                return formatTime(gain.gt(0) ? goal.sub(current).div(gain).toNumber() : Infinity)
+        }
         if (current.gte(goal)) return formatTime(0)
         if (goal.gte(gain.div(loss))) return formatTime(1/0)
         // we have current < goal < gain/loss
@@ -18,6 +22,7 @@ function logisticTimeUntil(goal, current, gain, loss){
 }
 
 function getLogisticAmount(current, gain, loss, diff){
+        if (loss === 0 || (loss instanceof Decimal && loss.eq(0))) return current.plus(gain.times(diff)).max(0)
         if (current.eq(gain.div(loss))) return current
         if (gain.gte("ee10")) return gain.div(loss)
         if (current.lt(gain.div(loss))) {

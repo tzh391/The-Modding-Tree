@@ -1,13 +1,13 @@
 let modInfo = {
 	name: "The Tree of Life",
-	id: "tree_of_life",
+	id: "tree_of_life_next_human",
 	author: "pg132",
 	pointsName: "Life Points",
-	modFiles: ["layers.js", "tree.js"],
+	modFiles: ["layers.js", "tree.js", "next/native.js"],
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (1), // Used for hard resets and new players
-	offlineLimit: 0,  // In hours
+	offlineLimit: 1,  // In hours
 }
 
 let winText = `Congratulations! You have reached the end of this patch! More content is to come...`

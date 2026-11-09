@@ -224,7 +224,7 @@ function NaNcheck(data) {
 
 function exportSave() {
 	//if (NaNalert) return
-	let str = btoa(JSON.stringify(player))
+	let str = btoa(unescape(encodeURIComponent(JSON.stringify(player))))
 
 	const el = document.createElement("textarea")
 	el.value = str
@@ -247,7 +247,7 @@ function importSave(imported = undefined, forced = false, fromCustomSaves = fals
 		}
 		let x = atob(imported)
 		console.log(x)
-		tempPlr = Object.assign(getStartPlayer(), JSON.parse(atob(imported)));
+		tempPlr = Object.assign(getStartPlayer(), JSON.parse(decodeURIComponent(escape(atob(imported)))));
 		if (tempPlr.versionType != modInfo.id && !forced && !confirm(confirmString)) {
 			// Wrong save (use "Forced" to force it to accept.)
 			return ;
