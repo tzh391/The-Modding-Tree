@@ -50,7 +50,7 @@
 	<script src="js/utils/themes.js"></script>
 	<script src="js/utils/wordList.js"></script>
 
-<link rel="stylesheet" href="css/next.css?v=0.1.2">
+<link rel="stylesheet" href="css/next.css?v=0.1.3">
 </head>
 
 
@@ -140,7 +140,7 @@
 				</div>
 		</div>
 
-		<div v-if="player.navTab !== 'none' && player.tab !== 'none' && !(tmp.gameEnded && !player.keepGoing)" onscroll="resizeCanvas()" v-bind:class="{ fullWidth: player.navTab == 'none' || !tmp.other.splitScreen || !readData(layoutInfo.showTree), col: player.navTab != 'none', right: player.navTab != 'none', fast: true, tab: true}">
+		<div v-if="player.navTab !== 'none' && player.tab !== 'none' && !(tmp.gameEnded && !player.keepGoing)" onscroll="resizeCanvas()" v-bind:class="{ fullWidth: player.navTab == 'none' || !tmp.other.splitScreen || !readData(layoutInfo.showTree), col: player.navTab != 'none', right: player.navTab != 'none', fast: true, tab: true, 'next-chapter': ['hu2', 'r2', 'lab2'].includes(player.tab)}">
 			<div v-for="layer in LAYERS">
 				<div v-if="player.tab==layer">
 					<layer-tab :layer="layer" :back="'none'" :spacing="'50px'" :key="'left'"></layer-tab>
