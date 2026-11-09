@@ -1,4 +1,4 @@
-/* Extend the unfinished Chemistry layer. Earlier layer definitions are left intact. */
+/* Extend Chemistry and apply the preview's documented Researcher balance and QoL. */
 function installChemistryContinuation() {
     if (layers.chem.continuationInstalled) return;
     layers.chem.continuationInstalled = true;
@@ -110,10 +110,21 @@ function installChemistryContinuation() {
     factories.splice(2, 0, ["display-text", function () {
         return "Widget gain: +" + format(ChemistryQoL.widgetRate()) + " Widgets/sec";
     }]);
+    // Count the Hiawd bonus gradually instead of crediting a large existing stockpile at 19.
+    layers.r.widgets.getMilestone17Levels = function () {
+        if (!hasMilestone("r", 17)) return new Decimal(0);
+        return player.hu.buyables[13].sub(14000).max(0).min(player.r.buyables[11].floor().sub(18).max(0).times(750));
+    };
+    layers.r.widgets.getResetGain = function () {
+        let ret = player.r.amounts[11].plus(1).times(tmp.r.buyables[11].effect);
+        if (hasUpgrade("r", 14)) ret = ret.times(Decimal.pow(2, player.r.upgrades.length));
+        if (hasMilestone("r", 17)) ret = ret.times(Decimal.pow(1.001, layers.r.widgets.getMilestone17Levels()));
+        return ret;
+    };
     // This shared base is exponentiated by purchased levels across the factory chain.
     // Keep all six thresholds, but reduce their combined base bonus from .6 to .42.
     layers.r.milestones[17].effectDescription = function () {
-        return "Reward: <i>Hiawd</i> levels past 14,000 multiply Widget gain by 1.001, Mastery VI double exponent is .1, and at 20 / 22 / 24 / 26 / 28 / 30 Factory<sup>1</sup> levels, add .07 to the multiplier per factory (max +.42).";
+        return "Reward: <i>Hiawd</i> levels past 14,000 multiply Widget gain by 1.001, counting at most 750 Hiawd levels per purchased Factory<sup>1</sup> level past 18. Mastery VI double exponent is .1, and at 20 / 22 / 24 / 26 / 28 / 30 Factory<sup>1</sup> levels, add .07 to the multiplier per factory (max +.42).";
     };
     layers.r.buyables.getBaseMult = function () {
         let ret = new Decimal(2);
@@ -124,11 +135,11 @@ function installChemistryContinuation() {
         if (hasMilestone("r", 18)) ret = ret.plus(player.r.buyables[23].min(10).times(.04));
         return ret;
     };
-    VERSION.num = "2.070.2";
-    VERSION.name = "Factory Balance";
+    VERSION.num = "2.070.3";
+    VERSION.name = "Gradual Factory Rewards";
     VERSION.withoutName = "v" + VERSION.num;
     VERSION.withName = VERSION.withoutName + ": " + VERSION.name;
-    CHANELOG_VERSION = "v2.070.2";
+    CHANELOG_VERSION = "v2.070.3";
     const normalUpdate = (version, lines) => "<div class='normal-update'><br><h3>v" + version + "</h3><br>" + lines.map(line => "<span>- " + line + "</span><br>").join("") + "</div>";
     CHANGELOGS.unshift(normalUpdate("2.070", [
         "Continued Chemistry with Potassium, Calcium, five upgrades, and three milestones.",
@@ -147,5 +158,11 @@ function installChemistryContinuation() {
         "Updated the milestone reward text to match the new bonus.",
         "Fixed the heading and body colors of Normal Mode update notes.",
         "Rechecked the active-play route and factory threshold boundaries. Existing resources and purchased levels are retained.",
+    ]));
+    CHANGELOGS.unshift(normalUpdate("2.070.3", [
+        "Normal Mode update headings are orange and body text is white.",
+        "Researcher milestone 17 now counts at most 750 Hiawd levels per purchased Factory I level past 18 for its Widget bonus. Existing Hiawd levels no longer grant the full bonus immediately at Factory I level 19.",
+        "Kept the six factory-base bonuses at 20 / 22 / 24 / 26 / 28 / 30, each +.07 (max +.42).",
+        "Rechecked the opening factory burst and the full active-play route. Existing resources and purchased levels are retained.",
     ]));
 }

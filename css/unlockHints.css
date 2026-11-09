@@ -14,5 +14,6 @@
 .chem-assignment-row input[type="range"] { width: 300px; max-width: 90%; accent-color: #AA0456; transition: none; }
 
 /* Explicit descendants also cover elements with their own default text color. */
-.normal-update { --color: #CC6600; color: #CC6600; }
-.normal-update * { color: #CC6600; }
+.normal-update { --color: #FFFFFF; color: #FFFFFF; }
+.normal-update span { color: #FFFFFF; }
+.normal-update h3 { color: #CC6600; }

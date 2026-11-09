@@ -85,21 +85,51 @@ test('each factory threshold avoids a large exponent jump and the six bonuses ar
 });
 test('rebalancing an existing save retains Widgets and all purchased factory levels', () => {
     const e=load();
-    e.run('player.r.milestones=Array.from({length:18},(_,i)=>i+1);player.r.widgets.points=new Decimal("1e90");player.version="2.070.1";for(const id of [11,12,13,21,22,23]){player.r.buyables[id]=new Decimal(30);player.r.amounts[id]=new Decimal("1e40");}updateTemp();save()');
+    e.run('player.r.milestones=Array.from({length:18},(_,i)=>i+1);player.r.widgets.points=new Decimal("1e90");player.version="2.070.2";for(const id of [11,12,13,21,22,23]){player.r.buyables[id]=new Decimal(30);player.r.amounts[id]=new Decimal("1e40");}updateTemp();save()');
     const before=e.run('JSON.stringify({widgets:player.r.widgets.points,buyables:player.r.buyables,amounts:player.r.amounts})');
     const restored=engine('?start=chemistry',[...e.storage]);restored.run('loadContinuation()');
     assert.equal(restored.run('JSON.stringify({widgets:player.r.widgets.points,buyables:player.r.buyables,amounts:player.r.amounts})'),before);
     assert(restored.run('NaNcheck(player)'));
 });
-test('2.070.2, 2.070.1 and 2.070 have explicit orange styles for headings and body descendants', () => {
-    const e=load();assert.equal(e.run('VERSION.withoutName'),'v2.070.2');
-    for(const i of [0,1,2]) {
+test('milestone 17 limits existing Hiawd levels by purchased Factory I levels', () => {
+    const e=load();
+    e.run('player.r.milestones=Array.from({length:17},(_,i)=>i+1);player.hu.buyables[13]=new Decimal(23177);player.r.amounts[11]=new Decimal("1e100")');
+    for(const [level,counted] of [[18,0],[19,750],[20,1500],[22,3000],[24,4500],[26,6000],[28,7500],[30,9000],[31,9177],[200,9177]]) {
+        e.run('player.r.buyables[11]=new Decimal('+level+')');
+        assert(e.run('layers.r.widgets.getMilestone17Levels().eq('+counted+')'));
+    }
+    e.run('player.hu.buyables[13]=new Decimal(13000)');
+    assert(e.run('layers.r.widgets.getMilestone17Levels().eq(0)'));
+    e.run('player.r.milestones=[];player.hu.buyables[13]=new Decimal("1e300")');
+    assert(e.run('layers.r.widgets.getMilestone17Levels().eq(0)'));
+    assert.match(e.run('layers.r.milestones[17].effectDescription()'),/at most 750 Hiawd levels/);
+});
+test('Factory I level 19 cannot apply a large retroactive Widget multiplier', () => {
+    const e=load();
+    e.run('player.r.milestones=[15,17];player.r.upgrades=[14];player.r.buyables[11]=new Decimal(19);player.r.amounts[11]=new Decimal(1000);player.hu.buyables[13]=new Decimal("1e300");updateTemp();updateTemp()');
+    assert(e.run('layers.r.widgets.getResetGain().div(player.r.amounts[11].plus(1).times(tmp.r.buyables[11].effect).times(2)).sub(Decimal.pow(1.001,750)).abs().lt(1e-9)'));
+    assert(e.run('layers.r.widgets.getResetGain().isFinite()'));
+    assert(e.run('NaNcheck(player)'));
+    e.run('const beforeM17Widgets=player.r.widgets.points;const m17Rate=ChemistryQoL.widgetRate();layers.r.widgets.update(1)');
+    assert(e.run('player.r.widgets.points.sub(beforeM17Widgets).eq(m17Rate)'));
+});
+test('Widget production outside milestone 17 retains the original factors', () => {
+    const e=engine('?start=chemistry');
+    e.run('const originalWidgetRate=layers.r.widgets.getResetGain;loadContinuation();player.r.buyables[11]=new Decimal(18);player.r.amounts[11]=new Decimal(1e12);updateTemp();updateTemp()');
+    assert(e.run('layers.r.widgets.getResetGain().eq(originalWidgetRate())'));
+    e.run('player.r.upgrades.push(14);updateTemp();updateTemp()');
+    assert(e.run('layers.r.widgets.getResetGain().eq(originalWidgetRate())'));
+});
+test('Normal Mode update headings are orange and all body lines are white', () => {
+    const e=load();assert.equal(e.run('VERSION.withoutName'),'v2.070.3');
+    for(const i of [0,1,2,3]) {
         assert.match(e.run('CHANGELOGS['+i+']'),/class='normal-update'/);
         assert.match(e.run('CHANGELOGS['+i+']'),/<h3>.*<span>/);
         assert(!/[一-鿿]/.test(e.run('CHANGELOGS['+i+']')));
     }
-    assert.match(e.run('CHANGELOGS[0]'),/v2\.070\.2/);
+    assert.match(e.run('CHANGELOGS[0]'),/v2\.070\.3/);
     const css=require('node:fs').readFileSync(require('node:path').join(__dirname,'../css/unlockHints.css'),'utf8');
-    assert.match(css,/\.normal-update\s*\{[^}]*color:\s*#CC6600/);
-    assert.match(css,/\.normal-update\s+\*\s*\{[^}]*color:\s*#CC6600/);
+    assert.match(css,/\.normal-update\s*\{[^}]*color:\s*#FFFFFF/);
+    assert.match(css,/\.normal-update\s+span\s*\{[^}]*color:\s*#FFFFFF/);
+    assert.match(css,/\.normal-update\s+h3\s*\{[^}]*color:\s*#CC6600/);
 });

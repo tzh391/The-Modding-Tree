@@ -13,3 +13,5 @@ The `evolution-next` branch preserves the original game and continues the unfini
 Version 2.070.1 adds Widget gain/sec, Chemistry assignment sliders at 20 total Chemists, and a regression check for progression opportunities within 100 seconds. See [the pacing report](docs/PACING-CHECK.md).
 
 Version 2.070.2 reduces each milestone-17 factory-base bonus to +.07 (max +.42) and explicitly colors both update headings and body text orange. Existing saves keep their resources and purchased levels.
+
+Version 2.070.3 makes the milestone-17 Hiawd/Widget bonus gradual: each purchased Factory I level above 18 allows 750 eligible Hiawd levels to count. Normal Mode update headings are orange and body text is white. The six base-bonus gates and the Chemistry endpoint remain unchanged.

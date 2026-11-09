@@ -1,0 +1,290 @@
+{
+  "factoryOpening": {
+    "firstBonusDelaySeconds": 205,
+    "sixBonusSpanSeconds": 498,
+    "passed": true
+  },
+  "version": "v2.070.3",
+  "maxAuditSeconds": 7200,
+  "factoryCurve": [
+    {
+      "targetLevel": 18,
+      "time": 1814,
+      "base": "2.16",
+      "widgetsPerSecond": "4.8169829979491166e17",
+      "hiawd": "23160",
+      "countedHiawdLevels": "0",
+      "hiawdWidgetMultiplier": "1",
+      "factoryLevels": [
+        "18",
+        "8",
+        "5",
+        "1",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 19,
+      "time": 2048,
+      "base": "2.17",
+      "widgetsPerSecond": "1.5287324077829743e19",
+      "hiawd": "23177",
+      "countedHiawdLevels": "750",
+      "hiawdWidgetMultiplier": "2.1162068190943963",
+      "factoryLevels": [
+        "19",
+        "9",
+        "5",
+        "2",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 20,
+      "time": 2253,
+      "base": "2.2399999999999998",
+      "widgetsPerSecond": "3.587155860933513e20",
+      "hiawd": "23320",
+      "countedHiawdLevels": "1500",
+      "hiawdWidgetMultiplier": "4.478331301181623",
+      "factoryLevels": [
+        "20",
+        "10",
+        "6",
+        "2",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 22,
+      "time": 2411,
+      "base": "2.3099999999999996",
+      "widgetsPerSecond": "9.024043242084801e22",
+      "hiawd": "23355",
+      "countedHiawdLevels": "3000",
+      "hiawdWidgetMultiplier": "20.05545124314309",
+      "factoryLevels": [
+        "22",
+        "11",
+        "6",
+        "2",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 24,
+      "time": 2540,
+      "base": "2.3799999999999994",
+      "widgetsPerSecond": "2.82031289692347e25",
+      "hiawd": "23386",
+      "countedHiawdLevels": "4500",
+      "hiawdWidgetMultiplier": "89.81495506148961",
+      "factoryLevels": [
+        "24",
+        "12",
+        "7",
+        "3",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 26,
+      "time": 2642,
+      "base": "2.4499999999999993",
+      "widgetsPerSecond": "1.1730447500734797e28",
+      "hiawd": "23406",
+      "countedHiawdLevels": "6000",
+      "hiawdWidgetMultiplier": "402.22112456608966",
+      "factoryLevels": [
+        "26",
+        "13",
+        "8",
+        "4",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 28,
+      "time": 2704,
+      "base": "2.519999999999999",
+      "widgetsPerSecond": "4.623089757027789e30",
+      "hiawd": "23409",
+      "countedHiawdLevels": "7500",
+      "hiawdWidgetMultiplier": "1801.2794521407932",
+      "factoryLevels": [
+        "28",
+        "14",
+        "9",
+        "4",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 30,
+      "time": 2751,
+      "base": "2.589999999999999",
+      "widgetsPerSecond": "2.4572784962491085e33",
+      "hiawd": "23417",
+      "countedHiawdLevels": "9000",
+      "hiawdWidgetMultiplier": "8066.726152697397",
+      "factoryLevels": [
+        "30",
+        "15",
+        "10",
+        "5",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 40,
+      "time": 3176,
+      "base": "2.589999999999999",
+      "widgetsPerSecond": "5.0637181884461935e45",
+      "hiawd": "23487",
+      "countedHiawdLevels": "9487",
+      "hiawdWidgetMultiplier": "13124.810640462772",
+      "factoryLevels": [
+        "40",
+        "21",
+        "14",
+        "8",
+        "2",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 51,
+      "time": 4232,
+      "base": "2.589999999999999",
+      "widgetsPerSecond": "3.7966455758783675e60",
+      "hiawd": "24224",
+      "countedHiawdLevels": "10224",
+      "hiawdWidgetMultiplier": "27416.256118465557",
+      "factoryLevels": [
+        "51",
+        "28",
+        "19",
+        "12",
+        "5",
+        "0"
+      ]
+    },
+    {
+      "targetLevel": 60,
+      "time": 5371,
+      "base": "2.7199999999999993",
+      "widgetsPerSecond": "4.1892043021355585e74",
+      "hiawd": "24475",
+      "countedHiawdLevels": "10475",
+      "hiawdWidgetMultiplier": "35233.97126886118",
+      "factoryLevels": [
+        "60",
+        "34",
+        "23",
+        "15",
+        "7",
+        "3"
+      ]
+    }
+  ],
+  "scenario": "Original Group 3 unlock save through Chemistry continuation",
+  "maxWaitSeconds": 100,
+  "timeStepSeconds": 1,
+  "simulatedSeconds": 5674,
+  "completed": true,
+  "longestWaitSeconds": 63,
+  "worstGap": {
+    "from": {
+      "time": 4855,
+      "action": "Improve Human buyables with Bulk"
+    },
+    "to": {
+      "time": 4918,
+      "action": "Improve Human buyables with Bulk"
+    }
+  },
+  "meaningfulEvents": 1515,
+  "transitions": [
+    {
+      "time": 730,
+      "action": "Buy r upgrade 14",
+      "researchers": "311292724.2607002"
+    },
+    {
+      "time": 3498,
+      "action": "Buy r upgrade 15",
+      "researchers": "3.992802614038725e17"
+    },
+    {
+      "time": 5105,
+      "action": "Buy chem upgrade 11",
+      "researchers": "1.7830768698437984e20"
+    },
+    {
+      "time": 5470,
+      "action": "Buy chem upgrade 12",
+      "researchers": "8.462317031564636e20"
+    },
+    {
+      "time": 5609,
+      "action": "Buy chem upgrade 13",
+      "researchers": "6.779985165716466e20"
+    },
+    {
+      "time": 5638,
+      "action": "Buy chem upgrade 14",
+      "researchers": "2.150663072570147e22"
+    },
+    {
+      "time": 5664,
+      "action": "Buy chem upgrade 15",
+      "researchers": "1.09633582220753e23"
+    }
+  ],
+  "final": {
+    "researchers": "1.0103623099067756e24",
+    "chemistry": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "milestones": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "chemistryMilestones": [
+      4,
+      1,
+      2,
+      3
+    ],
+    "K": "825963519028027.1",
+    "Ca": "701992453134629.2"
+  }
+}
