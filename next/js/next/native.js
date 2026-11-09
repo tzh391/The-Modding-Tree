@@ -251,6 +251,14 @@
     layoutInfo.startTab = "hu2";
     VERSION.num = "2.070-next.1";
     VERSION.name = "认知与生命化学";
+    VERSION.withoutName = "v" + VERSION.num;
+    VERSION.withName = VERSION.withoutName + " · " + VERSION.name;
+    const legacyOverlay = systemComponents["overlay-head"].template;
+    systemComponents["overlay-head"].template = '<div><div v-if="player.hu2.arc.active" class="next-overlay">' +
+        '<span class="next-badge">EVOLUTION NEXT · 0.1</span><h2>认知与生命化学</h2>' +
+        '<p>传承 {{format(player.hu2.arc.insight)}} · 研究员 {{formatWhole(player.hu2.arc.researchers)}}</p>' +
+        '<p v-if="player.offTime && player.offTime.remain > 0">离线进度 {{formatTime(player.offTime.remain)}}</p>' +
+        '</div><div v-else>' + legacyOverlay + '</div></div>';
     isEndgameRaw = function () { return !!player.hu2 && NextArc.complete(state()); };
     // Completion remains an in-game milestone so a player can keep experimenting.
     isEndgame = function () { return false; };

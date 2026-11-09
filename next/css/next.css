@@ -10,6 +10,8 @@ body { background: #111913; font-family: "Inconsolata", "PingFang SC", "Microsof
 .next-eyebrow { font-size: 12px; letter-spacing: .2em; color: #a6c5a6; }
 .next-badge { color: #9ebda4; font-size: 12px; letter-spacing: .12em; }
 .next-tree-label { color: #a9c6af; font-size: 14px; letter-spacing: .14em; margin-bottom: 24px; }
+.next-overlay { padding: 28px 16px 8px; color: #a8c0ae; line-height: 2; }
+.next-overlay h2 { margin-top: 8px; color: #d4e8d1; font-size: 21px; }
 .hu2 .upg, .r2 .upg, .lab2 .upg { font-family: inherit; }
 .hu2 .tabButton, .r2 .tabButton, .lab2 .tabButton { border-radius: 6px; }
 @media (max-width: 760px) { .next-title { font-size: 26px; } .next-panel { padding: 16px; } }
