@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const base = path.join(__dirname, '..');
-function engine(search = '', initialStorage = []) {
+function engine(search = '', initialStorage = [], earlyModFiles = false) {
     const storage = new Map(initialStorage);
     const style = { setProperty() {} };
     const element = { style, classList: { add() {}, remove() {} }, appendChild() {}, removeChild() {},
@@ -20,10 +20,14 @@ function engine(search = '', initialStorage = []) {
             getElementById: () => element, getElementsByClassName: () => [], addEventListener() {}, querySelector: () => element, execCommand() {} },
         Vue: { component() {}, set(object, key, value) { object[key] = value; }, observable: x => x },
     });
-    const evaluate = filename => vm.runInContext(fs.readFileSync(path.join(base, filename), 'utf8'), ctx, { filename });
-    const scripts = [...fs.readFileSync(path.join(base, 'index.html'), 'utf8').matchAll(/<script src="([^"]+)"/g)].map(m => m[1]);
-    for (const file of scripts) if (!['js/vueFile.js', 'js/technical/loader.js', 'js/next/bootstrap.js'].includes(file)) evaluate(file);
-    for (const file of vm.runInContext('modInfo.modFiles', ctx)) evaluate('js/' + file);
+    const evaluate = filename => vm.runInContext(fs.readFileSync(path.join(base, filename.split("?")[0]), 'utf8'), ctx, { filename });
+    const scripts = [...fs.readFileSync(path.join(base, 'index.html'), 'utf8').matchAll(/<script src="([^"]+)"/g)].map(m => m[1].split("?")[0]);
+    const modFiles = () => { for (const file of vm.runInContext('modInfo.modFiles', ctx)) evaluate('js/' + file); };
+    for (const file of scripts) {
+        if (file === 'js/technical/loader.js' && earlyModFiles) modFiles();
+        if (!['js/vueFile.js', 'js/technical/loader.js', 'js/next/bootstrap.js'].includes(file)) evaluate(file);
+    }
+    if (!earlyModFiles) modFiles();
     evaluate('js/next/bootstrap.js');
     ctx.loadVue = () => {};
     ctx.resizeCanvas = () => {};
@@ -32,6 +36,8 @@ function engine(search = '', initialStorage = []) {
 test('checkpoint boots through the real TMT save migration and temp engine', () => {
     const e = engine(); e.run('loadNext()');
     assert.equal(e.run('modInfo.id'), 'tree_of_life_next_human');
+    assert.equal(e.run('VERSION.withoutName'), 'v2.070-next.1');
+    assert.match(e.run('systemComponents["overlay-head"].template'), /next-overlay/);
     assert(e.run('player.hu2.arc.active')); assert(e.run('player.hu2.arc.thoughts.eq(0)'));
     assert(e.run('NaNcheck(player)'));
     e.run('gameLoop(1); updateTemp(); gameLoop(1); updateTemp()');
@@ -50,6 +56,12 @@ test('life route starts at the original beginning and keeps cognition locked', (
     assert.equal(e.run('modInfo.id'), 'tree_of_life_next_life');
     assert(!e.run('player.hu2.arc.active')); assert(e.run('player.hu2.arc.thoughts.eq(0)'));
     assert(!e.run('player.pl.unlocked')); assert(e.run('NaNcheck(player)'));
+});
+test('cached dynamic scripts may arrive before the engine UI without changing startup', () => {
+    const e = engine('', [], true); e.run('loadNext(); gameLoop(1); updateTemp()');
+    assert.equal(e.run('VERSION.withoutName'), 'v2.070-next.1');
+    assert.match(e.run('systemComponents["overlay-head"].template'), /next-overlay/);
+    assert(e.run('player.hu2.arc.thoughts.gt(0)'));
 });
 test('native research and lab controls share the same saved simulation', () => {
     const e = engine(); e.run('loadNext()');
