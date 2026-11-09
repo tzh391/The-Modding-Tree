@@ -34,6 +34,7 @@ These are additions to existing mechanics. No new Human currency, replacement Re
 - The Factories tab shows the actual Widget gain per second.
 - Assignment sliders unlock at 20 total Chemists, without a purchase or a late-game requirement. They operate on the currently selected element, preserve other assignments, and retain the original +/-1 controls for precise adjustments.
 - Up to 1,000 available staff, slider positions correspond to exact staff counts. Larger pools use proportional steps while keeping Decimal-safe integer allocations and exact zero/max endpoints.
+- Slider arrow keys adjust staff without triggering the original layer/tab navigation hotkeys.
 - Normal Mode entries for 2.070 and 2.070.1 are orange (`#CC6600`).
 - Researcher milestone 17 now uses its existing described Factory I thresholds: 20/22/24/26/28/30. The base implementation incorrectly used 200/202/204/206/208/2200.
 - The progression endpoint is unchanged from 2.070: Chemistry V, best K/Ca level 40, and 1e24 current Researchers.
