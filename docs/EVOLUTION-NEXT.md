@@ -1,45 +1,47 @@
-# Evolution Next · 人类与生命化学 0.1
+# The Tree of Life — Chemistry Continued (v2.070)
 
-这是从 evolution 分支继续开发的首个可玩篇章，沿用原版 The Modding Tree 引擎、树节点、购买项、里程碑和存档界面。
+This branch continues the original `evolution` game. Human, Researcher, and all earlier layer definitions remain intact. The separate cognition/legacy/reaction experiment has been removed from the playable version.
 
-## 试玩
+## Play and saves
 
-- 默认入口 `index.html`：从仓库内置的 Pre-human 检查点开始，新人类层直接开启。
-- `index.html?start=life`：从原版生命起点开始，植物升级 45 + 1e44000 生物质后进入新人类层。
-- `index.html?start=human`：回到人类篇试玩存档。
-- 两条路线分别使用 `tree_of_life_next_human` 和 `tree_of_life_next_life`，不会自动读取或写入原版 `tree_of_life`。
-- 首版是可完成的短篇章；模拟购买策略约 10 分钟完成，实际玩家节奏尚需收集反馈。所有六项研究完成、五类产物各累计 25 份即完成本章，可以继续游玩。
+- Normal start: https://tzh391.github.io/The-Modding-Tree/next/
+- Existing Chemistry checkpoint: https://tzh391.github.io/The-Modding-Tree/next/?start=chemistry
+- Development branch: `evolution-next`.
+- The normal route starts at the original beginning. Use Options to export an original save, then import it into this preview to continue an existing run.
+- Preview saves use `tree_of_life_continuation`. The optional checkpoint uses `tree_of_life_chemistry_checkpoint`. Neither route writes the original `tree_of_life` save or the previous experimental saves.
+- The checkpoint is the original built-in “Group 3 unlock” save, with no added resources or Chemistry upgrades.
 
-## 当前内容
+## Chemistry continuation
 
-1. **认知**：记忆、工具、合作使用思想购买。传承收益为 `floor(sqrt(本轮累计思想 / 1500))`；花费思想不会减少收益。传承只清空人类、思想、三项技能与本轮累计思想。
-2. **知识**：3 传承开放研究员。思想培养研究员，研究点用于六项有前置关系的项目和实验设施。项目、研究员、研究点始终保留。
-3. **化学**：依次发现 H、O、C、N、P、S。有限岗位分配决定各元素生产，设施统一提高产量。累计研究逐渐增加岗位，上限 24。发现等级基于累计生产，消耗原料不会退级。
-4. **应用**：水、有机前体、氨、营养盐与稳定剂组成共享原料的生产网络。累计产量提高人类、思想、研究或元素产量。营养循环项目解锁每秒一批的自动反应；催化项目解锁思想自动购买。
+The original 18 elements, workers, scientists, buildings, amount decay, nitrogen recruitment, and element-level formula remain in use. New content starts after the existing late-game Researcher milestones.
 
-配方使用抽象元素单位，不声称是配平的分子反应方程式。自动反应使用固定顺序：水、有机前体、氨、营养盐、稳定剂。原料不足时暂停对应配方，产物和库存不会出现负值。元素与产物不自然衰减。
+| Upgrade | Cost in Researchers | Unlock requirements | Effect |
+| --- | --- | --- | --- |
+| Chemistry I | 1e20 | Researcher milestone 18; 1e20 best Researchers | Unlock K/Ca; double worker speed |
+| Chemistry II | 1e21 | I; 10 best K levels; 1e21 best Researchers | Double scientist speed |
+| Chemistry III | 1e22 | II; 10 best Ca levels; 1e22 best Researchers | Double worker speed |
+| Chemistry IV | 1e23 | III; 20 best K/Ca levels; 1e23 best Researchers | Double scientist speed |
+| Chemistry V | 1e24 | IV; 30 best K/Ca levels; 1e24 best Researchers | Double worker and scientist speed |
 
-## 与旧进度的关系
+Potassium multiplies worker speed by 1.05 per current level, capped at 100 levels. Calcium applies the same bonus to scientist speed. Their building production uses the original `B * 1.1^B` formula and the same decay calculation as the existing elements.
 
-人类前的原版层级保留。新人类、研究与实验室使用 `hu2`、`r2`、`lab2`，避免复用旧人类的数百个跨层公式标记。旧 `hu`、`r`、`chem` 的定义与字段保留给原版前期计算，但这三层不在新路线树中展示。新人类不会反复重置前期所有层。
+Three milestones use best element amounts: 20 K levels doubles worker speed, 20 Ca levels doubles scientist speed, and 40 levels in both halves decay after Sulfur's effect. The normal patch endpoint is Chemistry V, that third milestone, and 1e24 current Researchers. Extreme Mode retains its original 298 Chromosome endpoint.
 
-这是一条可独立测试的新路线，暂不承诺旧人类中后期存档的等价迁移。原版游戏网址和原存档保留，后续可按实际反馈增加从旧后期进度进入新路线的迁移入口。
+These are additions to existing mechanics. No new Human currency, replacement Researcher system, or chemical reaction system is introduced. Late-game pacing still needs feedback from original endgame saves.
 
-## 验证与维护
+## Next-unlock notes
 
-`npm test` 无第三方依赖。测试包含资源守恒、重置保留、研究前置、自动反应、离线模拟、完整通关策略，以及真实 TMT 的检查点迁移、临时数据计算、原始开局、中文存档与重载。
+Small English notes below upgrade and buyable sections show the next hidden item and its actual unlock condition. They distinguish unlock requirements from purchase costs and include resource amounts, prerequisite upgrades, milestone requirements, and challenge completions.
 
-- `js/next/model.js`：纯模拟与数值。
-- `js/next/native.js`：原版引擎层级、购买项和界面。
-- `js/next/bootstrap.js`：独立存档与试玩路线。
-- `css/next.css`：人类篇的轻量视觉样式。
+The read-only parser covers the original unlock predicates, including difficulty-dependent thresholds and retired content. It does not alter unlock logic, grant resources, or use `eval`/`Function`. A note can point to another section after the current section has no remaining hidden entries. Explicitly unavailable placeholders are skipped.
 
-兼容修复：动态脚本按声明顺序加载；中文存档支持 UTF-8 导入导出；旧化学零衰减使用线性极限计算；旧精通 VI 的钠效果引用钠而非镁。
+## Technical scope
 
-## Pages 发布
+- `js/layers.js` is identical to the original evolution version.
+- `js/chemistryContinuation.js` extends only the unfinished Chemistry layer and patch endpoint.
+- `js/unlockHints.js` describes the existing unlock rules.
+- `js/components.js` adds the notes and the next two periodic-table entries using the original components.
+- The original stylesheet remains in use; the added CSS only styles small unlock notes.
+- Script loading is ordered after engine dependencies. Save text supports UTF-8. A zero-decay guard prevents the existing Sulfur endpoint from producing NaN.
 
-开发分支为 `evolution-next`。可将此分支的可运行文件树作为 `next/` 子目录加入现有 Pages 发布分支。开发分支用于后续提交，发布分支仅增加这个目录，根目录的原版入口不改动。
-
-目标网址：`https://tzh391.github.io/The-Modding-Tree/next/`。仓库分支的存在与 Pages 部署成功是两件事，应以部署状态和实际网址校验结果为准。
-
-原作者与引擎的授权文件继续保留；本篇章基于原仓库派生。
+Run `npm test` for original-layer regression, Chemistry progression/payment, save migration, assignment/production, parser agreement, and unlock-note tests. The original game is preserved at the site root; publication only replaces the `next/` preview directory.

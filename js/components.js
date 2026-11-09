@@ -1,6 +1,15 @@
 var app;
 
 function loadVue() {
+    Vue.component('unlock-hint', {
+        props: ['layer', 'kind', 'rows'],
+        computed: { text() { return UnlockHints.next(this.layer, this.kind, this.rows); } },
+        template: '<small v-if="text" class="unlock-hint" v-html="text"></small>',
+    });
+    Vue.component('chem-period4', {
+        template: `<div class="upgTable" v-if="player.chem.chemUnlocks.period4"><div class="upgRow"><div class="upgAlign"><chemClickable :name="'K'"></chemClickable></div><div class="upgAlign"><chemClickable :name="'Ca'"></chemClickable></div></div></div>`,
+    });
+
 	// data = a function returning the content (actually HTML)
 	Vue.component('display-text', {
 		props: ['layer', 'data'],
@@ -338,6 +347,12 @@ function loadVue() {
 
 	Vue.component('upgrades', {
 		props: ['layer', 'data'],
+        computed: {
+            showBuyablePreview() {
+                const group = tmp[this.layer].buyables;
+                return group && Object.keys(group).some(id => /^\d+$/.test(id)) && !Object.keys(group).some(id => /^\d+$/.test(id) && group[id].unlocked);
+            },
+        },
 		template: `
 		<div v-if="tmp[layer].upgrades" class="upgTable">
 			<div v-for="row in (data === undefined ? tmp[layer].upgrades.rows : data)" class="upgRow">
@@ -346,6 +361,8 @@ function loadVue() {
 				</div></div>
 			</div>
 			<br>
+            <unlock-hint :layer="layer" kind="upgrades" :rows="data"></unlock-hint>
+            <unlock-hint v-if="showBuyablePreview" :layer="layer" kind="buyables"></unlock-hint>
 		</div>
 		`
 	})
@@ -491,6 +508,7 @@ function loadVue() {
 				</div></div>
 				<br>
 			</div>
+            <unlock-hint :layer="layer" kind="buyables" :rows="data"></unlock-hint>
 		</div>
 	`
 	})

@@ -1,4 +1,4 @@
-name: Evolution Next checks
+name: Chemistry continuation checks
 on:
   push:
     branches: [evolution-next]

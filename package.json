@@ -1,6 +1,9 @@
 {
-  "name": "tree-of-life-evolution-next",
-  "version": "0.1.0",
+  "name": "tree-of-life-chemistry-continuation",
+  "version": "2.70.0",
   "private": true,
-  "scripts": { "test": "node --test tests/*.test.cjs", "start": "python3 -m http.server 4174 --bind 127.0.0.1" }
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "start": "python3 -m http.server 4174 --bind 127.0.0.1"
+  }
 }
