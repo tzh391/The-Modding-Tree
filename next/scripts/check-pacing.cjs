@@ -13,7 +13,7 @@ if(savePath) {
 }
 const e=engine('?start=chemistry',storage);
 e.ctx.isReference=!!savePath;
-e.run('loadContinuation();Math=Object.create(Math);let auditRng=391;Math.random=()=>{auditRng=(1664525*auditRng+1013904223)>>>0;return auditRng/4294967296;}');
+e.run('loadContinuation();player.paused=false;Math=Object.create(Math);let auditRng=391;Math.random=()=>{auditRng=(1664525*auditRng+1013904223)>>>0;return auditRng/4294967296;}');
 e.ctx.auditProgress=x=>process.stdout.write(JSON.stringify(x)+'\n');
 const report=e.run(`(function(){
     const events=[],majorRewards=[],factoryCurve=[],chemistryCurve=[],potentialBursts=[];
