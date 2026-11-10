@@ -81,9 +81,11 @@ Both routes reach Chemistry V, 55 best K/Ca levels, and at least 1e24 current Re
 
 ## Functional and visual verification
 
-All **38 functional tests** pass, including full-staffing conservation, actual/effective staff separation, disabling the toggle, save reload, Nitrogen recruitment without double counting, milestone migration, prices and gated upgrades, exact level boundaries, unlock notes, and the original earlier-layer regressions.
+All **40 functional tests** pass, including full-staffing conservation, actual/effective staff separation, disabling the toggle, save reload, Nitrogen recruitment without double counting, milestone migration, prices and gated upgrades, exact level boundaries, unlock notes, and the original earlier-layer regressions.
 
 At each changed Factory I stage, a stress test holds other inputs fixed and checks that the Widget production jump from one purchased level remains smaller than the increase in the next purchase cost, even with a large Hiawd stockpile. This guards against a single factory purchase paying for a cascade of further levels through its multiplier alone.
+
+Two import tests also verify that a local save opens in a new slot and invalid files leave existing progress intact. The file input supports browsers that do not implement the original prompt-based import.
 
 The live browser is also checked for K/Na and Ca/Mg column alignment, the auto-staffing switch, milestone text, and orange headings with white body text.
 

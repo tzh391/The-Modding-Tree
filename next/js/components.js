@@ -6,6 +6,24 @@ function loadVue() {
         computed: { text() { return UnlockHints.next(this.layer, this.kind, this.rows); } },
         template: '<small v-if="text" class="unlock-hint" v-html="text"></small>',
     });
+    Vue.component('continuation-save-file', {
+        data() { return { status: "" }; },
+        methods: {
+            async importFile(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                this.status = "Reading save file...";
+                try { importContinuationSaveAsNew(await file.text()); }
+                catch (error) { this.status = error.message; }
+            },
+        },
+        template: `<div class="continuation-import-file">
+            <label for="continuation-save-file">Import a local save as a new slot</label><br>
+            <input id="continuation-save-file" type="file" accept=".txt,text/plain" aria-label="Import local save file as a new slot" @change="importFile">
+            <small class="unlock-hint">Your existing save slots are kept. The imported save opens in a separate slot.</small>
+            <small v-if="status" class="unlock-hint">{{status}}</small>
+        </div>`,
+    });
     Vue.component('chem-assignment-sliders', {
         computed: {
             available() { return ChemistryQoL.unlocked(); },

@@ -15,3 +15,30 @@ function loadContinuation() {
     }
     load();
 }
+
+// File imports create a separate save slot and keep the active slot intact.
+function importContinuationSaveAsNew(encoded) {
+    let decoded;
+    try { decoded = JSON.parse(decodeURIComponent(escape(atob(encoded.trim())))); }
+    catch (_) { throw new Error("Invalid save file."); }
+    if (!decoded || typeof decoded !== "object" || Array.isArray(decoded) || !decoded.r || !decoded.chem || !decoded.hu || decoded.points === undefined) throw new Error("This is not a Tree of Life save.");
+    const previousPlayer = player, previousNaNAlert = NaNalert;
+    try {
+        const candidate = Object.assign(getStartPlayer(), decoded);
+        candidate.versionType = modInfo.id;
+        player = candidate;
+        fixSave();
+        versionCheck();
+        if (!NaNcheck(player)) throw new Error("Invalid resource data.");
+    } catch (_) {
+        player = previousPlayer;
+        NaNalert = previousNaNAlert;
+        throw new Error("Invalid save file. Existing saves were kept.");
+    }
+    let number = 1;
+    while (allSaves["Imported " + number] !== undefined) number++;
+    const name = "Imported " + number;
+    allSaves[name] = player;
+    loadSave(name);
+    return name;
+}

@@ -21,3 +21,7 @@
 .chem-periodic-scroll { max-width: 100%; overflow-x: auto; }
 .chem-periodic-grid { display: grid; grid-template-columns: repeat(8, 60px); grid-auto-rows: 60px; width: 480px; margin: 0 auto; }
 .chem-auto-toggle { min-height: 55px; padding: 8px; }
+
+.continuation-import-file { max-width: 620px; padding: 18px 12px; }
+.continuation-import-file label { font-size: 14px; }
+.continuation-import-file input { max-width: 95%; font-size: 13px; margin-top: 10px; }

@@ -209,6 +209,7 @@ function installChemistryContinuation() {
         "Factory I levels 19–21 now provide a small Widget ramp, x1.5 per level (max x3.375). Chemistry I requires 3 Factory VI levels after Researcher milestone 18.",
         "Moved Researcher milestone 17 to 22 Factory I levels and its six base bonuses to 24 / 27 / 30 / 33 / 36 / 39. The Hiawd allowance now starts above 21 purchased levels.",
         "Revalidate free Chemistry milestones against their new requirements on update; preserve resources, buildings, and purchased upgrades.",
+        "Added a local-file import option that opens the save in a separate slot and keeps existing saves.",
         "Audit both long waits and clustered progression, including a supplied late-Chemistry reference save.",
     ]));
 }

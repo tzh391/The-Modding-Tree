@@ -278,7 +278,7 @@ var systemComponents = {
 		<td><button class="opt" onclick="showAllSaves()">Show your saves</button></td>
 		<td></td>
 	    </tr>
-        </table>
+        </table><continuation-save-file></continuation-save-file>
 	<saves></saves>
 	</div>`
     },
