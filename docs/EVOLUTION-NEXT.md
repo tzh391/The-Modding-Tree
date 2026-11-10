@@ -1,6 +1,6 @@
-# The Tree of Life — Chemistry Continued (v2.070.3)
+# The Tree of Life — Chemistry Continued (v2.070.4)
 
-This branch continues the original `evolution` game. Human and earlier layers remain intact. Researcher mechanics are preserved except for the documented milestone-17 threshold fix, factory-base balance, and gradual Widget reward. The separate cognition/legacy/reaction experiment has been removed from the playable version.
+This branch continues the original `evolution` game. Human and earlier layers remain intact. Researcher mechanics are preserved except for the documented milestone-17 threshold fix, factory-base balance, gradual Widget reward, and the documented 2.070.4 progression/QoL adjustments. The separate cognition/legacy/reaction experiment has been removed from the playable version.
 
 ## Play and saves
 
@@ -17,26 +17,37 @@ The original 18 elements, workers, scientists, buildings, amount decay, nitrogen
 
 | Upgrade | Cost in Researchers | Unlock requirements | Effect |
 | --- | --- | --- | --- |
-| Chemistry I | 1e20 | Researcher milestone 18; 1e20 best Researchers | Unlock K/Ca; double worker speed |
-| Chemistry II | 1e21 | I; 10 best K levels; 1e21 best Researchers | Double scientist speed |
-| Chemistry III | 1e22 | II; 10 best Ca levels; 1e22 best Researchers | Double worker speed |
-| Chemistry IV | 1e23 | III; 20 best K/Ca levels; 1e23 best Researchers | Double scientist speed |
-| Chemistry V | 1e24 | IV; 30 best K/Ca levels; 1e24 best Researchers | Double worker and scientist speed |
+| Chemistry I | 1e20 | Researcher milestone 18; 3 Factory VI levels; 1e20 best Researchers | Unlock K/Ca; double worker speed |
+| Chemistry II | 1e21 | I; 46 best K levels; 1e21 best Researchers | Double scientist speed |
+| Chemistry III | 1e22 | II; 49 best Ca levels; 1e22 best Researchers | Double worker speed |
+| Chemistry IV | 1e23 | III; 51 best K/Ca levels; 1e23 best Researchers | Double scientist speed |
+| Chemistry V | 1e24 | IV; 54 best K/Ca levels; 1e24 best Researchers | Double worker and scientist speed |
 
 Potassium multiplies worker speed by 1.05 per current level, capped at 100 levels. Calcium applies the same bonus to scientist speed. Their building production uses the original `B * 1.1^B` formula and the same decay calculation as the existing elements.
 
-Three milestones use best element amounts: 20 K levels doubles worker speed, 20 Ca levels doubles scientist speed, and 40 levels in both halves decay after Sulfur's effect. The normal patch endpoint is Chemistry V, that third milestone, and 1e24 current Researchers. Extreme Mode retains its original 298 Chromosome endpoint.
+Three numerical milestones use best element amounts: 50 K levels doubles worker speed; 52 Ca and 51 K levels doubles scientist speed; 55 levels in both plus Chemistry V halves decay after Sulfur's effect. The normal patch endpoint is Chemistry V, that third milestone at 55 best K/Ca levels, and 1e24 current Researchers. Extreme Mode retains its original 298 Chromosome endpoint.
 
 These are additions to existing mechanics. No new Human currency, replacement Researcher system, or chemical reaction system is introduced. Late-game pacing still needs feedback from original endgame saves.
 
-## 2.070.3 gradual Factory I milestone reward
+## 2.070.4 layout, full staffing, and progression
+
+- The original compressed periodic-table layout uses eight fixed columns. K is directly below Na and Ca directly below Mg, on the fourth row; narrow panels can scroll horizontally rather than wrap elements into different columns.
+- At 40 total Chemists, milestone 5 unlocks **Auto H–Ne**, initially OFF. The switch is in the Chemistry 1 assignment panel. When ON, each of the first ten unlocked elements has effective workers and scientists equal to total Chemists. Existing manual staff in those elements return to the free pool. Na–Ar, K and Ca remain manual. The actual Chemist pool remains conserved; automatic Nitrogen production recruits through its native formula.
+- Chemistry II–V require K46 / Ca49 / both51 / both54 in addition to their existing prices and sequence. Numerical milestones require K50 / Ca52 with K51 / both55 with Chemistry V. These targets separate the reward steps even when the Researcher bank is large.
+- Existing free Chemistry milestone flags are revalidated on update. Resources, buildings, best element amounts, and purchased upgrades are retained. The endpoint is now **Chemistry V, 55 best K/Ca levels, and 1e24 current Researchers**.
+- Researcher milestone 17 now requires **22 Factory I levels**. Its six +.07 base bonuses move to **24/27/30/33/36/39**. Hiawd credit is limited to 750 levels per Factory I level above 21. Milestone 16 adds a bounded Widget ramp at Factory I levels 19–21: x1.5 per level, at most x3.375. The original Mastery VI exponent reward still belongs to milestone 17.
+- Chemistry I now needs the **third Factory VI level**, so it follows milestone 18 at two levels rather than appearing at the same instant.
+- Exact element-level boundaries use a comparison correction for floating-point logarithm rounding.
+- See [the current pacing report](PACING-CHECK.md) for maximum waits, minimum reward spacing, the local reference-save replay, and coverage limits.
+
+## 2.070.3 gradual Factory I milestone reward (historical)
 
 - Normal Mode changelog headings are orange (`#CC6600`) and body text is white (`#FFFFFF`), including the 2.070/2.070.1/2.070.2 entries.
 - The milestone at 19 purchased Factory I levels no longer applies the whole existing Hiawd stockpile to Widget production immediately.
 - Only Hiawd levels above 14,000 are eligible, as before. Count at most **750 eligible Hiawd levels per purchased Factory I level above 18**:
   `counted = min(max(Hiawd - 14000, 0), 750 * max(floor(Factory I levels) - 18, 0))`.
 - The Widget bonus remains `1.001 ^ counted`. At Factory I level 19 it is at most about **2.12x**; further purchased levels gradually increase the cap. Produced Factory I amounts do not increase this cap.
-- The existing six factory-base rewards remain at 20/22/24/26/28/30, each +.07 (max +.42). Mastery VI and all other milestone rewards retain their formulas.
+- This release kept the original six +.07 base gates; their current positions are specified in the 2.070.4 section above.
 - No new save fields or timers are needed. Existing resources and purchased levels are retained. Actual Widget production and its per-second display use the same formula.
 - The pacing audit now checks both the 100-second maximum interaction gap and the opening factory burst. See [the current report](PACING-CHECK.md) and [the previous release report](PACING-2.070.2.md).
 

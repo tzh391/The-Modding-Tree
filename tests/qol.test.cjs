@@ -66,7 +66,7 @@ test('assignment changes survive saving and reloading', () => {
 });
 test('Researcher milestone 17 keeps all six thresholds with a smaller capped base bonus', () => {
     const e=load();e.run('player.r.milestones=Array.from({length:17},(_,i)=>i+1)');
-    for(const [level,bonus] of [[19,0],[20,.07],[21,.07],[22,.14],[23,.14],[24,.21],[25,.21],[26,.28],[27,.28],[28,.35],[29,.35],[30,.42],[200,.42]]) {
+    for(const [level,bonus] of [[22,0],[23,0],[24,.07],[26,.07],[27,.14],[29,.14],[30,.21],[32,.21],[33,.28],[35,.28],[36,.35],[38,.35],[39,.42],[200,.42]]) {
         e.run('player.r.buyables[11]=new Decimal('+level+')');
         assert(e.run('layers.r.buyables.getBaseMult().sub('+ (2.17+bonus) +').abs().lt(1e-12)'));
     }
@@ -74,14 +74,14 @@ test('Researcher milestone 17 keeps all six thresholds with a smaller capped bas
     e.run('player.r.milestones.push(18);player.r.buyables[23]=new Decimal(7)');
     assert(e.run('layers.r.buyables.getBaseMult().sub(2.88).abs().lt(1e-12)'),'milestones 16 and 18 retain their original contributions');
 });
-test('each factory threshold avoids a large exponent jump and the six bonuses are bounded at level 30', () => {
+test('each factory threshold avoids a large exponent jump and the six bonuses are bounded at level 39', () => {
     const e=load();e.run('player.r.milestones=Array.from({length:17},(_,i)=>i+1)');
-    for(const level of [20,22,24,26,28,30]) {
+    for(const level of [24,27,30,33,36,39]) {
         e.run('player.r.buyables[11]=new Decimal('+ (level-1) +');updateTemp();updateTemp();var previousEffect=tmp.r.buyables[11].effect');
         e.run('player.r.buyables[11]=new Decimal('+level+');updateTemp();updateTemp()');
-        assert(e.run('tmp.r.buyables[11].effect.div(previousEffect).lt(6.0)'),'Factory I '+level+' level jump');
+        assert(e.run('tmp.r.buyables[11].effect.div(previousEffect).lt(8.0)'),'Factory I '+level+' level jump');
     }
-    assert(e.run('tmp.r.buyables[11].effect.div(Decimal.pow(2.17,30)).lt(205)'));
+    assert(e.run('tmp.r.buyables[11].effect.div(Decimal.pow(2.17,39)).lt(1000)'));
 });
 test('rebalancing an existing save retains Widgets and all purchased factory levels', () => {
     const e=load();
@@ -94,7 +94,7 @@ test('rebalancing an existing save retains Widgets and all purchased factory lev
 test('milestone 17 limits existing Hiawd levels by purchased Factory I levels', () => {
     const e=load();
     e.run('player.r.milestones=Array.from({length:17},(_,i)=>i+1);player.hu.buyables[13]=new Decimal(23177);player.r.amounts[11]=new Decimal("1e100")');
-    for(const [level,counted] of [[18,0],[19,750],[20,1500],[22,3000],[24,4500],[26,6000],[28,7500],[30,9000],[31,9177],[200,9177]]) {
+    for(const [level,counted] of [[21,0],[22,750],[23,1500],[25,3000],[27,4500],[29,6000],[31,7500],[33,9000],[34,9177],[200,9177]]) {
         e.run('player.r.buyables[11]=new Decimal('+level+')');
         assert(e.run('layers.r.widgets.getMilestone17Levels().eq('+counted+')'));
     }
@@ -104,9 +104,9 @@ test('milestone 17 limits existing Hiawd levels by purchased Factory I levels', 
     assert(e.run('layers.r.widgets.getMilestone17Levels().eq(0)'));
     assert.match(e.run('layers.r.milestones[17].effectDescription()'),/at most 750 Hiawd levels/);
 });
-test('Factory I level 19 cannot apply a large retroactive Widget multiplier', () => {
+test('Factory I level 22 cannot apply a large retroactive Widget multiplier', () => {
     const e=load();
-    e.run('player.r.milestones=[15,17];player.r.upgrades=[14];player.r.buyables[11]=new Decimal(19);player.r.amounts[11]=new Decimal(1000);player.hu.buyables[13]=new Decimal("1e300");updateTemp();updateTemp()');
+    e.run('player.r.milestones=[15,17];player.r.upgrades=[14];player.r.buyables[11]=new Decimal(22);player.r.amounts[11]=new Decimal(1000);player.hu.buyables[13]=new Decimal("1e300");updateTemp();updateTemp()');
     assert(e.run('layers.r.widgets.getResetGain().div(player.r.amounts[11].plus(1).times(tmp.r.buyables[11].effect).times(2)).sub(Decimal.pow(1.001,750)).abs().lt(1e-9)'));
     assert(e.run('layers.r.widgets.getResetGain().isFinite()'));
     assert(e.run('NaNcheck(player)'));
@@ -121,13 +121,13 @@ test('Widget production outside milestone 17 retains the original factors', () =
     assert(e.run('layers.r.widgets.getResetGain().eq(originalWidgetRate())'));
 });
 test('Normal Mode update headings are orange and all body lines are white', () => {
-    const e=load();assert.equal(e.run('VERSION.withoutName'),'v2.070.3');
-    for(const i of [0,1,2,3]) {
+    const e=load();assert.equal(e.run('VERSION.withoutName'),'v2.070.4');
+    for(const i of [0,1,2,3,4]) {
         assert.match(e.run('CHANGELOGS['+i+']'),/class='normal-update'/);
         assert.match(e.run('CHANGELOGS['+i+']'),/<h3>.*<span>/);
         assert(!/[一-鿿]/.test(e.run('CHANGELOGS['+i+']')));
     }
-    assert.match(e.run('CHANGELOGS[0]'),/v2\.070\.3/);
+    assert.match(e.run('CHANGELOGS[0]'),/v2\.070\.4/);
     const css=require('node:fs').readFileSync(require('node:path').join(__dirname,'../css/unlockHints.css'),'utf8');
     assert.match(css,/\.normal-update\s*\{[^}]*color:\s*#FFFFFF/);
     assert.match(css,/\.normal-update\s+span\s*\{[^}]*color:\s*#FFFFFF/);

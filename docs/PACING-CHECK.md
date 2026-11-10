@@ -1,98 +1,100 @@
-# Pacing check — 2.070.3
+# Pacing check — 2.070.4
 
-## Release rule
+## Release requirements
 
-A reasonably informed active player should normally have a meaningful next progression opportunity within 100 simulated seconds. This limits forced inactivity, rather than requiring every major upgrade or factory bonus within 100 seconds of the previous one. Useful factory purchases, productive new staff allocations, and actual Human buyable improvements can bridge those milestones.
+A reasonably informed active player should normally have a useful progression operation within 100 simulated seconds. A short maximum wait alone is insufficient: numerical upgrades, milestones, and factory reward gates must also be separated instead of chaining immediately.
 
-Every release runs the functional suite and the native-engine audit. Cosmetic clicks, repeated staff shuffling, and Bulk clicks without actual buyable-level improvements do not count. Purchases are attempted as soon as affordable; the policy never adds deliberate delays to spread the rewards out.
+The audit attempts native purchases as soon as they are affordable. It never adds artificial purchase delays or grants resources to make the results look balanced. Numerical rewards less than 10 seconds apart on the tested routes fail the audit. Utility unlocks (20/40 Chemists) are tracked as actions, but do not count as numerical-reward bursts: the new full-staffing production requires an explicit player toggle.
 
-## Diagnosis and change
+## Scope of the change
 
-Before the 19th Factory I purchase, the representative save already has about 23,177 Hiawd levels. Previously milestone 17 immediately credited all eligible levels above 14,000: about **9,600x** Widget gain. That made the first bonus arrive only two seconds after level 19 and compressed all six base bonuses into 160 seconds from level 20 to 30. Checking only the maximum wait did not catch this opening burst.
+- Researcher milestone 17: 22 purchased Factory I levels, with base-bonus gates at 24/27/30/33/36/39 (+.07 each, total +.42).
+- Its Hiawd credit starts above 21 purchased levels, at 750 eligible Hiawd levels per level. It cannot apply the full existing Hiawd stockpile immediately.
+- Milestone 16 provides small Widget steps at Factory I levels 19–21, each x1.5 and at most x3.375. These bridge the earlier slowdown without a large one-time multiplier.
+- Chemistry I requires 3 Factory VI levels after milestone 18 at 2 levels, separating those two rewards.
+- Chemistry II–V element gates: K46 / Ca49 / both51 / both54.
+- Numerical Chemistry milestones: K50 / Ca52 with K51 / both55 with Chemistry V.
+- At 40 Chemists the optional H–Ne full-staffing mode returns manual staff to the free pool and supplies effective full staff in the first ten unlocked elements. Later elements remain manual. Automatic Nitrogen uses the same native recruitment formula.
+- The revised free Chemistry milestones are revalidated on migration. Resources and purchased upgrades are retained.
 
-The 2.070.3 rule is:
+## Native policy and checkpoints
 
-```text
-eligible = max(Hiawd levels - 14000, 0)
-capacity = 750 * max(floor(purchased Factory I levels) - 18, 0)
-counted = min(eligible, capacity)
-Hiawd Widget multiplier = 1.001 ^ counted
-```
+Normal Mode, seed 391, one simulated second per tick. The original route starts at the built-in **Group 3 unlock** save. It discovers the original third-period elements, maintains useful science/construction, buys native Human Bulk only when available, and counts Bulk only when actual Human buyable levels improve.
 
-At Factory I level 19 the counted amount is at most 750, so this part of the bonus is at most **2.1162x**. Purchased levels gradually increase the cap; produced Factory I amounts cannot bypass it. This adds no timer or extra save field. Widgets, factory amounts, and purchased levels in existing saves are retained.
+At 40 Chemists the policy enables the new QoL once. It maintains the remaining manual elements and gives available staff to K/Ca science after opening those elements. It buys useful factories and Research/Chemistry upgrades through the endpoint. Cosmetic clicks and repeated staff shuffling are not events.
 
-The 20/22/24/26/28/30 base bonuses remain +.07 each (max +.42). Mastery VI, milestone 16/18, native factory prices/unlocks, and the Chemistry endpoint retain their formulas.
+The second route loads the user-supplied save locally, with no additional resources. It starts with about 6.73e20 Researchers, 103 Factory I levels, 40 Chemists, Chemistry I, and best K/Ca levels 43/46. The encoded save remains local; only aggregate progression results are published.
 
-## Audited route
+## Results
 
-- Original built-in **Group 3 unlock** save, approximately 1.36e7 Researchers and 20 total Chemists.
-- Normal Mode, seed 391, native game loop and purchases, one simulated second per tick.
-- No granted resources, upgrades, factory levels, element amounts, or milestones.
-- Discover the original third-period elements through native workers/buildings/scientists, maintain productive scientists, and assign genuinely available or newly recruited Chemists.
-- Use native Human Bulk only when available; count an event only if actual Human buyable levels improve.
-- Buy useful factories and Research/Chemistry upgrades, through the unchanged endpoint.
-- The total audit window remains 7,200 simulated seconds. The maximum allowed inactivity gap remains 100 seconds.
+| Route | Endpoint time | Longest useful-operation gap | Minimum numerical-reward gap | Cluster failures |
+| --- | ---: | ---: | ---: | ---: |
+| Original Group 3 checkpoint | 6497 s | 92 s | 18 s | 0 |
+| Supplied reference save | 125 s | 4 s | 15 s | 0 |
 
-## Current result
+Both routes reach Chemistry V, 55 best K/Ca levels, and at least 1e24 current Researchers. See [the full-route summary](pacing-2.070.4.json) and [the reference summary](pacing-2.070.4-reference-summary.json).
 
-**PASS: the endpoint was reached at 5,674 simulated seconds (94 minutes 34 seconds), with a longest meaningful-operation gap of 63 seconds.** The worst interval was between actual Human buyable improvements through Bulk at seconds 4,855 and 4,918. There were 1,515 meaningful events, all five Chemistry upgrades, and approximately 1.01e24 current Researchers at the endpoint.
+### Reference-save numerical rewards
 
-The first factory-base reward now arrives **205 seconds after Factory I level 19**, rather than two seconds. The level-20-to-30 bonus span is **498 seconds**, rather than 160. Other useful operations remain available between those larger rewards; the overall maximum interaction gap is 63 seconds.
-
-| Factory I purchased level | 2.070.2 arrival (s) | 2.070.3 arrival (s) |
-| --- | ---: | ---: |
-| 19 | 2048 | 2048 |
-| 20 | 2050 | 2253 |
-| 22 | 2055 | 2411 |
-| 24 | 2075 | 2540 |
-| 26 | 2118 | 2642 |
-| 28 | 2162 | 2704 |
-| 30 | 2210 | 2751 |
-| 40 | 2651 | 3176 |
-| 51 | 3707 | 4232 |
-| 60 | 4847 | 5371 |
-
-| Major event | 2.070.3 simulated second |
+| Reward | Seconds after load |
 | --- | ---: |
-| Research IV | 730 |
-| Research V | 3498 |
-| Chemistry I | 5105 |
-| Chemistry II | 5470 |
-| Chemistry III | 5609 |
-| Chemistry IV | 5638 |
-| Chemistry V | 5664 |
-| Patch endpoint | 5674 |
+| Buy chem upgrade 12 | 12 |
+| Buy chem upgrade 13 | 30 |
+| Earn chem:1 | 45 |
+| Buy chem upgrade 14 | 64 |
+| Earn chem:2 | 79 |
+| Buy chem upgrade 15 | 110 |
+| Earn chem:3 | 125 |
 
-The full summary, Hiawd counts, and Widget/base snapshots are in [the machine-readable result](pacing-2.070.3.json). [The previous release report](PACING-2.070.2.md) records the older calibration and its limits.
+### Original-route numerical rewards
 
-## Opening-burst regression
+| Reward | Seconds from checkpoint |
+| --- | ---: |
+| Buy r upgrade 14 | 730 |
+| Factory Widget ramp 19 | 2047 |
+| Factory Widget ramp 20 | 2312 |
+| Factory Widget ramp 21 | 2457 |
+| Earn r:17 | 2713 |
+| Factory base bonus 24 | 3130 |
+| Factory base bonus 27 | 3600 |
+| Factory base bonus 30 | 3913 |
+| Factory base bonus 33 | 4138 |
+| Factory base bonus 36 | 4333 |
+| Factory base bonus 39 | 4527 |
+| Buy r upgrade 15 | 4808 |
+| Earn r:18 | 6092 |
+| Buy chem upgrade 11 | 6276 |
+| Buy chem upgrade 12 | 6294 |
+| Buy chem upgrade 13 | 6325 |
+| Earn chem:1 | 6348 |
+| Buy chem upgrade 14 | 6386 |
+| Earn chem:2 | 6412 |
+| Buy chem upgrade 15 | 6469 |
+| Earn chem:3 | 6497 |
 
-The release check now also fails if, on this representative route, the first bonus arrives less than 10 seconds after level 19, or the six-bonus span from level 20 to 30 is less than 180 seconds. These are audit thresholds, not additional game waiting timers. They catch the specific previously missed opening burst while the separate 100-second rule checks for forced inactivity.
+## Failures investigated
 
-Before the full run, candidate caps were replayed from a naturally reached pre-milestone checkpoint at second 2,047. No resources were added. A cap of 1,000 Hiawd levels per Factory I level also completed with a 71-second maximum gap, but its bonus span was 326 seconds. The selected cap of 750 spreads that span to 498 seconds. The released result above is from a fresh full run, rather than only that replay.
+1. Moving milestone 17 to 22 levels without an intermediate Widget ramp produced a **130-second** operation gap near Factory I level 20. That candidate was rejected.
+2. The first version also awarded Researcher milestone 18 and Chemistry I at the same timestamp. Requiring the next native Factory VI level separates them.
+3. A tested intermediate Mastery VI exponent ramp did not fix the 130-second gap and was removed. The released code leaves that formula intact and uses the bounded milestone-16 Widget ramp instead.
+4. Element-level logarithms could round an exact level-55 boundary down to 54. The level helper now verifies the nearby exact amount thresholds; boundary tests cover all new gate levels.
 
-## Functional and visual checks
+## Functional and visual verification
 
-All **29 functional tests** pass, covering:
+All **38 functional tests** pass, including full-staffing conservation, actual/effective staff separation, disabling the toggle, save reload, Nitrogen recruitment without double counting, milestone migration, prices and gated upgrades, exact level boundaries, unlock notes, and the original earlier-layer regressions.
 
-- The six unchanged base-bonus gates and their total cap; milestone 16/18 contributions.
-- Gradual Hiawd credit at and between the gates, the eligible-level limit, and use of purchased levels rather than produced amounts.
-- A very large Hiawd stockpile cannot cause an unbounded level-19 Widget jump or NaN.
-- The Widget/sec display equals actual production, including milestone 17; production before milestone 17 retains its original factors.
-- Existing save balances and purchased levels, staff conservation/reload, original layers, Chemistry prices/endpoint, and unlock notes.
-- Orange update headings and explicit white body lines. The live browser is also checked before delivery.
+At each changed Factory I stage, a stress test holds other inputs fixed and checks that the Widget production jump from one purchased level remains smaller than the increase in the next purchase cost, even with a large Hiawd stockpile. This guards against a single factory purchase paying for a cascade of further levels through its multiplier alone.
 
-## Scope and limitations
+The live browser is also checked for K/Na and Ca/Mg column alignment, the auto-staffing switch, milestone text, and orange headings with white body text.
 
-This is one active-play route and one seed, plus boundary/save checks. It does not prove the same maximum wait for every earlier layer, allocation strategy, imported save, or Extreme Mode. Durations are simulated game time; browser updates are finer than the one-second audit ticks.
+## Limits and reproduction
 
-Existing saves may already hold large Widget balances from an earlier release. Those resources are retained; the new rule controls subsequent production and does not undo past purchases or earned resources.
-
-## Reproduce
+These are two representative Normal Mode routes and targeted boundary tests. They do not guarantee identical timings for every allocation strategy, original earlier layer, Extreme Mode, or imported save. The full-staffing toggle is enabled in the audited routes; leaving it OFF changes the policy and timing. Existing resource stockpiles are retained, so past progress is not undone.
 
 ```sh
 npm test
 npm run check:pacing
+npm run check:pacing -- --save /path/to/local-save.txt --output work/reference-report.json
 ```
 
-The audit fails if the endpoint is not reached, the maximum meaningful gap exceeds 100 seconds, or the opening-burst checks fail. It writes `work/pacing-report.json`; GitHub Actions runs both commands. Future updates must audit affected checkpoints and record failures and coverage limits before release.
+The script fails if its route does not finish, a useful-operation gap exceeds 100 seconds, or numerical rewards occur less than 10 seconds apart. GitHub Actions runs the default full route. The supplied-save replay is local because the original attachment is not committed. [The previous report](PACING-2.070.3.md) records the earlier pacing checks.
