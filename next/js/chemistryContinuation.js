@@ -2,6 +2,7 @@
 function installChemistryContinuation() {
     if (layers.chem.continuationInstalled) return;
     layers.chem.continuationInstalled = true;
+    installNormalBalance();
     const chem = layers.chem;
     const oldStart = chem.startData;
     chem.startData = function () {
@@ -182,11 +183,11 @@ function installChemistryContinuation() {
         if (hasMilestone("r", 18)) ret = ret.plus(player.r.buyables[23].min(10).times(.04));
         return ret;
     };
-    VERSION.num = "2.070.5";
-    VERSION.name = "Chemistry Prices and Milestone Automation";
+    VERSION.num = "2.071.1";
+    VERSION.name = "Normal Mode Price Balance";
     VERSION.withoutName = "v" + VERSION.num;
     VERSION.withName = VERSION.withoutName + ": " + VERSION.name;
-    CHANELOG_VERSION = "v2.070.5";
+    CHANELOG_VERSION = "v2.071.1";
     const normalUpdate = (version, lines) => "<div class='normal-update'><br><h3>v" + version + "</h3><br>" + lines.map(line => "<span>- " + line + "</span><br>").join("") + "</div>";
     CHANGELOGS.unshift(normalUpdate("2.070", [
         "Continued Chemistry with Potassium, Calcium, five upgrades, and three milestones.",
@@ -230,4 +231,11 @@ function installChemistryContinuation() {
         "Fixed loading older completed Chemistry saves before temporary layer data is initialized.",
         "Rechecked native progression for long waits and clustered numerical rewards.",
     ]));
+    CHANGELOGS.unshift(normalUpdate("2.071.1", [
+        "Normal Mode balance only; no new content.",
+        "Hydrogen XVI / XVII / XVIII / XIX / XX now cost 7.77e777 / 1e800 / 1e1000 / 1e1040 / 1e1319 Hydrogen.",
+        "The first Token now requires 1e6600 Life Points and is affordable at the exact threshold. Later Token costs keep their original formulas.",
+        "Upgrade prerequisites and effects, existing progress, and Hard/Extreme Mode prices are preserved.",
+    ]));
+
 }
