@@ -7,6 +7,7 @@ This branch continues the original `evolution` game. Human and earlier layers re
 - Normal start: https://tzh391.github.io/The-Modding-Tree/next/
 - Existing Chemistry checkpoint: https://tzh391.github.io/The-Modding-Tree/next/?start=chemistry
 - Development branch: `evolution-next`.
+- Options also accepts a local exported text file and imports it into a new save slot, preserving existing slots.
 - The normal route starts at the original beginning. Use Options to export an original save, then import it into this preview to continue an existing run.
 - Preview saves use `tree_of_life_continuation`. The optional checkpoint uses `tree_of_life_chemistry_checkpoint`. Neither route writes the original `tree_of_life` save or the previous experimental saves.
 - The checkpoint is the original built-in “Group 3 unlock” save, with no added resources or Chemistry upgrades.
