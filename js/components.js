@@ -24,18 +24,28 @@ function loadVue() {
             <small v-if="status" class="unlock-hint">{{status}}</small>
         </div>`,
     });
+    Vue.component('chem-full-staffing', {
+        computed: {
+            available() { return ChemistryQoL.autoUnlocked(); },
+            enabled() { return player.chem.autoEarly; },
+            total() { return formatWhole(player.chem.total); },
+        },
+        methods: { toggleAuto() { ChemistryQoL.toggleAuto(); } },
+        template: `<div v-if="available" class="chem-auto-toolbar">
+            <button class="savePopupBtn can chem-auto-toggle" @click="toggleAuto">Auto H–Ne: {{enabled ? 'ON' : 'OFF'}}</button>
+            <small>40 Chemists QoL: H–Ne each use {{total}} effective workers and scientists when ON. Enabling returns their manual staff to the free pool.</small>
+        </div>`,
+    });
     Vue.component('chem-assignment-sliders', {
         computed: {
             available() { return ChemistryQoL.unlocked(); },
             element() { return player.chem.focus; },
             free() { return formatWhole(player.chem.points); },
             autoUnlocked() { return ChemistryQoL.autoUnlocked(); },
-            autoEnabled() { return player.chem.autoEarly; },
             managed() { return ChemistryQoL.autoManaged(this.element); },
             total() { return formatWhole(player.chem.total); },
         },
         methods: {
-            toggleAuto() { ChemistryQoL.toggleAuto(); },
             amount(role) { return formatWhole(player.chem[role][this.element]); },
             maximum(role) { return ChemistryQoL.sliderMax(role, this.element); },
             position(role) { return ChemistryQoL.sliderValue(role, this.element); },
@@ -45,11 +55,7 @@ function loadVue() {
         template: `<div class="chem-assignment-qol">
             <small v-if="!available" class="unlock-hint">QoL: assignment sliders unlock at 20 total Chemists.</small>
             <div v-else>
-                <div v-if="autoUnlocked">
-                    <button class="opt chem-auto-toggle" @click="toggleAuto">Auto H–Ne: {{autoEnabled ? 'ON' : 'OFF'}}</button>
-                    <small class="unlock-hint">Treat H–Ne as fully staffed by all Chemists. Enabling returns their manually assigned staff to the free pool. Other elements remain manual.</small>
-                </div>
-                <small v-else class="unlock-hint">Next QoL: full staffing for H–Ne at 40 total Chemists.</small>
+                <small v-if="!autoUnlocked" class="unlock-hint">Next QoL: full staffing for H–Ne at 40 total Chemists.</small>
                 <small v-if="managed" class="unlock-hint">Automatic: {{total}} effective workers and {{total}} effective scientists in {{element}}. No manual allocation is needed.</small>
                 <small class="unlock-hint">Available Chemists: {{free}}. Drag to assign staff to the selected element; other assignments stay unchanged.</small>
                 <div v-for="role in ['workers', 'scientists']" v-if="!managed" :key="role" class="chem-assignment-row">

@@ -38,6 +38,7 @@ function importContinuationSaveAsNew(encoded) {
     let number = 1;
     while (allSaves["Imported " + number] !== undefined) number++;
     const name = "Imported " + number;
+    allSaves[allSaves.set] = previousPlayer;
     allSaves[name] = player;
     loadSave(name);
     return name;

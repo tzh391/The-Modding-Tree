@@ -23,7 +23,7 @@ Normal Mode, seed 391, one simulated second per tick. The original route starts 
 
 At 40 Chemists the policy enables the new QoL once. It maintains the remaining manual elements and gives available staff to K/Ca science after opening those elements. It buys useful factories and Research/Chemistry upgrades through the endpoint. Cosmetic clicks and repeated staff shuffling are not events.
 
-The second route loads the user-supplied save locally, with no additional resources. It starts with about 6.73e20 Researchers, 103 Factory I levels, 40 Chemists, Chemistry I, and best K/Ca levels 43/46. The encoded save remains local; only aggregate progression results are published.
+The second route loads the user-supplied save locally and resumes its paused state, with no additional resources. It starts with about 6.73e20 Researchers, 103 Factory I levels, 40 Chemists, Chemistry I, and best K/Ca levels 43/46. The encoded save remains local; only aggregate progression results are published.
 
 ## Results
 

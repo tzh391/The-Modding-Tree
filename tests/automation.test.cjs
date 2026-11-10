@@ -69,8 +69,8 @@ test('a Factory I purchase does not make the next level cheaper relative to Widg
 
 test('local-file import opens a new slot while retaining the existing slot',()=>{
  const e=load();
- e.run('window.location={reload(){}};var oldSlot=allSaves.set;var oldResearch=player.r.points.toString();var exported=btoa(unescape(encodeURIComponent(JSON.stringify(player))));var importedSlot=importContinuationSaveAsNew(exported)');
- assert(e.run('importedSlot==="Imported 1"&&allSaves.set===importedSlot&&allSaves[oldSlot].r.points.toString()===oldResearch'));
+ e.run('window.location={reload(){}};var oldSlot=allSaves.set;player.points=new Decimal("1e123456");var oldLife=player.points.toString();var oldResearch=player.r.points.toString();var exported=btoa(unescape(encodeURIComponent(JSON.stringify(player))));var importedSlot=importContinuationSaveAsNew(exported)');
+ assert(e.run('importedSlot==="Imported 1"&&allSaves.set===importedSlot&&allSaves[oldSlot].r.points.toString()===oldResearch&&allSaves[oldSlot].points.toString()===oldLife'));
  e.run('importContinuationSaveAsNew(exported)');assert(e.run('allSaves.set==="Imported 2"&&allSaves["Imported 1"]!==undefined'));
 });
 test('invalid file imports leave active progress and save slots unchanged',()=>{
