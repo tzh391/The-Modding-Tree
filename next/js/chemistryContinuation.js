@@ -122,7 +122,7 @@ function installChemistryContinuation() {
     chem.tabFormat.Upgrades.unlocked = () => hasMilestone("r", 15) || hasUpgrade("chem", 11);
     chem.tabFormat.Milestones.unlocked = () => player.chem.unlocked;
     const contents = chem.tabFormat["Chemistry 1"].content;
-    contents.splice(2, 0, "chem-full-staffing");
+    contents.splice(1, 0, "chem-full-staffing");
     contents.splice(contents.indexOf("chem-details") + 1, 0, "blank", "chem-assignment-sliders");
     contents.push(["display-text", function () {
         if (!hasUpgrade("chem", 11)) return '<small class="unlock-hint">Next elements: Potassium and Calcium — unlock with Chemistry I at 1e20 Researchers, after Researcher milestone 18 and 3 Factory VI levels.</small>';
