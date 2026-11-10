@@ -6,57 +6,60 @@
     "lifePoints": "1.727352626217988e197",
     "tokens": "0"
   },
-  "simulatedSeconds": 3342,
+  "simulatedSeconds": 3113,
+  "targetTokens": 1,
   "completed": true,
   "maxWaitSeconds": 100,
   "longestWaitSeconds": 15,
   "worstGap": {
     "from": {
-      "time": 3202,
+      "time": 2973,
       "action": "mini buyable 23"
     },
     "to": {
-      "time": 3217,
+      "time": 2988,
       "action": "mini buyable 62"
     }
   },
-  "minimumTargetRewardGapSeconds": 71,
+  "minimumTargetRewardGapSeconds": 73,
   "potentialBursts": [],
   "targets": [
     {
-      "time": 1742,
+      "time": 1510,
       "action": "Hydrogen 61",
-      "hydrogen": "2.2705512561399033e776"
+      "hydrogen": "6.660197843256195e777"
     },
     {
-      "time": 1813,
+      "time": 1586,
       "action": "Hydrogen 62",
-      "hydrogen": "4.057127080959185e799"
+      "hydrogen": "3.7703389078221803e799"
     },
     {
-      "time": 2272,
+      "time": 2044,
       "action": "Hydrogen 63",
-      "hydrogen": "1.8238568956830155e1000"
+      "hydrogen": "8.482048716478703e999"
     },
     {
-      "time": 2412,
+      "time": 2184,
       "action": "Hydrogen 64",
-      "hydrogen": "1.4723807743707016e1040"
+      "hydrogen": "1.407518129237297e1040"
     },
     {
-      "time": 3269,
+      "time": 3040,
       "action": "Hydrogen 65",
-      "hydrogen": "2.009204357538879e1317"
+      "hydrogen": "2.0091975376709232e1317"
     },
     {
-      "time": 3342,
-      "action": "First Token",
-      "lifePoints": "1.2099998085924408e6600"
+      "time": 3113,
+      "action": "Token 1",
+      "lifePoints": "1.308448928534772e6600",
+      "price": "1e6600"
     }
   ],
-  "eventCount": 20945,
+  "eventCount": 20666,
   "final": {
-    "H": "1.0033347351004935e1321",
-    "LP": "1.2099998085924408e6600"
+    "H": "0",
+    "LP": "1",
+    "tokens": "1"
   }
 }

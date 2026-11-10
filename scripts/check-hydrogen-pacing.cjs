@@ -1,8 +1,9 @@
 /* Native early-game audit; the built-in checkpoint is used without added resources. */
 const fs=require('node:fs');const {engine}=require('../tests/helpers/engine.cjs');
+fs.mkdirSync('work',{recursive:true});
 const args=process.argv.slice(2);const outIndex=args.indexOf('--output');
 const output=outIndex<0?'work/pacing-hydrogen-report.json':args[outIndex+1];
-const tokenIndex=args.indexOf('--tokens');const targetTokens=tokenIndex<0?2:Number(args[tokenIndex+1]);
+const tokenIndex=args.indexOf('--tokens');const targetTokens=tokenIndex<0?1:Number(args[tokenIndex+1]);
 if(!Number.isInteger(targetTokens)||targetTokens<1||targetTokens>3)throw new Error('--tokens must be 1, 2 or 3');
 let e=engine();const seed=e.run('JSON.parse(atob(CUSTOM_SAVES["e300 Hydrogen"]))');
 seed.versionType='tree_of_life_continuation';seed.paused=false;seed.keepGoing=false;seed.time=Date.now();
@@ -10,6 +11,7 @@ e=engine('',[['tree_of_life_continuation',Buffer.from(JSON.stringify({set:'audit
 e.run('loadContinuation();player.paused=false');
 e.ctx.progress=x=>console.log(JSON.stringify(x));
 e.ctx.targetTokens=targetTokens;
+e.ctx.rememberFirstToken=x=>fs.writeFileSync('work/hydrogen-first-token-checkpoint.txt',x);
 const result=e.run(`(()=>{
  const events=[],targets=[],seenHydrogen=new Set();let time=0;
  const record=action=>events.push({time,action});
@@ -21,13 +23,14 @@ const result=e.run(`(()=>{
   for(const id of Object.keys(layers.mini.buyables).filter(x=>/^\\d+$/.test(x))){
    const n=player.mini.buyables[id];buyBuyable('mini',id);if(player.mini.buyables[id].gt(n))record('mini buyable '+id);
   }
-  for(const id of Object.keys(layers.tokens.buyables).filter(x=>/^\\d+$/.test(x))){
+  if(player.tokens.points.gte(1))for(const id of ['12','11','13','21','22','23','31','32','33','41','42','43','51','52','53','61','62','63']){
    const n=player.tokens.buyables[id];buyBuyable('tokens',id);if(player.tokens.buyables[id].gt(n))record('Token buyable '+id);
   }
   if(tmp.tokens.canReset&&hasUpgrade('h',65)) {
    const number=player.tokens.total.plus(1).toNumber();
    targets.push({time,action:'Token '+number,lifePoints:player.points.toString(),price:tmp.tokens.getNextAt.toString()});record('Token '+number);
    doReset('tokens');updateTemp();updateTemp();
+   if(number===1)rememberFirstToken(btoa(JSON.stringify(player)));
    if(player.tokens.total.gte(targetTokens))break;
   }
   gameLoop(1);updateTemp();

@@ -44,9 +44,10 @@ Commands for a local development checkout:
 ```sh
 npm test
 npm run check:hydrogen-pacing
-npm run check:hydrogen-pacing -- --tokens 3
 npm run check:pacing
 ```
+
+The default early replay covers the first Token; the second price has native threshold/reset regression tests. Optional `--tokens 2` / `--tokens 3` replays include a limited minigame policy and are diagnostic, not a complete guarantee of post-reset pacing.
 
 Official GitHub instructions:
 - https://docs.github.com/en/repositories/working-with-files/managing-files/editing-files
