@@ -59,5 +59,5 @@ test('Chemistry notes explicitly show the resource and element-level gates', () 
     assert.match(note,/Researcher milestone 18/); assert.match(note,/Researchers/);
     e.run('player.chem.upgrades=[11]; updateTemp()');
     note=e.ctx.UnlockHints.next('chem','upgrades');
-    assert.match(note,/Chemistry II/); assert.match(note,/46 best Potassium levels/);
+    assert.match(note,/Chemistry II/); assert.match(note,/51 best Potassium levels/);
 });

@@ -1,97 +1,58 @@
-# Pacing check — 2.070.4
+# Pacing check — 2.070.5
 
-## Release requirements
+## Release requirements and scope
 
-A reasonably informed active player should normally have a useful progression operation within 100 simulated seconds. A short maximum wait alone is insufficient: numerical upgrades, milestones, and factory reward gates must also be separated instead of chaining immediately.
+Use native production and buy upgrades/factories as soon as affordable. The audit must reach the endpoint, have no useful-operation gap above 100 simulated seconds, and have no consecutive numerical rewards less than 10 seconds apart. Staff shuffling and cosmetic clicks are not useful operations. Utility milestones are tracked as actions but are not numerical rewards.
 
-The audit attempts native purchases as soon as they are affordable. It never adds artificial purchase delays or grants resources to make the results look balanced. Numerical rewards less than 10 seconds apart on the tested routes fail the audit. Utility unlocks (20/40 Chemists) are tracked as actions, but do not count as numerical-reward bursts: the new full-staffing production requires an explicit player toggle.
+This release changes Normal Mode Research V to 5e22 Researchers (unlock and cost, retaining Factory I 44). Chemistry I–V require and cost 1e25 / 1e29 / 1e30 / 1e31 / 8e31 Researchers, with element gates K51 / Ca53 / both54 / both54 for II–V. Chemistry I keeps Researcher milestone 18 and Factory VI 3. The numerical Chemistry milestones stay at K50 / Ca52 with K51 / both55 with Chemistry V. The endpoint now also requires 1e32 current Researchers.
 
-## Scope of the change
+Auto H–Ne uses the native 40-Chemist milestone toggle and Chemistry button color; gold inner outlines identify elements currently managed by full staffing. Effective production, manual staff conservation, and factory rewards remain as in 2.070.4. No 2.071 content is implemented.
 
-- Researcher milestone 17: 22 purchased Factory I levels, with base-bonus gates at 24/27/30/33/36/39 (+.07 each, total +.42).
-- Its Hiawd credit starts above 21 purchased levels, at 750 eligible Hiawd levels per level. It cannot apply the full existing Hiawd stockpile immediately.
-- Milestone 16 provides small Widget steps at Factory I levels 19–21, each x1.5 and at most x3.375. These bridge the earlier slowdown without a large one-time multiplier.
-- Chemistry I requires 3 Factory VI levels after milestone 18 at 2 levels, separating those two rewards.
-- Chemistry II–V element gates: K46 / Ca49 / both51 / both54.
-- Numerical Chemistry milestones: K50 / Ca52 with K51 / both55 with Chemistry V.
-- At 40 Chemists the optional H–Ne full-staffing mode returns manual staff to the free pool and supplies effective full staff in the first ten unlocked elements. Later elements remain manual. Automatic Nitrogen uses the same native recruitment formula.
-- The revised free Chemistry milestones are revalidated on migration. Resources and purchased upgrades are retained.
+## Native policy
 
-## Native policy and checkpoints
+Normal Mode, seed 391, one simulated second per tick, same allocation/purchase policy as 2.070.4. The original Group 3 checkpoint has no extra resources. Establish production in the original 18 elements, keep useful science and construction, enable full staffing once 40 Chemists are available, and assign available staff to K/Ca science once Chemistry I opens. Native Human Bulk counts only when it actually improves buyable levels. No artificial purchase delays or resource grants are inserted.
 
-Normal Mode, seed 391, one simulated second per tick. The original route starts at the built-in **Group 3 unlock** save. It discovers the original third-period elements, maintains useful science/construction, buys native Human Bulk only when available, and counts Bulk only when actual Human buyable levels improve.
-
-At 40 Chemists the policy enables the new QoL once. It maintains the remaining manual elements and gives available staff to K/Ca science after opening those elements. It buys useful factories and Research/Chemistry upgrades through the endpoint. Cosmetic clicks and repeated staff shuffling are not events.
-
-The second route loads the user-supplied save locally and resumes its paused state, with no additional resources. It starts with about 6.73e20 Researchers, 103 Factory I levels, 40 Chemists, Chemistry I, and best K/Ca levels 43/46. The encoded save remains local; only aggregate progression results are published.
+Both supplied files are read locally. Their paused states are resumed for progression checks. Raw saves are not published. The latest save already owns all five Chemistry upgrades, all three numerical milestones, K56/Ca55 best levels, and enough Researchers for the new endpoint. Its zero-second result verifies preservation, not the pacing of a new playthrough.
 
 ## Results
 
-| Route | Endpoint time | Longest useful-operation gap | Minimum numerical-reward gap | Cluster failures |
-| --- | ---: | ---: | ---: | ---: |
-| Original Group 3 checkpoint | 6497 s | 92 s | 18 s | 0 |
-| Supplied reference save | 125 s | 4 s | 15 s | 0 |
+| Route | Endpoint time | Longest useful-operation gap | Minimum numerical-reward gap |
+| --- | ---: | ---: | ---: |
+| Original Group 3 unlock | 8246 s | 92 s | 10 s |
+| Earlier supplied save (6.73e20 R) | 232 s | 4 s | 10 s |
+| Latest supplied save (6.82e33 R) | 0 s | 0 s | N/A — already complete |
 
-Both routes reach Chemistry V, 55 best K/Ca levels, and at least 1e24 current Researchers. See [the full-route summary](pacing-2.070.4.json) and [the reference summary](pacing-2.070.4-reference-summary.json).
+All three checks pass. The two actual progression routes have no clustered numerical rewards under the 10-second audit criterion. See [full-route data](pacing-2.070.5.json), [earlier reference summary](pacing-2.070.5-previous-reference-summary.json), and [latest preservation summary](pacing-2.070.5-current-reference-summary.json).
 
-### Reference-save numerical rewards
+## Numerical rewards on the progression routes
 
-| Reward | Seconds after load |
-| --- | ---: |
-| Buy chem upgrade 12 | 12 |
-| Buy chem upgrade 13 | 30 |
-| Earn chem:1 | 45 |
-| Buy chem upgrade 14 | 64 |
-| Earn chem:2 | 79 |
-| Buy chem upgrade 15 | 110 |
-| Earn chem:3 | 125 |
-
-### Original-route numerical rewards
-
-| Reward | Seconds from checkpoint |
-| --- | ---: |
-| Buy r upgrade 14 | 730 |
-| Factory Widget ramp 19 | 2047 |
-| Factory Widget ramp 20 | 2312 |
-| Factory Widget ramp 21 | 2457 |
-| Earn r:17 | 2713 |
-| Factory base bonus 24 | 3130 |
-| Factory base bonus 27 | 3600 |
-| Factory base bonus 30 | 3913 |
-| Factory base bonus 33 | 4138 |
-| Factory base bonus 36 | 4333 |
-| Factory base bonus 39 | 4527 |
-| Buy r upgrade 15 | 4808 |
-| Earn r:18 | 6092 |
-| Buy chem upgrade 11 | 6276 |
-| Buy chem upgrade 12 | 6294 |
-| Buy chem upgrade 13 | 6325 |
-| Earn chem:1 | 6348 |
-| Buy chem upgrade 14 | 6386 |
-| Earn chem:2 | 6412 |
-| Buy chem upgrade 15 | 6469 |
-| Earn chem:3 | 6497 |
+| Reward | Original route (s) | Earlier supplied save (s) |
+| --- | ---: | ---: |
+| Buy r upgrade 15 | 7855 | Already owned |
+| Buy chem upgrade 11 | 7947 | Already owned |
+| Earn chem:1 | 8036 | 74 |
+| Buy chem upgrade 12 | 8089 | 114 |
+| Earn chem:2 | 8131 | 146 |
+| Buy chem upgrade 13 | 8160 | 169 |
+| Buy chem upgrade 14 | 8211 | 208 |
+| Buy chem upgrade 15 | 8231 | 219 |
+| Earn chem:3 | 8241 | 229 |
 
 ## Failures investigated
 
-1. Moving milestone 17 to 22 levels without an intermediate Widget ramp produced a **130-second** operation gap near Factory I level 20. That candidate was rejected.
-2. The first version also awarded Researcher milestone 18 and Chemistry I at the same timestamp. Requiring the next native Factory VI level separates them.
-3. A tested intermediate Mastery VI exponent ramp did not fix the 130-second gap and was removed. The released code leaves that formula intact and uses the bounded milestone-16 Widget ramp instead.
-4. Element-level logarithms could round an exact level-55 boundary down to 54. The level helper now verifies the nearby exact amount thresholds; boundary tests cover all new gate levels.
+- Changing only the Researcher prices left Chemistry III too close to milestone 2: 7 seconds on the original route and 4 on the earlier supplied save. Chemistry II/III/IV element gates were moved to K51/Ca53/both54; the free milestone targets were retained.
+- With the revised element gates but Chemistry V at 1e32, the earlier supplied route still put V only 9 seconds before the final milestone. Moving V to 8e31 separates both late numerical rewards by at least 10 seconds on both tested routes. The endpoint still requires 1e32 current Researchers.
+- Revalidating an already completed older save called `hasUpgrade` before `tmp.chem` existed. The migration-safe final milestone checks the saved purchased-upgrade list directly. The latest real supplied save and a cold-load regression test now pass.
 
-## Functional and visual verification
+## Functional verification
 
-All **40 functional tests** pass, including full-staffing conservation, actual/effective staff separation, disabling the toggle, save reload, Nitrogen recruitment without double counting, milestone migration, prices and gated upgrades, exact level boundaries, unlock notes, and the original earlier-layer regressions.
+All **43 functional tests** pass. Added checks cover the native milestone toggle with immediate staff refunds, unaffected other automation toggles, exact Research/Chemistry resource gates and payments, unchanged Extreme Mode Research V price, and a completed old save loaded before temporary data exists. Earlier progression, staff conservation, recruitment, native factories, milestone thresholds, unlock notes, save import, and color checks also pass.
 
-At each changed Factory I stage, a stress test holds other inputs fixed and checks that the Widget production jump from one purchased level remains smaller than the increase in the next purchase cost, even with a large Hiawd stockpile. This guards against a single factory purchase paying for a cascade of further levels through its multiplier alone.
-
-Two import tests also verify that a local save opens in a new slot and invalid files leave existing progress intact. The file input supports browsers that do not implement the original prompt-based import.
-
-The live browser is also checked for K/Na and Ca/Mg column alignment, the auto-staffing switch, milestone text, and orange headings with white body text.
+Live visual verification covers the milestone's Chemistry-colored ON/OFF button, outline changes on exactly the automated unlocked elements, and removal of the old periodic-table toolbar. The original root game remains separate from the published `next/` subtree.
 
 ## Limits and reproduction
 
-These are two representative Normal Mode routes and targeted boundary tests. They do not guarantee identical timings for every allocation strategy, original earlier layer, Extreme Mode, or imported save. The full-staffing toggle is enabled in the audited routes; leaving it OFF changes the policy and timing. Existing resource stockpiles are retained, so past progress is not undone.
+These are representative Normal Mode routes, not a guarantee for every allocation strategy, difficulty, or save. They enable Auto H–Ne at 40 Chemists; leaving it OFF changes the timing. Existing resource stockpiles and purchases are retained. An already completed save cannot provide a new progression timing test.
 
 ```sh
 npm test
@@ -99,4 +60,4 @@ npm run check:pacing
 npm run check:pacing -- --save /path/to/local-save.txt --output work/reference-report.json
 ```
 
-The script fails if its route does not finish, a useful-operation gap exceeds 100 seconds, or numerical rewards occur less than 10 seconds apart. GitHub Actions runs the default full route. The supplied-save replay is local because the original attachment is not committed. [The previous report](PACING-2.070.3.md) records the earlier pacing checks.
+GitHub Actions runs the functional tests and original full route. Supplied-save checks remain local. [The 2.070.4 report](PACING-2.070.4.md) preserves the prior results. [Next directions](NEXT-DIRECTIONS.md) await the user's choice.

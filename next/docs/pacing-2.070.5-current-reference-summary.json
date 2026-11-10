@@ -1,0 +1,56 @@
+{
+  "version": "v2.070.5",
+  "scenario": "Local supplied save replay",
+  "seed": 391,
+  "timeStepSeconds": 1,
+  "start": {
+    "researchers": "6.817704393618084e33",
+    "factoryI": "115",
+    "chemists": "59",
+    "chemistry": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "milestones": [
+      4,
+      5,
+      1,
+      2,
+      3
+    ]
+  },
+  "simulatedSeconds": 0,
+  "completed": true,
+  "maxWaitSeconds": 100,
+  "longestWaitSeconds": 0,
+  "worstGap": null,
+  "meaningfulEvents": 1,
+  "majorRewards": [],
+  "potentialBursts": [],
+  "factoryCurve": [],
+  "chemistryCurve": [],
+  "final": {
+    "researchers": "6.817704393618084e33",
+    "factoryI": "115",
+    "chemists": "59",
+    "chemistry": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "milestones": [
+      4,
+      5,
+      1,
+      2,
+      3
+    ],
+    "K": "56",
+    "Ca": "55"
+  }
+}

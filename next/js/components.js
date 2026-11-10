@@ -24,18 +24,6 @@ function loadVue() {
             <small v-if="status" class="unlock-hint">{{status}}</small>
         </div>`,
     });
-    Vue.component('chem-full-staffing', {
-        computed: {
-            available() { return ChemistryQoL.autoUnlocked(); },
-            enabled() { return player.chem.autoEarly; },
-            total() { return formatWhole(player.chem.total); },
-        },
-        methods: { toggleAuto() { ChemistryQoL.toggleAuto(); } },
-        template: `<div v-if="available" class="chem-auto-toolbar">
-            <button class="savePopupBtn can chem-auto-toggle" @click="toggleAuto">Auto H–Ne: {{enabled ? 'ON' : 'OFF'}}</button>
-            <small>40 Chemists QoL: H–Ne each use {{total}} effective workers and scientists when ON. Enabling returns their manual staff to the free pool.</small>
-        </div>`,
-    });
     Vue.component('chem-assignment-sliders', {
         computed: {
             available() { return ChemistryQoL.unlocked(); },
@@ -331,7 +319,7 @@ function loadVue() {
 	Vue.component("chemClickable", { // 
 		props: ['name'],
 		template: `
-			<button class = "mediumUpg can small-gap" v-on:mousedown="handleMouseEvent" v-bind:style="name==player.chem.focus ? {'background-color': '#AA5555'} : {}">
+			<button class = "mediumUpg can small-gap" :class="{'chem-automated': ChemistryQoL.autoManaged(name)}" :title="ChemistryQoL.autoManaged(name) ? 'Automatic full staffing' : ''" v-on:mousedown="handleMouseEvent" v-bind:style="name==player.chem.focus ? {'background-color': '#AA5555'} : {}">
 			<h2 v-html="name" v-bind:style="name==player.chem.focus ? {'color': '#3388CC'} : {}">x</h2><br><br>
 			<span style='font-size: 65%' v-if="player.chem.toggle == 1" v-html='"Amount:<br>" + format(player.chem.amount[name])'></span>
 			<span style='font-size: 65%' v-if="player.chem.toggle == 2" v-html='"Levels:<br>" + formatWhole(ChemistryQoL.level(name))'></span>
@@ -428,7 +416,7 @@ function loadVue() {
 	Vue.component('toggle', {
 		props: ['layer', 'data'],
 		template: `
-		<button class="smallUpg can" v-bind:style="{'background-color': tmp[data[0]].color}" v-on:click="toggleAuto(data)">{{player[data[0]][data[1]]?"ON":"OFF"}}</button>
+		<button class="smallUpg can" :aria-label="data[0] === 'chem' && data[1] === 'autoEarly' ? 'Auto H–Ne' : null" :aria-pressed="data[0] === 'chem' && data[1] === 'autoEarly' ? player.chem.autoEarly : null" v-bind:style="{'background-color': tmp[data[0]].color}" v-on:click="toggleAuto(data)">{{player[data[0]][data[1]]?"ON":"OFF"}}</button>
 		`
 	})
 

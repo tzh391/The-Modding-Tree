@@ -1,6 +1,6 @@
-# The Tree of Life — Chemistry Continued (v2.070.4)
+# The Tree of Life — Chemistry Continued (v2.070.5)
 
-This branch continues the original `evolution` game. Human and earlier layers remain intact. Researcher mechanics are preserved except for the documented milestone-17 threshold fix, factory-base balance, gradual Widget reward, and the documented 2.070.4 progression/QoL adjustments. The separate cognition/legacy/reaction experiment has been removed from the playable version.
+This branch continues the original `evolution` game. Human and earlier layers remain intact. Researcher mechanics are preserved except for the documented milestone-17 threshold fix, factory-base balance, gradual Widget reward, the 2.070.4 progression/QoL adjustments, and the 2.070.5 Normal Mode Research V price. The separate cognition/legacy/reaction experiment has been removed from the playable version.
 
 ## Play and saves
 
@@ -18,24 +18,34 @@ The original 18 elements, workers, scientists, buildings, amount decay, nitrogen
 
 | Upgrade | Cost in Researchers | Unlock requirements | Effect |
 | --- | --- | --- | --- |
-| Chemistry I | 1e20 | Researcher milestone 18; 3 Factory VI levels; 1e20 best Researchers | Unlock K/Ca; double worker speed |
-| Chemistry II | 1e21 | I; 46 best K levels; 1e21 best Researchers | Double scientist speed |
-| Chemistry III | 1e22 | II; 49 best Ca levels; 1e22 best Researchers | Double worker speed |
-| Chemistry IV | 1e23 | III; 51 best K/Ca levels; 1e23 best Researchers | Double scientist speed |
-| Chemistry V | 1e24 | IV; 54 best K/Ca levels; 1e24 best Researchers | Double worker and scientist speed |
+| Chemistry I | 1e25 | Researcher milestone 18; 3 Factory VI levels; 1e25 best Researchers | Unlock K/Ca; double worker speed |
+| Chemistry II | 1e29 | I; 51 best K levels; 1e29 best Researchers | Double scientist speed |
+| Chemistry III | 1e30 | II; 53 best Ca levels; 1e30 best Researchers | Double worker speed |
+| Chemistry IV | 1e31 | III; 54 best K/Ca levels; 1e31 best Researchers | Double scientist speed |
+| Chemistry V | 8e31 | IV; 54 best K/Ca levels; 8e31 best Researchers | Double worker and scientist speed |
 
 Potassium multiplies worker speed by 1.05 per current level, capped at 100 levels. Calcium applies the same bonus to scientist speed. Their building production uses the original `B * 1.1^B` formula and the same decay calculation as the existing elements.
 
-Three numerical milestones use best element amounts: 50 K levels doubles worker speed; 52 Ca and 51 K levels doubles scientist speed; 55 levels in both plus Chemistry V halves decay after Sulfur's effect. The normal patch endpoint is Chemistry V, that third milestone at 55 best K/Ca levels, and 1e24 current Researchers. Extreme Mode retains its original 298 Chromosome endpoint.
+Three numerical milestones use best element amounts: 50 K levels doubles worker speed; 52 Ca and 51 K levels doubles scientist speed; 55 levels in both plus Chemistry V halves decay after Sulfur's effect. The normal patch endpoint is Chemistry V, that third milestone at 55 best K/Ca levels, and 1e32 current Researchers. Extreme Mode retains its original 298 Chromosome endpoint.
 
 These are additions to existing mechanics. No new Human currency, replacement Researcher system, or chemical reaction system is introduced. Late-game pacing still needs feedback from original endgame saves.
 
-## 2.070.4 layout, full staffing, and progression
+## 2.070.5 milestone toggle, outlines, and prices
+
+- Auto H–Ne is now the native ON/OFF toggle inside the **40 total Chemists** milestone. Its button uses `tmp.chem.color` (#AA0456), like other milestone automation. It is included in the native automation milestone display filters.
+- While ON, the first ten unlocked elements have a gold inner outline. Toggling OFF removes their outlines and effective full staffing. The actual staff pool and existing saved toggle value are preserved.
+- Normal Mode Research V retains its 44 Factory I prerequisite and now requires 5e22 best Researchers and costs 5e22 current Researchers. Its Extreme Mode cost and unlock condition stay original.
+- The Chemistry table above lists the new prices and element prerequisites. The 50/52/55 numerical milestones are unchanged. The final 8e31 price separates Chemistry V from the final milestone while remaining near the 1e32 stage.
+- The current endpoint is **Chemistry V, 55 best K/Ca levels, and 1e32 current Researchers**. Previously purchased upgrades are retained without charging the price difference.
+- Completed older saves can migrate before temporary layer data exists. The latest supplied save already meets this endpoint and is used as a preservation check, not presented as a progression replay.
+- See [the release pacing check](PACING-CHECK.md) and [proposed next directions](NEXT-DIRECTIONS.md). No 2.071 mechanics are implemented.
+
+## 2.070.4 layout, full staffing, and progression (historical)
 
 - The original compressed periodic-table layout uses eight fixed columns. K is directly below Na and Ca directly below Mg, on the fourth row; narrow panels can scroll horizontally rather than wrap elements into different columns.
-- At 40 total Chemists, milestone 5 unlocks **Auto H–Ne**, initially OFF. The switch is directly above the periodic table in Chemistry 1. When ON, each of the first ten unlocked elements has effective workers and scientists equal to total Chemists. Existing manual staff in those elements return to the free pool. Na–Ar, K and Ca remain manual. The actual Chemist pool remains conserved; automatic Nitrogen production recruits through its native formula.
+- At 40 total Chemists, milestone 5 unlocks **Auto H–Ne**, initially OFF. In 2.070.4 the switch was directly above the periodic table; 2.070.5 moves it into the milestone. When ON, each of the first ten unlocked elements has effective workers and scientists equal to total Chemists. Existing manual staff in those elements return to the free pool. Na–Ar, K and Ca remain manual. The actual Chemist pool remains conserved; automatic Nitrogen production recruits through its native formula.
 - Chemistry II–V require K46 / Ca49 / both51 / both54 in addition to their existing prices and sequence. Numerical milestones require K50 / Ca52 with K51 / both55 with Chemistry V. These targets separate the reward steps even when the Researcher bank is large.
-- Existing free Chemistry milestone flags are revalidated on update. Resources, buildings, best element amounts, and purchased upgrades are retained. The endpoint is now **Chemistry V, 55 best K/Ca levels, and 1e24 current Researchers**.
+- Existing free Chemistry milestone flags are revalidated on update. Resources, buildings, best element amounts, and purchased upgrades are retained. That release used **Chemistry V, 55 best K/Ca levels, and 1e24 current Researchers**; see 2.070.5 above for the current price and endpoint.
 - Researcher milestone 17 now requires **22 Factory I levels**. Its six +.07 base bonuses move to **24/27/30/33/36/39**. Hiawd credit is limited to 750 levels per Factory I level above 21. Milestone 16 adds a bounded Widget ramp at Factory I levels 19–21: x1.5 per level, at most x3.375. The original Mastery VI exponent reward still belongs to milestone 17.
 - Chemistry I now needs the **third Factory VI level**, so it follows milestone 18 at two levels rather than appearing at the same instant.
 - Exact element-level boundaries use a comparison correction for floating-point logarithm rounding.
