@@ -14,8 +14,9 @@ No new content is added. Upgrade prerequisites and effects remain original. Thes
 | Hydrogen XIX | 1e1040 Hydrogen |
 | Hydrogen XX | 1e1319 Hydrogen |
 | First Token | 1e6600 Life Points |
+| Second Token | 1e7760 Life Points |
 
-The user clarified that the final two upgrade names are **XIX / XX (19 / 20)**. XIV / XV (14 / 15) retain their original prices. The first Token remains a native prestige reset, and is available exactly at the new threshold. Later Token costs and effective-token modifiers keep their original formulas. Existing purchases, resources and Token totals are retained.
+The user clarified that the final two upgrade names are **XIX / XX (19 / 20)**. XIV / XV (14 / 15) retain their original prices. The first two Tokens remain native prestige resets and are available exactly at their new thresholds. Their Normal Mode prices are editable together in `js/normalBalance.js` as `["1e6600", "1e7760"]`. Token 3 onward and effective-token modifiers keep their original formulas. See [editing and submitting prices](EDITING-PRICES.md). Existing purchases, resources and Token totals are retained.
 
 `js/normalBalance.js` applies these overrides; the original `js/layers.js` and Token cost tables remain unchanged. See [the pacing report](PACING-CHECK.md) for native early-game and Chemistry regression checks. The Chemistry endpoint remains Chemistry V, 55 best K/Ca levels, and 1e32 current Researchers.
 
