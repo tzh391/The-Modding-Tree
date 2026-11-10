@@ -16,7 +16,7 @@ const result=e.run(`(()=>{
  const start={checkpoint:'Original e300 Hydrogen',hydrogen:player.h.points.toString(),lifePoints:player.points.toString(),tokens:player.tokens.total.toString()};
  for(;time<12000;time++){
   for(const layer of ['h','c','o','mini'])for(const id of Object.keys(layers[layer].upgrades).filter(x=>/^\\d+$/.test(x))){
-   const n=player[layer].upgrades.length;buyUpgrade(layer,id);if(player[layer].upgrades.length>n){record(layer+' upgrade '+id);if(layer==='h'&&[61,62,63,64,65].includes(Number(id))&&!seenHydrogen.has(id)){seenHydrogen.add(id);targets.push({time,action:'Hydrogen '+id,hydrogen:player.h.points.toString()});}}
+   const n=player[layer].upgrades.length;buyUpgrade(layer,id);if(player[layer].upgrades.length>n){record(layer+' upgrade '+id);updateTemp();if(layer==='h'&&[61,62,63,64,65].includes(Number(id))&&!seenHydrogen.has(id)){seenHydrogen.add(id);targets.push({time,action:'Hydrogen '+id,hydrogen:player.h.points.toString()});}}
   }
   for(const id of Object.keys(layers.mini.buyables).filter(x=>/^\\d+$/.test(x))){
    const n=player.mini.buyables[id];buyBuyable('mini',id);if(player.mini.buyables[id].gt(n))record('mini buyable '+id);
