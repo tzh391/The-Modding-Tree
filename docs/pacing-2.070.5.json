@@ -1,0 +1,268 @@
+{
+  "version": "v2.070.5",
+  "scenario": "Original Group 3 unlock through continuation",
+  "seed": 391,
+  "timeStepSeconds": 1,
+  "start": {
+    "researchers": "13632524.260700071",
+    "factoryI": "0",
+    "chemists": "20",
+    "chemistry": [],
+    "milestones": []
+  },
+  "simulatedSeconds": 8246,
+  "completed": true,
+  "maxWaitSeconds": 100,
+  "longestWaitSeconds": 92,
+  "worstGap": {
+    "from": {
+      "time": 2365,
+      "action": "Improve Human buyables with Bulk"
+    },
+    "to": {
+      "time": 2457,
+      "action": "Factory 11 level 21"
+    }
+  },
+  "meaningfulEvents": 1784,
+  "majorRewards": [
+    {
+      "time": 730,
+      "action": "Buy r upgrade 14"
+    },
+    {
+      "time": 2047,
+      "action": "Factory Widget ramp 19"
+    },
+    {
+      "time": 2312,
+      "action": "Factory Widget ramp 20"
+    },
+    {
+      "time": 2457,
+      "action": "Factory Widget ramp 21"
+    },
+    {
+      "time": 2713,
+      "action": "Earn r:17"
+    },
+    {
+      "time": 3130,
+      "action": "Factory base bonus 24"
+    },
+    {
+      "time": 3600,
+      "action": "Factory base bonus 27"
+    },
+    {
+      "time": 3913,
+      "action": "Factory base bonus 30"
+    },
+    {
+      "time": 4138,
+      "action": "Factory base bonus 33"
+    },
+    {
+      "time": 4333,
+      "action": "Factory base bonus 36"
+    },
+    {
+      "time": 4527,
+      "action": "Factory base bonus 39"
+    },
+    {
+      "time": 6488,
+      "action": "Earn r:18"
+    },
+    {
+      "time": 7855,
+      "action": "Buy r upgrade 15"
+    },
+    {
+      "time": 7947,
+      "action": "Buy chem upgrade 11"
+    },
+    {
+      "time": 8036,
+      "action": "Earn chem:1"
+    },
+    {
+      "time": 8089,
+      "action": "Buy chem upgrade 12"
+    },
+    {
+      "time": 8131,
+      "action": "Earn chem:2"
+    },
+    {
+      "time": 8160,
+      "action": "Buy chem upgrade 13"
+    },
+    {
+      "time": 8211,
+      "action": "Buy chem upgrade 14"
+    },
+    {
+      "time": 8231,
+      "action": "Buy chem upgrade 15"
+    },
+    {
+      "time": 8241,
+      "action": "Earn chem:3"
+    }
+  ],
+  "potentialBursts": [],
+  "factoryCurve": [
+    {
+      "targetLevel": 18,
+      "time": 1813,
+      "base": "2.16",
+      "widgetsPerSecond": "2.213752719944339e17",
+      "countedHiawdLevels": "0"
+    },
+    {
+      "targetLevel": 19,
+      "time": 2047,
+      "base": "2.16",
+      "widgetsPerSecond": "3.3246928183895386e18",
+      "countedHiawdLevels": "0"
+    },
+    {
+      "targetLevel": 20,
+      "time": 2312,
+      "base": "2.16",
+      "widgetsPerSecond": "6.61003654294472e19",
+      "countedHiawdLevels": "0"
+    },
+    {
+      "targetLevel": 21,
+      "time": 2457,
+      "base": "2.16",
+      "widgetsPerSecond": "5.654743397410354e20",
+      "countedHiawdLevels": "0"
+    },
+    {
+      "targetLevel": 22,
+      "time": 2712,
+      "base": "2.16",
+      "widgetsPerSecond": "8.452032271494943e21",
+      "countedHiawdLevels": "0"
+    },
+    {
+      "targetLevel": 24,
+      "time": 3130,
+      "base": "2.2399999999999998",
+      "widgetsPerSecond": "1.9419086669107535e24",
+      "countedHiawdLevels": "2250"
+    },
+    {
+      "targetLevel": 27,
+      "time": 3600,
+      "base": "2.3099999999999996",
+      "widgetsPerSecond": "1.4740873607205929e28",
+      "countedHiawdLevels": "4500"
+    },
+    {
+      "targetLevel": 30,
+      "time": 3913,
+      "base": "2.3799999999999994",
+      "widgetsPerSecond": "8.70122635102944e31",
+      "countedHiawdLevels": "6750"
+    },
+    {
+      "targetLevel": 33,
+      "time": 4138,
+      "base": "2.4499999999999993",
+      "widgetsPerSecond": "7.901791087771455e35",
+      "countedHiawdLevels": "9000"
+    },
+    {
+      "targetLevel": 36,
+      "time": 4333,
+      "base": "2.519999999999999",
+      "widgetsPerSecond": "7.959923789502312e39",
+      "countedHiawdLevels": "9492"
+    },
+    {
+      "targetLevel": 39,
+      "time": 4527,
+      "base": "2.589999999999999",
+      "widgetsPerSecond": "8.549749434689303e43",
+      "countedHiawdLevels": "9503"
+    },
+    {
+      "targetLevel": 40,
+      "time": 4564,
+      "base": "2.589999999999999",
+      "widgetsPerSecond": "2.8996567024061495e45",
+      "countedHiawdLevels": "9503"
+    },
+    {
+      "targetLevel": 51,
+      "time": 5587,
+      "base": "2.589999999999999",
+      "widgetsPerSecond": "1.4053029488011166e60",
+      "countedHiawdLevels": "9567"
+    },
+    {
+      "targetLevel": 60,
+      "time": 6762,
+      "base": "2.7199999999999993",
+      "widgetsPerSecond": "1.4843647359399634e74",
+      "countedHiawdLevels": "9761"
+    }
+  ],
+  "chemistryCurve": [
+    {
+      "time": 7947,
+      "upgrade": 11,
+      "K": "0",
+      "Ca": "0"
+    },
+    {
+      "time": 8089,
+      "upgrade": 12,
+      "K": "51",
+      "Ca": "50"
+    },
+    {
+      "time": 8160,
+      "upgrade": 13,
+      "K": "53",
+      "Ca": "53"
+    },
+    {
+      "time": 8211,
+      "upgrade": 14,
+      "K": "54",
+      "Ca": "54"
+    },
+    {
+      "time": 8231,
+      "upgrade": 15,
+      "K": "54",
+      "Ca": "54"
+    }
+  ],
+  "final": {
+    "researchers": "1.2323634938357428e32",
+    "factoryI": "99",
+    "chemists": "58",
+    "chemistry": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "milestones": [
+      4,
+      5,
+      1,
+      2,
+      3
+    ],
+    "K": "55",
+    "Ca": "55"
+  }
+}
