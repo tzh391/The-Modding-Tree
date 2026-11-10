@@ -234,7 +234,7 @@ function installChemistryContinuation() {
     CHANGELOGS.unshift(normalUpdate("2.071.1", [
         "Normal Mode balance only; no new content.",
         "Hydrogen XVI / XVII / XVIII / XIX / XX now cost 7.77e777 / 1e800 / 1e1000 / 1e1040 / 1e1319 Hydrogen.",
-        "The first Token now requires 1e6600 Life Points and is affordable at the exact threshold. Later Token costs keep their original formulas.",
+        "The first two Tokens now require 1e6600 and 1e7760 Life Points and are affordable at their exact thresholds. Token 3 onward keeps its original formula.",
         "Upgrade prerequisites and effects, existing progress, and Hard/Extreme Mode prices are preserved.",
     ]));
 

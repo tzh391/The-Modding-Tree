@@ -28,13 +28,13 @@ test('the first Normal Mode Token costs Life Points and is available at exactly 
  assert(e.run('tmp.tokens.getNextAt.eq("1e6600")&&!tmp.tokens.canReset&&tmp.tokens.getResetGain.eq(0)'));
  e.run('player.points=new Decimal("1e6600");updateTemp();updateTemp()');
  assert(e.run('tmp.tokens.canReset&&tmp.tokens.getResetGain.eq(1)'));
- e.run('doReset("tokens");updateTemp();updateTemp()');assert(e.run('player.tokens.total.eq(1)&&player.tokens.points.eq(1)&&tmp.tokens.getNextAt.eq(Decimal.pow(10,7587))'));
+ e.run('doReset("tokens");updateTemp();updateTemp()');assert(e.run('player.tokens.total.eq(1)&&player.tokens.points.eq(1)&&tmp.tokens.getNextAt.eq("1e7760")'));
 });
 test('later Token prices, effective-token modifiers, and Hard/Extreme Token formulas stay original',()=>{
  const e=engine();e.run('var originalTokenNext=tokenNextAt;loadContinuation()');
  for(const flags of [[false,false],[true,false],[false,true],[true,true]])for(const n of [0,1,2,10,86,90]){
   e.run(`player.hardMode=${flags[0]};player.extremeMode=${flags[1]};player.tokens.total=new Decimal(${n});updateTemp();updateTemp()`);
-  if(n===0&&!flags[0]&&!flags[1])continue;
+  if(n<2&&!flags[0]&&!flags[1])continue;
   assert(e.run('tokenNextAt().eq(originalTokenNext())'),JSON.stringify({flags,n}));
  }
  e.run('player.hardMode=false;player.extremeMode=false;player.tokens.total=new Decimal(0);tmp.tokens.getMinusEffectiveTokens=new Decimal(1)');assert(e.run('tokenNextAt().eq(originalTokenNext())'));
@@ -42,4 +42,11 @@ test('later Token prices, effective-token modifiers, and Hard/Extreme Token form
 test('existing Hydrogen upgrades and Token totals survive the price-only update',()=>{
  const e=loaded();e.run('player.version="2.070.5";player.h.upgrades=[54,55,61,62,63,64,65];player.h.points=new Decimal("1e1500");player.tokens.total=new Decimal(3);player.tokens.points=new Decimal(2);save()');
  const r=engine('',[...e.storage]);r.run('loadContinuation()');assert(r.run('player.h.upgrades.includes(65)&&player.h.points.eq("1e1500")&&player.tokens.total.eq(3)&&player.tokens.points.eq(2)'));
+});
+
+test('the second Normal Mode Token charges 1e7760 Life Points with an inclusive threshold',()=>{
+ const e=loaded();e.run('player.h.upgrades=[55,65];player.tokens.total=new Decimal(1);player.tokens.points=new Decimal(1);player.points=new Decimal("1e7759");updateTemp();updateTemp()');
+ assert(e.run('tmp.tokens.getNextAt.eq("1e7760")&&!tmp.tokens.canReset&&tmp.tokens.getResetGain.eq(0)'));
+ e.run('player.points=new Decimal("1e7760");updateTemp();updateTemp()');assert(e.run('tmp.tokens.canReset&&tmp.tokens.getResetGain.eq(1)'));
+ e.run('doReset("tokens");updateTemp();updateTemp()');assert(e.run('player.tokens.total.eq(2)&&player.tokens.points.eq(2)&&tmp.tokens.getNextAt.eq(Decimal.pow(10,7630))'));
 });

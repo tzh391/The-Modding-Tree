@@ -8,16 +8,20 @@ function installNormalBalance() {
             return normal() ? new Decimal(price) : originalCost();
         };
     }
+    // Actual Life Point costs: index 0 is Token 1, index 1 is Token 2.
+    const tokenPrices = ["1e6600", "1e7760"];
+    const normalTokenPrice = () => normal() && tmp.tokens.getMinusEffectiveTokens.eq(0)
+        ? tokenPrices[player.tokens.total.toString()] : undefined;
     const originalNextAt = tokenNextAt;
-    const firstNormalToken = () => normal() && player.tokens.total.eq(0) && tmp.tokens.getMinusEffectiveTokens.eq(0);
     tokenNextAt = function () {
-        return firstNormalToken() ? new Decimal("1e6600") : originalNextAt();
+        const price = normalTokenPrice();
+        return price === undefined ? originalNextAt() : new Decimal(price);
     };
-    // The original custom prestige uses a strict comparison. Allow the new
-    // first-token price exactly, as well as amounts above it.
+    // Permit exact equality for the two adjusted Normal Mode Token prices.
     const originalTokenGain = layers.tokens.getResetGain;
     layers.tokens.getResetGain = function () {
-        if (firstNormalToken() && tmp.tokens.baseAmount.gte(tmp.tokens.getNextAt)) return new Decimal(1);
+        const price = normalTokenPrice();
+        if (price !== undefined) return new Decimal(tmp.tokens.baseAmount.gte(price) ? 1 : 0);
         return originalTokenGain();
     };
 }
