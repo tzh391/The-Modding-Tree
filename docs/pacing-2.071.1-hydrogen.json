@@ -1,0 +1,62 @@
+{
+  "version": "v2.071.1",
+  "start": {
+    "checkpoint": "Original e300 Hydrogen",
+    "hydrogen": "3.2547266004200353e301",
+    "lifePoints": "1.727352626217988e197",
+    "tokens": "0"
+  },
+  "simulatedSeconds": 3342,
+  "completed": true,
+  "maxWaitSeconds": 100,
+  "longestWaitSeconds": 15,
+  "worstGap": {
+    "from": {
+      "time": 3202,
+      "action": "mini buyable 23"
+    },
+    "to": {
+      "time": 3217,
+      "action": "mini buyable 62"
+    }
+  },
+  "minimumTargetRewardGapSeconds": 71,
+  "potentialBursts": [],
+  "targets": [
+    {
+      "time": 1742,
+      "action": "Hydrogen 61",
+      "hydrogen": "2.2705512561399033e776"
+    },
+    {
+      "time": 1813,
+      "action": "Hydrogen 62",
+      "hydrogen": "4.057127080959185e799"
+    },
+    {
+      "time": 2272,
+      "action": "Hydrogen 63",
+      "hydrogen": "1.8238568956830155e1000"
+    },
+    {
+      "time": 2412,
+      "action": "Hydrogen 64",
+      "hydrogen": "1.4723807743707016e1040"
+    },
+    {
+      "time": 3269,
+      "action": "Hydrogen 65",
+      "hydrogen": "2.009204357538879e1317"
+    },
+    {
+      "time": 3342,
+      "action": "First Token",
+      "lifePoints": "1.2099998085924408e6600"
+    }
+  ],
+  "eventCount": 20945,
+  "final": {
+    "H": "1.0033347351004935e1321",
+    "LP": "1.2099998085924408e6600"
+  }
+}

@@ -1,6 +1,23 @@
-# The Tree of Life — Chemistry Continued (v2.070.5)
+# The Tree of Life — Chemistry Continued (v2.071.1)
 
-This branch continues the original `evolution` game. Human and earlier layers remain intact. Researcher mechanics are preserved except for the documented milestone-17 threshold fix, factory-base balance, gradual Widget reward, the 2.070.4 progression/QoL adjustments, and the 2.070.5 Normal Mode Research V price. The separate cognition/legacy/reaction experiment has been removed from the playable version.
+This branch continues the original `evolution` game. The original layers remain in use; 2.071.1 changes only the documented Normal Mode Hydrogen and first-Token prices in the early game. Researcher mechanics are preserved except for the documented milestone-17 threshold fix, factory-base balance, gradual Widget reward, the 2.070.4 progression/QoL adjustments, and the 2.070.5 Normal Mode Research V price. The separate cognition/legacy/reaction experiment has been removed from the playable version.
+
+## 2.071.1 Normal Mode price balance
+
+No new content is added. Upgrade prerequisites and effects remain original. These prices apply when Easy, Hard, and Extreme Mode are all OFF; other difficulty prices retain their original formulas.
+
+| Item | Price |
+| --- | ---: |
+| Hydrogen XVI | 7.77e777 Hydrogen |
+| Hydrogen XVII | 1e800 Hydrogen |
+| Hydrogen XVIII | 1e1000 Hydrogen |
+| Hydrogen XIX | 1e1040 Hydrogen |
+| Hydrogen XX | 1e1319 Hydrogen |
+| First Token | 1e6600 Life Points |
+
+The user clarified that the final two upgrade names are **XIX / XX (19 / 20)**. XIV / XV (14 / 15) retain their original prices. The first Token remains a native prestige reset, and is available exactly at the new threshold. Later Token costs and effective-token modifiers keep their original formulas. Existing purchases, resources and Token totals are retained.
+
+`js/normalBalance.js` applies these overrides; the original `js/layers.js` and Token cost tables remain unchanged. See [the pacing report](PACING-CHECK.md) for native early-game and Chemistry regression checks. The Chemistry endpoint remains Chemistry V, 55 best K/Ca levels, and 1e32 current Researchers.
 
 ## Play and saves
 
