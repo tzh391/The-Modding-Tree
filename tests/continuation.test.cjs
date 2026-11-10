@@ -7,13 +7,13 @@ function loaded(search = '', storage = [], early = false) {
 }
 function late() {
     const e = loaded('?start=chemistry');
-    e.run('player.r.milestones = Array.from({length:18}, (_,i) => i+1); player.r.buyables[23]=new Decimal(3); player.r.points = new Decimal(1e20); player.r.best = new Decimal(1e20); updateTemp()');
+    e.run('player.r.milestones = Array.from({length:18}, (_,i) => i+1); player.r.buyables[23]=new Decimal(3); player.r.points = new Decimal("1e25"); player.r.best = new Decimal("1e25"); updateTemp()');
     return e;
 }
 test('starts in English at the original beginning with the original layer set', () => {
     const e = loaded();
     assert.equal(e.run('modInfo.id'), 'tree_of_life_continuation');
-    assert.equal(e.run('VERSION.withoutName'), 'v2.070.4');
+    assert.equal(e.run('VERSION.withoutName'), 'v2.070.5');
     assert.equal(e.run('player.tab'), 'none');
     assert(!e.run('player.hu.unlocked')); assert(!e.run('player.chem.unlocked'));
     assert(!e.run('layers.hu2 || layers.r2 || layers.lab2'));
@@ -25,6 +25,7 @@ test('Human and other Researcher mechanics stay equivalent outside the documente
     const serialize = layer => JSON.stringify(layer, (_, value) => typeof value === 'function' ? value.toString() : value);
     const mechanics = layer => {
         const copy=Object.fromEntries(Object.entries(layer).filter(([key]) => key !== 'tabFormat'));
+        copy.upgrades={...layer.upgrades,15:Object.fromEntries(Object.entries(layer.upgrades[15]).filter(([key])=>!['cost','unlocked','unlockHint'].includes(key)))};
         copy.widgets=Object.fromEntries(Object.entries(layer.widgets).filter(([key])=>!['getResetGain','getMilestone17Levels'].includes(key)));
         copy.buyables=Object.fromEntries(Object.entries(layer.buyables).filter(([key])=>key!=='getBaseMult'));
         copy.milestones={...layer.milestones,16:Object.fromEntries(Object.entries(layer.milestones[16]).filter(([key])=>key!=='effectDescription')),17:Object.fromEntries(Object.entries(layer.milestones[17]).filter(([key])=>!['effectDescription','requirementDescription','done'].includes(key)))};
@@ -83,13 +84,13 @@ test('Potassium and Calcium use the existing building, production, decay, and as
 });
 test('new upgrades, milestones, and endgame follow their displayed requirements', () => {
     const e = late();
-    e.run('buyUpgrade("chem",11); player.r.points=new Decimal(1e24); player.r.best=new Decimal(1e24); player.chem.amount.K=new Decimal(5).times(Decimal.pow(2,55)); player.chem.amount.Ca=player.chem.amount.K; player.chem.best_amount.K=player.chem.amount.K; player.chem.best_amount.Ca=player.chem.amount.Ca.plus(1); player.chem.best_amount.K=player.chem.amount.K.plus(1); updateTemp()');
+    e.run('buyUpgrade("chem",11); player.r.points=new Decimal("8e31"); player.r.best=new Decimal("1e32"); player.chem.amount.K=new Decimal(5).times(Decimal.pow(2,55)); player.chem.amount.Ca=player.chem.amount.K; player.chem.best_amount.K=player.chem.amount.K; player.chem.best_amount.Ca=player.chem.amount.Ca.plus(1); player.chem.best_amount.K=player.chem.amount.K.plus(1); updateTemp()');
     for (const id of [12,13,14,15]) e.run(`updateTemp(); buyUpgrade("chem",${id})`);
     assert(!e.run('hasUpgrade("chem",15)'), 'buying V must still pay its full cost');
-    e.run('player.r.points=new Decimal(1e24); updateTemp(); buyUpgrade("chem",15); updateMilestones("chem"); updateTemp(); updateMilestones("chem"); updateTemp(); updateMilestones("chem"); updateTemp()');
+    e.run('player.r.points=new Decimal("8e31"); updateTemp(); buyUpgrade("chem",15); updateMilestones("chem"); updateTemp(); updateMilestones("chem"); updateTemp(); updateMilestones("chem"); updateTemp()');
     assert(e.run('hasUpgrade("chem",15) && hasMilestone("chem",3)'));
     assert(!e.run('isEndgameRaw()'));
-    e.run('player.r.points=new Decimal(1e24)');
+    e.run('player.r.points=new Decimal("1e32")');
     assert(e.run('isEndgameRaw()'));
     e.run('player.extremeMode=true; player.ch.points=new Decimal(297)'); assert(!e.run('isEndgameRaw()'));
     e.run('player.ch.points=new Decimal(298)'); assert(e.run('isEndgameRaw()'));
@@ -97,7 +98,7 @@ test('new upgrades, milestones, and endgame follow their displayed requirements'
 test('cold and cached loading orders both install only after the engine is ready', () => {
     const e = loaded('', [], true);
     e.run('gameLoop(1); updateTemp()');
-    assert.equal(e.run('VERSION.withoutName'), 'v2.070.4');
+    assert.equal(e.run('VERSION.withoutName'), 'v2.070.5');
     assert(e.run('NaNcheck(player)'));
 });
 test('zero decay keeps its linear limit', () => {

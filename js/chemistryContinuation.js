@@ -19,7 +19,7 @@ function installChemistryContinuation() {
     chemInitialEffects.K = "per level multiply worker speed by 1.05 (max 100 levels)";
     chemInitialEffects.Ca = "per level multiply scientist speed by 1.05 (max 100 levels)";
     const level = (id, best) => ChemistryQoL.level(id, best);
-    const cost = [1e20, 1e21, 1e22, 1e23, 1e24];
+    const cost = ["1e25", "1e29", "1e30", "1e31", "8e31"];
     const descriptions = [
         "Unlock Potassium and Calcium in Chemistry and double worker speed.",
         "Double scientist speed.",
@@ -37,14 +37,14 @@ function installChemistryContinuation() {
             currencyDisplayName: "Researchers", currencyInternalName: "points", currencyLayer: "r",
             unlocked() {
                 if (hasUpgrade("chem", id)) return true;
-                if (i === 0) return hasMilestone("r", 18) && player.r.buyables[23].gte(3) && player.r.best.gte(1e20);
+                if (i === 0) return hasMilestone("r", 18) && player.r.buyables[23].gte(3) && player.r.best.gte(cost[0]);
                 return hasUpgrade("chem", id - 1) && player.r.best.gte(cost[i]) &&
-                    (i === 1 ? level("K", true).gte(46) : i === 2 ? level("Ca", true).gte(49) : level("K", true).gte(i === 3 ? 51 : 54) && level("Ca", true).gte(i === 3 ? 51 : 54));
+                    (i === 1 ? level("K", true).gte(51) : i === 2 ? level("Ca", true).gte(53) : level("K", true).gte(54) && level("Ca", true).gte(54));
             },
             unlockHint() {
                 if (i === 0) return "Researcher milestone 18, 3 Factory VI levels, and " + format(cost[i]) + " best Researchers";
                 return "Chemistry " + ["I", "II", "III", "IV"][i - 1] + ", " + format(cost[i]) + " best Researchers, and " +
-                    (i === 1 ? "46 best Potassium levels" : i === 2 ? "49 best Calcium levels" : (i === 3 ? "51" : "54") + " best levels in both Potassium and Calcium");
+                    (i === 1 ? "51 best Potassium levels" : i === 2 ? "53 best Calcium levels" : "54 best levels in both Potassium and Calcium");
             },
             onPurchase() { if (id === 11) player.chem.chemUnlocks.period4 = true; },
         };
@@ -52,10 +52,20 @@ function installChemistryContinuation() {
     chem.milestones = {
         1: { requirementDescription: () => "50 best Potassium levels", done: () => level("K", true).gte(50), unlocked: () => hasUpgrade("chem", 11), effectDescription: () => "Reward: Double worker speed." },
         2: { requirementDescription: () => "52 best Calcium and 51 best Potassium levels", done: () => level("Ca", true).gte(52) && level("K", true).gte(51), unlocked: () => hasMilestone("chem", 1), effectDescription: () => "Reward: Double scientist speed." },
-        3: { requirementDescription: () => "55 best Potassium and Calcium levels and Chemistry V", done: () => level("K", true).gte(55) && level("Ca", true).gte(55) && hasUpgrade("chem", 15), unlocked: () => hasMilestone("chem", 1) && hasMilestone("chem", 2), effectDescription: () => "Reward: Halve element decay after Sulfur's effect." },
+        3: { requirementDescription: () => "55 best Potassium and Calcium levels and Chemistry V", done: () => level("K", true).gte(55) && level("Ca", true).gte(55) && player.chem.upgrades.includes(15), unlocked: () => hasMilestone("chem", 1) && hasMilestone("chem", 2), effectDescription: () => "Reward: Halve element decay after Sulfur's effect." },
         4: { requirementDescription: () => "20 total Chemists (QoL)", done: () => player.chem.total.gte(20), unlocked: () => player.chem.unlocked, effectDescription: () => "Reward: Unlock worker and scientist assignment sliders. The existing +1/-1 controls remain available." },
-        5: { requirementDescription: () => "40 total Chemists (QoL)", done: () => player.chem.total.gte(40), unlocked: () => player.chem.unlocked, effectDescription: () => "Reward: Unlock optional full staffing for the first 10 elements (H–Ne). Each uses all Chemists as effective workers and scientists without consuming the manual staff pool." },
+        5: { toggles: () => [["chem", "autoEarly"]], requirementDescription: () => "40 total Chemists (QoL)", done: () => player.chem.total.gte(40), unlocked: () => player.chem.unlocked, effectDescription: () => "Reward: Auto H–Ne — optional full staffing for the first 10 elements (H–Ne). Each uses all Chemists as effective workers and scientists without consuming the manual staff pool." },
     };
+    const oldToggleAuto = toggleAuto;
+    toggleAuto = function (toggle) {
+        if (toggle[0] === "chem" && toggle[1] === "autoEarly") return ChemistryQoL.toggleAuto();
+        return oldToggleAuto(toggle);
+    };
+    // Keep the original Factory I prerequisite and the original Extreme Mode price.
+    const oldResearchV = { ...layers.r.upgrades[15] };
+    layers.r.upgrades[15].cost = () => player.extremeMode ? oldResearchV.cost() : new Decimal("5e22");
+    layers.r.upgrades[15].unlocked = () => hasUpgrade("r", 15) || (oldResearchV.unlocked() && (player.extremeMode || player.r.best.gte("5e22")));
+    layers.r.upgrades[15].unlockHint = () => player.extremeMode ? "44 Factory I levels" : "44 Factory I levels and 5.00e22 best Researchers";
     const oldFix = fixOldSave;
     fixOldSave = function (oldVersion) {
         oldFix(oldVersion);
@@ -122,22 +132,21 @@ function installChemistryContinuation() {
     chem.tabFormat.Upgrades.unlocked = () => hasMilestone("r", 15) || hasUpgrade("chem", 11);
     chem.tabFormat.Milestones.unlocked = () => player.chem.unlocked;
     const contents = chem.tabFormat["Chemistry 1"].content;
-    contents.splice(1, 0, "chem-full-staffing");
     contents.splice(contents.indexOf("chem-details") + 1, 0, "blank", "chem-assignment-sliders");
     contents.push(["display-text", function () {
-        if (!hasUpgrade("chem", 11)) return '<small class="unlock-hint">Next elements: Potassium and Calcium — unlock with Chemistry I at 1e20 Researchers, after Researcher milestone 18 and 3 Factory VI levels.</small>';
+        if (!hasUpgrade("chem", 11)) return '<small class="unlock-hint">Next elements: Potassium and Calcium — unlock with Chemistry I at 1e25 Researchers, after Researcher milestone 18 and 3 Factory VI levels.</small>';
         return "";
     }]);
     const info = chem.tabFormat.Info.content;
     info.push("blank", ["display-text", function () {
         let text = "<small class='unlock-hint'>Continuation preview. Original saves can be imported through Options.</small>";
         if (hasUpgrade("chem", 11)) text += br2 + displayChemInitialEffect("K") + br + displayChemInitialEffect("Ca");
-        return text + br2 + "Current endgame: Chemistry V, 55 best Potassium and Calcium levels, and 1e24 Researchers.";
+        return text + br2 + "Current endgame: Chemistry V, 55 best Potassium and Calcium levels, and 1e32 Researchers.";
     }]);
     const oldEndgame = isEndgameRaw;
     isEndgameRaw = function () {
         if (player.extremeMode) return oldEndgame();
-        return hasUpgrade("chem", 15) && hasMilestone("chem", 3) && player.r.points.gte(1e24);
+        return hasUpgrade("chem", 15) && hasMilestone("chem", 3) && player.r.points.gte("1e32");
     };
     const factories = layers.r.tabFormat.Factories.content;
     factories.splice(2, 0, ["display-text", function () {
@@ -173,11 +182,11 @@ function installChemistryContinuation() {
         if (hasMilestone("r", 18)) ret = ret.plus(player.r.buyables[23].min(10).times(.04));
         return ret;
     };
-    VERSION.num = "2.070.4";
-    VERSION.name = "Chemistry Progression and Automation";
+    VERSION.num = "2.070.5";
+    VERSION.name = "Chemistry Prices and Milestone Automation";
     VERSION.withoutName = "v" + VERSION.num;
     VERSION.withName = VERSION.withoutName + ": " + VERSION.name;
-    CHANELOG_VERSION = "v2.070.4";
+    CHANELOG_VERSION = "v2.070.5";
     const normalUpdate = (version, lines) => "<div class='normal-update'><br><h3>v" + version + "</h3><br>" + lines.map(line => "<span>- " + line + "</span><br>").join("") + "</div>";
     CHANGELOGS.unshift(normalUpdate("2.070", [
         "Continued Chemistry with Potassium, Calcium, five upgrades, and three milestones.",
@@ -212,5 +221,13 @@ function installChemistryContinuation() {
         "Revalidate free Chemistry milestones against their new requirements on update; preserve resources, buildings, and purchased upgrades.",
         "Added a local-file import option that opens the save in a separate slot and keeps existing saves.",
         "Audit both long waits and clustered progression, including a supplied late-Chemistry reference save.",
+    ]));
+    CHANGELOGS.unshift(normalUpdate("2.070.5", [
+        "Moved Auto H–Ne into the 40-Chemist milestone, using the standard ON/OFF toggle and Chemistry color.",
+        "Automated elements have a gold inner outline while full staffing is ON.",
+        "Research V now unlocks and costs 5e22 Researchers (Normal Mode). Chemistry I–V now unlock and cost 1e25 / 1e29 / 1e30 / 1e31 / 8e31 Researchers. Factory prerequisites remain; Chemistry II–V require K51 / Ca53 / both54 / both54 best levels.",
+        "The endpoint now requires Chemistry V, 55 best K/Ca levels, and 1e32 current Researchers. Existing purchases and progress are retained.",
+        "Fixed loading older completed Chemistry saves before temporary layer data is initialized.",
+        "Rechecked native progression for long waits and clustered numerical rewards.",
     ]));
 }

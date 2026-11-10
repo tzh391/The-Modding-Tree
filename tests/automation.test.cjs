@@ -32,7 +32,7 @@ test('migration revalidates free milestones while retaining resources and purcha
 });
 test('late Chemistry awards require distinct level thresholds even with a large Researcher bank',()=>{
  const e=load();e.run('player.r.milestones=Array.from({length:18},(_,i)=>i+1);player.chem.upgrades=[11];player.r.points=new Decimal("1e100");player.r.best=player.r.points;player.chem.best_amount.K=new Decimal(5).times(Decimal.pow(2,43));player.chem.best_amount.Ca=new Decimal(5).times(Decimal.pow(2,46));updateTemp()');
- assert(!e.run('tmp.chem.upgrades[12].unlocked'));e.run('player.chem.best_amount.K=new Decimal(5).times(Decimal.pow(2,46));updateTemp();buyUpgrade("chem",12);updateTemp()');
+ assert(!e.run('tmp.chem.upgrades[12].unlocked'));e.run('player.chem.best_amount.K=new Decimal(5).times(Decimal.pow(2,51));updateTemp();buyUpgrade("chem",12);updateTemp()');
  assert(e.run('hasUpgrade("chem",12)'));assert(!e.run('tmp.chem.upgrades[13].unlocked'));
  e.run('player.chem.best_amount.K=new Decimal(5).times(Decimal.pow(2,49));player.chem.best_amount.Ca=new Decimal(5).times(Decimal.pow(2,51));updateMilestones("chem");updateTemp()');assert(!e.run('hasMilestone("chem",1)'));
  e.run('player.chem.best_amount.K=new Decimal(5).times(Decimal.pow(2,50));updateMilestones("chem");updateTemp()');assert(e.run('hasMilestone("chem",1)'));assert(!e.run('hasMilestone("chem",2)'));
@@ -54,7 +54,7 @@ test('early Factory I Widget rewards stay bounded and milestone 17 starts at lev
  }
 });
 test('Chemistry I follows the milestone at two Factory VI levels with a third level',()=>{
- const e=load();e.run('player.r.milestones=Array.from({length:18},(_,i)=>i+1);player.r.points=new Decimal(1e20);player.r.best=player.r.points;player.r.buyables[23]=new Decimal(2);updateTemp()');
+ const e=load();e.run('player.r.milestones=Array.from({length:18},(_,i)=>i+1);player.r.points=new Decimal("1e25");player.r.best=player.r.points;player.r.buyables[23]=new Decimal(2);updateTemp()');
  assert(!e.run('tmp.chem.upgrades[11].unlocked'));e.run('player.r.buyables[23]=new Decimal(3);updateTemp()');assert(e.run('tmp.chem.upgrades[11].unlocked'));
 });
 
@@ -78,4 +78,27 @@ test('invalid file imports leave active progress and save slots unchanged',()=>{
  assert.throws(()=>e.run('importContinuationSaveAsNew("invalid")'),/Invalid save file/);
  assert.throws(()=>e.run('importContinuationSaveAsNew(btoa("{}"))'),/not a Tree of Life save/);
  assert.equal(e.run('JSON.stringify({player,allSaves})'),before);
+});
+
+test('the standard milestone toggle refunds staff immediately and leaves other automation unchanged',()=>{
+ const e=load();e.run('toggleAuto(["chem","autoEarly"])');assert(!e.run('player.chem.autoEarly'));
+ e.run('player.chem.total=new Decimal(40);player.chem.points=player.chem.points.plus(20);updateMilestones("chem");updateTemp()');
+ assert.equal(e.run('JSON.stringify(tmp.chem.milestones[5].toggles)'),JSON.stringify([["chem","autoEarly"]]));
+ const before=actual(e);e.run('toggleAuto(["chem","autoEarly"])');assert(e.run('player.chem.autoEarly&&player.chem.workers.N.eq(0)&&player.chem.scientists.N.eq(0)'));assert.equal(actual(e),before);
+ e.run('toggleAuto(["chem","autoEarly"])');assert(!e.run('player.chem.autoEarly'));
+ e.run('player.hu.autobuy=false;toggleAuto(["hu","autobuy"])');assert(e.run('player.hu.autobuy'));
+});
+test('revised Research and Chemistry prices enforce both resource gates and payment',()=>{
+ const e=load();e.run('player.r.buyables[11]=new Decimal(44);player.r.buyables[23]=new Decimal(3);player.r.milestones=Array.from({length:18},(_,i)=>i+1);player.chem.best_amount.K=Decimal.pow(2,55).times(5);player.chem.best_amount.Ca=player.chem.best_amount.K');
+ for(const [layer,id,cost] of [['r',15,'5e22'],['chem',11,'1e25'],['chem',12,'1e29'],['chem',13,'1e30'],['chem',14,'1e31'],['chem',15,'8e31']]){
+  e.run(`player.r.best=new Decimal('${cost}').times(.999);player.r.points=player.r.best;updateTemp()`);assert(!e.run(`tmp.${layer}.upgrades[${id}].unlocked`),`${layer}:${id} must wait for best Researchers`);
+  e.run(`player.r.best=new Decimal('${cost}');updateTemp();buyUpgrade('${layer}',${id})`);assert(!e.run(`hasUpgrade('${layer}',${id})`),'unlocking does not waive the price');
+  e.run(`player.r.points=new Decimal('${cost}');updateTemp();buyUpgrade('${layer}',${id});updateTemp()`);assert(e.run(`hasUpgrade('${layer}',${id})&&player.r.points.eq(0)`));
+ }
+ e.run('player.extremeMode=true;updateTemp()');assert(e.run('tmp.r.upgrades[15].cost.eq("1e17")'));
+});
+
+test('an old completed Chemistry save migrates before temporary layer data exists',()=>{
+ const e=load();e.run('player.version="2.070.4";player.chem.upgrades=[11,12,13,14,15];player.chem.milestones=[1,2,3,4,5];player.chem.autoEarly=true;player.chem.total=new Decimal(59);player.chem.best_amount.K=Decimal.pow(2,56).times(5);player.chem.best_amount.Ca=Decimal.pow(2,55).times(5);player.r.points=new Decimal("6.8e33");save()');
+ const restored=engine('?start=chemistry',[...e.storage]);restored.run('loadContinuation()');assert(restored.run('hasUpgrade("chem",15)&&hasMilestone("chem",3)&&player.chem.autoEarly&&player.r.points.eq("6.8e33")'));
 });
