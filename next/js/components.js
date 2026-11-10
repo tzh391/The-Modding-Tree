@@ -6,16 +6,18 @@ function loadVue() {
         computed: { text() { return UnlockHints.next(this.layer, this.kind, this.rows); } },
         template: '<small v-if="text" class="unlock-hint" v-html="text"></small>',
     });
-    Vue.component('chem-period4', {
-        template: `<div class="upgTable" v-if="player.chem.chemUnlocks.period4"><div class="upgRow"><div class="upgAlign"><chemClickable :name="'K'"></chemClickable></div><div class="upgAlign"><chemClickable :name="'Ca'"></chemClickable></div></div></div>`,
-    });
     Vue.component('chem-assignment-sliders', {
         computed: {
             available() { return ChemistryQoL.unlocked(); },
             element() { return player.chem.focus; },
             free() { return formatWhole(player.chem.points); },
+            autoUnlocked() { return ChemistryQoL.autoUnlocked(); },
+            autoEnabled() { return player.chem.autoEarly; },
+            managed() { return ChemistryQoL.autoManaged(this.element); },
+            total() { return formatWhole(player.chem.total); },
         },
         methods: {
+            toggleAuto() { ChemistryQoL.toggleAuto(); },
             amount(role) { return formatWhole(player.chem[role][this.element]); },
             maximum(role) { return ChemistryQoL.sliderMax(role, this.element); },
             position(role) { return ChemistryQoL.sliderValue(role, this.element); },
@@ -25,8 +27,14 @@ function loadVue() {
         template: `<div class="chem-assignment-qol">
             <small v-if="!available" class="unlock-hint">QoL: assignment sliders unlock at 20 total Chemists.</small>
             <div v-else>
+                <div v-if="autoUnlocked">
+                    <button class="opt chem-auto-toggle" @click="toggleAuto">Auto H–Ne: {{autoEnabled ? 'ON' : 'OFF'}}</button>
+                    <small class="unlock-hint">Treat H–Ne as fully staffed by all Chemists. Enabling returns their manually assigned staff to the free pool. Other elements remain manual.</small>
+                </div>
+                <small v-else class="unlock-hint">Next QoL: full staffing for H–Ne at 40 total Chemists.</small>
+                <small v-if="managed" class="unlock-hint">Automatic: {{total}} effective workers and {{total}} effective scientists in {{element}}. No manual allocation is needed.</small>
                 <small class="unlock-hint">Available Chemists: {{free}}. Drag to assign staff to the selected element; other assignments stay unchanged.</small>
-                <div v-for="role in ['workers', 'scientists']" :key="role" class="chem-assignment-row">
+                <div v-for="role in ['workers', 'scientists']" v-if="!managed" :key="role" class="chem-assignment-row">
                     <label :for="'chem-assign-' + role">{{role === 'workers' ? 'Workers' : 'Scientists'}} in {{element}}: {{amount(role)}}</label><br>
                     <input type="range" :id="'chem-assign-' + role" :aria-label="(role === 'workers' ? 'Workers' : 'Scientists') + ' in ' + element"
                         min="0" :max="maximum(role)" step="1" :value="position(role)" :disabled="empty(role)" @keydown.stop @input="move(role, $event)">
@@ -227,75 +235,21 @@ function loadVue() {
 	})
 
 	Vue.component("chem1", {
-		props: ['layer', 'data'],
-		template: `
-		<div class="upgTable">
-			<div class="upgRow">
-				<div class="upgAlign">
-					<chemClickable :name = '"H"'></chemClickable>
-				</div>
-				<div>
-					<blank :data='["360px", "60px"]'> </blank>
-				</div>
-				<div class="upgAlign" v-if="data[0]">
-					<chemClickable :name = '"He"'></chemClickable>
-				</div>
-			</div>
-			<div class="upgRow">
-				<div class="upgAlign">
-					<chemClickable :name = '"Li"'></chemClickable>
-				</div>
-				<div class="upgAlign">
-					<chemClickable :name = '"Be"'></chemClickable>
-				</div>
-				<div class="upgAlign">
-					<chemClickable :name = '"B"'></chemClickable>
-				</div>
-				<div class="upgAlign">
-					<chemClickable :name = '"C"'></chemClickable>
-				</div>
-				<div class="upgAlign">
-					<chemClickable :name = '"N"'></chemClickable>
-				</div>
-				<div class="upgAlign">
-					<chemClickable :name = '"O"'></chemClickable>
-				</div>
-				<div class="upgAlign">
-					<chemClickable :name = '"F"'></chemClickable>
-				</div>
-				<div class="upgAlign" v-if="data[0]">
-					<chemClickable :name = '"Ne"'></chemClickable>
-				</div>
-			</div>
-			<div class="upgRow">
-				<div class="upgAlign" v-if="data[1]">
-					<chemClickable :name = '"Na"'></chemClickable>
-				</div>
-				<div class="upgAlign" v-if="data[1]">
-					<chemClickable :name = '"Mg"'></chemClickable>
-				</div>
-				<div class="upgAlign" v-if="data[1]">
-					<chemClickable :name = '"Al"'></chemClickable>
-				</div>
-				<div class="upgAlign" v-if="data[1]">
-					<chemClickable :name = '"Si"'></chemClickable>
-				</div>
-				<div class="upgAlign" v-if="data[1]">
-					<chemClickable :name = '"P"'></chemClickable>
-				</div>
-				<div class="upgAlign" v-if="data[1]">
-					<chemClickable :name = '"S"'></chemClickable>
-				</div>
-				<div class="upgAlign" v-if="data[1]">
-					<chemClickable :name = '"Cl"'></chemClickable>
-				</div>
-				<div class="upgAlign" v-if="data[0] && data[1]">
-					<chemClickable :name = '"Ar"'></chemClickable>
-				</div>
-			</div>
-		</div>
-		`
-	})
+        props: ['layer', 'data'],
+        template: `<div class="chem-periodic-scroll"><div class="chem-periodic-grid" aria-label="Periodic table">
+            <div style="grid-row:1;grid-column:1"><chemClickable :name="'H'"></chemClickable></div>
+            <div v-if="data[0]" style="grid-row:1;grid-column:8"><chemClickable :name="'He'"></chemClickable></div>
+            <template v-for="(element,index) in ['Li','Be','B','C','N','O','F','Ne']">
+                <div v-if="element !== 'Ne' || data[0]" :key="element" :style="{'grid-row':2,'grid-column':index+1}"><chemClickable :name="element"></chemClickable></div>
+            </template>
+            <template v-for="(element,index) in ['Na','Mg','Al','Si','P','S','Cl','Ar']">
+                <div v-if="data[1] && (element !== 'Ar' || data[0])" :key="element" :style="{'grid-row':3,'grid-column':index+1}"><chemClickable :name="element"></chemClickable></div>
+            </template>
+            <template v-for="(element,index) in ['K','Ca']">
+                <div v-if="player.chem.chemUnlocks.period4" :key="element" :style="{'grid-row':4,'grid-column':index+1}"><chemClickable :name="element"></chemClickable></div>
+            </template>
+        </div></div>`,
+    });
 
 	Vue.component("chem-details", { // upgDouble
 		propts: ['layer'],
@@ -356,10 +310,10 @@ function loadVue() {
 			<button class = "mediumUpg can small-gap" v-on:mousedown="handleMouseEvent" v-bind:style="name==player.chem.focus ? {'background-color': '#AA5555'} : {}">
 			<h2 v-html="name" v-bind:style="name==player.chem.focus ? {'color': '#3388CC'} : {}">x</h2><br><br>
 			<span style='font-size: 65%' v-if="player.chem.toggle == 1" v-html='"Amount:<br>" + format(player.chem.amount[name])'></span>
-			<span style='font-size: 65%' v-if="player.chem.toggle == 2" v-html='"Levels:<br>" + formatWhole(player.chem.amount[name].lt(10) ? 0 : player.chem.amount[name].div(5).log(2).floor())'></span>
+			<span style='font-size: 65%' v-if="player.chem.toggle == 2" v-html='"Levels:<br>" + formatWhole(ChemistryQoL.level(name))'></span>
 			<span style='font-size: 65%' v-if="player.chem.toggle == 3" v-html='"Progress:<br>" + format(player.chem.buildingProgress[name])'></span>
-			<span style='font-size: 65%' v-if="player.chem.toggle == 4" v-html='"Workers:<br>" + formatWhole(player.chem.workers[name])'></span>
-			<span style='font-size: 65%' v-if="player.chem.toggle == 5" v-html='"Scientists:<br>" + formatWhole(player.chem.scientists[name])'></span>
+			<span style='font-size: 65%' v-if="player.chem.toggle == 4" v-html='"Workers:<br>" + formatWhole(ChemistryQoL.effective("workers",name)) + (ChemistryQoL.autoManaged(name) ? " (Auto)" : "")'></span>
+			<span style='font-size: 65%' v-if="player.chem.toggle == 5" v-html='"Scientists:<br>" + formatWhole(ChemistryQoL.effective("scientists",name)) + (ChemistryQoL.autoManaged(name) ? " (Auto)" : "")'></span>
 			</button>
 		`,
 		methods: {

@@ -1,0 +1,111 @@
+{
+  "version": "v2.070.4",
+  "scenario": "Local supplied save replay",
+  "seed": 391,
+  "timeStepSeconds": 1,
+  "start": {
+    "researchers": "6.72786180768382e20",
+    "factoryI": "103",
+    "chemists": "40",
+    "chemistry": [
+      11
+    ],
+    "milestones": [
+      4
+    ]
+  },
+  "simulatedSeconds": 125,
+  "completed": true,
+  "maxWaitSeconds": 100,
+  "longestWaitSeconds": 4,
+  "worstGap": {
+    "from": {
+      "time": 48,
+      "action": "Improve Human buyables with Bulk"
+    },
+    "to": {
+      "time": 52,
+      "action": "Improve Human buyables with Bulk"
+    }
+  },
+  "meaningfulEvents": 139,
+  "majorRewards": [
+    {
+      "time": 12,
+      "action": "Buy chem upgrade 12"
+    },
+    {
+      "time": 30,
+      "action": "Buy chem upgrade 13"
+    },
+    {
+      "time": 45,
+      "action": "Earn chem:1"
+    },
+    {
+      "time": 64,
+      "action": "Buy chem upgrade 14"
+    },
+    {
+      "time": 79,
+      "action": "Earn chem:2"
+    },
+    {
+      "time": 110,
+      "action": "Buy chem upgrade 15"
+    },
+    {
+      "time": 125,
+      "action": "Earn chem:3"
+    }
+  ],
+  "potentialBursts": [],
+  "factoryCurve": [],
+  "chemistryCurve": [
+    {
+      "time": 12,
+      "upgrade": 12,
+      "K": "46",
+      "Ca": "46"
+    },
+    {
+      "time": 30,
+      "upgrade": 13,
+      "K": "48",
+      "Ca": "49"
+    },
+    {
+      "time": 64,
+      "upgrade": 14,
+      "K": "51",
+      "Ca": "51"
+    },
+    {
+      "time": 110,
+      "upgrade": 15,
+      "K": "54",
+      "Ca": "54"
+    }
+  ],
+  "final": {
+    "researchers": "1.1404325449674162e32",
+    "factoryI": "116",
+    "chemists": "57",
+    "chemistry": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "milestones": [
+      4,
+      5,
+      1,
+      2,
+      3
+    ],
+    "K": "55",
+    "Ca": "55"
+  }
+}

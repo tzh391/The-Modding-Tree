@@ -35,7 +35,7 @@ test('buyable hints describe prerequisites and skip permanently hidden placehold
     const e=load();
     const hint=e.ctx.UnlockHints.next('hu','buyables');
     assert.match(hint,/Next buyable:/); assert.match(hint,/purchase Humans XIII/);
-    e.run('player.r.milestones=Array.from({length:18},(_,i)=>i+1); updateTemp()');
+    e.run('player.r.milestones=Array.from({length:18},(_,i)=>i+1);player.r.buyables[23]=new Decimal(3); updateTemp()');
     assert(!e.ctx.UnlockHints.next('r','buyables').includes('Factory<sup>1</sup>'));
 });
 test('next hidden upgrade moves forward as content unlocks and covers later sections', () => {
@@ -59,5 +59,5 @@ test('Chemistry notes explicitly show the resource and element-level gates', () 
     assert.match(note,/Researcher milestone 18/); assert.match(note,/Researchers/);
     e.run('player.chem.upgrades=[11]; updateTemp()');
     note=e.ctx.UnlockHints.next('chem','upgrades');
-    assert.match(note,/Chemistry II/); assert.match(note,/10 best Potassium levels/);
+    assert.match(note,/Chemistry II/); assert.match(note,/46 best Potassium levels/);
 });
