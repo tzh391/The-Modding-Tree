@@ -8,20 +8,4 @@ function installNormalBalance() {
             return normal() ? new Decimal(price) : originalCost();
         };
     }
-    // Actual Life Point costs: index 0 is Token 1, index 1 is Token 2.
-    const tokenPrices = ["1e6600", "1e7760"];
-    const normalTokenPrice = () => normal() && tmp.tokens.getMinusEffectiveTokens.eq(0)
-        ? tokenPrices[player.tokens.total.toString()] : undefined;
-    const originalNextAt = tokenNextAt;
-    tokenNextAt = function () {
-        const price = normalTokenPrice();
-        return price === undefined ? originalNextAt() : new Decimal(price);
-    };
-    // Permit exact equality for the two adjusted Normal Mode Token prices.
-    const originalTokenGain = layers.tokens.getResetGain;
-    layers.tokens.getResetGain = function () {
-        const price = normalTokenPrice();
-        if (price !== undefined) return new Decimal(tmp.tokens.baseAmount.gte(price) ? 1 : 0);
-        return originalTokenGain();
-    };
 }

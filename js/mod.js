@@ -3,7 +3,7 @@ let modInfo = {
 	id: "tree_of_life_continuation",
 	author: "pg132",
 	pointsName: "Life Points",
-	modFiles: ["layers.js", "tree.js", "normalBalance.js?v=2.071.1-balance.2", "chemistryContinuation.js?v=2.071.1-balance.2", "chemistryQoL.js?v=2.071.1-balance.2", "unlockHints.js?v=2.071.1-balance.2"],
+	modFiles: ["layers.js", "tree.js", "normalBalance.js?v=2.071.2-table.1", "chemistryContinuation.js?v=2.071.2-table.1", "chemistryQoL.js?v=2.071.2-table.1", "unlockHints.js?v=2.071.2-table.1"],
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (1), // Used for hard resets and new players

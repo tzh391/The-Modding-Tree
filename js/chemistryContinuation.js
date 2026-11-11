@@ -3,6 +3,7 @@ function installChemistryContinuation() {
     if (layers.chem.continuationInstalled) return;
     layers.chem.continuationInstalled = true;
     installNormalBalance();
+    installTokenThresholdComparison();
     const chem = layers.chem;
     const oldStart = chem.startData;
     chem.startData = function () {
@@ -183,11 +184,11 @@ function installChemistryContinuation() {
         if (hasMilestone("r", 18)) ret = ret.plus(player.r.buyables[23].min(10).times(.04));
         return ret;
     };
-    VERSION.num = "2.071.1";
-    VERSION.name = "Normal Mode Price Balance";
+    VERSION.num = "2.071.2";
+    VERSION.name = "Editable Token Cost Table";
     VERSION.withoutName = "v" + VERSION.num;
     VERSION.withName = VERSION.withoutName + ": " + VERSION.name;
-    CHANELOG_VERSION = "v2.071.1";
+    CHANELOG_VERSION = "v2.071.2";
     const normalUpdate = (version, lines) => "<div class='normal-update'><br><h3>v" + version + "</h3><br>" + lines.map(line => "<span>- " + line + "</span><br>").join("") + "</div>";
     CHANGELOGS.unshift(normalUpdate("2.070", [
         "Continued Chemistry with Potassium, Calcium, five upgrades, and three milestones.",
@@ -236,6 +237,13 @@ function installChemistryContinuation() {
         "Hydrogen XVI / XVII / XVIII / XIX / XX now cost 7.77e777 / 1e800 / 1e1000 / 1e1040 / 1e1319 Hydrogen.",
         "The first two Tokens now require 1e6600 and 1e7760 Life Points and are affordable at their exact thresholds. Token 3 onward keeps its original formula.",
         "Upgrade prerequisites and effects, existing progress, and Hard/Extreme Mode prices are preserved.",
+    ]));
+
+    CHANGELOGS.unshift(normalUpdate("2.071.2", [
+        "Normal Mode Token prices now read directly from TOKEN_COSTS in tokenSupport.js. Removed the separate first/second Token price overrides.",
+        "Tokens 1 / 2 / 3 require 1e6600 / 1e7760 / 1e7780 Life Points. Exact table thresholds are affordable.",
+        "Normal Mode table edits do not change the independent Easy/Hard or Extreme Mode schedules.",
+        "Saved progress and the later effective-Token/tetration mechanics are retained. No new content.",
     ]));
 
 }
