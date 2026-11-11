@@ -121,13 +121,13 @@ test('Widget production outside milestone 17 retains the original factors', () =
     assert(e.run('layers.r.widgets.getResetGain().eq(originalWidgetRate())'));
 });
 test('Normal Mode update headings are orange and all body lines are white', () => {
-    const e=load();assert.equal(e.run('VERSION.withoutName'),'v2.071.1');
+    const e=load();assert.equal(e.run('VERSION.withoutName'),'v2.071.2');
     for(const i of [0,1,2,3,4]) {
         assert.match(e.run('CHANGELOGS['+i+']'),/class='normal-update'/);
         assert.match(e.run('CHANGELOGS['+i+']'),/<h3>.*<span>/);
         assert(!/[一-鿿]/.test(e.run('CHANGELOGS['+i+']')));
     }
-    assert.match(e.run('CHANGELOGS[0]'),/v2\.071\.1/);
+    assert.match(e.run('CHANGELOGS[0]'),/v2\.071\.2/);
     const css=require('node:fs').readFileSync(require('node:path').join(__dirname,'../css/unlockHints.css'),'utf8');
     assert.match(css,/\.normal-update\s*\{[^}]*color:\s*#FFFFFF/);
     assert.match(css,/\.normal-update\s+span\s*\{[^}]*color:\s*#FFFFFF/);

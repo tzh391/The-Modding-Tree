@@ -1,6 +1,28 @@
 /* VARIOUS SUPPORT FUNCTIONS AND VARIABLES */
 
-var TOKEN_COSTS = [   6390,    7587,    7630,    8160,    8350, 
+// NORMAL MODE: Token 1 = 10^TOKEN_COSTS[0], Token 2 = 10^TOKEN_COSTS[1], etc.
+// Edit exponents here; keep the entries in increasing order.
+var TOKEN_COSTS = [   6600,    7760,    7780,    8160,    8350,
+                      9350,   10000,   10860,   11230,   12600,
+                     14460,   15170,   15430,   19780,   24000,
+                     30710,   33260,   33444,   42900,   45420,
+                     45800,   50600,   60000,   80308,   88020,
+                     94500,  101570,  113575,  135666,  136290,
+                    139530,  140140,  140750,  176444,  177720,
+                    205125,  226800,  259560,  296740,  297910,
+                    335080,  336363,  357900,  398888,  405900,
+                    433950,  445000,  462700,  467500,  542000,
+                    692000,  774000,  793000,  1084e3,  1366e3,
+                    1810e3, 18697e2,  1996e3,  2044e3, 23519e2,
+                    3805e3,  4666e3,  5338e3,  9499e3,  9859e3,
+                   11518e3, 13127e3, 13539e3, 14553e3, 15542e3,
+                   16455e3, 20892e3, 23072e3, 28491e3, 34256e3,
+                   60576e3, 91049e3, 11858e4, 12317e4, 13287e4,
+                   13793e4, 18750e4, 40300e4, 91919e4, 10000e5,
+                   24380e5, 29250e5]
+
+// Independent original schedule for Easy/Hard Mode. Normal edits do not change it.
+var TOKEN_COSTS_LEGACY = [   6390,    7587,    7630,    8160,    8350,
                       9350,   10000,   10860,   11230,   12600,
                      14460,   15170,   15430,   19780,   24000,
                      30710,   33260,   33444,   42900,   45420,
@@ -60,8 +82,15 @@ function tetr(base, exp) {
         return a
 }
 
+function tokenCostTable(){
+        if (player.extremeMode) return TOKEN_COSTS_EXTREME
+        if (player.easyMode || player.hardMode) return TOKEN_COSTS_LEGACY
+        return TOKEN_COSTS
+}
+
 function tokenNextAt(){
-        let len = (player.extremeMode ? TOKEN_COSTS_EXTREME : TOKEN_COSTS).length
+        const costs = tokenCostTable()
+        let len = costs.length
         let amt = player.tokens.total
 
         amt = amt.sub(tmp.tokens.getMinusEffectiveTokens).floor()
@@ -78,8 +107,9 @@ function tokenNextAt(){
         }
         amt = Math.round(amt.toNumber())
         let additional = player.hardMode ? 1e4 : 1
-        if (player.extremeMode) return Decimal.pow(10, TOKEN_COSTS_EXTREME[amt]).times(additional)
-        return Decimal.pow(10, TOKEN_COSTS[amt]).times(additional)
+        // Exact 10^exponent for Normal Mode, including the displayed boundary.
+        if (!player.easyMode && !player.hardMode && !player.extremeMode) return Decimal.fromComponents(1, 1, costs[amt])
+        return Decimal.pow(10, costs[amt]).times(additional)
 
         /*
         Generalized formula: 
@@ -483,3 +513,16 @@ function tokenCost2(x){
 
 
 
+
+// Only affordability is adapted; every price comes from the tables above.
+function installTokenThresholdComparison(){
+        const originalGain = layers.tokens.getResetGain
+        layers.tokens.getResetGain = function(){
+                const useTetration = hasMilestone("or", 2) || player.hu.unlocked
+                const enoughPoints = hasChallenge("hu", 11) || player.points.gt("eee10")
+                if (!player.easyMode && !player.hardMode && !player.extremeMode && !(useTetration && enoughPoints)) {
+                        return tmp.tokens.baseAmount.gte(tokenNextAt()) ? decimalOne : decimalZero
+                }
+                return originalGain()
+        }
+}

@@ -13,7 +13,7 @@ function late() {
 test('starts in English at the original beginning with the original layer set', () => {
     const e = loaded();
     assert.equal(e.run('modInfo.id'), 'tree_of_life_continuation');
-    assert.equal(e.run('VERSION.withoutName'), 'v2.071.1');
+    assert.equal(e.run('VERSION.withoutName'), 'v2.071.2');
     assert.equal(e.run('player.tab'), 'none');
     assert(!e.run('player.hu.unlocked')); assert(!e.run('player.chem.unlocked'));
     assert(!e.run('layers.hu2 || layers.r2 || layers.lab2'));
@@ -98,7 +98,7 @@ test('new upgrades, milestones, and endgame follow their displayed requirements'
 test('cold and cached loading orders both install only after the engine is ready', () => {
     const e = loaded('', [], true);
     e.run('gameLoop(1); updateTemp()');
-    assert.equal(e.run('VERSION.withoutName'), 'v2.071.1');
+    assert.equal(e.run('VERSION.withoutName'), 'v2.071.2');
     assert(e.run('NaNcheck(player)'));
 });
 test('zero decay keeps its linear limit', () => {

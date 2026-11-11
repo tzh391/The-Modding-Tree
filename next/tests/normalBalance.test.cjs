@@ -23,13 +23,7 @@ test('Hydrogen unlocks and all Easy/Hard/Extreme prices remain original',()=>{
  e.run("player.hardMode=false;player.extremeMode=false;player.easyMode=true;updateTemp()");
  for(const id of [61,62,63,64,65])assert(e.run(`layers.h.upgrades[${id}].cost().eq(originalHydrogenCosts[${id}]())&&layers.h.upgrades[${id}].unlocked===originalHydrogenUnlocks[${id}]`));
 });
-test('the first Normal Mode Token costs Life Points and is available at exactly 1e6600',()=>{
- const e=loaded();e.run('player.h.upgrades=[55,65];player.h.points=new Decimal("1e7000");player.points=new Decimal("1e6599");updateTemp();updateTemp()');
- assert(e.run('tmp.tokens.getNextAt.eq("1e6600")&&!tmp.tokens.canReset&&tmp.tokens.getResetGain.eq(0)'));
- e.run('player.points=new Decimal("1e6600");updateTemp();updateTemp()');
- assert(e.run('tmp.tokens.canReset&&tmp.tokens.getResetGain.eq(1)'));
- e.run('doReset("tokens");updateTemp();updateTemp()');assert(e.run('player.tokens.total.eq(1)&&player.tokens.points.eq(1)&&tmp.tokens.getNextAt.eq("1e7760")'));
-});
+
 test('later Token prices, effective-token modifiers, and Hard/Extreme Token formulas stay original',()=>{
  const e=engine();e.run('var originalTokenNext=tokenNextAt;loadContinuation()');
  for(const flags of [[false,false],[true,false],[false,true],[true,true]])for(const n of [0,1,2,10,86,90]){
@@ -44,9 +38,44 @@ test('existing Hydrogen upgrades and Token totals survive the price-only update'
  const r=engine('',[...e.storage]);r.run('loadContinuation()');assert(r.run('player.h.upgrades.includes(65)&&player.h.points.eq("1e1500")&&player.tokens.total.eq(3)&&player.tokens.points.eq(2)'));
 });
 
-test('the second Normal Mode Token charges 1e7760 Life Points with an inclusive threshold',()=>{
- const e=loaded();e.run('player.h.upgrades=[55,65];player.tokens.total=new Decimal(1);player.tokens.points=new Decimal(1);player.points=new Decimal("1e7759");updateTemp();updateTemp()');
- assert(e.run('tmp.tokens.getNextAt.eq("1e7760")&&!tmp.tokens.canReset&&tmp.tokens.getResetGain.eq(0)'));
- e.run('player.points=new Decimal("1e7760");updateTemp();updateTemp()');assert(e.run('tmp.tokens.canReset&&tmp.tokens.getResetGain.eq(1)'));
- e.run('doReset("tokens");updateTemp();updateTemp()');assert(e.run('player.tokens.total.eq(2)&&player.tokens.points.eq(2)&&tmp.tokens.getNextAt.eq(Decimal.pow(10,7630))'));
+
+
+test('Token schedules contain finite increasing exponents with the original number of entries',()=>{
+ const e=loaded();
+ for(const name of ['TOKEN_COSTS','TOKEN_COSTS_LEGACY','TOKEN_COSTS_EXTREME'])assert(e.run(`${name}.every((x,i,a)=>Number.isFinite(x)&&x>0&&(i===0||x>a[i-1]))`),name+' must have finite increasing exponents');
+ assert(e.run('TOKEN_COSTS.length===TOKEN_COSTS_LEGACY.length'));
+});
+test('editing tokenSupport table entries takes effect after installation without a price override',()=>{
+ const e=loaded();
+ for(const [index,exponent] of [[0,6650],[1,7770],[2,7800],[3,8200],[20,45900]]){
+  e.run(`TOKEN_COSTS[${index}]=${exponent};player.tokens.total=new Decimal(${index});updateTemp();updateTemp()`);
+  assert(e.run(`tmp.tokens.getNextAt.eq(new Decimal('1e${exponent}'))`),'editable Token '+(index+1));
+ }
+ e.run('player.tokens.total=new Decimal(1);player.easyMode=true;updateTemp();updateTemp()');assert(e.run('tmp.tokens.getNextAt.eq(Decimal.pow(10,7587))'));
+ e.run('player.easyMode=false;player.hardMode=true;updateTemp();updateTemp()');assert(e.run('tmp.tokens.getNextAt.eq(Decimal.pow(10,7587).times(1e4))'));
+ e.run('player.hardMode=false;player.extremeMode=true;updateTemp();updateTemp()');assert(e.run('tmp.tokens.getNextAt.eq(Decimal.pow(10,7600))'));
+});
+
+test('native advanced bulk gains and other difficulty threshold comparisons are retained',()=>{
+ const e=engine();e.run('var originalTokenGain=layers.tokens.getResetGain;loadContinuation();player.hu.unlocked=true;player.points=new Decimal("eee20");updateTemp();updateTemp()');
+ assert(e.run('layers.tokens.getResetGain().eq(originalTokenGain())'));
+ e.run('player.hu.unlocked=false;player.tokens.total=new Decimal(0)');
+ for(const mode of ['easyMode','hardMode','extremeMode']){
+  e.run(`player.easyMode=false;player.hardMode=false;player.extremeMode=false;player.${mode}=true;updateTemp();updateTemp();player.points=tmp.tokens.getNextAt;updateTemp();updateTemp()`);
+  assert(e.run('layers.tokens.getResetGain().eq(originalTokenGain())&&layers.tokens.getResetGain().eq(0)'),mode);
+ }
+});
+
+test('raising a table entry cannot leave an affordable cached Normal Mode threshold',()=>{
+ const e=loaded();e.run('player.h.upgrades=[55,65];player.tokens.total=new Decimal(1);player.points=new Decimal("1e7850");TOKEN_COSTS[1]=7800;updateTemp();updateTemp()');assert(e.run('tmp.tokens.canReset'));
+ e.run('TOKEN_COSTS[1]=7900;updateTemp()');assert(e.run('tmp.tokens.getNextAt.eq("1e7900")&&layers.tokens.getResetGain().eq(0)'));
+});
+
+test('the first three Normal Mode Tokens use the configured costs and reset at exact boundaries',()=>{
+ for(const n of [0,1,2]){
+  const e=loaded();e.run(`player.h.upgrades=[55,65];player.tokens.total=new Decimal(${n});player.tokens.points=new Decimal(${n});var expectedCost=new Decimal('1e'+TOKEN_COSTS[${n}]);player.h.points=expectedCost.times(100);player.points=expectedCost.div(10);updateTemp();updateTemp()`);
+  assert(e.run('tmp.tokens.getNextAt.eq(expectedCost)&&!tmp.tokens.canReset&&tmp.tokens.getResetGain.eq(0)'),'insufficient Life Points at Token '+(n+1));
+  e.run('player.points=expectedCost;updateTemp();updateTemp()');assert(e.run('tmp.tokens.canReset&&tmp.tokens.getResetGain.eq(1)'));
+  e.run('doReset("tokens");updateTemp();updateTemp()');assert(e.run(`player.tokens.total.eq(${n+1})&&player.tokens.points.eq(${n+1})&&tmp.tokens.getNextAt.eq(new Decimal('1e'+TOKEN_COSTS[${n+1}]))`));
+ }
 });
