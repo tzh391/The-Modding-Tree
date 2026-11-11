@@ -3,7 +3,7 @@
 // NORMAL MODE: Token 1 = 10^TOKEN_COSTS[0], Token 2 = 10^TOKEN_COSTS[1], etc.
 // Edit exponents here; keep the entries in increasing order.
 var TOKEN_COSTS = [   6600,    7760,    7780,    8320,    8520,
-                      9550,   10170,   11451,   11230,   12600,
+                      9550,   10170,   11050,   11451,   12600,
                      14460,   15170,   15430,   19780,   24000,
                      30710,   33260,   33444,   42900,   45420,
                      45800,   50600,   60000,   80308,   88020,
