@@ -1,45 +1,33 @@
-# Editing prices in the continuation
+# Editing and publishing Token prices — 2.071.2
 
-## Where the old e6390 comes from
+## The single Normal Mode price source
 
-The original `js/utils/tokenSupport.js`, line 3, stores exponents:
-
-```js
-var TOKEN_COSTS = [6390, 7587, 7630, /* ... */];
-```
-
-The original `tokenNextAt()` returns `Decimal.pow(10, TOKEN_COSTS[amt])` (plus the original difficulty factor). Therefore searching for the literal `e6390` does not find the price: the source contains only `6390`. The first three original Normal Mode Token thresholds are 1e6390 / 1e7587 / 1e7630 Life Points. The original table is also used by Hard Mode.
-
-## Current Normal Mode editing point
-
-The continuation keeps the original table intact and overrides the first two Normal Mode prices in `js/normalBalance.js`:
+Edit **TOKEN_COSTS** at the top of `js/utils/tokenSupport.js`:
 
 ```js
-const tokenPrices = ["1e6600", "1e7760"];
+var TOKEN_COSTS = [6600, 7760, 7780, 8160, 8350, /* ... */];
 ```
 
-Index 0 is Token 1 and index 1 is Token 2. These are full price strings, not bare exponents. Keep the quotes: JavaScript numeric literals at these magnitudes overflow. The override applies only in Normal Mode with no effective-Token reduction. Other difficulties and Token 3 onward keep their original formulas.
+Entries are exponents: position 1 is Token 1 at 1e6600 Life Points; position 2 is Token 2 at 1e7760; position 3 is Token 3 at 1e7780. For example, to price the fourth Token at 1e8200, change the fourth number from 8160 to 8200. This example is not applied in the release.
 
-The current third original threshold (1e7630) is lower than the second override (1e7760). This patch follows the user's second-Token request without choosing a new third price. Check the transition before changing more prices.
+Enter **7780**, not `e7780`, `1e7780`, or a quoted price string. Keep commas and the existing number of entries. Prices must be finite, positive and strictly increasing. The table is the direct source for all ordinary Normal Mode Token prices; existing effective-Token reductions and the later tetration progression still apply.
 
-## GitHub website workflow
+`TOKEN_COSTS_LEGACY` is the independent original Easy/Hard schedule; `TOKEN_COSTS_EXTREME` is the Extreme schedule. Change `TOKEN_COSTS` when balancing Normal Mode. There are no remaining Token price overrides in `js/normalBalance.js`; that file now only handles Hydrogen prices. The old 6390 is retained only in the legacy schedule.
 
-Development source:
-https://github.com/tzh391/The-Modding-Tree/blob/evolution-next/js/normalBalance.js
+## Recommended GitHub website workflow
 
-Live `/next/` copy:
-https://github.com/tzh391/The-Modding-Tree/blob/evolution/next/js/normalBalance.js
+1. Open the **development source**:
+   https://github.com/tzh391/The-Modding-Tree/blob/evolution-next/js/utils/tokenSupport.js#L5
+2. Click the pencil (**Edit this file**). Edit the desired numbers in `TOKEN_COSTS`, review the diff, then **Commit changes…** with a short message such as `Balance Token 4 and 5 prices`. Commit to `evolution-next`, or merge a pull request into it if required.
+3. Open **Actions → Chemistry continuation checks** for that commit. It runs the functional tests and native pacing replays. The boundary tests read the price table; ordinary price edits do not require duplicating the numbers in test code. A non-increasing table fails validation. The replays cover the documented scenarios, not every possible Token reset strategy.
+4. To publish `/next/`, put the **same table changes** into the publishing copy and commit to `evolution`:
+   https://github.com/tzh391/The-Modding-Tree/blob/evolution/next/js/utils/tokenSupport.js#L5
+   The publishing path includes **next/**. A development-branch commit alone does not publish the site. Keeping both copies synchronized also prevents later full publications from replacing a live-only edit.
+5. Wait for the publishing commit's **pages build and deployment** action to succeed. Hard-refresh the game (Mac: Command+Shift+R; Windows: Ctrl+Shift+R) and check the displayed price. Existing saves stay in place.
 
-1. Open the intended file and click the pencil (Edit this file).
-2. Change the desired string, review the diff, then click **Commit changes…**.
-3. Enter a short commit message and commit to the selected branch, or create/merge a pull request if the branch requires it.
-4. For a direct live adjustment, the publishing file is **`evolution` → `next/js/normalBalance.js`**. A commit to the development branch alone does not publish `/next/`.
-5. Keep the same values in `evolution-next/js/normalBalance.js`, and update matching expected prices in `tests/normalBalance.test.cjs`. A later publication copies the development tree into `next/`, so unsynchronized live-only edits would be replaced.
-6. Run/check the tests and native pacing checks. When the **pages build and deployment** action succeeds for the publishing commit, hard-refresh the game. The normal save and imported checkpoint slots are retained.
+For a release that immediately invalidates the script cache for all players, increment the `?v=` value on the `js/utils/tokenSupport.js` script in both copies of `index.html` as well. This release uses `2.071.2-table.1`. Change only that cache token; price numbers remain solely in `tokenSupport.js`.
 
-For an intentionally cache-busted release, update the `normalBalance.js?v=…` token in `js/mod.js` as well, and synchronize the publishing copy. This patch uses `2.071.1-balance.2`.
-
-Commands for a local development checkout:
+## Local development checks
 
 ```sh
 npm test
@@ -47,7 +35,7 @@ npm run check:hydrogen-pacing
 npm run check:pacing
 ```
 
-The default early replay covers the first Token; the second price has native threshold/reset regression tests. Optional `--tokens 2` / `--tokens 3` replays include a limited minigame policy and are diagnostic, not a complete guarantee of post-reset pacing.
+The tests validate table order, runtime edits, exact threshold purchases, native resets, other difficulty isolation, and advanced Token formulas. The default early replay ends at the first Token. Complete second/third-reset timing remains outside its validated coverage; optional `--tokens 2` / `--tokens 3` runs are diagnostic and use a limited minigame policy.
 
 Official GitHub instructions:
 - https://docs.github.com/en/repositories/working-with-files/managing-files/editing-files

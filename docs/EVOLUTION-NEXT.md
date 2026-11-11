@@ -1,24 +1,16 @@
-# The Tree of Life — Chemistry Continued (v2.071.1)
+# The Tree of Life — Chemistry Continued (v2.071.2)
 
 This branch continues the original `evolution` game. The original layers remain in use; 2.071.1 changes only the documented Normal Mode Hydrogen and first-Token prices in the early game. Researcher mechanics are preserved except for the documented milestone-17 threshold fix, factory-base balance, gradual Widget reward, the 2.070.4 progression/QoL adjustments, and the 2.070.5 Normal Mode Research V price. The separate cognition/legacy/reaction experiment has been removed from the playable version.
 
-## 2.071.1 Normal Mode price balance
+## 2.071.2 editable Token table
 
-No new content is added. Upgrade prerequisites and effects remain original. These prices apply when Easy, Hard, and Extreme Mode are all OFF; other difficulty prices retain their original formulas.
+Normal Mode Token prices now read directly from **TOKEN_COSTS** in `js/utils/tokenSupport.js`. Its first entries are **6600 / 7760 / 7780 / 8160 / 8350**, meaning Token 1 requires 1e6600 Life Points, Token 2 requires 1e7760, and Token 3 requires 1e7780. Position N controls Token N. Later entries keep the existing values.
 
-| Item | Price |
-| --- | ---: |
-| Hydrogen XVI | 7.77e777 Hydrogen |
-| Hydrogen XVII | 1e800 Hydrogen |
-| Hydrogen XVIII | 1e1000 Hydrogen |
-| Hydrogen XIX | 1e1040 Hydrogen |
-| Hydrogen XX | 1e1319 Hydrogen |
-| First Token | 1e6600 Life Points |
-| Second Token | 1e7760 Life Points |
+The first/second price overrides have been removed from `js/normalBalance.js`. `TOKEN_COSTS_LEGACY` independently preserves Easy/Hard prices, and `TOKEN_COSTS_EXTREME` preserves Extreme prices. Native effective-Token reductions and tetration/bulk mechanics are retained. Normal table prices are represented at their exact listed exponents and are affordable at equality.
 
-The user clarified that the final two upgrade names are **XIX / XX (19 / 20)**. XIV / XV (14 / 15) retain their original prices. The first two Tokens remain native prestige resets and are available exactly at their new thresholds. Their Normal Mode prices are editable together in `js/normalBalance.js` as `["1e6600", "1e7760"]`. Token 3 onward and effective-token modifiers keep their original formulas. See [editing and submitting prices](EDITING-PRICES.md). Existing purchases, resources and Token totals are retained.
+Tests derive Normal Mode boundary expectations from the table, so later manual edits do not need duplicated literal prices in test code. They also validate finite increasing values and preserve the number of entries. See [editing and publishing prices](EDITING-PRICES.md) for the development/publishing file paths, GitHub commits, checks, and cache refresh.
 
-`js/normalBalance.js` applies these overrides; the original `js/layers.js` and Token cost tables remain unchanged. See [the pacing report](PACING-CHECK.md) for native early-game and Chemistry regression checks. The Chemistry endpoint remains Chemistry V, 55 best K/Ca levels, and 1e32 current Researchers.
+No new content is added. Existing Hydrogen XVI–XX prices stay 7.77e777 / 1e800 / 1e1000 / 1e1040 / 1e1319 H; XIV/XV retain their original prices. The Chemistry endpoint remains Chemistry V, best K/Ca55, and 1e32 current Researchers. Existing purchases and resources are retained.
 
 ## Play and saves
 

@@ -1,48 +1,31 @@
-# Pacing check — 2.071.1, second Token adjustment
+# Pacing check — 2.071.2
 
-## Requested behavior
+## Scope and source of prices
 
-Normal Mode's first two Token thresholds are 1e6600 and **1e7760 Life Points**. Both permit equality. Their values are together in `js/normalBalance.js` as `const tokenPrices = ["1e6600", "1e7760"]`. Existing progress is retained. Token 3 onward and other difficulties retain their original formulas. In particular, the third original threshold is still 1e7630, lower than the newly requested second threshold; this patch does not choose another third price.
+Normal Mode reads every ordinary Token price directly from `TOKEN_COSTS` in `js/utils/tokenSupport.js`. The first three exponents are **6600 / 7760 / 7780**. The first/second price wrappers in `js/normalBalance.js` are removed. An independent `TOKEN_COSTS_LEGACY` retains original Easy/Hard prices; Extreme keeps its existing schedule.
 
-Hydrogen XVI–XX remain 7.77e777 / 1e800 / 1e1000 / 1e1040 / 1e1319 H. No content, effect, or prerequisite is added. [Editing and submitting prices](EDITING-PRICES.md) explains the original exponent table, the current overrides, and the development/publishing paths.
+Normal Mode represents each listed exponent exactly and accepts equality at its threshold. Existing effective-Token reductions and the native advanced tetration/bulk-gain branch are retained. No content, Hydrogen effect, milestone, or later Chemistry progression is added. See [editing and publishing prices](EDITING-PRICES.md).
 
-## Functional checks of the changed threshold
+## Functional checks
 
-All **49 functional tests** pass. With one Token already acquired, a native game at 1e7759 Life Points cannot reset for the second Token; at exactly 1e7760 it can. `doReset('tokens')` increments the native Token total to two and the next threshold returns to the original `10^7630` formula. This is a payment/threshold test, not a timed second-Token replay.
+All **52 functional tests** pass. Tests now read Normal Mode boundary expectations from the configured table rather than freezing the first prices in test literals. They validate insufficient/exact Life Points and native resets for each of the first three Tokens, finite increasing schedules, the original number of entries, runtime edits to the first/second/third/fourth and later entries without a hidden override, independent difficulty prices, an increased price rejecting an old cached affordability state, effective-Token modifiers, and the unchanged native advanced bulk formula. Existing save, Hydrogen, factory, Chemistry, automation, and loading-order tests remain covered.
 
-The first threshold also has an exact-boundary native prestige test. Other tests retain Hydrogen payment and prerequisite checks, Easy/Hard/Extreme prices, effective-Token modifiers, saved resources/purchases, Chemistry progression, factories, automation, migration and loading-order checks.
+The released table was also inspected directly: `[6600, 7760, 7780, 8160, 8350, ...]`. The third Token is 1e7780; the previous inversion where Token 3 cost less than Token 2 is resolved.
 
 ## Completed native pacing routes
 
 | Route | Completion time | Longest useful-operation gap | Minimum targeted numerical-reward gap |
 | --- | ---: | ---: | ---: |
-| Original e300 Hydrogen → actual first Token reset | 3113 s | 15 s | 73 s |
+| Original e300 Hydrogen → first Token reset | 3113 s | 15 s | 73 s |
 | Original Group 3 → Chemistry endpoint | 8246 s | 92 s | 10 s |
 
-Both completed routes pass the 100-second maximum wait and 10-second targeted reward-spacing checks. See [early replay data](pacing-2.071.1-hydrogen.json) and [Chemistry data](pacing-2.071.1-chemistry.json). The Chemistry endpoint and event times remain identical to the preceding price-only release.
+Both completed routes pass the 100-second maximum wait and 10-second targeted reward-spacing checks, with no artificial resource grants or purchase delays. Their event times are unchanged from the preceding release's corrected native policy. [Early replay data](pacing-2.071.2-hydrogen.json), [Chemistry data](pacing-2.071.2-chemistry.json).
 
-### First-Token native policy and targets
+The early route buys native H/C/O/mini upgrades and useful mini buyables as soon as affordable, updates temporary state between upgrades, then performs the actual first Token reset. The Chemistry route uses the original Group 3 checkpoint and seed 391 through the existing endpoint. Neither route loads a private supplied save.
 
-Use the original e300 Hydrogen checkpoint, no extra resources, one-second native ticks. Buy available H/C/O/mini upgrades and useful mini buyables as soon as affordable. Refresh temporary data after each upgrade purchase so a mutually exclusive prerequisite is not bought using a stale UI state. Stop after the native first-Token reset. The target rewards are the five repriced Hydrogen upgrades and the first Token; earlier unchanged upgrades are not claimed to have ten-second spacing.
+## Coverage limits
 
-| Target | Seconds from checkpoint |
-| --- | ---: |
-| Hydrogen XVI | 1510 |
-| Hydrogen XVII | 1586 |
-| Hydrogen XVIII | 2044 |
-| Hydrogen XIX | 2184 |
-| Hydrogen XX | 3040 |
-| First Token reset | 3113 |
-
-The previous audit did not refresh the temporary upgrade predicates between same-tick purchases. Correcting that policy changes the first-route timings; it is a test-driver change, not an additional game rebalance. [The initial 2.071.1 report](PACING-2.071.1-initial.md) preserves the older measurements.
-
-## Investigation and coverage limits
-
-Extended second/third-Token replay attempts exposed shortcomings in the audit policy's handling of the original post-reset Hydrogen/minigame progression. One initial attempt bought both mutually exclusive branches using stale temporary predicates and stalled; it was stopped and corrected. Other attempts spent the first Token on different native production bonuses but did not establish a validated complete post-reset policy. They are not reported as passing pacing tests or used to claim second/third-Token timing guarantees.
-
-The default early audit therefore remains the original first-Token route. Optional `--tokens 2` / `--tokens 3` are diagnostic extensions, prioritize the native Microwaves buyable, and have limited minigame handling. They do not add resources or insert artificial purchase delays. The raw local checkpoint they generate stays under ignored `work/`.
-
-These completed routes and exact-boundary tests do not guarantee every post-reset strategy or save has an operation within 100 seconds. A representative near-second-Token save would permit a more focused timing audit without substituting an incomplete general minigame policy. This release follows the explicit second-Token price and leaves the unrelated original progression unchanged.
+The exact third-Token threshold and reset are tested natively, but a complete second/third-Token elapsed-time policy is not newly validated. The default early audit still ends at Token 1. Optional extended runs use limited minigame handling and are diagnostic; they are not claimed as timing passes. These representative routes do not guarantee 100-second interactions under every strategy, future manual price edit, or save. Increasing exponents alone is not proof of good pacing; manual price changes should be checked in an appropriate near-Token save as well as by the automated tests.
 
 ```sh
 npm test
@@ -50,4 +33,4 @@ npm run check:hydrogen-pacing
 npm run check:pacing
 ```
 
-GitHub Actions runs these three checks. No private supplied save is committed.
+GitHub Actions runs these checks. Existing purchases, resources, and Token totals are preserved. [The previous report](PACING-2.071.1-token2.md) records the prior second-Token update and its investigation limits.
