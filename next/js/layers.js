@@ -10049,7 +10049,7 @@ addLayer("c", {
                         },
                         cost(){
                                 if (player.extremeMode) return new Decimal(3e55)
-                                return player.hardMode ? new Decimal(1.4e37) : new Decimal(3e37)
+                                return player.hardMode ? new Decimal(1.4e37) : new Decimal(6e40)
                         },
                         unlocked(){
                                 return hasMilestone("n", 6) || hasUpgrade("o", 22)
@@ -35256,7 +35256,7 @@ addLayer("an", {
                                 '321', '322', '323', '324', '325', 
                                 '331', '332', '333', '334', '335', 
                                 '341', '342', '343', '344', '345', 
-                                '351', '352', '353', '354', '355', ]
+                                '351', '352', '353', '354', '355', ]
 
                         let boughtYet = false
                         for (i in orKeys) {
@@ -64865,7 +64865,6 @@ addLayer("tokens", {
                 if (player.extremeMode) layers.sci.doReset("tokens")
         },
 })
-
 
 
 
