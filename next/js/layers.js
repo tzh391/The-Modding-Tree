@@ -10539,7 +10539,7 @@ addLayer("o", {
                                 return "log10(Life Points)<br>Estimated time: " + logisticTimeUntil(tmp.o.upgrades[23].cost, player.o.points, tmp.o.getResetGain, tmp.o.getLossRate)
                         },
                         cost(){
-                                return new Decimal(2e48)
+                                return new Decimal(3e48)
                         },
                         effect(){
                                 return player.points.max(1).log10().max(1)
