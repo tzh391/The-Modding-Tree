@@ -11087,7 +11087,7 @@ addLayer("n", {
                                 if (!hasUpgrade("n", 41)) return "<bdi style='font-size: 80%'>" + b + br + a + "</bdi>"
                                 return a
                         },
-                        cost:() => new Decimal(player.extremeMode ? 6.1e33 : 4.2e33),
+                        cost:() => new Decimal(player.extremeMode ? 6.1e33 : 5.3e33),
                         unlocked(){
                                 return hasMilestone("p", 4) || hasUpgrade("n", 35) || player.l.unlocked
                         }, // hasUpgrade("n", 41)
@@ -64865,7 +64865,6 @@ addLayer("tokens", {
                 if (player.extremeMode) layers.sci.doReset("tokens")
         },
 })
-
 
 
 
