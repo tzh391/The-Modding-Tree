@@ -23476,7 +23476,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Omnipotent cost base is 8.55"
                                 return "Omnipotent cost base is 9.1"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "6e9022" : "6e9512"),
+                        cost:() => new Decimal(player.extremeMode ? "6e9022" : "1.5e9513"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 34) || player.or.unlocked
