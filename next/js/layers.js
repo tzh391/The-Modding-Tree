@@ -17894,12 +17894,12 @@ addLayer("l", {
                         fullDisplay(){
                                 if (hasMilestone("or", 15)) return makeRed("<h3>Ineffective</h3>")
                                 let a = "Requires being in C88 and Customizable and raise dilation effect ^60"
-                                let b = "Goal: e1e2,544,000 Points"
+                                let b = "Goal: e1e3,008,000 Points"
                                 let c = "Reward: Anti-Hydrogen affects DNA and Anti-Minigame affects Cells each at most ^1.5, and Anti-Carbon effect multiplies Stem Cell gain if you have over 15 Secondary completions"
                                 if (player.extremeMode) {
                                         c = "Reward: Anti-Hydrogen affects DNA and Anti-Minigame affects Cells each at most ^1.5"
                                         a = a.replace("60", "30")
-                                        b = b.replace("2,544,000", "4,088")
+                                        b = b.replace("3,008,000", "4,088")
                                 }
 
                                 return a + br + b + br + c
