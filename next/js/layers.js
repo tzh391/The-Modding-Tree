@@ -28600,10 +28600,10 @@ addLayer("t", {
                 15: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1e130,158 Stem Cells"
-                                return "1e154,546 Stem Cells"
+                                return "1e144,592 Stem Cells"
                         },
                         done(){
-                                return player.cells.stem_cells.points.gte(player.extremeMode ? "1e130158" : "1e154546")
+                                return player.cells.stem_cells.points.gte(player.extremeMode ? "1e130158" : "1e144592")
                         },
                         unlocked(){
                                 return true
@@ -28616,10 +28616,10 @@ addLayer("t", {
                 16: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1e153,149 Stem Cells"
-                                return "1e158,463 Stem Cells"
+                                return "1e168,463 Stem Cells"
                         },
                         done(){
-                                return player.cells.stem_cells.points.gte(player.extremeMode ? "1e153149" : "1e158463")
+                                return player.cells.stem_cells.points.gte(player.extremeMode ? "1e153149" : "1e168463")
                         },
                         unlocked(){
                                 return true
