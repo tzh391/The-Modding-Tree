@@ -23364,7 +23364,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Omnipotent cost base is 9.7 and DNA Sci XXVII count every upgrade in its tab but nullify Quadratic"
                                 return "Omnipotent cost base is 9.7 but nullify Quadratic"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1.65e3924" : "4e5696"),
+                        cost:() => new Decimal(player.extremeMode ? "1.65e3924" : "1.91e5697"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 21) || player.or.unlocked
