@@ -23406,7 +23406,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Omnipotent cost base is 9.4, crRNA's base is sqrt(Cells) but nullify Logarithmic"
                                 return "Omnipotent cost base is 9.42 and crRNA's base is sqrt(Cells) but nullify Logarithmic"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "3e4973" : "3e6941"),
+                        cost:() => new Decimal(player.extremeMode ? "3e4973" : "7.4e6941"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 24) || player.or.unlocked
