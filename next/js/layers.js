@@ -23626,7 +23626,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Remove Cell milestone 53's -44, shRNA's sqrt, and unlock End"
                                 return "Remove Cell milestone 53's -44 and unlock End"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e18921" : "1e14891"),
+                        cost:() => new Decimal(player.extremeMode ? "1e18921" : "1e14562"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 54) || player.or.unlocked
