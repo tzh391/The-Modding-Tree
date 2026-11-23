@@ -23525,7 +23525,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Per Token II dilate Life Point gain ^13 and Secondary is 1e40x easier"
                                 return "Per Token II dilate Life Point gain ^13"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "5e12521" : "2e12664"),
+                        cost:() => new Decimal(player.extremeMode ? "5e12521" : "1.07e12665"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return player.tokens.total.gt(500) && hasUpgrade("cells", 42) || player.or.unlocked
