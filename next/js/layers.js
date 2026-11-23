@@ -23985,7 +23985,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Tokens multiply Infrared base and dilate Life Point gain"
                                 return "Tokens exponentiates Infrared base and dilate Life Point gain"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "3e809" : "e1377"),
+                        cost:() => new Decimal(player.extremeMode ? "3e809" : "3e1377"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 215) || player.t.unlocked
