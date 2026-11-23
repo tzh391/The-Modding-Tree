@@ -17911,7 +17911,7 @@ addLayer("l", {
                 }, // inChallenge("l", 111) hasChallenge("l", 111)
                 112: {
                         name: "Anti-Eta", 
-                        goal: () => Decimal.pow(10, Decimal.pow(10, player.extremeMode ? 5742 : 9949e3)),
+                        goal: () => Decimal.pow(10, Decimal.pow(10, player.extremeMode ? 5742 : 11061e3)),
                         canComplete(){ 
                                 if (player.l.challenges[11] < 110) return false
                                 if (player.l.activeChallengeID != 808) return false
@@ -17921,12 +17921,12 @@ addLayer("l", {
                         fullDisplay(){
                                 if (hasMilestone("or", 15)) return makeRed("<h3>Ineffective</h3>")
                                 let a = "Requires being in C88 and Customizable, α → ∂𝛾 doesn't effect prior exponent dividers and raise dilation effect ^60"
-                                let b = "Goal: e1e9,949,000 Points"
+                                let b = "Goal: e1e11,061,000 Points"
                                 let c = "Reward: Anti-Inflammatory affects Visible, add .0003 to tRNA's base, and Secondary is 1e4x easier but α → ∂𝛾 doesn't effect prior exponent dividers"
                                 if (player.extremeMode) {
                                         c = "Reward: Add .0003 to tRNA's base and Secondary is 1e4x easier but α → ∂𝛾 doesn't effect prior exponent dividers"
                                         a = a.replace("60", "30")
-                                        b = b.replace("9,949,000", "5,742")
+                                        b = b.replace("11,061,000", "5,742")
                                 }
 
                                 return a + br + b + br + c
