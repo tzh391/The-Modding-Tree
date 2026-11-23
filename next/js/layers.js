@@ -23612,7 +23612,7 @@ addLayer("cells", {
                                 //if (player.extremeMode) return player.l.points.max(10).log10()
                                 return player.l.points.max(10).log10().times(player.a.points.max(10).log10())
                         },
-                        cost:() => new Decimal(player.extremeMode ? "8e18818" : "1e14772"),
+                        cost:() => new Decimal(player.extremeMode ? "8e18818" : "1e14411"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 53) || player.or.unlocked
