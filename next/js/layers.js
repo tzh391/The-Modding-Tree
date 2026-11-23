@@ -23890,7 +23890,7 @@ addLayer("cells", {
                         description(){
                                 return "<bdi style='font-size: 80%'>log10(Lambda) multiplies Near-ultraviolet base, and Life buyables exponents are 2 but α → ∂𝛾, β → ∂𝛾 and 𝛾 → ∂𝛾's bases are 1</bdi>"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "3.9e798" : "e1315"),
+                        cost:() => new Decimal(player.extremeMode ? "3.9e798" : "e1325"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 115) || player.t.unlocked
