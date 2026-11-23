@@ -23336,7 +23336,7 @@ addLayer("cells", {
                                 let exp = player.cells.upgrades.length
                                 return base.pow(exp)
                         },
-                        cost:() => new Decimal(player.extremeMode ? "2.9e3571" : "1e5293"),
+                        cost:() => new Decimal(player.extremeMode ? "2.9e3571" : "3.1e5293"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("t", 105) || player.or.unlocked
