@@ -24075,7 +24075,7 @@ addLayer("cells", {
                         description(){
                                 return "Unlock Tissues and Odd is always activated"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1.3e811" : "e1381"),
+                        cost:() => new Decimal(player.extremeMode ? "1.3e811" : "3e1381"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 315) || player.t.unlocked
