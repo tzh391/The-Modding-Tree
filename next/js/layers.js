@@ -23378,7 +23378,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Omnipotent cost base is 9.6 and Pluripotent cost base is 1e19"
                                 return "Omnipotent cost base is 9.6 and upgrades multiply Stem Cell gain"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e4237" : "1e6066"),
+                        cost:() => new Decimal(player.extremeMode ? "1e4237" : "5e6066"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 22) || player.or.unlocked
