@@ -23795,7 +23795,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Sinusoidal exponent is not square rooted and shRNA base is sqrt(Mu)"
                                 return "Sinusoidal exponent is not square rooted and shRNA base is Mu"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "3e761" : "e1253"),
+                        cost:() => new Decimal(player.extremeMode ? "3e761" : "7e1255"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasChallenge("l", 112) || player.t.unlocked
