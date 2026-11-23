@@ -23594,7 +23594,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "<bdi style='font-size: 80%'>Per upgrade add .008 to Tissue effect exponent and multiply the Tissue effect exponent by 1.33 but Secondary is 1e108x harder</bdi>"
                                 return "Per upgrade add .008 to Tissue effect exponent"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "3e17184" : "5e14023"),
+                        cost:() => new Decimal(player.extremeMode ? "3e17184" : "2e14273"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 52) || player.or.unlocked
@@ -23612,7 +23612,7 @@ addLayer("cells", {
                                 //if (player.extremeMode) return player.l.points.max(10).log10()
                                 return player.l.points.max(10).log10().times(player.a.points.max(10).log10())
                         },
-                        cost:() => new Decimal(player.extremeMode ? "8e18818" : "1e14272"),
+                        cost:() => new Decimal(player.extremeMode ? "8e18818" : "1e14772"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 53) || player.or.unlocked
@@ -23626,7 +23626,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Remove Cell milestone 53's -44, shRNA's sqrt, and unlock End"
                                 return "Remove Cell milestone 53's -44 and unlock End"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e18921" : "1e14491"),
+                        cost:() => new Decimal(player.extremeMode ? "1e18921" : "1e14891"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 54) || player.or.unlocked
