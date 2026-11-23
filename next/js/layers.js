@@ -23392,7 +23392,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "<bdi style='font-size: 80%'>Omnipotent cost base is 9.5, Cells<sup>.01</sup> multiplies Stem Cell gain, and Cells resets nothing but nullify Linear</bdi>"
                                 return "Omnipotent cost base is 9.5, upgrades multiply Stem Cell gain, and Cells resets nothing but nullify Linear"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e4657" : "1e6479"),
+                        cost:() => new Decimal(player.extremeMode ? "1e4657" : "3.8e6479"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 23) || player.or.unlocked
