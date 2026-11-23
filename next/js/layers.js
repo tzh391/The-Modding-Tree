@@ -23580,7 +23580,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Token II via Cell's divider is doubled and per Token II multiply Stem Cell gain by [Token II]^1.5*log10(Cells)"
                                 return "Token II via Cell's divider is doubled and per Token II log10(Cells) multiply Stem Cell gain"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "4e16678" : "1e13639"),
+                        cost:() => new Decimal(player.extremeMode ? "4e16678" : "1e13710"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 51) || player.or.unlocked
