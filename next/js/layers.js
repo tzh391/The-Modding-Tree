@@ -17884,7 +17884,7 @@ addLayer("l", {
                 }, // inChallenge("l", 102) hasChallenge("l", 102)
                 111: {
                         name: "Anti-Theta", 
-                        goal: () => Decimal.pow(10, Decimal.pow(10, player.extremeMode ? 4088 : 2544e3)),
+                        goal: () => Decimal.pow(10, Decimal.pow(10, player.extremeMode ? 4088 : 3008e3)),
                         canComplete(){ 
                                 if (player.l.challenges[11] < 110) return false
                                 if (player.l.activeChallengeID != 808) return false
