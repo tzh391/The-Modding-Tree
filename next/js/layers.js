@@ -23420,7 +23420,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Omnipotent cost base is 9.2 and β → ∂β's base is Kappa but nullify Constant and Secondary is 1e7x harder"
                                 return "Omnipotent cost base is 9.34 and β → ∂β's base is Kappa but nullify Constant"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1.7e5313" : "3e7377"),
+                        cost:() => new Decimal(player.extremeMode ? "1.7e5313" : "1.4e7378"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 25) || player.or.unlocked
