@@ -28682,11 +28682,11 @@ addLayer("t", {
                 20: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1e1,282,700 Stem Cells"
-                                return "1e634,788 Stem Cells"
+                                return "1e634,7888 Stem Cells"
                         },
                         done(){
                                 if (player.extremeMode) return player.cells.stem_cells.points.gte("1e1282700")
-                                return player.cells.stem_cells.points.gte("1e634788")
+                                return player.cells.stem_cells.points.gte("1e6347888")
                         },
                         unlocked(){
                                 return true
