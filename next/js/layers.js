@@ -25211,7 +25211,7 @@ addLayer("cells", {
                                 return "1e23,309 Stem Cells"
                         },
                         done(){
-                                return player.cells.stem_cells.points.gte(player.extremeMode ? "1e16751" : "1e23309")
+                                return player.cells.stem_cells.points.gte(player.extremeMode ? "1e16751" : "1e23909")
                         },
                         unlocked(){
                                 return true
