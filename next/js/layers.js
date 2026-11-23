@@ -23566,7 +23566,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "Per upgrade per Tissue upgrade Primary is 3x easier and Secondary is 1e32x easier"
                                 return "Per upgrade per Tissue upgrade Primary is 1.91x easier and Secondary is 100x easier"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "9e16368" : "1e13440"),
+                        cost:() => new Decimal(player.extremeMode ? "9e16368" : "1e13453"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 45) || player.or.unlocked
