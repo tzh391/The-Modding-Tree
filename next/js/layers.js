@@ -28732,11 +28732,11 @@ addLayer("t", {
                 23: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1e35,944 Cells"
-                                return "1e123,701 Cells"
+                                return "1e23,724 Cells"
                         },
                         done(){
                                 if (player.extremeMode) return player.cells.points.gte("1e35944")
-                                return player.cells.points.gte("1e123701")
+                                return player.cells.points.gte("1e23724")
                         },
                         unlocked(){
                                 return true
