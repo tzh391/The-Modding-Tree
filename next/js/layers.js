@@ -23639,7 +23639,7 @@ addLayer("cells", {
                         description(){
                                 return "Raise the coefficient in Down Quark's base to Token II - 20 and per upgrade dilate Life Point gain ^1.1"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e51333" : "1e22305"),
+                        cost:() => new Decimal(player.extremeMode ? "1e51333" : "1e22860"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return player.cells.challenges[11] >= 24 || player.or.unlocked
