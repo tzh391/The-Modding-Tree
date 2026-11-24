@@ -28078,12 +28078,12 @@ addLayer("t", {
                                 if (player.extremeMode) {
                                         a = "Primary completions<sup>2.5</sup> dilate Life Point gain"
                                 }
-                                let b = "<br>Requires: 91 Secondary completions</bdi>"
+                                let b = "<br>Requires: 92 Secondary completions</bdi>"
                                 if (!hasUpgrade("t", 124)) return a + b
                                 return a + "</bdi>"
                         },
                         canAfford(){
-                                return player.cells.challenges[12] >= 91
+                                return player.cells.challenges[12] >= 92
                         },
                         cost:() => new Decimal(player.extremeMode ? 3e30 : 3e22),
                         unlocked(){
