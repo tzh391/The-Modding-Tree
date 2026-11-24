@@ -28057,12 +28057,12 @@ addLayer("t", {
                         },
                         description(){
                                 let a = "Autobuy Pluripotent"
-                                let b = "<br>Requires: 90 Secondary completions</bdi>"
+                                let b = "<br>Requires: 91 Secondary completions</bdi>"
                                 if (!hasUpgrade("t", 123)) return a + b
                                 return a + "</bdi>"
                         },
                         canAfford(){
-                                return player.cells.challenges[12] >= 90
+                                return player.cells.challenges[12] >= 91
                         },
                         cost:() => new Decimal(player.extremeMode ? 1e29 : 1e22),
                         unlocked(){
@@ -28699,11 +28699,11 @@ addLayer("t", {
                 21: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1e23,264 Cells"
-                                return "1e117,204 Cells"
+                                return "1e17,368 Cells"
                         },
                         done(){
                                 if (player.extremeMode) return player.cells.points.gte("1e23264")
-                                return player.cells.points.gte("1e117204")
+                                return player.cells.points.gte("1e17368")
                         },
                         unlocked(){
                                 return true
