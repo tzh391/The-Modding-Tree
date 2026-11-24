@@ -27904,9 +27904,9 @@ addLayer("t", {
                         },
                         description(){
                                 let a = "<bdi style='font-size: 80%'>Tissue gain root is 3*sqrt(Token II) less (up to 500), gain 5x Stem Cells, and Token II via Stem Cell scales at half the speed</bdi>"
-                                let b = "<br>Requires: 82 Secondary completions</bdi>"
+                                let b = "<br>Requires: 84 Secondary completions</bdi>"
                                 if (player.extremeMode) {
-                                        b = b.replace("82", "84")
+                                        b = b.replace("84", "84")
                                         a = "<bdi style='font-size: 80%'>Tissue gain root is 3*sqrt(Token II) less (up to 500), Token II via Stem Cell divider is 2, and Telomerase in not affected by Secondary</bdi>"
                                 }
                                 if (!hasUpgrade("t", 111)) return a + b
@@ -27915,7 +27915,7 @@ addLayer("t", {
                         canAfford(){
                                 return player.cells.challenges[12] >= (player.extremeMode ? 84 : 82)
                         },
-                        cost:() => new Decimal(player.extremeMode ? 1e24 : 1e18),
+                        cost:() => new Decimal(player.extremeMode ? 1e24 : 3e18),
                         unlocked(){
                                 return hasUpgrade("cells", 55) || hasMilestone("or", 9)
                         }, // hasUpgrade("t", 111)
@@ -27926,9 +27926,9 @@ addLayer("t", {
                         },
                         description(){
                                 let a = "Per upgrade Tissue effect affects DNA gain"
-                                let b = "<br>Requires: 83 Secondary completions</bdi>"
+                                let b = "<br>Requires: 85 Secondary completions</bdi>"
                                 if (player.extremeMode) {
-                                        b = b.replace("83", "85")
+                                        b = b.replace("85", "85")
                                         a = "Per upgrade Tissue effect affects DNA gain and DNA Science gain"
                                 }
                                 if (!hasUpgrade("t", 112)) return a + b
@@ -28699,11 +28699,11 @@ addLayer("t", {
                 21: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1e23,264 Cells"
-                                return "1e17,204 Cells"
+                                return "1e117,204 Cells"
                         },
                         done(){
                                 if (player.extremeMode) return player.cells.points.gte("1e23264")
-                                return player.cells.points.gte("1e17204")
+                                return player.cells.points.gte("1e117204")
                         },
                         unlocked(){
                                 return true
@@ -28715,11 +28715,11 @@ addLayer("t", {
                 22: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1e27,035 Cells"
-                                return "1e18,741 Cells"
+                                return "1e118,741 Cells"
                         },
                         done(){
                                 if (player.extremeMode) return player.cells.points.gte("1e27035")
-                                return player.cells.points.gte("1e18741")
+                                return player.cells.points.gte("1e118741")
                         },
                         unlocked(){
                                 return true
@@ -28732,11 +28732,11 @@ addLayer("t", {
                 23: {
                         requirementDescription(){
                                 if (player.extremeMode) return "1e35,944 Cells"
-                                return "1e23,701 Cells"
+                                return "1e123,701 Cells"
                         },
                         done(){
                                 if (player.extremeMode) return player.cells.points.gte("1e35944")
-                                return player.cells.points.gte("1e23701")
+                                return player.cells.points.gte("1e123701")
                         },
                         unlocked(){
                                 return true
