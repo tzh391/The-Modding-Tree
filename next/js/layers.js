@@ -28099,12 +28099,12 @@ addLayer("t", {
                                 if (player.extremeMode) {
                                         a = "Pluripotent no longer affects DNA gain"
                                 }
-                                let b = "<br>Requires: 92 Secondary completions"
+                                let b = "<br>Requires: 93 Secondary completions"
                                 if (!hasUpgrade("t", 125)) return a + b
                                 return a + "</bdi>"
                         },
                         canAfford(){
-                                return player.cells.challenges[12] >= 92
+                                return player.cells.challenges[12] >= 93
                         },
                         cost:() => new Decimal(player.extremeMode ? 5e31 : 5e22),
                         unlocked(){
