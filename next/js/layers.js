@@ -28013,18 +28013,18 @@ addLayer("t", {
                         },
                         description(){
                                 let a = "Secondary is 10x easier and per upgrade in this row Secondary is 1e6 easier"
-                                let b = "<br>Requires: 87 Secondary completions</bdi>"
+                                let b = "<br>Requires: 88 Secondary completions</bdi>"
                                 if (player.extremeMode) {
-                                        b = b.replace("87", "88")
+                                        b = b.replace("88", "88")
                                         a = "Per upgrade in this row Secondary is 1e27 easier"
                                 }
                                 if (!hasUpgrade("t", 121)) return a + b
                                 return a + "</bdi>"
                         },
                         canAfford(){
-                                return player.cells.challenges[12] >= (player.extremeMode ? 88 : 87)
+                                return player.cells.challenges[12] >= (player.extremeMode ? 88 : 88)
                         },
-                        cost:() => new Decimal(player.extremeMode ? 1e27 : 2e20),
+                        cost:() => new Decimal(player.extremeMode ? 1e27 : 3e20),
                         unlocked(){
                                 return hasUpgrade("t", 115) || hasMilestone("or", 9)
                         }, // hasUpgrade("t", 121)
