@@ -27971,15 +27971,15 @@ addLayer("t", {
                         description(){
                                 let a = "Tissues IX becomes .165 and the number of upgrades dilates Life Point gain"
                                 if (player.extremeMode) a = a.replace("5", "4")
-                                let b = "<br>Requires: 85 Secondary completions</bdi>"
+                                let b = "<br>Requires: 86 Secondary completions</bdi>"
                                 if (player.extremeMode) {
-                                        b = b.replace("85", "86")
+                                        b = b.replace("86", "86")
                                 }
                                 if (!hasUpgrade("t", 114)) return a + b
                                 return a + "</bdi>"
                         },
                         canAfford(){
-                                return player.cells.challenges[12] >= (player.extremeMode ? 86 : 85)
+                                return player.cells.challenges[12] >= (player.extremeMode ? 86 : 86)
                         },
                         cost:() => new Decimal(player.extremeMode ? 4e25 : 4e19),
                         unlocked(){
