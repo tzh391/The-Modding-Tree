@@ -23652,7 +23652,7 @@ addLayer("cells", {
                         description(){
                                 return "Unlock Tertiary"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e51670" : "1e36963"),
+                        cost:() => new Decimal(player.extremeMode ? "1e51670" : "1e37507"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("t", 145) || player.or.unlocked
