@@ -28203,7 +28203,7 @@ addLayer("t", {
                         effect(){
                                 return player.points.max(10).log10().max(10).log10().pow(player.extremeMode ? 1.61 : .4)
                         },
-                        cost:() => new Decimal(player.extremeMode ? 1e43 : 2e33),
+                        cost:() => new Decimal(player.extremeMode ? 1e43 : 1e33),
                         unlocked(){
                                 return hasUpgrade("t", 134) || hasMilestone("or", 9)
                         }, // hasUpgrade("t", 135)
