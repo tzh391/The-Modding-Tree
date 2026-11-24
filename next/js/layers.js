@@ -23682,7 +23682,7 @@ addLayer("cells", {
                                 }
                                 return "C74 Gems effect is 1.04 and per upgrade add .022 to Omnipotent base, but remove Life buyables"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e52960" : "1e38255"),
+                        cost:() => new Decimal(player.extremeMode ? "1e52960" : "1e38323"),
                         onPurchase(){
                                 player.l.buyables[11] = decimalZero
                                 player.l.buyables[12] = decimalZero
