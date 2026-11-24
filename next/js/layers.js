@@ -23708,7 +23708,7 @@ addLayer("cells", {
                         description(){
                                 return "Bottom Quark is based on best"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e54950" : "1e38590"),
+                        cost:() => new Decimal(player.extremeMode ? "1e54950" : "1e38814"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 64) || player.or.unlocked
