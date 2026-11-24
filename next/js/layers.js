@@ -28035,16 +28035,16 @@ addLayer("t", {
                         },
                         description(){
                                 let a = "Primary is 1e150 easier"
-                                let b = "<br>Requires: 88 Secondary completions</bdi>"
+                                let b = "<br>Requires: 89 Secondary completions</bdi>"
                                 if (player.extremeMode) {
-                                         b = b.replace("88", "89")
+                                         b = b.replace("89", "89")
                                         a = "Token II via Token base is 25-[this row upgrades]"
                                 }
                                 if (!hasUpgrade("t", 122)) return a + b
                                 return a + "</bdi>"
                         },
                         canAfford(){
-                                return player.cells.challenges[12] >= (player.extremeMode ? 89 : 88)
+                                return player.cells.challenges[12] >= (player.extremeMode ? 89 : 89)
                         },
                         cost:() => new Decimal(player.extremeMode ? 3e28 : 5e20),
                         unlocked(){
