@@ -27913,7 +27913,7 @@ addLayer("t", {
                                 return a + "</bdi>"
                         },
                         canAfford(){
-                                return player.cells.challenges[12] >= (player.extremeMode ? 84 : 82)
+                                return player.cells.challenges[12] >= (player.extremeMode ? 84 : 84)
                         },
                         cost:() => new Decimal(player.extremeMode ? 1e24 : 3e18),
                         unlocked(){
@@ -27935,7 +27935,7 @@ addLayer("t", {
                                 return a + "</bdi>"
                         },
                         canAfford(){
-                                return player.cells.challenges[12] >= (player.extremeMode ? 85 : 83)
+                                return player.cells.challenges[12] >= (player.extremeMode ? 85 : 85)
                         },
                         cost:() => new Decimal(player.extremeMode ? 3e24 : 1e19),
                         unlocked(){
@@ -27949,15 +27949,15 @@ addLayer("t", {
                         description(){
                                 let a = "Per token multiply Stem Cell gain by 1 + Token II / 69"
                                 if (player.extremeMode) return "If you have 86 Secondary completions, per token multiply Stem Cell gain by 1 + Token II / 69"
-                                let b = "<br>Requires: 84 Secondary completions</bdi>"
+                                let b = "<br>Requires: 85 Secondary completions</bdi>"
                                 if (player.extremeMode) {
-                                        b = b.replace("84", "85")
+                                        b = b.replace("85", "85")
                                 }
                                 if (!hasUpgrade("t", 113)) return a + b
                                 return a + "</bdi>"
                         },
                         canAfford(){
-                                return player.cells.challenges[12] >= (player.extremeMode ? 85 : 84)
+                                return player.cells.challenges[12] >= (player.extremeMode ? 85 : 85)
                         },
                         cost:() => new Decimal(player.extremeMode ? 1e25 : 2e19),
                         unlocked(){
