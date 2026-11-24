@@ -27992,15 +27992,15 @@ addLayer("t", {
                         },
                         description(){
                                 let a = "Tissues IX becomes .17"
-                                let b = "<br>Requires: 86 Secondary completions</bdi>"
+                                let b = "<br>Requires: 87 Secondary completions</bdi>"
                                 if (player.extremeMode) {
-                                        b = b.replace("86", "87")
+                                        b = b.replace("87", "87")
                                 }
                                 if (!hasUpgrade("t", 115)) return a + b
                                 return a + "</bdi>"
                         },
                         canAfford(){
-                                return player.cells.challenges[12] >= (player.extremeMode ? 87 : 86)
+                                return player.cells.challenges[12] >= (player.extremeMode ? 87 : 87)
                         },
                         cost:() => new Decimal(player.extremeMode ? 6e25 : 1e20),
                         unlocked(){
