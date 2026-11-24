@@ -23666,7 +23666,7 @@ addLayer("cells", {
                                 if (player.extremeMode) return "rRNA base is Tokens<sup>Tokens II^1.5</sup> and snRNA base is log10(log10(Points))"
                                 return "rRNA base is Tokens<sup>Tokens II</sup> and snRNA base is log10(log10(Points))"
                         },
-                        cost:() => new Decimal(player.extremeMode ? "1e52700" : "1e37682"),
+                        cost:() => new Decimal(player.extremeMode ? "1e52700" : "1e37700"),
                         unlocked(){
                                 if (hasMilestone("e", 13)) return false
                                 return hasUpgrade("cells", 62) || player.or.unlocked
