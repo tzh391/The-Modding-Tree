@@ -30223,7 +30223,7 @@ addLayer("or", {
                         description(){
                                 return "Tokens II multiplies Organ gain and unlock Kidneys"
                         },
-                        cost:() => new Decimal(player.extremeMode ? 4.622e6 : 13.44e6),
+                        cost:() => new Decimal(player.extremeMode ? 4.622e6 : 13.47e6),
                         unlocked(){
                                 if (hasMilestone("an", 4)) return true
                                 return hasUpgrade("or", 13)
