@@ -32577,7 +32577,7 @@ addLayer("or", {
                         title: "he", // "I'm gonna make him an offer he can't refuse."
                         cost(){
                                 let amt = getBuyableAmount("or", 221)
-                                let base = new Decimal(player.e.unlocked || (hasMilestone("or", 16) && player.or.buyables[223].gte(24)) ? 1 : player.extremeMode ? "1e45664" : "1e64100")
+                                let base = new Decimal(player.e.unlocked || (player.extremeMode && hasMilestone("or", 16) && player.or.buyables[223].gte(24))) ? 1 : player.extremeMode ? "1e45664" : "1e64100")
                                 let exp = new Decimal(64)
                                 return amt.pow(amt.times(exp)).times(base)
                         },
@@ -32588,7 +32588,7 @@ addLayer("or", {
                                 return player.or.contaminants.points.gte(tmp.or.buyables[221].cost)
                         },
                         getMaxAfford(){
-                                let pts = player.or.contaminants.points.div(player.e.unlocked || (hasMilestone("or", 16) && player.or.buyables[223].gte(24)) ? 1 : player.extremeMode ? "1e45664" : "1e64100")
+                                let pts = player.or.contaminants.points.div(player.e.unlocked || (player.extremeMode && hasMilestone("or", 16) && player.or.buyables[223].gte(24))) ? 1 : player.extremeMode ? "1e45664" : "1e64100")
                                 if (pts.lt(1)) return decimalZero
                                 if (pts.eq(1)) return decimalTwo
                                 let exp = new Decimal(64) // if y^y = e^x then y = x/W(x)
@@ -32631,7 +32631,7 @@ addLayer("or", {
 
                                 let cost1 = "<b><h2>Cost formula</h2>:<br>"
                                 let cost2 = "1e64,100*x<sup>64x</sup>" 
-                                if (player.e.unlocked || (hasMilestone("or", 16) && player.or.buyables[223].gte(24))) {
+                                if (player.e.unlocked || (player.extremeMode && hasMilestone("or", 16) && player.or.buyables[223].gte(24))) {
                                         cost2 = "x<sup>64x</sup>"
                                 }
                                 if (player.extremeMode) cost2 = cost2.replace("64,100", "45,664")
