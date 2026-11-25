@@ -30210,7 +30210,7 @@ addLayer("or", {
                         description(){
                                 return "Oligopotent cost base is 1e90 and you can complete Tertiary 4 times"
                         },
-                        cost:() => new Decimal(player.extremeMode ? 264e4 : 1098e4),
+                        cost:() => new Decimal(player.extremeMode ? 264e4 : 1102e4),
                         unlocked(){
                                 if (hasMilestone("an", 4)) return true
                                 return hasUpgrade("or", 135)
