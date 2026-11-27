@@ -30294,7 +30294,7 @@ addLayer("or", {
                                 if (player.extremeMode) return "<u>in</u>TEStine's log8 becomes log6, autobuy Pulmonologist, and Token II buyables' cost exponent is .58"
                                 return "<u>in</u>TEStine's log7 becomes log6 and Token II buyables' cost exponent is .58"
                         },
-                        cost:() => new Decimal(player.extremeMode ? 3.34e90 : 1.43e60),
+                        cost:() => new Decimal(player.extremeMode ? 3.34e90 : 1.43e61),
                         unlocked(){
                                 if (hasMilestone("an", 4)) return true
                                 return hasUpgrade("or", 23)
