@@ -30335,7 +30335,7 @@ addLayer("or", {
                                 if (player.extremeMode) return "Unlock Animals and log10(log10(Cells)) multiplies Organ gain"
                                 return "Unlock Animals"
                         },
-                        cost:() => new Decimal(player.extremeMode ? 2.08e119 : 1.98e98),
+                        cost:() => new Decimal(player.extremeMode ? 2.08e119 : 1.98e99),
                         unlocked(){
                                 if (hasMilestone("an", 4)) return true
                                 return hasUpgrade("or", 31)
